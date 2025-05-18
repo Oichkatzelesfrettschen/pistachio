@@ -39,8 +39,12 @@ x86_arch			'X86 Processor Architecture'
 x86_platform			'Platform'
 
 SUBARCH_X32			'32-Bit  x86 Processors (IA-32)'
+# Use this for building i686 (32-bit) kernels.
 SUBARCH_X64			'64-Bit  x86 Processors (AMD64/EM64T)'
+
+# Use this for x86_64 (64-bit) kernels.
 # Select SUBARCH in Makeconf.local to choose x32 (i686) or x64 (x86_64).
+
 
 CPU_X86_I486			'486'
 CPU_X86_I586			'Pentium1'
