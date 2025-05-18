@@ -59,11 +59,11 @@ esac
 
 # Determine hardware architecture to build for.
 case $HOST in
-  ia32|x86|i386*|i486*|i586*|i686*)
-	ARCH=ia32
-	KERNEL=x86-kernel
-	LIBGCCFLAGS=-m32
-	;;
+  ia32|x86|i386*|i486*|i586*|i686*|i?86-pc-linux-gnu*)
+        ARCH=ia32
+        KERNEL=x86-kernel
+        LIBGCCFLAGS=-m32
+        ;;
   powerpc64*|ppc64*)
 	ARCH=powerpc64
 	KERNEL=$ARCH-kernel
@@ -72,11 +72,11 @@ case $HOST in
 	ARCH=powerpc
 	KERNEL=$ARCH-kernel
 	;;
-  amd64*|x86_64*)
-	ARCH=amd64
-	KERNEL=x86-kernel
-	LIBGCCFLAGS=-m64
-	;;
+  amd64*|x86_64*|x86_64-pc-linux-gnu*)
+        ARCH=amd64
+        KERNEL=x86-kernel
+        LIBGCCFLAGS=-m64
+        ;;
   *)
 	AC_MSG_ERROR([Unknown hardware architecture: $HOST.
 	Please specify hardware architecture using --host=ARCH.])
@@ -123,6 +123,15 @@ AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 AC_PROG_LN_S
 AC_PROG_AWK
+
+dnl Check if the compiler supports -std=c23
+AC_MSG_CHECKING([whether $CC accepts -std=c23])
+save_CFLAGS="$CFLAGS"
+CFLAGS="$CFLAGS -std=c23"
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([], [])],
+    [AC_MSG_RESULT([yes])],
+    [AC_MSG_FAILURE([$CC does not support -std=c23])])
+CFLAGS="$save_CFLAGS"
 
 dnl Configure parameters
 AC_ARG_WITH([comport],
