@@ -239,7 +239,7 @@ INLINE void x86_mmu_t::set_active_pagetable(word_t root)
  */
 INLINE word_t x86_mmu_t::get_pagefault_address(void)
 {
-    register word_t tmp;
+    word_t tmp;
 
     __asm__ ("mov   %%cr2, %0   \n"
             :"=r" (tmp));

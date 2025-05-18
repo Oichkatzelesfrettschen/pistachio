@@ -307,7 +307,7 @@ extern word_t call_addr;
 
 L4_Word32_t prom_entry ( void * args )
 {
-    register L4_Word32_t result;
+    L4_Word32_t result;
 
     asm volatile (
 	"mtctr	%1; "

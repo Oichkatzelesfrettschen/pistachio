@@ -87,6 +87,8 @@ char * strncat(char *dest, const char *src, unsigned int count)
 
 int strcmp(const char * cs,const char * ct)
 {
+        signed char __res;
+
        signed char __res;
 
 	while (1) {
@@ -99,6 +101,7 @@ int strcmp(const char * cs,const char * ct)
 
 int strncmp(const char * cs,const char * ct, unsigned int count)
 {
+        signed char __res = 0;
        signed char __res = 0;
 
 	while (count) {
