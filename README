@@ -18,6 +18,7 @@ Version 4 kernel API (currently code-named Version X.2), which is
 fully 32 and 64 bit clean, provides multiprocessor support, and
 super-fast local IPC.
 
+
 Building with modern compilers
 ==============================
 
@@ -35,4 +36,32 @@ Example build steps on a typical Linux host::
 When building the kernel choose either `SUBARCH=x32` for i686 or
 `SUBARCH=x64` for x86_64 in `kernel/Makeconf.local` before invoking
 `make` inside the build directory.
+
+
+Requirements
+------------
+Pistachio requires a compiler with C23 support.
+The minimum versions known to work are GCC 14 and Clang 17.
+
+Building on i686 and x86_64 hosts
+--------------------------------
+If you obtained this tree from version control, run the following in
+`user/` before configuring:
+
+    autoheader
+    autoconf
+
+Create a build directory and configure the system:
+
+    mkdir build && cd build
+    ../configure --host=i686 \
+                 --with-comport=0 \
+                 --with-comspeed=115200 \
+                 --with-kerneldir=/path/to/kernel
+
+For 64-bit machines use `--host=amd64`.  Additional link-base options
+(e.g. `--with-kickstart-linkbase`, `--with-s0-linkbase`,
+`--with-roottask-linkbase`) may be supplied as required.
+After configuration run `make` and optionally `make install`.
+
 
