@@ -56,10 +56,10 @@ L4_INLINE L4_Word_t read_instrs (void)
 
 L4_INLINE L4_Word_t pingpong_ipc (L4_ThreadId_t dest, L4_Word_t untyped)
 {
-    register L4_Word_t tag asm("r14") = untyped;
-    register L4_Word_t to asm("r15") = dest.raw;
-    register L4_Word_t from asm("r16") = dest.raw;
-    register L4_Word_t timeouts asm("r17") = 0;
+    L4_Word_t tag asm("r14") = untyped;
+    L4_Word_t to asm("r15") = dest.raw;
+    L4_Word_t from asm("r16") = dest.raw;
+    L4_Word_t timeouts asm("r17") = 0;
 
     asm volatile (
 	    "mtctr %4 ;"
@@ -81,10 +81,10 @@ L4_INLINE L4_Word_t pingpong_ipc (L4_ThreadId_t dest, L4_Word_t untyped)
 
 L4_INLINE L4_Word_t pingpong_lipc (L4_ThreadId_t dest, L4_Word_t untyped)
 {
-    register L4_Word_t tag asm("r14") = untyped;
-    register L4_Word_t to asm("r15") = dest.raw;
-    register L4_Word_t from asm("r16") = dest.raw;
-    register L4_Word_t timeouts asm("r17") = 0;
+    L4_Word_t tag asm("r14") = untyped;
+    L4_Word_t to asm("r15") = dest.raw;
+    L4_Word_t from asm("r16") = dest.raw;
+    L4_Word_t timeouts asm("r17") = 0;
 
     asm volatile (
 	    "mtctr %4 ;"

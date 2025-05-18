@@ -19,6 +19,25 @@ fully 32 and 64 bit clean, provides multiprocessor support, and
 super-fast local IPC.
 
 
+Building with modern compilers
+==============================
+
+The build system now expects a compiler that understands the C23
+language standard. GCC 14 and Clang 17 are known to work. Autoconf
+2.69 or later is required to regenerate the configure script.
+
+Example build steps on a typical Linux host::
+
+    $ cd user
+    $ autoreconf -i        # requires autoconf and autoheader
+    $ ./configure --host=i686-pc-linux-gnu   # or x86_64-pc-linux-gnu
+    $ make
+
+When building the kernel choose either `SUBARCH=x32` for i686 or
+`SUBARCH=x64` for x86_64 in `kernel/Makeconf.local` before invoking
+`make` inside the build directory.
+
+
 Requirements
 ------------
 Pistachio requires a compiler with C23 support.
@@ -44,4 +63,5 @@ For 64-bit machines use `--host=amd64`.  Additional link-base options
 (e.g. `--with-kickstart-linkbase`, `--with-s0-linkbase`,
 `--with-roottask-linkbase`) may be supplied as required.
 After configuration run `make` and optionally `make install`.
+
 
