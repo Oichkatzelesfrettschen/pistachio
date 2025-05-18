@@ -45,10 +45,10 @@ L4_INLINE L4_Word64_t read_cycles (void)
 
 L4_INLINE L4_Word_t pingpong_ipc (L4_ThreadId_t dest, L4_Word_t untyped)
 {
-    register L4_Word_t r3 asm("r3") = dest.raw;
-    register L4_Word_t r4 asm("r4") = dest.raw;
-    register L4_Word_t r5 asm("r5") = 0;
-    register L4_Word_t tag asm("r14") = untyped;
+    L4_Word_t r3 asm("r3") = dest.raw;
+    L4_Word_t r4 asm("r4") = dest.raw;
+    L4_Word_t r5 asm("r5") = 0;
+    L4_Word_t tag asm("r14") = untyped;
 
     asm volatile (
 	"li	0, -32000;	"
