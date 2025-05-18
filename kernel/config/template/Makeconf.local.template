@@ -30,8 +30,11 @@
 ##                
 ######################################################################
 ARCH = ia32
+
 # Select processor width for x86. Use 'x32' for i686 or
 # 'x64' for x86_64 kernels.
+# Select x32 for 32-bit or x64 for 64-bit kernels
+
 SUBARCH = none
 CPU = p4
 PLATFORM = pc99
