@@ -54,10 +54,10 @@ L4_INLINE void * L4_KernelInterface(
 	L4_Word_t *KernelId
 	)
 {
-    register void * base_address asm("r3");
-    register L4_Word_t api_version asm("r4");
-    register L4_Word_t api_flags asm("r5");
-    register L4_Word_t kernel_id asm("r6");
+    void * base_address asm("r3");
+    L4_Word_t api_version asm("r4");
+    L4_Word_t api_flags asm("r5");
+    L4_Word_t kernel_id asm("r6");
 
     __asm__ __volatile__ (
 	"tlbia ;"
@@ -94,14 +94,14 @@ L4_INLINE L4_ThreadId_t L4_ExchangeRegisters(
 	L4_ThreadId_t *old_pager
 	)
 {
-    register L4_Word_t r3 asm("r3") = dest.raw;
-    register L4_Word_t r4 asm("r4") = control;
-    register L4_Word_t r5 asm("r5") = sp;
-    register L4_Word_t r6 asm("r6") = ip;
-    register L4_Word_t r7 asm("r7") = flags;
-    register L4_Word_t r8 asm("r8") = UserDefHandle;
-    register L4_Word_t r9 asm("r9") = pager.raw;
-    register L4_Word_t r10 asm("r10") = 0; // -- is_local ??
+    L4_Word_t r3 asm("r3") = dest.raw;
+    L4_Word_t r4 asm("r4") = control;
+    L4_Word_t r5 asm("r5") = sp;
+    L4_Word_t r6 asm("r6") = ip;
+    L4_Word_t r7 asm("r7") = flags;
+    L4_Word_t r8 asm("r8") = UserDefHandle;
+    L4_Word_t r9 asm("r9") = pager.raw;
+    L4_Word_t r10 asm("r10") = 0; // -- is_local ??
 
     __asm__ __volatile__ (
 	"mtctr  %[sys];"
@@ -135,11 +135,11 @@ L4_INLINE L4_Word_t L4_ThreadControl(
 	L4_ThreadId_t Pager,
 	void * UtcbLocation)
 {
-    register L4_Word_t r3 asm("r3") = dest.raw;
-    register L4_Word_t r4 asm("r4") = SpaceSpecifier.raw;
-    register L4_Word_t r5 asm("r5") = Scheduler.raw;
-    register L4_Word_t r6 asm("r6") = Pager.raw;
-    register void *    r7 asm("r7") = UtcbLocation;
+    L4_Word_t r3 asm("r3") = dest.raw;
+    L4_Word_t r4 asm("r4") = SpaceSpecifier.raw;
+    L4_Word_t r5 asm("r5") = Scheduler.raw;
+    L4_Word_t r6 asm("r6") = Pager.raw;
+    void *    r7 asm("r7") = UtcbLocation;
 
     __asm__ __volatile__ (
 	"mtctr  %[sys];"
@@ -161,7 +161,7 @@ extern __L4_SystemClock_t __L4_SystemClock;
 
 L4_INLINE L4_Clock_t L4_SystemClock( void )
 {
-    register L4_Clock_t r3 asm("r3");
+    L4_Clock_t r3 asm("r3");
 
     __asm__ __volatile__ (
 	"mtctr  %[sys];"
@@ -183,7 +183,7 @@ extern __L4_ThreadSwitch_t __L4_ThreadSwitch;
 
 L4_INLINE void L4_ThreadSwitch( L4_ThreadId_t dest )
 {
-    register L4_Word_t r3 asm("r3") = dest.raw;
+    L4_Word_t r3 asm("r3") = dest.raw;
     
     __asm__ __volatile__ (
 	"mtctr  %[sys];"
@@ -210,11 +210,11 @@ L4_INLINE L4_Word_t  L4_Schedule(
 	L4_Word_t * old_TimeControl
 	)
 {
-    register L4_Word_t r3 asm("r3") = dest.raw;
-    register L4_Word_t r4 asm("r4") = TimeControl;
-    register L4_Word_t r5 asm("r5") = ProcessorControl;
-    register L4_Word_t r6 asm("r6") = PrioControl;
-    register L4_Word_t r7 asm("r7") = PreemptionControl;
+    L4_Word_t r3 asm("r3") = dest.raw;
+    L4_Word_t r4 asm("r4") = TimeControl;
+    L4_Word_t r5 asm("r5") = ProcessorControl;
+    L4_Word_t r6 asm("r6") = PrioControl;
+    L4_Word_t r7 asm("r7") = PreemptionControl;
     
     __asm__ __volatile__ (
 	"mtctr  %[sys];"
@@ -242,20 +242,20 @@ L4_INLINE L4_MsgTag_t L4_Ipc(
 	L4_ThreadId_t *from
 	)
 {
-    register L4_Word_t r3 asm("r3") = to.raw;
-    register L4_Word_t r4 asm("r4") = FromSpecifier.raw;
-    register L4_Word_t r5 asm("r5") = Timeouts;
+    L4_Word_t r3 asm("r3") = to.raw;
+    L4_Word_t r4 asm("r4") = FromSpecifier.raw;
+    L4_Word_t r5 asm("r5") = Timeouts;
 
-    register L4_Word_t mr0 asm ("r14");
-    register L4_Word_t mr1 asm ("r15");
-    register L4_Word_t mr2 asm ("r16");
-    register L4_Word_t mr3 asm ("r17");
-    register L4_Word_t mr4 asm ("r18");
-    register L4_Word_t mr5 asm ("r19");
-    register L4_Word_t mr6 asm ("r20");
-    register L4_Word_t mr7 asm ("r21");
-    register L4_Word_t mr8 asm ("r22");
-    register L4_Word_t mr9 asm ("r23");
+    L4_Word_t mr0 asm ("r14");
+    L4_Word_t mr1 asm ("r15");
+    L4_Word_t mr2 asm ("r16");
+    L4_Word_t mr3 asm ("r17");
+    L4_Word_t mr4 asm ("r18");
+    L4_Word_t mr5 asm ("r19");
+    L4_Word_t mr6 asm ("r20");
+    L4_Word_t mr7 asm ("r21");
+    L4_Word_t mr8 asm ("r22");
+    L4_Word_t mr9 asm ("r23");
 
     // Only load MRs if send phase is included
     if (! L4_IsNilThread (to))
@@ -338,7 +338,7 @@ extern __L4_Unmap_t __L4_Unmap;
 
 L4_INLINE void L4_Unmap( L4_Word_t control )
 {
-    register L4_Word_t r3 asm("r3") = control;
+    L4_Word_t r3 asm("r3") = control;
  
     asm volatile (
 	"mtctr %[sys];"
@@ -366,11 +366,11 @@ L4_INLINE L4_Word_t L4_SpaceControl(
 	L4_Word_t *old_control
 	)
 {
-    register L4_Word_t r3 asm("r3") = SpaceSpecifier.raw;
-    register L4_Word_t r4 asm("r4") = control;
-    register L4_Word_t r5 asm("r5") = KernelInterfacePageArea.raw;
-    register L4_Word_t r6 asm("r6") = UtcbArea.raw;
-    register L4_Word_t r7 asm("r7") = redirector.raw;
+    L4_Word_t r3 asm("r3") = SpaceSpecifier.raw;
+    L4_Word_t r4 asm("r4") = control;
+    L4_Word_t r5 asm("r5") = KernelInterfacePageArea.raw;
+    L4_Word_t r6 asm("r6") = UtcbArea.raw;
+    L4_Word_t r7 asm("r7") = redirector.raw;
 
     __asm__ __volatile__ (
 	"mtctr  %[sys];"
@@ -399,10 +399,10 @@ L4_INLINE L4_Word_t L4_ProcessorControl(
 	L4_Word_t voltage
 	)
 {
-    register L4_Word_t r3 asm("r3") = ProcessorNo;
-    register L4_Word_t r4 asm("r4") = InternalFrequency;
-    register L4_Word_t r5 asm("r5") = ExternalFrequency;
-    register L4_Word_t r6 asm("r6") = voltage;
+    L4_Word_t r3 asm("r3") = ProcessorNo;
+    L4_Word_t r4 asm("r4") = InternalFrequency;
+    L4_Word_t r5 asm("r5") = ExternalFrequency;
+    L4_Word_t r6 asm("r6") = voltage;
 
     __asm__ __volatile__ (
 	    "mtctr  %[sys];"
@@ -427,11 +427,11 @@ L4_INLINE L4_Word_t L4_MemoryControl(
 	const L4_Word_t attributes[4]
 	)
 {
-    register L4_Word_t r3 asm("r3") = control;
-    register L4_Word_t r4 asm("r4") = attributes[0];
-    register L4_Word_t r5 asm("r5") = attributes[1];
-    register L4_Word_t r6 asm("r6") = attributes[2];
-    register L4_Word_t r7 asm("r7") = attributes[3];
+    L4_Word_t r3 asm("r3") = control;
+    L4_Word_t r4 asm("r4") = attributes[0];
+    L4_Word_t r5 asm("r5") = attributes[1];
+    L4_Word_t r6 asm("r6") = attributes[2];
+    L4_Word_t r7 asm("r7") = attributes[3];
 
     __asm__ __volatile__ (
 	"mtctr  %[sys];"
@@ -461,10 +461,10 @@ L4_INLINE L4_Word_t L4_RtasCall(
     if (!__L4_RtasCall)
 	return -1ul;
 
-    register L4_Word_t r3 asm("r3") = token;
-    register L4_Word_t r4 asm("r4") = nargs;
-    register L4_Word_t r5 asm("r5") = nret;
-    register L4_Word_t r6 asm("r6") = (L4_Word_t)ptr;
+    L4_Word_t r3 asm("r3") = token;
+    L4_Word_t r4 asm("r4") = nargs;
+    L4_Word_t r5 asm("r5") = nret;
+    L4_Word_t r6 asm("r6") = (L4_Word_t)ptr;
 
     __asm__ __volatile__ (
 	"mtctr  %[sys];"

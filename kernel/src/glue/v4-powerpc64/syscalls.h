@@ -147,7 +147,7 @@ do {									\
 
 #define return_user_1param(param1)					\
 do {									\
-    register word_t ret1 asm("r3") = param1;				\
+    word_t ret1 asm("r3") = param1;				\
     asm volatile (							\
 	    "mtlr %0 ;"							\
 	    "ld %%r1, 0 (%%r1);"					\
@@ -165,8 +165,8 @@ do {									\
 
 #define return_user_2param(param1, param2)				\
 do {									\
-    register word_t ret1 asm("r3") = param1;				\
-    register word_t ret2 asm("r4") = param2;				\
+    word_t ret1 asm("r3") = param1;				\
+    word_t ret2 asm("r4") = param2;				\
     asm volatile (							\
 	    "mtlr %0 ;"							\
 	    "ld %%r1, 0 (%%r1);"					\
@@ -183,13 +183,13 @@ do {									\
 
 #define return_exchange_registers( result, control, sp, ip, flags, pager, handle )  \
 {									\
-    register threadid_t tid asm("r3") = result;				\
-    register word_t ctrl asm("r4") = control;				\
-    register word_t sp_r asm("r5") = sp;				\
-    register word_t ip_r asm("r6") = ip;				\
-    register word_t flg asm("r7") = flags;				\
-    register threadid_t pgr asm("r8") = pager;				\
-    register word_t hdl asm("r9") = handle;				\
+    threadid_t tid asm("r3") = result;				\
+    word_t ctrl asm("r4") = control;				\
+    word_t sp_r asm("r5") = sp;				\
+    word_t ip_r asm("r6") = ip;				\
+    word_t flg asm("r7") = flags;				\
+    threadid_t pgr asm("r8") = pager;				\
+    word_t hdl asm("r9") = handle;				\
     asm volatile (							\
 	    "mtlr %0 ;"							\
 	    "ld %%r1, 0 (%%r1);"					\

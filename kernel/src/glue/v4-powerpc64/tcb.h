@@ -138,7 +138,7 @@ INLINE void tcb_t::set_cpu(cpuid_t cpu)
 
 INLINE void tcb_t::return_from_ipc (void)
 {
-    register word_t r14 asm("r14");
+    word_t r14 asm("r14");
     extern char _restore_all_ipc[];
     powerpc64_irq_context_t * context =
 	(powerpc64_irq_context_t *) get_stack_top () - 1;
@@ -419,7 +419,7 @@ INLINE void tcb_t::init_stack()
 INLINE void tcb_t::notify (void (*func)())
 {
     powerpc64_switch_stack_t *frame = (powerpc64_switch_stack_t *)this->stack;
-    register word_t toc asm("r2");
+    word_t toc asm("r2");
 
     frame->lr_save = *(word_t *) &powerpc64_do_notify;
     frame--;
@@ -443,7 +443,7 @@ INLINE void tcb_t::notify (void (*func)())
 INLINE void tcb_t::notify (void (*func)(word_t), word_t arg1)
 {
     powerpc64_switch_stack_t *frame = (powerpc64_switch_stack_t *)this->stack;
-    register word_t toc asm("r2");
+    word_t toc asm("r2");
 
     frame->lr_save = *(word_t *) &powerpc64_do_notify;
     frame--;
@@ -470,7 +470,7 @@ INLINE void tcb_t::notify (void (*func)(word_t), word_t arg1)
 INLINE void tcb_t::notify (void (*func)(word_t, word_t), word_t arg1, word_t arg2)
 {
     powerpc64_switch_stack_t *frame = (powerpc64_switch_stack_t *)this->stack;
-    register word_t toc asm("r2");
+    word_t toc asm("r2");
 
     frame->lr_save = *(word_t *) &powerpc64_do_notify;
     frame--;
