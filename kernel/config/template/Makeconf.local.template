@@ -30,6 +30,7 @@
 ##                
 ######################################################################
 ARCH = ia32
+# Select x32 for 32-bit or x64 for 64-bit kernels
 SUBARCH = none
 CPU = p4
 PLATFORM = pc99

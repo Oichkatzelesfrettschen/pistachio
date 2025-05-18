@@ -59,7 +59,7 @@ esac
 
 # Determine hardware architecture to build for.
 case $HOST in
-  ia32|x86|i386*|i486*|i586*|i686*)
+  ia32|x86|i386*|i486*|i586*|i686*|i[3-6]86*-pc-linux-gnu*)
 	ARCH=ia32
 	KERNEL=x86-kernel
 	LIBGCCFLAGS=-m32
@@ -72,7 +72,7 @@ case $HOST in
 	ARCH=powerpc
 	KERNEL=$ARCH-kernel
 	;;
-  amd64*|x86_64*)
+  amd64*|x86_64*|x86_64*-pc-linux-gnu*)
 	ARCH=amd64
 	KERNEL=x86-kernel
 	LIBGCCFLAGS=-m64
@@ -123,6 +123,17 @@ AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 AC_PROG_LN_S
 AC_PROG_AWK
+AC_MSG_CHECKING([whether $CC supports -std=c23])
+ac_save_CFLAGS="$CFLAGS"
+CFLAGS="$CFLAGS -std=c23"
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([], [])],
+        [ac_c23=yes],
+        [ac_c23=no])
+CFLAGS="$ac_save_CFLAGS"
+if test "$ac_c23" != yes; then
+  AC_MSG_ERROR([compiler does not support -std=c23])
+fi
+AC_MSG_RESULT([$ac_c23])
 
 dnl Configure parameters
 AC_ARG_WITH([comport],
