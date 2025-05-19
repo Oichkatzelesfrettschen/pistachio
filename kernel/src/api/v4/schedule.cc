@@ -51,6 +51,7 @@ const tcb_t *__idle_tcb = (const tcb_t *) &__whole_idle_tcb;
 /* global scheduler object */
 scheduler_t scheduler UNIT("cpulocal");
 schedule_request_queue_t scheduler_t::schedule_request_queue[CONFIG_SMP_MAX_CPUS];
+volatile bool scheduler_t::switch_request = false;
 
 
 DECLARE_TRACEPOINT(SYSCALL_THREAD_SWITCH);
@@ -175,13 +176,14 @@ SYS_THREAD_SWITCH (threadid_t dest)
 	if ( dest_tcb == current )
 	    return_thread_switch();
 
-	if ( dest_tcb->get_state().is_runnable() &&
-	     dest_tcb->myself_global == dest &&
-	     dest_tcb->is_local_cpu() )
-	{
-	    scheduler->schedule(dest_tcb, sched_ds2_flag + rr_tsdonate_flag);
-	    return_thread_switch();
-	}
+        if ( dest_tcb->get_state().is_runnable() &&
+             dest_tcb->myself_global == dest &&
+             dest_tcb->is_local_cpu() )
+        {
+            scheduler_t::request_switch();
+            scheduler->schedule(dest_tcb, sched_ds2_flag + rr_tsdonate_flag);
+            return_thread_switch();
+        }
     }
     
     current->sched_state.sys_thread_switch();

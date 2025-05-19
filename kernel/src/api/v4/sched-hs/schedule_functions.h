@@ -315,6 +315,10 @@ INLINE tcb_t *scheduler_t::get_accounted_tcb()
  */
 INLINE bool scheduler_t::schedule()
 {
+    if (!switch_pending())
+        return false;
+    clear_switch_request();
+
     tcb_t * tcb = find_next_thread (&root_prio_queue);
     tcb_t *current = get_current_tcb();
     
@@ -339,6 +343,10 @@ INLINE bool scheduler_t::schedule()
 
 INLINE bool scheduler_t::schedule(tcb_t *dest, const sched_flags_t flags)
 {
+    if (!switch_pending())
+        return false;
+    clear_switch_request();
+
     tcb_t *current = get_current_tcb();
     
     TRACE_SCHEDULE_DETAILS("schedule %t (%s) flags [%C]\n", 
@@ -382,6 +390,10 @@ INLINE bool scheduler_t::schedule(tcb_t *dest, const sched_flags_t flags)
 
 INLINE bool scheduler_t::schedule(tcb_t *dest1, tcb_t *dest2, const sched_flags_t flags)
 {
+    if (!switch_pending())
+        return false;
+    clear_switch_request();
+
     tcb_t *current = get_current_tcb();
     tcb_t *dest;
     bool  ret;
