@@ -6,7 +6,7 @@
 \newcommand{\Lx}{L4Ka::Linux\xspace}
 \newcommand{\IDL}{L4Ka::IDL4\xspace}
 
-\title{{\Huge The \Pistachio Microkernel}\\white paper}
+\title{{\Huge The \Pistachio Exokernel}\\white paper}
 \author{System Architecture Group\\University of Karlsruhe}
 
 \definecolor{headerbg}{gray}{.9}
@@ -26,13 +26,14 @@
 
 \section{\Pistachio}
 
-\Pistachio is the latest L4 microkernel developed by the System
-Architecture Group at the University of Karlsruhe.  \Pistachio is the
-first available kernel implementation of the L4 Version 4 kernel API,
-which is fully 32 and 64 bit clean, provides multiprocessor support,
-and superfast local IPC.  It continues the L4 tradition of providing
-outstanding inter-process communication (IPC) performance, and a 
-highly flexible kernel API.
+\Pistachio is now an L4 exokernel developed by the System
+Architecture Group at the University of Karlsruhe.  Unlike the earlier
+microkernel, the exokernel exports only minimal mechanisms and leaves
+resource management to user-level servers.  It still implements the
+L4 Version 4 kernel API, is fully 32 and 64 bit clean, provides
+multiprocessor support, and offers superfast local IPC.  The design
+encourages custom resource managers that implement scheduling and
+memory policies outside the kernel.
 
 The first release implements most of the core
 functionality of the API.  The kernel is written in C++ with a

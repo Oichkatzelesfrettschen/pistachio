@@ -10,13 +10,15 @@ LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
 OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
 
-L4Ka::Pistachio is the latest L4 microkernel developed by the System
+L4Ka::Pistachio is now an L4 exokernel developed by the System
 Architecture Group at the University of Karlsruhe in collaboration
 with the DiSy group at the University of New South Wales,
-Australia. It is the first available kernel implementation of the L4
-Version 4 kernel API (currently code-named Version X.2), which is
-fully 32 and 64 bit clean, provides multiprocessor support, and
-super-fast local IPC.
+Australia.  The exokernel exposes only the minimal mechanisms
+required to implement operating system services while delegating
+resource management policies to user-level servers.  It continues to
+implement the L4 Version 4 kernel API (currently code-named Version
+X.2), supports both 32- and 64-bit targets, provides multiprocessor
+operation and super-fast IPC.
 
 
 Building with modern compilers
@@ -64,4 +66,27 @@ For 64-bit machines use `--host=amd64`.  Additional link-base options
 `--with-roottask-linkbase`) may be supplied as required.
 After configuration run `make` and optionally `make install`.
 
+
+Launching user-level resource managers
+-------------------------------------
+Once the exokernel and user land are built you can start resource
+managers using the `kickstart` utility.  For example, to build and
+launch the `sigma0` memory manager run::
+
+    $ make -C user/serv/sigma0
+    $ user/util/kickstart/kickstart -roottask=user/serv/sigma0/sigma0
+
+`kickstart` loads the kernel and the specified user tasks and then
+transfers control to the resource manager.  Additional managers can be
+specified on the command line in the order they should be started.
+
+
+Migration from the microkernel API
+----------------------------------
+Existing applications built for the previous microkernel continue to
+operate, but the kernel no longer provides built-in pagers or a
+scheduler.  Applications must obtain these services from external
+resource managers via IPC.  Replace direct invocations of the old
+paging and scheduling interfaces with RPC stubs to the appropriate
+manager to ensure compatibility with the exokernel.
 
