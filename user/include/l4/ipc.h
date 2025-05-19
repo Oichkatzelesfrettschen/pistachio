@@ -36,6 +36,7 @@
 #include __L4_INC_ARCH(syscalls.h)
 #include <l4/message.h>
 #include <l4/thread.h>
+#include <l4/ipc_user.h>
 
 
 /*
@@ -111,8 +112,8 @@ L4_INLINE L4_MsgTag_t L4_Call_Timeouts (L4_ThreadId_t to,
 					L4_Time_t RcvTimeout)
 {
     L4_ThreadId_t dummy;
-    return L4_Ipc (to, to, L4_Timeouts (SndTimeout, RcvTimeout),
-		   &dummy);
+    return L4_UserIpc (to, to, L4_Timeouts (SndTimeout, RcvTimeout),
+                   &dummy);
 }
 
 #if defined(__cplusplus)
@@ -131,7 +132,7 @@ L4_INLINE L4_MsgTag_t L4_Call (L4_ThreadId_t to)
 
 L4_INLINE L4_MsgTag_t L4_Send_Timeout (L4_ThreadId_t to, L4_Time_t SndTimeout)
 {
-    return L4_Ipc (to, L4_nilthread, (L4_Word_t)SndTimeout.raw << 16, (L4_ThreadId_t *) 0);
+    return L4_UserIpc (to, L4_nilthread, (L4_Word_t)SndTimeout.raw << 16, (L4_ThreadId_t *) 0);
 }
 
 #if defined(__cplusplus)
@@ -155,7 +156,7 @@ L4_INLINE L4_MsgTag_t L4_Receive_Timeout (L4_ThreadId_t from,
 					  L4_Time_t RcvTimeout)
 {
     L4_ThreadId_t dummy;
-    return L4_Ipc (L4_nilthread, from, (L4_Word_t)RcvTimeout.raw, &dummy);
+    return L4_UserIpc (L4_nilthread, from, (L4_Word_t)RcvTimeout.raw, &dummy);
 }
 
 #if defined(__cplusplus)
@@ -173,7 +174,7 @@ L4_INLINE L4_MsgTag_t L4_Receive (L4_ThreadId_t from)
 L4_INLINE L4_MsgTag_t L4_Wait_Timeout (L4_Time_t RcvTimeout,
 				       L4_ThreadId_t * from)
 {
-    return L4_Ipc (L4_nilthread, L4_anythread, (L4_Word_t)RcvTimeout.raw, from);
+    return L4_UserIpc (L4_nilthread, L4_anythread, (L4_Word_t)RcvTimeout.raw, from);
 }
 
 #if defined(__cplusplus)
@@ -192,8 +193,8 @@ L4_INLINE L4_MsgTag_t L4_ReplyWait_Timeout (L4_ThreadId_t to,
 					    L4_Time_t RcvTimeout,
 					    L4_ThreadId_t * from)
 {
-    return L4_Ipc (to, L4_anythread, L4_Timeouts (L4_ZeroTime, RcvTimeout),
-		   from);
+    return L4_UserIpc (to, L4_anythread, L4_Timeouts (L4_ZeroTime, RcvTimeout),
+                   from);
 }
 
 #if defined(__cplusplus)
