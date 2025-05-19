@@ -1,0 +1,14 @@
+######################################################################
+## Simple memory client library
+######################################################################
+
+srcdir=         @srcdir@
+top_srcdir=     @top_srcdir@
+top_builddir=   @top_builddir@
+
+include $(top_srcdir)/Mk/l4.base.mk
+
+LIBRARY=        memory
+SRCS=           memory.cc
+
+include $(top_srcdir)/Mk/l4.lib.mk
