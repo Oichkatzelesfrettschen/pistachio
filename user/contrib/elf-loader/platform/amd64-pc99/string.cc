@@ -89,8 +89,6 @@ int strcmp(const char * cs,const char * ct)
 {
         signed char __res;
 
-       signed char __res;
-
 	while (1) {
 		if ((__res = *cs - *ct++) != 0 || !*cs++)
 			break;
@@ -102,7 +100,6 @@ int strcmp(const char * cs,const char * ct)
 int strncmp(const char * cs,const char * ct, unsigned int count)
 {
         signed char __res = 0;
-       signed char __res = 0;
 
 	while (count) {
 		if ((__res = *cs - *ct++) != 0 || !*cs++)
