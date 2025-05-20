@@ -80,6 +80,18 @@ launch the `sigma0` memory manager run::
 transfers control to the resource manager.  Additional managers can be
 specified on the command line in the order they should be started.
 
+To boot with the example memory and scheduler servers first build
+them::
+
+    $ make -C user/serv/memory
+    $ make -C user/serv/scheduler
+
+Then launch them together with the kernel using `kickstart`::
+
+    $ user/util/kickstart/kickstart \
+          -roottask=user/serv/memory/memory \
+          user/serv/scheduler/scheduler
+
 
 Migration from the microkernel API
 ----------------------------------
