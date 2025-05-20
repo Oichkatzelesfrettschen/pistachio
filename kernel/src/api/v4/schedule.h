@@ -318,6 +318,11 @@ private:
      */
     void commit_schedule_parameters(schedule_req_t &req);
 
+    /**
+     * forward scheduling parameters to the user level scheduler
+     */
+    void send_schedule_ipc(schedule_req_t &req);
+
     static schedule_request_queue_t schedule_request_queue[CONFIG_SMP_MAX_CPUS];
 
     /* context switch control */

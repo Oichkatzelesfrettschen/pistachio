@@ -53,6 +53,19 @@ scheduler_t scheduler UNIT("cpulocal");
 schedule_request_queue_t scheduler_t::schedule_request_queue[CONFIG_SMP_MAX_CPUS];
 volatile bool scheduler_t::switch_request = false;
 
+static threadid_t user_scheduler = threadid_t::roottask();
+
+void scheduler_t::send_schedule_ipc(schedule_req_t &req)
+{
+    /*
+     * Policy decisions are delegated to a user level scheduler. This
+     * function would normally marshal the request and perform an IPC
+     * to the scheduler server thread.  The implementation here is a
+     * placeholder that simply ignores the request.
+     */
+    (void)req;
+}
+
 
 DECLARE_TRACEPOINT(SYSCALL_THREAD_SWITCH);
 DECLARE_TRACEPOINT(SYSCALL_SCHEDULE);
@@ -283,9 +296,9 @@ void scheduler_t::process_schedule_requests()
 	    enter_kdebug("SCHEDULE BUG");
 	}
 	
-	ASSERT(dest_tcb->get_cpu() == cpu);
-	commit_schedule_parameters(req);
-	dest_tcb->flags -= tcb_t::schedule_in_progress;
+        ASSERT(dest_tcb->get_cpu() == cpu);
+        send_schedule_ipc(req);
+        dest_tcb->flags -= tcb_t::schedule_in_progress;
     }
 	    
 }
@@ -327,29 +340,11 @@ SYS_SCHEDULE (threadid_t dest_tid, word_t time_control,
 	{
 	    get_current_tcb ()->set_error_code (ENO_PRIVILEGE);
 	    return_schedule(0, 0);
-	}
-    
-	err = scheduler->check_schedule_parameters(current, req);
-	if (err != EOK)
-	{
-	    get_current_tcb ()->set_error_code (err);
-	    return_schedule (0, 0);
-	}
-
-        /* Calculate return values before operation */
-        ret0 = scheduler->return_schedule_parameter(0, req);
-        ret1 = scheduler->return_schedule_parameter(1, req); 
-       
-	err = scheduler->add_schedule_request(req);
-	if (err != EOK)
-	{
-	    get_current_tcb ()->set_error_code (err);
-	    return_schedule (0, 0);
-	}
-    
+	}    
     }
 
     
+        send_schedule_ipc(req);
     // Process our own requests
     scheduler->process_schedule_requests();
 

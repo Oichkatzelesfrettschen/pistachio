@@ -1,5 +1,5 @@
 SRCS = scheduler.cc
-LIBS += -ll4 -lio
+LIBS += -ll4 -lio -lsched
 LDFLAGS += -Ttext=$(ROOTTASK_LINKBASE)
 
 include \

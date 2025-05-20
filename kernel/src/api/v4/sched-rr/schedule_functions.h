@@ -213,47 +213,9 @@ INLINE bool scheduler_t::schedule(tcb_t *dest, const sched_flags_t flags)
     if (!switch_pending())
         return false;
     clear_switch_request();
-
     tcb_t *current = get_current_tcb();
-    
-    TRACE_SCHEDULE_DETAILS("schedule %t (%s) flags [%C]\n", 
-			   dest, dest->get_state().string(), flags_stringword(flags));
-    
-    ASSERT(current->get_cpu() == dest->get_cpu());
-    ASSERT(FLAG_IS_SET(flags, sched_chk_flag) || 
-	   FLAG_IS_SET(flags, sched_ds2_flag) || 
-	   FLAG_IS_SET(flags, sched_ds1_flag));
-
-    if (FLAG_IS_SET(flags, sched_ds2_flag) || 
-	(FLAG_IS_SET(flags, sched_chk_flag) && check_dispatch_thread(current, dest)))
-    {
-	ASSERT(current != dest);
-	
-	// during IPC, perform TS donation and lazy destination queueing
-	if (!FLAG_IS_SET(flags, rr_tsdonate_flag))
-	    set_accounted_tcb(dest);
-
-	// make sure we are in the ready queue 
-	if (FLAG_IS_SET(flags, sched_c2r_flag) && current != get_idle_tcb())
-	    enqueue_ready(current, true);
-	
-	current->switch_to (dest); 
-	return true;
-    }
-    else
-    {
-	/* according to the scheduler should the current
-	 * thread remain active so simply activate the other
-	 * guy and return */
-	if (dest != get_idle_tcb())
-	    enqueue_ready(dest);
-	
-	if (FLAG_IS_SET(flags, sched_timeout_flag))
-	    dest->sched_state.cancel_timeout();
-	
-	return false;
-    }
-    
+    current->switch_to(dest);
+    return true;
 }
 
 INLINE bool scheduler_t::schedule(tcb_t *dest1, tcb_t *dest2, const sched_flags_t flags)
@@ -261,48 +223,10 @@ INLINE bool scheduler_t::schedule(tcb_t *dest1, tcb_t *dest2, const sched_flags_
     if (!switch_pending())
         return false;
     clear_switch_request();
-
     tcb_t *current = get_current_tcb();
-    tcb_t *dest;
-    bool  ret;
-    
-    ASSERT(FLAG_IS_SET(flags, sched_chk_flag) || 
-	   FLAG_IS_SET(flags, sched_ds1_flag) || 
-	   FLAG_IS_SET(flags, sched_ds2_flag));
-    ASSERT(current != dest1 && current != dest2 && dest1 != dest2);
-    ASSERT(current->get_cpu() == dest1->get_cpu());
-    
-    TRACE_SCHEDULE_DETAILS("schedule %t (%s) or %t (%s) flags [%C]\n", 
-			   dest1, dest1->get_state().string(), 
-			   dest2, dest2->get_state().string(), 
-			   flags_stringword(flags));
-    
-    if (FLAG_IS_SET(flags, sched_ds2_flag) || 
-	(FLAG_IS_SET(flags, sched_chk_flag) && check_dispatch_thread ( dest1, dest2 )) )
-    {
-	if (FLAG_IS_SET(flags, sched_timeout_flag))
-	    dest1->sched_state.cancel_timeout();
-	enqueue_ready(dest1);
-	dest = dest2;
-	ret = false;
-    }
-    else
-    {
-	enqueue_ready(dest2);
-	dest = dest1;
-	ret = true;
-    }
-     
-    // during IPC, perform TS donation 
-    if (!FLAG_IS_SET(flags, rr_tsdonate_flag))
-	set_accounted_tcb(dest);
-    
-    // make sure we are in the ready queue 
-    if (FLAG_IS_SET(flags, sched_c2r_flag) && current != get_idle_tcb())
-	enqueue_ready(current, true);
-    
-    current->switch_to (dest); 
-    return ret;
+    current->switch_to(dest2);
+    return true;
+}
 
     
 }
@@ -348,23 +272,8 @@ INLINE bool scheduler_t::is_scheduler(tcb_t *tcb, tcb_t *dest_tcb)
 
 INLINE word_t scheduler_t::check_schedule_parameters(tcb_t *scheduler, schedule_req_t &req)
 {
-    if (req.prio_control != schedule_ctrl_t::nilctrl() &&
-	req.prio_control.prio > scheduler->sched_state.get_priority() &&
-	!is_privileged_space(scheduler->get_space()))
-	return ENO_PRIVILEGE;
-	
-    if (req.time_control != schedule_ctrl_t::nilctrl() &&
-	(!req.time_control.total_quantum.is_period() || 
-	 !req.time_control.timeslice.is_period()))
-	return EINVALID_THREAD;
-    
-    /* only set sensitive prio if 
-     *   _at most_  equal to the scheduler's prio 
-     */
-    if (req.preemption_control != schedule_ctrl_t::nilctrl() &&
-	(prio_t) req.prio_control.sensitive_prio > scheduler->sched_state.get_priority())
-	return ENO_PRIVILEGE;
-    
+    (void)scheduler;
+    (void)req;
     return EOK;
 
 }
@@ -372,43 +281,7 @@ INLINE word_t scheduler_t::check_schedule_parameters(tcb_t *scheduler, schedule_
 
 INLINE void scheduler_t::commit_schedule_parameters(schedule_req_t &req)
 {
-    if (req.prio_control != schedule_ctrl_t::nilctrl())
-    {
-        deschedule (req.tcb);
-       
-	if ((word_t) req.prio_control.prio <= MAX_PRIORITY &&
-            req.prio_control.prio != req.tcb->sched_state.get_priority())
-            req.tcb->sched_state.set_priority((prio_t) req.prio_control.prio);	
-#if defined(CONFIG_X_EVT_LOGGING)
-	if ((word_t) req.prio_control.logid > 0 &&
-            (word_t) req.prio_control.logid < MAX_LOGIDS)
-	    req.tcb->sched_state.set_logid(req.prio_control.logid);
-#endif
-      
-        schedule(req.tcb, sched_current);
-    }	
-    
-    if (req.preemption_control != schedule_ctrl_t::nilctrl())
-    {
-	req.tcb->sched_state.init_maximum_delay (req.preemption_control.max_delay);
-	    
-	/* only set sensitive prio if 
-	 *   _at most_ equal to current prio 
-	 */
-	if ( (prio_t) req.preemption_control.sensitive_prio >=  req.tcb->sched_state.get_priority() )
-	    req.tcb->sched_state.set_sensitive_prio(req.preemption_control.sensitive_prio);
-	    
-    }
-
-    if (req.processor_control != schedule_ctrl_t::nilctrl())
-	req.tcb->migrate_to_processor(req.processor_control.processor);
-
-    if (req.time_control != schedule_ctrl_t::nilctrl())
-    {
-	req.tcb->sched_state.init_timeslice (req.time_control.timeslice);
-	req.tcb->sched_state.set_total_quantum (req.time_control.total_quantum.get_microseconds());
-    }
-
+    send_schedule_ipc(req);
 }
 
 INLINE word_t scheduler_t::return_schedule_parameter(word_t num, schedule_req_t &req)
