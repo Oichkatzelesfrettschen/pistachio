@@ -18,4 +18,8 @@ This document lists modules in `kernel/src` that provide resource management ser
 | `api/v4/sched-rr/*`, `api/v4/sched-hs/*` | Specific scheduling policies. | Userland scheduler |
 | `glue/v4-*/space.cc`, `glue/v4-*/space.h` | Space and address‑space helpers. | Kernel (hardware specific) |
 | `glue/v4-*/resources.cc`, `glue/v4-*/resources.h` | Thread resource bookkeeping (FPU, copy areas). | Kernel |
+| `generic/intctrl.h`, `arch/*/intctrl.h` | Interrupt controller interface and implementations. | Kernel |
+| `api/v4/interrupt.cc`, `api/v4/interrupt.h` | Interrupt thread management and IRQ delivery. | Kernel |
+| `api/v4/ipc.cc`, `api/v4/ipc.h`, `api/v4/ipcx.cc` | IPC system call and string transfer support. | Kernel (minimal IPC stubs) |
+| `kdb/*` | Kernel debugger, console and trace facilities. | Userland debug server |
 
