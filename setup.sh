@@ -19,7 +19,16 @@ for arch in i386 armel armhf arm64 riscv64 powerpc ppc64el ia64; do
   dpkg --add-architecture "$arch"
 done
 
-apt-get update -y
+if curl -fsSL http://deb.debian.org/ >/dev/null; then
+  echo "Network detected, performing package installation"
+  HAVE_NET=1
+else
+  echo "WARNING: no network connectivity, skipping package installation" >&2
+  HAVE_NET=0
+fi
+
+if [ "$HAVE_NET" -eq 1 ]; then
+  apt-get update -y
 
 #- core build tools, formatters, analysis, science libs
 for pkg in \
@@ -132,6 +141,8 @@ curl -fsSL "https://raw.githubusercontent.com/protocolbuffers/protobuf/v${PROTO_
   -o /tmp/protoc.zip
 unzip -d /usr/local /tmp/protoc.zip
 rm /tmp/protoc.zip
+
+fi
 
 #- gmake alias
 command -v gmake >/dev/null 2>&1 || ln -s "$(command -v make)" /usr/local/bin/gmake
