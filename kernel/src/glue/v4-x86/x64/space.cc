@@ -155,8 +155,9 @@ word_t space_t::space_control (word_t ctrl, fpage_t kip_area, fpage_t utcb_area,
 	   Copied from init. */
 	if (is_initialized())
 	{
-	    add_mapping(get_kip_page_area().get_base(), virt_to_phys((addr_t) x32::get_kip()), pgent_t::size_4k, 
-			false, false, false);
+            add_mapping(get_kip_page_area().get_base(),
+                        virt_to_phys((addr_t) x32::get_kip()), pgent_t::size_4k,
+                        false, false, false, false);
 	}
     }
 

@@ -165,9 +165,9 @@ void intctrl_t::init_arch()
     if (rsdp == NULL)
     {
 	TRACE_INIT("\tAssuming local APIC defaults");
-	get_kernel_space()->add_mapping(addr_t(APIC_MAPPINGS_START),
-					addr_t(0xFEE00000),
-					APIC_PGENTSZ, true, true, true, false);
+        get_kernel_space()->add_mapping(addr_t(APIC_MAPPINGS_START),
+                                        addr_t(0xFEE00000),
+                                        APIC_PGENTSZ, true, false, true, true, false);
 	
 	if (local_apic.version() >= 0x20)
 	    panic("no local APIC found--system unusable");
@@ -230,8 +230,8 @@ void intctrl_t::init_arch()
     TRACE_INIT("  Mapping local APICs at %p to %p\n",
 	       _madt->local_apic_addr, APIC_MAPPINGS_START);
     get_kernel_space()->add_mapping(addr_t(APIC_MAPPINGS_START),
-				    addr_t(_madt->local_apic_addr),
-				    APIC_PGENTSZ, true, true, true, false);
+                                    addr_t(_madt->local_apic_addr),
+                                    APIC_PGENTSZ, true, false, true, true, false);
 
     // reserve in KIP
     get_kip()->memory_info.insert(memdesc_t::reserved, 0, false,
@@ -360,12 +360,13 @@ bool intctrl_t::init_io_apic(word_t idx, word_t id, word_t irq_base, addr_t padd
 	return false;
 
     get_kernel_space()->add_mapping(addr_t(IOAPIC_MAPPING(idx)),
-				    paddr,
-				    APIC_PGENTSZ,
-				    true, // writable
-				    true, // kernel
-				    true, // global
-				    false); // uncacheable
+                                    paddr,
+                                    APIC_PGENTSZ,
+                                    true, // writable
+                                    false, // executable
+                                    true, // kernel
+                                    true, // global
+                                    false); // uncacheable
 
     // reserve in KIP
     get_kip()->memory_info.insert(memdesc_t::reserved, 0, false, 
