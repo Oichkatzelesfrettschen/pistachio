@@ -211,6 +211,7 @@ LDSCRIPT = $(SRCDIR)/src/platform/$(PLATFORM)/linker.lds
        cd $(dir $@) && $(CC) $(CPPFLAGS) $(CXXFLAGS) $(CFLAGS_$*) -c $<
 
 
+
 # C files
 %.o:	%.c
 	@$(ECHO_MSG) $(subst $(SRCDIR)/,,$<)
