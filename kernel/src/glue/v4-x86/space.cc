@@ -65,7 +65,8 @@ void space_t::init (fpage_t utcb_area, fpage_t kip_area)
     /* map kip read-only to user */
 #if defined(CONFIG_X86_COMPATIBILITY_MODE)
     if (data.compatibility_mode)
-	add_mapping(kip_area.get_base(), virt_to_phys((addr_t) x32::get_kip()), pgent_t::size_4k, false, false, false);
+        add_mapping(kip_area.get_base(), virt_to_phys((addr_t) x32::get_kip()),
+                    pgent_t::size_4k, false, false, false, false);
     else
 #endif /* defined(CONFIG_X86_COMPATIBILITY_MODE) */
 #if defined(CONFIG_X86_IO_FLEXPAGES)
@@ -76,7 +77,8 @@ void space_t::init (fpage_t utcb_area, fpage_t kip_area)
     }
 #endif
     
-    add_mapping(kip_area.get_base(), virt_to_phys((addr_t) get_kip()), pgent_t::size_4k, false, false, false);
+    add_mapping(kip_area.get_base(), virt_to_phys((addr_t) get_kip()),
+                pgent_t::size_4k, false, false, false, false);
 
 }
 
@@ -101,8 +103,8 @@ void space_t::allocate_tcb(addr_t addr)
     //TRACEF("tcb=%p, page=%p\n", addr, page);
 
     // map tcb kernel-writable, global 
-    get_kernel_space()->add_mapping(addr, virt_to_phys(page), PGSIZE_KTCB, 
-			      true, true, true);
+    get_kernel_space()->add_mapping(addr, virt_to_phys(page), PGSIZE_KTCB,
+                              true, false, true, true);
     
     flush_tlbent (this, addr, page_shift (PGSIZE_KTCB));
     sync_kernel_space(addr);
@@ -146,7 +148,8 @@ utcb_t * space_t::allocate_utcb(tcb_t * tcb)
 	// allocate new UTCB page
 	addr_t page = kmem.alloc(kmem_utcb, X86_PAGE_SIZE);
 	ASSERT(page);
-	add_mapping((addr_t)utcb, virt_to_phys(page), PGSIZE_UTCB, true, false, false);
+        add_mapping((addr_t)utcb, virt_to_phys(page), PGSIZE_UTCB,
+                    true, false, false, false);
 	result = (utcb_t *) addr_offset(page, (word_t) utcb & (~X86_PAGE_MASK));
     }
 
@@ -198,14 +201,15 @@ void space_t::remap_area(addr_t vaddr, addr_t paddr, pgent_t::pgsize_e pgsize,
     ASSERT((len & (page_size - 1)) == 0);
 
     for (word_t offset = 0; offset < len; offset += page_size)
-	add_mapping(addr_offset(vaddr, offset), addr_offset(paddr, offset), 
-		    pgsize, writable, kernel, global);
+        add_mapping(addr_offset(vaddr, offset), addr_offset(paddr, offset),
+                    pgsize, writable, true, kernel, global);
 }
 
 
-/* JS: TODO nx bit */
-void space_t::add_mapping(addr_t vaddr, addr_t paddr, pgent_t::pgsize_e size, 
-			  bool writable, bool kernel, bool global, bool cacheable)
+/* NX mappings are only applied when CONFIG_X86_NX is enabled. */
+void space_t::add_mapping(addr_t vaddr, addr_t paddr, pgent_t::pgsize_e size,
+                          bool writable, bool executable, bool kernel,
+                          bool global, bool cacheable)
 {
     pgent_t::pgsize_e curr_size = pgent_t::size_max;
     pgent_t * pgent = this->pgent(page_table_index(curr_size, vaddr));
@@ -271,7 +275,8 @@ void space_t::add_mapping(addr_t vaddr, addr_t paddr, pgent_t::pgsize_e size,
     
     //TRACEF("set_entry %p -> %p old %p, curr_size %d\n", &pgent->raw, paddr, pgent->raw, curr_size);
 
-    pgent->set_entry(this, size, paddr, writable ? 7 : 5, 0, kernel);
+    word_t rwx = 4 | (writable ? 2 : 0) | (executable ? 1 : 0);
+    pgent->set_entry(this, size, paddr, rwx, 0, kernel);
 
     // default is cacheable
     if (!cacheable) pgent->set_cacheability (this, curr_size, false);
@@ -306,8 +311,8 @@ void space_t::release_kernel_mapping (addr_t vaddr, addr_t paddr,
 void space_t::map_dummy_tcb(addr_t addr)
 {
 #if !defined(CONFIG_STATIC_TCBS)
-    get_kernel_space()->add_mapping(addr, (addr_t)virt_to_phys(get_dummy_tcb()), PGSIZE_KTCB, 
-                                    false, true, false);
+    get_kernel_space()->add_mapping(addr, (addr_t)virt_to_phys(get_dummy_tcb()),
+                                    PGSIZE_KTCB, false, false, true, false);
     
     flush_tlbent (this, addr, page_shift (PGSIZE_KTCB));
     sync_kernel_space(addr);
@@ -687,13 +692,13 @@ void SECTION(".init.memory") space_t::init_kernel_mappings()
     /* map low 4MB pages for initialization */
     reg.set((addr_t)0, (addr_t)0x00400000);
     align_memregion(reg, X86_SUPERPAGE_SIZE);
-    remap_area(reg.low, reg.low, PGSIZE_KERNEL, reg.get_size(), 
-	       true, true, false);
+    remap_area(reg.low, reg.low, PGSIZE_KERNEL, reg.get_size(),
+               true, true, false);
 
     
     /* map video mem to kernel */
     add_mapping(phys_to_virt((addr_t)VIDEO_MAPPING), (addr_t)VIDEO_MAPPING,
-		pgent_t::size_4k, true, true, true);
+                pgent_t::size_4k, true, false, true, true);
     
 
 
@@ -706,15 +711,15 @@ void SECTION(".init.memory") space_t::init_kernel_mappings()
     EXTERN_KMEM_GROUP(kmem_misc); 
     utcb_page = kmem.alloc(kmem_misc, X86_PAGE_SIZE);
     ASSERT(utcb_page);
-    add_mapping((addr_t)UTCB_MAPPING,  virt_to_phys(utcb_page), 
-	       pgent_t::size_4k, true,	false, true);
+    add_mapping((addr_t)UTCB_MAPPING,  virt_to_phys(utcb_page),
+               pgent_t::size_4k, true, false, false, true);
     
 #if defined(CONFIG_X86_SMALL_SPACES) && defined(CONFIG_X86_SYSENTER)
     /* User-level trampoline for ipc_sysexit, readonly but global. */
     extern word_t _start_utramp_p[];
     add_mapping ((addr_t) UTRAMP_MAPPING,
-		 (addr_t) &_start_utramp_p,
-		 pgent_t::size_4k, false, false, true);
+                 (addr_t) &_start_utramp_p,
+                 pgent_t::size_4k, false, true, false, true);
 #endif
     
 

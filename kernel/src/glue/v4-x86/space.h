@@ -106,8 +106,13 @@ public:
     /* generic page table walker */
     pgent_t * pgent (word_t num);
     pgent_t * pgent (word_t num, word_t cpu);
-    void add_mapping(addr_t vaddr, addr_t paddr, pgent_t::pgsize_e size, 
-		     bool writable, bool kernel, bool global, bool cacheable = true);
+    /*
+     * The NX bit is only programmed when CONFIG_X86_NX is defined and the CPU
+     * supports it.
+     */
+    void add_mapping(addr_t vaddr, addr_t paddr, pgent_t::pgsize_e size,
+                     bool writable, bool executable, bool kernel, bool global,
+                     bool cacheable = true);
     void remap_area(addr_t vaddr, addr_t paddr, pgent_t::pgsize_e pgsize, 
 		    word_t len, bool writable, bool kernel, bool global);
     bool lookup_mapping( addr_t vaddr, pgent_t ** r_pg, pgent_t::pgsize_e *r_size, cpuid_t cpu);
@@ -403,7 +408,7 @@ extern active_cpu_space_t active_cpu_space;
 
 INLINE void space_t::map_sigma0(addr_t addr)
 {
-    add_mapping(addr, addr, PGSIZE_SIGMA, true, false, false);
+    add_mapping(addr, addr, PGSIZE_SIGMA, true, false, false, false);
 }
 
 /**********************************************************************

@@ -273,9 +273,9 @@ void setup_tracebuffer (void)
     {	
 	//TRACEF("add tbuf mapping %t -> %t\n", addr_offset(tracebuffer, p),
         //     virt_to_phys(addr_offset(tracebuffer, p)));
-	get_kernel_space()->add_mapping(addr_offset(tracebuffer, p),
+        get_kernel_space()->add_mapping(addr_offset(tracebuffer, p),
                                         (paddr_t) virt_to_phys(addr_offset(tracebuffer, p)),
-                                        PGSIZE_KERNEL, true, false, true);
+                                        PGSIZE_KERNEL, true, false, false, true);
     }
     get_kip()->memory_info.insert(memdesc_t::reserved, true, tracebuffer,
                                   addr_offset(tracebuffer, TRACEBUFFER_SIZE -1));

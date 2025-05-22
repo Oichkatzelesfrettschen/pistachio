@@ -117,14 +117,15 @@ public:
     void clear()
 	{ raw = 0; }
 
-    void set_entry(addr_t addr, pagesize_e size, u32_t attrib)
-	{ 
-	    if (size == size_4k)
-		raw = ((u32_t)(addr) & X86_PAGE_MASK) | (attrib & X86_PAGE_FLAGS_MASK);
-	    else
-		raw = ((u32_t)(addr) & X86_SUPERPAGE_MASK) | X86_PAGE_SUPER |
-		    (attrib & X86_SUPERPAGE_FLAGS_MASK);
-	}
+    void set_entry(addr_t addr, pagesize_e size, u32_t attrib, bool nx = false)
+        {
+            if (size == size_4k)
+                raw = ((u32_t)(addr) & X86_PAGE_MASK) | (attrib & X86_PAGE_FLAGS_MASK);
+            else
+                raw = ((u32_t)(addr) & X86_SUPERPAGE_MASK) | X86_PAGE_SUPER |
+                    (attrib & X86_SUPERPAGE_FLAGS_MASK);
+            (void)nx; /* NX ignored on 32-bit without PAE */
+        }
 
     void set_ptab_entry(addr_t addr, u32_t attrib)
 	{

@@ -248,9 +248,9 @@ public:
     void set_entry (space_t * s, pgsize_e pgsize, paddr_t paddr,
 		    word_t rwx, word_t attrib, bool kernel)
 	{
-	    pgent.set_entry (paddr,
-			     (x86_pgent_t::pagesize_e) pgsize,
-			     (kernel ? X86_PAGE_KERNEL : X86_PAGE_USER) |
+            pgent.set_entry (paddr,
+                             (x86_pgent_t::pagesize_e) pgsize,
+                             (kernel ? X86_PAGE_KERNEL : X86_PAGE_USER) |
 #if defined(CONFIG_X86_PGE)
 			     (kernel ? X86_PAGE_GLOBAL : 0) |
 #endif
@@ -260,11 +260,14 @@ public:
 			     (attrib & 4 ?
 			      (1UL << (pgsize == size_4k ? 7 : 12)) : 0) |
 #endif
-			     (rwx & 2 ? X86_PAGE_WRITABLE : 0) |
+                             (rwx & 2 ? X86_PAGE_WRITABLE : 0) |
+                             X86_PAGE_VALID,
 #if defined(CONFIG_X86_NX)
-			     (rwx & 1 ? 0 : X86_PAGE_NX) |
+                             !(rwx & 1)
+#else
+                             false
 #endif
-			     X86_PAGE_VALID);
+                             );
 
 #if defined(CONFIG_X86_SMALL_SPACES_GLOBAL)
 	    if ((! kernel) && is_smallspace(s))

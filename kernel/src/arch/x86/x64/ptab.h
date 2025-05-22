@@ -112,19 +112,20 @@ public:
 	{ raw = 0; }
 
     /* used to set an entry pointing to a physical page */
-    void set_entry(addr_t addr, pagesize_e size, u64_t attrib)
-	{ 
-	    if (size == size_4k){
-		raw = ((u64_t)(addr) & X86_PAGE_MASK);
-		raw |= (attrib & X86_PAGE_FLAGS_MASK);
-	    }
-	    else{
-		raw = ((u64_t)(addr) & X86_SUPERPAGE_MASK) | X86_PAGE_SUPER;
-		raw |= (attrib & X86_SUPERPAGE_FLAGS_MASK);
-		
-	    }
+    void set_entry(addr_t addr, pagesize_e size, u64_t attrib, bool nx = false)
+        {
+            if (size == size_4k) {
+                raw = ((u64_t)(addr) & X86_PAGE_MASK);
+                raw |= (attrib & X86_PAGE_FLAGS_MASK);
+            }
+            else {
+                raw = ((u64_t)(addr) & X86_SUPERPAGE_MASK) | X86_PAGE_SUPER;
+                raw |= (attrib & X86_SUPERPAGE_FLAGS_MASK);
 
-	}
+            }
+            if (nx)
+                raw |= X86_PAGE_NX;
+        }
 
     void set_cacheability (bool cacheable, pagesize_e size)
     {
