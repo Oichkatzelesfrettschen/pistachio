@@ -160,6 +160,22 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([], [])],
     [AC_MSG_FAILURE([$CC does not support -std=c23])])
 CFLAGS="$save_CFLAGS"
 
+dnl Check if the compiler supports -std=c++23
+AC_MSG_CHECKING([whether $CC accepts -std=c++23])
+save_CXXFLAGS="$CXXFLAGS"
+CXXFLAGS="$CXXFLAGS -std=c++23"
+AC_LANG_PUSH([C++])
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([], [])],
+    [ac_cxx23=yes],
+    [ac_cxx23=no])
+AC_LANG_POP([C++])
+CXXFLAGS="$save_CXXFLAGS"
+if test "$ac_cxx23" != yes; then
+  AC_MSG_ERROR([$CC does not support -std=c++23])
+fi
+AC_MSG_RESULT([$ac_cxx23])
+CXXSTD="-std=c++23"
+
 dnl Configure parameters
 AC_ARG_WITH([comport],
 	[AC_HELP_STRING([--with-comport=PORT],
@@ -292,7 +308,7 @@ case $LDFLAGS in
 esac
 LDFLAGS="-N -L\$(top_builddir)/lib -L$LIBGCCDIR $LDFLAGS"
 CFLAGS="-nostdinc $CFLAGS"
-CXXFLAGS="-fno-exceptions $CXXFLAGS"
+CXXFLAGS="$CXXSTD -fno-exceptions"
 
 CC_VERSION=`echo __GNUC__ | $CC -E  - | grep -v "\#"`
 CC_SUBVERSION=`echo __GNUC_MINOR__ | $CC -E  - | grep -v "\#"`
@@ -365,6 +381,7 @@ case $ROOTTASK_LINKBASE in
 esac
 
 AC_SUBST([CXXFLAGS])
+AC_SUBST([CXXSTD])
 AC_SUBST([ARCH])
 AC_SUBST([KERNEL])
 AC_SUBST([KICKSTART_LINKBASE])
