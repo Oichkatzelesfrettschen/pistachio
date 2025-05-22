@@ -31,7 +31,7 @@
 #include <l4/kip.h>
 #include <l4/tracebuffer.h>
 
-L4_TraceBuffer_t *__L4_Tracebuffer = 0;
+L4_TraceBuffer_t *__L4_Tracebuffer = nullptr;
 
 L4_TraceBuffer_t *L4_GetTraceBuffer()
 {
@@ -56,7 +56,7 @@ L4_TraceBuffer_t *L4_GetTraceBuffer()
                     __L4_Tracebuffer = (L4_TraceBuffer_t*) L4_MemoryDescLow(mdesc);
                     
                     if (__L4_Tracebuffer->magic != L4_TRACEBUFFER_MAGIC)
-                        __L4_Tracebuffer = 0;
+                        __L4_Tracebuffer = nullptr;
                     break;
                 }
            

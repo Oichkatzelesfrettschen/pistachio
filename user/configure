@@ -142,7 +142,8 @@ sed \
 # Create a minimal config.status for compatibility
 cat > config.status <<CONFEOF
 #!/bin/sh
-"$srcdir/configure" "$@"
+[ "\$1" = "--recheck" ] && shift
+exec "$srcdir/configure" "\$@"
 CONFEOF
 chmod +x config.status
 

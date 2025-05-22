@@ -31,9 +31,6 @@
  ***************************************************************************/
 #include <l4/kip.h>
 
-#if !defined(NULL)
-#define NULL 0
-#endif
 
 __L4_Ipc_t __L4_Ipc = nullptr;
 __L4_Lipc_t __L4_Lipc = nullptr;
