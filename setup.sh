@@ -166,7 +166,13 @@ if ! curl -fsSL "https://raw.githubusercontent.com/protocolbuffers/protobuf/v${P
   -o /tmp/protoc.zip || ! unzip -d /usr/local /tmp/protoc.zip; then
   echo "protoc install failed" | tee -a "$FAIL_LOG"
 fi
-rm -f /tmp/protoc.zip
+  rm -f /tmp/protoc.zip
+
+  # Ensure pre-commit and its hook environments are installed while network is available
+  pip3 install --no-cache-dir -U pre-commit || echo "pip install pre-commit failed" | tee -a "$FAIL_LOG"
+  if [ -f .pre-commit-config.yaml ]; then
+    pre-commit install --install-hooks || echo "pre-commit hook install failed" | tee -a "$FAIL_LOG"
+  fi
 
 fi
 
