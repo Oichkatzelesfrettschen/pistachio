@@ -24,9 +24,10 @@ operation and super-fast IPC.
 Building with modern compilers
 ==============================
 
-The build system now expects a compiler that understands the C23
-language standard. GCC 14 and Clang 17 are known to work. Autoconf
-2.69 or later is required to regenerate the configure script.
+The build system now expects compilers that understand modern
+language standards: C sources require C23 while C++ sources require at
+least C++17. GCC 14 and Clang 17 are known to work. Autoconf 2.69 or
+later is required to regenerate the configure script.
 
 Example build steps on a typical Linux host::
 
@@ -42,8 +43,9 @@ When building the kernel choose either `SUBARCH=x32` for i686 or
 
 Requirements
 ------------
-Pistachio requires a compiler with C23 support.
-The minimum versions known to work are GCC 14 and Clang 17.
+Pistachio requires a C compiler with C23 support and a C++ compiler
+that implements at least the C++17 standard. The minimum versions
+known to work are GCC 14 and Clang 17.
 
 Building on i686 and x86_64 hosts
 --------------------------------
@@ -52,6 +54,11 @@ If you obtained this tree from version control, run the following in
 
     autoheader
     autoconf
+
+After modifying the build system remember to regenerate and apply the
+configuration:
+
+    autoconf && ./configure
 
 Create a build directory and configure the system:
 
