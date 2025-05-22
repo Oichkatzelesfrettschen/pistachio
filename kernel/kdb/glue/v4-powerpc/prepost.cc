@@ -75,7 +75,7 @@ bool kdb_t::pre()
 	    char *debug_msg;
 
 	    space_t *space = get_current_space();
-	    if( EXPECT_FALSE(space == NULL) )
+	    if( EXPECT_FALSE(space == nullptr) )
 		space = get_kernel_space();
 
 	    instr = space->get_from_user( (addr_t)(param->frame->srr0_ip + 4) );

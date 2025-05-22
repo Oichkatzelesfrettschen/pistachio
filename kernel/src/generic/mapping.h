@@ -138,7 +138,7 @@ public:
     mapnode_t * get_prevmap (pgent_t * pg)
 	{
 	    if (x.is_prev_root)
-		return (mapnode_t *) NULL;
+		return (mapnode_t *) nullptr;
 	    else
 		return (mapnode_t *) ((x.prev_ptr << 1) ^ (word_t) pg);
 	}
@@ -146,7 +146,7 @@ public:
     rootnode_t * get_prevroot (pgent_t * pg)
 	{
 	    if (! x.is_prev_root)
-		return (rootnode_t *) NULL;
+		return (rootnode_t *) nullptr;
 	    else
 		return (rootnode_t *) ((x.prev_ptr << 1) ^ (word_t) pg);
 	}
@@ -174,7 +174,7 @@ public:
     mapnode_t * get_nextmap (void)
 	{
 	    if (! x.is_next_map)
-		return (mapnode_t *) NULL;
+		return (mapnode_t *) nullptr;
 	    else if (x.is_next_root)
 		return (mapnode_t *) ((dualnode_t *) (x.next_ptr << 2))->map;
 	    else
@@ -184,7 +184,7 @@ public:
     rootnode_t * get_nextroot (void)
 	{
 	    if (! x.is_next_root)
-		return (rootnode_t *) NULL;
+		return (rootnode_t *) nullptr;
 	    else if (x.is_next_map)
 		return (rootnode_t *) ((dualnode_t *) (x.next_ptr << 2))->root;
 	    else
@@ -196,7 +196,7 @@ public:
 	    if (x.is_next_root && x.is_next_map)
 		return (dualnode_t *) (x.next_ptr << 2);
 	    else
-		return (dualnode_t *) NULL;
+		return (dualnode_t *) nullptr;
 	}
 
     void set_next (mapnode_t * map)
@@ -298,7 +298,7 @@ public:
     mapnode_t * get_map (void)
 	{
 	    if (! x.is_next_map)
-		return (mapnode_t *) NULL;
+		return (mapnode_t *) nullptr;
 	    else if (x.is_next_root)
 		return (mapnode_t *) ((dualnode_t *) (x.next_ptr << 2))->map;
 	    else
@@ -308,7 +308,7 @@ public:
     rootnode_t * get_root (void)
 	{
 	    if (! x.is_next_root)
-		return (rootnode_t *) NULL;
+		return (rootnode_t *) nullptr;
 	    else if (x.is_next_map)
 		return (rootnode_t *) ((dualnode_t *) (x.next_ptr << 2))->root;
 	    else
@@ -320,7 +320,7 @@ public:
 	    if (x.is_next_root && x.is_next_map)
 		return (dualnode_t *) (x.next_ptr << 2);
 	    else
-		return (dualnode_t *) NULL;
+		return (dualnode_t *) nullptr;
 	}
 
     void set_ptr (mapnode_t * map)

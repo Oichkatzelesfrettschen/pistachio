@@ -65,15 +65,15 @@ DECLARE_KMEM_GROUP (kmem_mdb);
 #ifdef MDB_DEBUG
 #define ASSERT_BL(_bl_)							\
 {									\
-    mdb_mng_t *p = NULL, *m = (mdb_mng_t *) (_bl_)->list_of_lists;	\
+    mdb_mng_t *p = nullptr, *m = (mdb_mng_t *) (_bl_)->list_of_lists;	\
     mdb_link_t *l;							\
     int cnt;								\
 									\
     if (m) {								\
-	ASSERT (m->prev_freelist == NULL);				\
+	ASSERT (m->prev_freelist == nullptr);				\
 	do {								\
 	    ASSERT (m->prev_freelist == p);				\
-	    ASSERT (m->freelist != NULL);				\
+	    ASSERT (m->freelist != nullptr);				\
 	    ASSERT (m->num_free > 0);					\
 	    ASSERT (m->bl == (_bl_));					\
 	    for (cnt = 0, l = m->freelist; l; cnt++)			\
@@ -91,7 +91,7 @@ DECLARE_KMEM_GROUP (kmem_mdb);
 
 /*
  * We have AT MOST one entry for every MDB page size, one for
- * mapnode_t, one for dualnode_t. and one for the NULL entry.
+ * mapnode_t, one for dualnode_t. and one for the nullptr entry.
  */
 mdb_buflist_t mdb_buflists[MDB_NUM_PGSIZES + 3];
 
@@ -152,7 +152,7 @@ MDB_INIT_FUNCTION (2, mdb_buflist_init)
      */
     for (bl = mdb_buflists; bl->size; bl++)
     {
-	bl->list_of_lists = NULL;
+	bl->list_of_lists = nullptr;
 	if (bl->size >= KMEM_CHUNKSIZE)
 	    continue;
 	for (bl->max_free = 0, i = MDB_ALLOC_CHUNKSZ - bl->size;
@@ -187,7 +187,7 @@ void SECTION (".init") mdb_buflist_init (void)
      */
     for (bl = mdb_buflists; bl->size; bl++)
     {
-	bl->list_of_lists = NULL;
+	bl->list_of_lists = nullptr;
 	if (bl->size >= KMEM_CHUNKSIZE)
 	    continue;
 	for (bl->max_free = 0, i = MDB_ALLOC_CHUNKSZ - bl->size;
@@ -243,7 +243,7 @@ addr_t mdb_alloc_buffer (word_t size)
      * Get pool of available buffers.
      */
     mng = bl->list_of_lists;
-    if (mng == NULL)
+    if (mng == nullptr)
     {
 	mdb_link_t *b, *n, *p, *ed;
 
@@ -256,7 +256,7 @@ addr_t mdb_alloc_buffer (word_t size)
 	mng->freelist		= (mdb_link_t *)
 	    ((word_t) mng + MDB_ALLOC_CHUNKSZ - bl->max_free*size);
 	mng->num_free		= bl->max_free;
-	mng->prev_freelist	= (mdb_mng_t *) NULL;
+	mng->prev_freelist	= (mdb_mng_t *) nullptr;
 	mng->bl			= bl;
 
 	/*
@@ -269,7 +269,7 @@ addr_t mdb_alloc_buffer (word_t size)
 	    b->next = n;
 	}
 	p = (mdb_link_t *) ((word_t) b - size);
-	p->next = (mdb_link_t *) NULL;
+	p->next = (mdb_link_t *) nullptr;
 
 	disable_interrupts ();
 
@@ -300,8 +300,8 @@ addr_t mdb_alloc_buffer (word_t size)
 	 * list_of_lists.
 	 */
 	bl->list_of_lists = mng->next_freelist;
-	if (bl->list_of_lists != NULL)
-	    bl->list_of_lists->prev_freelist = (mdb_mng_t *) NULL;
+	if (bl->list_of_lists != nullptr)
+	    bl->list_of_lists->prev_freelist = (mdb_mng_t *) nullptr;
     }
 
     ASSERT_BL (bl);
@@ -361,7 +361,7 @@ void mdb_free_buffer (addr_t addr, word_t size)
 	if (bl->list_of_lists) 
 	    bl->list_of_lists->prev_freelist = mng;
 	mng->next_freelist = bl->list_of_lists;
-	mng->prev_freelist = (mdb_mng_t *) NULL;
+	mng->prev_freelist = (mdb_mng_t *) nullptr;
 	bl->list_of_lists = mng;
 
     }

@@ -131,7 +131,7 @@ void cpu_mb_t::walk_mailbox()
     {
 	lock.lock();
 	cpu_mb_entry_t entry = entries[first_alloc];
-	entries[first_alloc].handler = NULL;
+	entries[first_alloc].handler = nullptr;
 	first_alloc = (first_alloc + 1) % MAX_MAILBOX_ENTRIES;
 	lock.unlock();
 	ASSERT(entry.handler);
@@ -148,7 +148,7 @@ void cpu_mb_t::dump_mailbox(word_t cpu)
     for (word_t e=0; e < MAX_MAILBOX_ENTRIES; e++)
     {
         cpu_mb_entry_t entry = entries[e];
-	if (entry.handler != NULL)
+	if (entry.handler != nullptr)
             printf("\tXCPU-entry %d\n\t\thandler:%t,"
 		   "tcb %t\n\t\tparams %x:%x:%x:%x:%x:%x:%x:%x\n",
                    cpu, e, entry.handler, entry.tcb,

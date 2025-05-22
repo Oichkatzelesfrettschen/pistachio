@@ -238,7 +238,7 @@ efi_memory_map_t::reset (void)
 
 /**
  * Iterate to next memory map descritor.
- * @return pointer to next memory map descriptor, or NULL if the whole
+ * @return pointer to next memory map descriptor, or nullptr if the whole
  * set of descriptors has been iterater over
  */
 INLINE efi_memory_desc_t *
@@ -247,7 +247,7 @@ efi_memory_map_t::next (void)
     efi_memory_desc_t * ret = (efi_memory_desc_t *) _curptr;
 
     if ((word_t) _curptr - (word_t) _base >= _size)
-	return NULL;
+	return nullptr;
 
     _curptr += _desc_size;
     return ret;

@@ -95,13 +95,13 @@ vmcs_t *vmcs_t::alloc_vmcs ()
 {
     // Kernel Memory Allocator gives WB memory.
     if (get_vmcs_access_mode() != wb)
-	return NULL;
+	return nullptr;
 
     // Allocate VMCS Region, must be aligned to page boundary
     word_t sz = X86_PAGE_SIZE;
     addr_t vmcs = kmem.alloc(kmem_vmcs, sz);
     if (!vmcs)
-	return NULL;
+	return nullptr;
 
     // Set Revision.
     u32_t *ptr = (u32_t *) vmcs;

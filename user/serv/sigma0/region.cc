@@ -344,7 +344,7 @@ void region_list_t::add (L4_Paddr_t addr, L4_Word_t size)
 {
     if (addr == 0)
     {
-	// Avoid inserting a NULL pointer into the list.
+	// Avoid inserting a nullptr pointer into the list.
 	addr += sizeof (region_listent_t);
 	size -= sizeof (region_listent_t);
     }
@@ -365,7 +365,7 @@ void region_list_t::add (L4_Paddr_t addr, L4_Word_t size)
 L4_Word_t region_list_t::contents (void)
 {
     L4_Word_t n = 0;
-    for (region_listent_t * m = list; m != NULL; m = m->next ())
+    for (region_listent_t * m = list; m != nullptr; m = m->next ())
 	n++;
     return n;
 }
@@ -392,9 +392,9 @@ region_t * region_list_t::alloc (void)
 		L4_KDB_Enter ("s0: out of memory");
 	}
 
-	bool was_alloced = (list == NULL);
+	bool was_alloced = (list == nullptr);
 	if (! was_alloced)
-	    list = (region_listent_t *) NULL;
+	    list = (region_listent_t *) nullptr;
 
 	// Add newly allocated memory to pool.
 	add (L4_Address (L4_SndFpage (dummy)), (1UL << min_pgsize));
@@ -565,7 +565,7 @@ void region_pool_t::dump (void)
 {
     region_t * r;
     reset ();
-    while ((r = next ()) != NULL)
+    while ((r = next ()) != nullptr)
     {
 	printf ("s0:  %p-%p   %p %s\n",
 		(void *) r->low, (void *) r->high,
@@ -587,7 +587,7 @@ void region_pool_t::reset (void)
 region_t * region_pool_t::next (void)
 {
     if (ptr == &last)
-	return (region_t *) NULL;
+	return (region_t *) nullptr;
     region_t * ret = ptr;
     ptr = ptr->next;
     return ret;

@@ -63,7 +63,7 @@ public:
 /**
  * Search for indicated system table.
  * @param guid		unique id of table
- * @return point to table, or NULL if table is not found.
+ * @return point to table, or nullptr if table is not found.
  */
 INLINE void * efi_config_table_ptr_t::find_table (efi_guid_t guid)
 {
@@ -71,7 +71,7 @@ INLINE void * efi_config_table_ptr_t::find_table (efi_guid_t guid)
 	if (config_table[i].vendor_guid == guid)
 	    return config_table[i].vendor_table;
 
-    return NULL;
+    return nullptr;
 } 
 
 

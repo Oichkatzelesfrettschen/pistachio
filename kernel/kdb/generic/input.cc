@@ -43,7 +43,7 @@
  * @param defstr	default string
  *
  * Prompt for a hex value using PROMPT and return the typed in value.
- * If PROMPT is NULL, do not display it.  If user just presses return,
+ * If PROMPT is nullptr, do not display it.  If user just presses return,
  * DEFNUM will be displayed and returned.  If DEFSTR is non-nil, it
  * will be displayed as a default value instead of DEFNUM.
  * 
@@ -135,7 +135,7 @@ word_t SECTION(SEC_KDEBUG) get_hex (const char * prompt, const word_t defnum, co
  * @param defstr	default string
  *
  * Prompt for a decimal value using PROMPT and return the typed in value.
- * If PROMPT is NULL, do not display it.  If user just presses return,
+ * If PROMPT is nullptr, do not display it.  If user just presses return,
  * DEFNUM will be displayed and returned.  If DEFSTR is non-nil, it
  * will be displayed as a default value instead of DEFNUM.
  * 
@@ -218,7 +218,7 @@ static char * get_key_string (char key, const char * choices);
  * choice string with a single character also indicates the
  * appropriate key for selecting the choice.  The function does not
  * return until user has selected a valid choice. Be absolutely quiet
- * if PROMPT is NULL.
+ * if PROMPT is nullptr.
  * 
  * @returns the character associated with the choice made
  */
@@ -263,7 +263,7 @@ static char SECTION(SEC_KDEBUG) * get_key_string (char key, const char * choices
     const char * p;
 
     if (key == 0)
-	return NULL;
+	return nullptr;
 
     for (p = choices; *p; p++)
     {
@@ -275,7 +275,7 @@ static char SECTION(SEC_KDEBUG) * get_key_string (char key, const char * choices
     }
 
     if (*p == 0)
-	return NULL;
+	return nullptr;
 
     while (p > choices && p[-1] != '/')
 	p--;

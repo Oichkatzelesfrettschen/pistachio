@@ -42,17 +42,17 @@
 /**
  * Root System Descriptor Pointer.
  */
-static acpi_rsdp_t * rsdp = NULL;
+static acpi_rsdp_t * rsdp = nullptr;
 
 /**
  * Root System Description Table.
  */
-static acpi_rsdt_t * rsdt = NULL;
+static acpi_rsdt_t * rsdt = nullptr;
 
 /**
  * Extended System Description Table.
  */
-static acpi_xsdt_t * xsdt = NULL;
+static acpi_xsdt_t * xsdt = nullptr;
 
 
 void SECTION (SEC_KDEBUG) dump_apic (acpi_madt_t * madt);
@@ -78,10 +78,10 @@ DECLARE_CMD (cmd_acpi, arch, 'a', "acpi", "ACPI access");
 
 CMD (cmd_acpi, cg)
 {
-    if (rsdp == NULL)
+    if (rsdp == nullptr)
     {
 	rsdp = acpi_rsdp_t::locate ();
-	if (rsdp == NULL)
+	if (rsdp == nullptr)
 	{
 	    printf ("Could not locate ACPI info.\n");
 	    return CMD_NOQUIT;

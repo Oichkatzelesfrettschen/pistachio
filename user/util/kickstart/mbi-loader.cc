@@ -158,7 +158,7 @@ bool load_modules (void)
                 }                                                           \
             } while(0)
 
-            LOADIT(0, " kernel  ", NULL);
+            LOADIT(0, " kernel  ", nullptr);
             LOADIT(1, " sigma0  ", &sigma0_type);
             LOADIT(2, " roottask", &root_task_type);
         }
@@ -173,7 +173,7 @@ bool load_modules (void)
 	    for (L4_Word_t i = 3; i < mbi->modcount; i++)
 		elf_load (mbi->mods[i].start, mbi->mods[i].end,
 			  &mbi->mods[i].start, &mbi->mods[i].end,
-			  &mbi->mods[i].entry, NULL, check_memory);
+			  &mbi->mods[i].entry, nullptr, check_memory);
 	}
 
 	return true;
@@ -260,7 +260,7 @@ mbi_t * install_mbi (kip_manager_t* kip)
  * the architecture/kernel.  The bootinfo structure is additionally
  * recorded in a memory descriptor in the KIP.
  *
- * @returns pointer to newly allocated bootinfo structure, or NULL if
+ * @returns pointer to newly allocated bootinfo structure, or nullptr if
  * unable to allocate memory to hold the structure.
  */
 void * create_bootinfo (kip_manager_t * kip)
@@ -269,7 +269,7 @@ void * create_bootinfo (kip_manager_t * kip)
     L4_Word_t bi = find_free_mem_region (max_bootinfo_size, kip);
 
     if (!bi)
-	return NULL;
+	return nullptr;
 
     // Protect bootinfo structure
     kip->dedicate_memory (bi,
@@ -288,7 +288,7 @@ bool mbi_probe (void)
 {
     mbi_t * _mbi = mbi_t::prepare();
 
-    if (_mbi == NULL)
+    if (_mbi == nullptr)
 	return false;
 
     // Make a safe copy of the MBI structure itself.
@@ -318,7 +318,7 @@ L4_Word_t mbi_init (void)
 {
     kip_manager_t kip;
 
-    void * bi = NULL;
+    void * bi = nullptr;
     bool use_bootinfo = true;
     bool use_mbi = true;
 
@@ -355,7 +355,7 @@ L4_Word_t mbi_init (void)
 	COPY_STRING (mbi->cmdline);
 
 #define PARSENUM(name, var, msg, massage...)			\
-        if ((p = strstr(mbi->cmdline, name"=")) != NULL)	\
+        if ((p = strstr(mbi->cmdline, name"=")) != nullptr)	\
         {							\
             var = strtoul(p+strlen(name)+1, &p, 10);		\
             if (*p == 'K') var*=1024;				\
@@ -372,7 +372,7 @@ L4_Word_t mbi_init (void)
         }
 
 #define PARSEBOOL(name, var, msg)				\
-	if ((p = strstr (mbi->cmdline, name"=")) != NULL)	\
+	if ((p = strstr (mbi->cmdline, name"=")) != nullptr)	\
 	{							\
 	    p = strchr (p, '=') + 1;				\
 	    if (strncmp (p, "yes", 3) == 0 ||			\
@@ -462,7 +462,7 @@ L4_Word_t mbi_init (void)
 #if defined(L4_32BIT) || defined(ALSO_BOOTINFO32)
     if (root_task_type == 1)
     {
-	BI32::L4_BootRec_t * rec = NULL;
+	BI32::L4_BootRec_t * rec = nullptr;
 
 	if (use_bootinfo)
 	{
@@ -499,7 +499,7 @@ L4_Word_t mbi_init (void)
 #if defined(L4_64BIT) || defined(ALSO_BOOTINFO64)
     if (root_task_type == 2)
     {
-	BI64::L4_BootRec_t * rec = NULL;
+	BI64::L4_BootRec_t * rec = nullptr;
 
 	if (use_bootinfo)
 	{

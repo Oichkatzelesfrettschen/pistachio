@@ -49,12 +49,12 @@ SECTION(".init") bool ofppc_get_cpu_speed( word_t *cpu_hz, word_t *bus_hz )
 	if( dev->get_prop("cpu", &handle) )
 	    dev = get_of1275_tree()->find_handle( handle );
 	else
-	    dev = NULL;
+	    dev = nullptr;
     }
 
-    if( dev == NULL )
+    if( dev == nullptr )
     	dev = get_of1275_tree()->find( "/cpus/cpu@0" ); // Try a fallback.
-    if( dev == NULL )
+    if( dev == nullptr )
 	return false;
 
     if( !dev->get_prop("clock-frequency", cpu_hz) )
@@ -72,7 +72,7 @@ SECTION(".init") int ofppc_get_cpu_count()
     char token[] = "/cpus/";
 
     dev = get_of1275_tree()->first();
-    if( dev == NULL )
+    if( dev == nullptr )
 	return 1;
 
     // Search through every device, looking for those which are in the /cpus

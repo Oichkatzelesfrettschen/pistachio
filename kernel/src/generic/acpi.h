@@ -253,7 +253,7 @@ template<typename T> class acpi__sdt_t {
 public:
     /* find table with a given signature */
     acpi_thead_t* find(const char sig[4], addr_t myself_phys) {
-	acpi_thead_t *head = NULL;
+	acpi_thead_t *head = nullptr;
 	for (word_t i = 0; i < ((header.len-sizeof(header))/sizeof(ptrs[0])) && !head; i++)
 	{
 	    acpi_thead_t* t= (acpi_thead_t*)(acpi_remap((addr_t)(word_t)ptrs[i]));
@@ -296,7 +296,7 @@ class acpi_rsdp_t {
     u8_t	_rsvd_33[3];
 private:
 public:
-    static acpi_rsdp_t* locate(addr_t addr = NULL);
+    static acpi_rsdp_t* locate(addr_t addr = nullptr);
 
     acpi_rsdt_t* rsdt() {
 	/* verify checksum */
@@ -304,20 +304,20 @@ public:
 	for (int i = 0; i < 20; i++)
 	    csum += ((char*)this)[i];
 	if (csum != 0)
-	    return NULL;
+	    return nullptr;
 	return (acpi_rsdt_t*) (word_t)rsdt_ptr;
     };
     acpi_xsdt_t* xsdt() {
 	/* check version - only ACPI 2.0 knows about an XSDT */
 	if (rev != 2)
-	    return NULL;
+	    return nullptr;
 	/* verify checksum
 	   hopefully it's wrong if there's no xsdt pointer*/
 	u8_t csum = 0;
 	for (int i = 0; i < 36; i++)
 	    csum += ((char*)this)[i];
 	if (csum != 0)
-	    return NULL;
+	    return nullptr;
 	return (acpi_xsdt_t*) (word_t)xsdt_ptr;
     };
 

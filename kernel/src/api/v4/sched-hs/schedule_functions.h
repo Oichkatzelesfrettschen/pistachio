@@ -53,11 +53,11 @@ INLINE void hs_sched_ktcb_t::set_prio_queue( prio_queue_t *q )
             prio_queue_t *queue = old->cpu_head;
 #if defined(CONFIG_SMP)
             do {
-                queue->get_domain_tcb()->sched_state.prio_queue = NULL;
+                queue->get_domain_tcb()->sched_state.prio_queue = nullptr;
                 queue = queue->cpu_link;
             } while( queue != old->cpu_head );
 #else
-            queue->get_domain_tcb()->sched_state.prio_queue = NULL;
+            queue->get_domain_tcb()->sched_state.prio_queue = nullptr;
 #endif
             kmem.free(kmem_sched, (addr_t)old->cpu_head->get_domain_tcb(),
                       sizeof(whole_tcb_t) * cpu_t::count);
@@ -164,7 +164,7 @@ INLINE void sched_ktcb_t::init(sktcb_type_e type)
     set_stride(DEFAULT_STRIDE);
     
 #if defined(CONFIG_SMP)
-    requeue = NULL;
+    requeue = nullptr;
 #endif
 #if defined(CONFIG_X_EVT_LOGGING)
     /* set domain */
@@ -439,7 +439,7 @@ INLINE word_t scheduler_t::check_schedule_parameters(tcb_t *scheduler, schedule_
             /* Target and domain must be different. */
 
             if( domain_tcb->get_global_id() != req.time_control.tid ||
-                domain_tcb->sched_state.get_prio_queue() == NULL)
+                domain_tcb->sched_state.get_prio_queue() == nullptr)
                 return EINVALID_THREAD;
 
             prio_queue_t *domain_queue = domain_tcb->sched_state.get_prio_queue();

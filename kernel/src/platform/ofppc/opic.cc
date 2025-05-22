@@ -192,17 +192,17 @@ SECTION(".init") of1275_device_t *intctrl_t::find_opic()
 
     /* Look for the open-pic device. */
     dev_opic = get_of1275_tree()->find_device_type( "open-pic" );
-    if( dev_opic == NULL ) {
+    if( dev_opic == nullptr ) {
 	printf( "Error: unable to find an open-pic device.\n" );
-	return NULL;
+	return nullptr;
     }
     TRACE_INIT( "The open-pic device: %s\n", dev_opic->get_name() );
 
     /* Obtain the open-pic's parent handle. */
     dev_bus = get_of1275_tree()->get_parent( dev_opic );
-    if( dev_bus == NULL ) {
+    if( dev_bus == nullptr ) {
 	printf( "Error: unable to find the open-pic's bus.\n" );
-	return NULL;
+	return nullptr;
     }
     TRACE_INIT( "The opic-pic bus: %s\n", dev_bus->get_name() );
 
@@ -212,7 +212,7 @@ SECTION(".init") of1275_device_t *intctrl_t::find_opic()
     if( !dev_bus->get_prop("device_type", &data, &len) ) {
 	printf( "Error: unable to determine the device type of the open-pic's"
 		" bus.\n" );
-	return NULL;
+	return nullptr;
     } 
     else if( !strcmp(data, "pci") )
 	dev_pci_client = dev_opic;
@@ -222,7 +222,7 @@ SECTION(".init") of1275_device_t *intctrl_t::find_opic()
 	printf( "Error: expected the open-pic to be attached to mac-io or a\n"
 		"pci bus.  But it is attached to a bus of type '%s'.\n",
 		data );
-	return NULL;
+	return nullptr;
     }
 
     /* Look for the assigned-addresses property.
@@ -247,7 +247,7 @@ SECTION(".init") of1275_device_t *intctrl_t::find_opic()
     else {
 	printf( "Error: unable to determine the address range of the open-pic's"
 		"bus.\n" );
-	return NULL;
+	return nullptr;
     }
 
     if( dev_pci_client == dev_bus )
@@ -260,7 +260,7 @@ SECTION(".init") of1275_device_t *intctrl_t::find_opic()
 	{
 	    printf( "Error: unable to find the 'reg' property of the"
 		    " open-pic.\n" );
-	    return NULL;
+	    return nullptr;
 	}
 	this->opic_paddr += opic_reg->offset;
 	this->opic_size = opic_reg->size;
@@ -337,7 +337,7 @@ SECTION(".init") void intctrl_t::init_arch()
     this->opic_size = 0;
 
     of1275_device_t *dev_opic = this->find_opic();
-    if( dev_opic == NULL )
+    if( dev_opic == nullptr )
     {
 	printf( ">> Running without an interrupt controller! <<\n" );
 	return;

@@ -143,7 +143,7 @@ INLINE void tcb_t::switch_to(tcb_t * dest)
 	"cmpq	%[spdir], %[dpdir]		\n\t"	/* same pdir_cache?		*/
 	"je	2f				\n\t"
 
-	"cmpq	$0, %c[space](%[dtcb])		\n\t"	/* kernel thread (space==NULL)?	*/
+	"cmpq	$0, %c[space](%[dtcb])		\n\t"	/* kernel thread (space==nullptr)?	*/
 	"jnz	1f				\n\t"	
 	"movq	%[spdir], %c[pdir](%[dtcb])	\n\t"	/* yes: update dest->pdir_cache */
 	"jmp	2f				\n\t"

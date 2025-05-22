@@ -40,7 +40,7 @@ const char* ctrlxfer_item_idname[ctrlxfer_item_t::id_max] =
 const char* ctrlxfer_item_hwregname[ctrlxfer_item_t::id_max][16] = 
 {
     {  "eip", "efl", "edi", "esi", "ebp", "esp", "ebx", "edx", "ecx", "eax" },
-    {  NULL },
+    {  nullptr },
 #if defined(CONFIG_X_X86_HVM)
     { "cr0", "cr0_rd", "cr0_msk", "cr2", "cr3", "cr4", "cr4_rd", "cr4_msk"},
     { "dr0", "dr1", "dr2", "dr3", "dr6", "dr7", },

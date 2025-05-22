@@ -251,7 +251,7 @@ bool kdb_t::pre()
 	    if (! readmem(space, addr_offset(addr, 2), &c) )
 		break;
 
-	    addr_t user_addr = NULL;
+	    addr_t user_addr = nullptr;
 	    bool mapped = false;
             
 	    if (c == 0xb8)

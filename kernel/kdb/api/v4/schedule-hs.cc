@@ -37,7 +37,7 @@
 #include INC_API(schedule.h)
 #include INC_API(cpu.h)
 
-tcb_t * global_present_list UNIT("kdebug") = NULL;
+tcb_t * global_present_list UNIT("kdebug") = nullptr;
 spinlock_t present_list_lock;
 
 DECLARE_CMD(cmd_show_sched, root, 'q', "showqueue",  "show scheduling queue");

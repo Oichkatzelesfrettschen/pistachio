@@ -46,7 +46,7 @@ INLINE void tcb_t::init_stack()
 INLINE void tcb_t::set_space(space_t * space)
 {
     this->space = space;
-    this->pdir_cache = space ? (word_t)space->get_top_pdir_phys(get_cpu()) : NULL;
+    this->pdir_cache = space ? (word_t)space->get_top_pdir_phys(get_cpu()) : nullptr;
 
 }
 
@@ -74,13 +74,13 @@ INLINE void tcb_t::set_cpu(cpuid_t cpu)
 
 INLINE void tcb_t::set_utcb_location(word_t utcb_location)
 {
-    utcb_t * dummy = (utcb_t*)NULL;
+    utcb_t * dummy = (utcb_t*)nullptr;
     myself_local.set_raw (utcb_location + ((word_t)&dummy->mr[0]));
 }
 
 INLINE word_t tcb_t::get_utcb_location()
 {
-    utcb_t * dummy = (utcb_t*)NULL;
+    utcb_t * dummy = (utcb_t*)nullptr;
     return myself_local.get_raw() - ((word_t)&dummy->mr[0]);
 }
 

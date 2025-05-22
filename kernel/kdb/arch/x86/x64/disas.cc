@@ -55,7 +55,7 @@ restart:
 	printf("%x: ", pc);
 	pc += disas((addr_t) pc);
 	printf("\n");
-	c = get_choice(NULL, " /u/q", ' ');
+	c = get_choice(nullptr, " /u/q", ' ');
     } while ((c != 'q') && (c != 'u'));
     if (c == 'u')
 	goto restart;

@@ -20,7 +20,7 @@ L4_MsgTag_t sched_send_request(const SchedRequest *req)
     L4_Word_t w[5] = { req->thread.raw, req->time_control,
                        req->processor_control, req->prio_control,
                        req->preemption_control };
-    L4_MsgPut(&msg, SCHED_LABEL, 5, w, 0, NULL);
+    L4_MsgPut(&msg, SCHED_LABEL, 5, w, 0, nullptr);
     L4_MsgLoad(&msg);
     return L4_Call(server_tid);
 }

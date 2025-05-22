@@ -374,7 +374,7 @@ INLINE ppc64_pte_t* ppc64_htab_t::locate_pte( word_t virt, word_t vsid,
     if( (pte->x.v == 1) && (pte->x.vsid == vsid) && (pte->x.api == api) )
 	return pte;
 
-    return NULL;
+    return nullptr;
 }
 
 #endif	/* !ASSEMBLY */

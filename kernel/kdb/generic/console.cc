@@ -102,7 +102,7 @@ CMD (cmd_toggle_console, cg)
 {
     word_t newcons = kdb_current_console + 1;
 
-    if (kdb_consoles[newcons].name == NULL)
+    if (kdb_consoles[newcons].name == nullptr)
 	newcons = 0;
 
     printf ("Switch console: %s\n", kdb_consoles[newcons].name);

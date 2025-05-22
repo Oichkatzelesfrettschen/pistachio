@@ -266,7 +266,7 @@ addr_t space_t::map_device_pinned(paddr_t paddr, word_t size, bool kernel, word_
 	    break;
 
     if (log2sz >= 32)
-	return NULL;
+	return nullptr;
 
     size = 1 << log2sz;
 

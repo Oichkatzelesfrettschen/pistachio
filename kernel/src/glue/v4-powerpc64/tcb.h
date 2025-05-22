@@ -241,9 +241,9 @@ INLINE void tcb_t::switch_to(tcb_t * dest)
     space_t *space = dest->get_space();
     space_t *currspace = this->get_space();
 
-    if (space == NULL)
+    if (space == nullptr)
 	space = get_kernel_space();
-    if (currspace == NULL)
+    if (currspace == nullptr)
 	currspace = get_kernel_space();
 
 

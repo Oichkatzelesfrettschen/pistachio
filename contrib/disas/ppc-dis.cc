@@ -116,7 +116,7 @@ print_insn_powerpc( unsigned long memaddr, unsigned long insn, int dialect )
 
 	  /* Extract the value from the instruction.  */
 	  if (operand->extract)
-	    value = (*operand->extract) (insn, dialect, (int *) NULL);
+	    value = (*operand->extract) (insn, dialect, (int *) nullptr);
 	  else
 	    {
 	      value = (insn >> operand->shift) & ((1 << operand->bits) - 1);

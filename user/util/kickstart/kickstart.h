@@ -68,7 +68,7 @@ public:
 
 
 /**
- * NULL terminated array of loader formats.
+ * nullptr terminated array of loader formats.
  */
 extern loader_format_t loader_formats[];
 

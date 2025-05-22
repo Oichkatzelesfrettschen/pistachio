@@ -241,7 +241,7 @@ INLINE SECTION(".text") void tcb_t::switch_to(tcb_t * dest)
 	"cmpl	%7, %8		\n\t"	/* same page dir?	*/
 	"je	2f		\n\t"
 #if defined(CONFIG_CPU_X86_P4)
-	"cmpl	$0, %c5(%2)	\n\t"	/* kernel thread (space==NULL)?	*/
+	"cmpl	$0, %c5(%2)	\n\t"	/* kernel thread (space==nullptr)?	*/
 	"jne	1f		\n\t"
 	"movl	%8, %c6(%2)	\n\t"	/* rewrite dest->pdir_cache */
 	"jmp	2f		\n\t"

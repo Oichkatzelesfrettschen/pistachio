@@ -35,13 +35,13 @@
 #include INC_GLUE(memcfg.h)
 #include INC_ARCH(ppc44x.h)
 
-// TODO: ensure that this is initialized to NULL for each cpu, perhaps via 
+// TODO: ensure that this is initialized to nullptr for each cpu, perhaps via 
 // ctors.
 tcb_t *_fp_lazy_tcb UNIT("cpulocal");
 
 INLINE void thread_resources_t::deactivate_fpu( tcb_t *tcb )
 {
-    set_fp_lazy_tcb( NULL );
+    set_fp_lazy_tcb( nullptr );
     // Disable fpu access for the tcb.
     except_regs_t *regs = get_user_except_regs(tcb);
     regs->srr1_flags = MSR_CLR( regs->srr1_flags, MSR_FP );

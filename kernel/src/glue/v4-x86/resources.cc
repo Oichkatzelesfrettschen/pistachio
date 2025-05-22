@@ -94,7 +94,7 @@ void thread_resources_t::load(tcb_t * tcb)
     if (tcb->resource_bits.have_resource(FPU))
     {
 	ASSERT (fpu_owner == tcb);
-	ASSERT (fpu_state != NULL);
+	ASSERT (fpu_state != nullptr);
 	TRACEPOINT(X86_X64_FPU_REENABLE, "strictly reenabling FPU for %t\n", tcb);
 	x86_fpu_t::enable();
     }
@@ -108,7 +108,7 @@ void thread_resources_t::purge(tcb_t * tcb)
     {
 	x86_fpu_t::enable();
 	x86_fpu_t::save_state(this->fpu_state);
-	fpu_owner = NULL;
+	fpu_owner = nullptr;
 	x86_fpu_t::disable();
 #ifdef FPU_REENABLE
 	tcb->resource_bits -= FPU;
@@ -128,7 +128,7 @@ void thread_resources_t::purge(tcb_t * tcb)
 void thread_resources_t::init(tcb_t * tcb)
 {
     tcb->resource_bits.init ();
-    fpu_state = NULL;
+    fpu_state = nullptr;
 
     last_copy_area = 0;
     for (word_t i = 0; i < COPY_AREA_PDIRS; i++)
@@ -143,11 +143,11 @@ void thread_resources_t::free(tcb_t * tcb)
     if (fpu_state)
     {
 	kmem.free(kmem_resources, fpu_state, x86_fpu_t::get_state_size());
-	fpu_state = NULL;
+	fpu_state = nullptr;
 
 	if (fpu_owner == tcb)
 	{
-	    fpu_owner = NULL;
+	    fpu_owner = nullptr;
 	    x86_fpu_t::disable();
 	}
     }
@@ -165,7 +165,7 @@ void thread_resources_t::x86_no_math_exception(tcb_t * tcb)
     // if the current thread owns the fpu already do a quick exit
     if (fpu_owner != tcb)
     {
-	if (fpu_owner != NULL)
+	if (fpu_owner != nullptr)
 	{
 	    x86_fpu_t::save_state(fpu_owner->resources.fpu_state);
 #ifdef  FPU_REENABLE
@@ -174,7 +174,7 @@ void thread_resources_t::x86_no_math_exception(tcb_t * tcb)
 	}
 	fpu_owner = tcb;
 
-	if (fpu_state == NULL)
+	if (fpu_state == nullptr)
 	{
 	    fpu_state = kmem.alloc(kmem_resources, x86_fpu_t::get_state_size());
 	    x86_fpu_t::init();

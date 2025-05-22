@@ -82,7 +82,7 @@ MDB_INIT_FUNCTION (3, init_mdb_io)
     sigma0_ionode = new mdb_node_t;
 
     sigma0_ionode->set_prev (sigma0_ionode);
-    sigma0_ionode->set_next (NULL);
+    sigma0_ionode->set_next (nullptr);
     sigma0_ionode->set_depth (0);
     sigma0_ionode->set_inrights (~0UL);
     sigma0_ionode->set_outrights (~0UL);

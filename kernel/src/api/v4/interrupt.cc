@@ -151,7 +151,7 @@ void handle_interrupt(word_t irq)
      * other CPU */
     if ( !irq_tcb->is_local_cpu() )
     {
-	xcpu_request( irq_tcb->get_cpu(), do_xcpu_interrupt, NULL, irq );
+	xcpu_request( irq_tcb->get_cpu(), do_xcpu_interrupt, nullptr, irq );
 	return;
     }
 #endif

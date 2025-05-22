@@ -274,7 +274,7 @@ SYS_IPC (threadid_t to_tid, threadid_t from_tid, timeout_t timeout)
 #ifdef SYS_IPC_PREAMBLE
     SYS_IPC_PREAMBLE
 #endif
-    tcb_t * to_tcb = NULL;
+    tcb_t * to_tcb = nullptr;
     tcb_t * from_tcb;
     tcb_t * current = get_current_tcb();
     scheduler_t * scheduler = get_current_scheduler();
@@ -496,7 +496,7 @@ send_path:
 	    to_tcb->unlock();
 	    // make sure we are running before potentially exiting to user
 	    current->set_state(thread_state_t::running);
-	    to_tcb = NULL;
+	    to_tcb = nullptr;
 	} else
 	    to_tcb->unlock();
 #endif
@@ -510,8 +510,8 @@ send_path:
 	/* this case is entered on:
 	 *   - send-only case
 	 *   - both descriptors set to nil id 
-	 * in the SMP case to_tcb is always NULL! */
-	if (to_tcb != NULL)
+	 * in the SMP case to_tcb is always nullptr! */
+	if (to_tcb != nullptr)
 	{
 	    ASSERT(to_tcb->is_local_cpu());
 
@@ -568,7 +568,7 @@ send_path:
 	{
 	    /* anylocal */
 	    tcb_t *head = current->send_head;
-	    from_tcb = NULL;
+	    from_tcb = nullptr;
 
 #if defined(CONFIG_SMP)
 	    TRACEF("from == anylocal requires SMP sanity check");
@@ -593,7 +593,7 @@ send_path:
 	 * no partner || partner is not polling || 
 	 * partner doesn't poll on me
 	 */
-	if( EXPECT_TRUE ( (from_tcb == NULL) || 
+	if( EXPECT_TRUE ( (from_tcb == nullptr) || 
 			  (!from_tcb->get_state().is_polling()) ||
 			  ( (from_tcb->get_partner() != current->get_global_id()) &&
 			    (from_tcb->get_partner() != current->myself_local) )) )
@@ -614,7 +614,7 @@ send_path:
 		    current->unlock();
 		    /* zero timeout and partner not ready --> 
 		     * we have to perform timeslice donation */
-		    if (to_tcb != NULL)
+		    if (to_tcb != nullptr)
 			scheduler->schedule(to_tcb, sched_rcverr);
 		    return_ipc(NILTHREAD);
 		}	
@@ -630,7 +630,7 @@ send_path:
 	    /* VU: should we convert to a global id here??? */
 	    current->set_partner(from_tid);
 
-	    if (EXPECT_FALSE(to_tcb == NULL)) 
+	    if (EXPECT_FALSE(to_tcb == nullptr)) 
 		to_tcb = get_idle_tcb();
 	    else
 		to_tcb->set_state(thread_state_t::running);
@@ -676,7 +676,7 @@ send_path:
 		 * from the wakeup queue to make sure the IPC does not 
 		 * timeout meanwhile... 
 		 */
-		if ( to_tcb != NULL)
+		if ( to_tcb != nullptr)
 		{
 		    to_tcb->set_state( thread_state_t::running );
 		    scheduler->schedule(from_tcb, to_tcb, sched_rplywt);

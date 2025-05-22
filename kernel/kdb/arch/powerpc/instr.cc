@@ -90,7 +90,7 @@ CMD(cmd_single_step, cg)
 {
     debug_param_t *param = (debug_param_t *)kdb.kdb_param;
 
-    if( param == NULL )
+    if( param == nullptr )
 	printf( "KDB error: unknown exception state, unable to single step.\n");
     else {
 	dbg_addr_disasm( param->frame->srr0_ip );
@@ -105,7 +105,7 @@ CMD(cmd_branch_trace, cg)
 {
     debug_param_t *param = (debug_param_t *)kdb.kdb_param;
 
-    if( param == NULL )
+    if( param == nullptr )
 	printf( "KDB error: unknown exception state, "
 		"unable to branch trace.\n" );
     else {
@@ -121,7 +121,7 @@ CMD(cmd_srr0_disasm, cg)
 {
     debug_param_t *param = (debug_param_t *)kdb.kdb_param;
 
-    if( param == NULL ) {
+    if( param == nullptr ) {
 	printf( "KDB error: no exception state to disassemble.\n" );
 	return CMD_NOQUIT;
     }

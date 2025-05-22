@@ -60,7 +60,7 @@ DECLARE_TRACEPOINT(PPC_HVM_EMUL_INTERPRET);
 
 INLINE void try_to_debug( except_regs_t *regs, word_t exc_no, word_t dar=0, word_t dsisr=0 )
 {
-    if( EXPECT_TRUE(get_kip()->kdebug_entry == NULL) )
+    if( EXPECT_TRUE(get_kip()->kdebug_entry == nullptr) )
 	return;
 
     debug_param_t param;
@@ -337,7 +337,7 @@ EXCDEF( hvm_dtlb_miss_handler )
         return_except();
     }
     
-    ppc_softhvm_t::tlb_t *tlbentry = NULL;
+    ppc_softhvm_t::tlb_t *tlbentry = nullptr;
     int tlbidx = -1;
 
     if (vm->in_shadow_tlb(dear))
@@ -390,7 +390,7 @@ EXCDEF( hvm_itlb_miss_handler )
 
     ASSERT(!ppc_is_kernel_mode(srr1));
 
-    ppc_softhvm_t::tlb_t *tlbentry = NULL;
+    ppc_softhvm_t::tlb_t *tlbentry = nullptr;
     int tlbidx = -1;
 
     if (vm->in_shadow_tlb(srr0))

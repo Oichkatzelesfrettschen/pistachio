@@ -181,6 +181,6 @@ char *strchr( char *s, char c)
 	    return s;
 	s++;
     }
-    return NULL;
+    return nullptr;
 }
 

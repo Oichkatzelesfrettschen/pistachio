@@ -71,7 +71,7 @@ void kdb_t::entry (void * param)
     cmd_ret_t r;
 
     kdb_param = param;
-    last_space = NULL;
+    last_space = nullptr;
     last_dump = 0;
     
     /* XXX probably not generic enough */
@@ -79,12 +79,12 @@ void kdb_t::entry (void * param)
 
     if (pre())
 	do {
-	    r = root.interact (NULL, "");
+	    r = root.interact (nullptr, "");
 	} while (r != CMD_QUIT);
     
     post();
     
-    kdb_param = NULL;
+    kdb_param = nullptr;
 }
 
 

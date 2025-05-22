@@ -171,8 +171,8 @@ void tcb_t::init(threadid_t dest, sktcb_type_e type)
     ASSERT(this);
     
     /* clear utcb and space */
-    utcb = NULL;
-    space = NULL;
+    utcb = nullptr;
+    space = nullptr;
 
     tcb_lock.init();
 
@@ -191,7 +191,7 @@ void tcb_t::init(threadid_t dest, sktcb_type_e type)
 
     /* queue initialization */
     queue_state.init();
-    send_head = NULL;
+    send_head = nullptr;
 
 #if defined(CONFIG_SMP)
     /* initially assign to this CPU */
@@ -396,7 +396,7 @@ delete_tcb_retry:
 	resources.free(this);
 	
 	// free UTCB
-	this->utcb = NULL;
+	this->utcb = nullptr;
 
 	// make sure that we don't get accounted anymore
 	if (sched->get_accounted_tcb() == this)
@@ -410,7 +410,7 @@ delete_tcb_retry:
     this->myself_global = NILTHREAD;
     this->myself_local = ANYLOCALTHREAD;
 
-    this->set_space(NULL);
+    this->set_space(nullptr);
     this->set_state(thread_state_t::aborted);
     dequeue_present();
 }

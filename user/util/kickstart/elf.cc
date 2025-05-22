@@ -297,8 +297,8 @@ bool __elf_func(elf_find_sections) (L4_Word_t addr,
  * @param memory_start  Pointer to address of first byte of loaded image
  * @param memory_end    Pointer to address of first byte behind loaded image
  * @param entry         Pointer to address of entry point
- * @param type          Pointer to ELF format ID (1: 32-bit, 2: 64-bit), may be NULL
- * @param check         Pointer to function to check for memory conflicts, may be NULL
+ * @param type          Pointer to ELF format ID (1: 32-bit, 2: 64-bit), may be nullptr
+ * @param check         Pointer to function to check for memory conflicts, may be nullptr
  *
  * This function ELF-loads an ELF image that is located in memory.  It
  * interprets the program header table and copies all segments marked

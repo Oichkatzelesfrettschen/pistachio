@@ -46,7 +46,7 @@ CMD(cmd_reset, cg)
     efi_runtime_services->reset_system
 	(efi_runtime_services_t::warm,
 	 efi_runtime_services_t::success,
-	 0, NULL);
+	 0, nullptr);
 #endif
 
     /* NOTREACHED */

@@ -100,9 +100,9 @@ static const word_t  x86_hvm_gdtrregs[]	 = { VMCS_IDX_G_GDTR_BASE, VMCS_IDX_G_GD
 const word_t *const ctrlxfer_item_t::hwregs[] = 
 {
     x86_gpregs,
-    NULL, /* fpu regs software-emulated */ 
+    nullptr, /* fpu regs software-emulated */ 
 #if defined(CONFIG_X_X86_HVM)
-    NULL, /* cr regs software-emulated */ 
+    nullptr, /* cr regs software-emulated */ 
     x86_hvm_dregs,
     x86_hvm_csregs,
     x86_hvm_ssregs,
@@ -114,9 +114,9 @@ const word_t *const ctrlxfer_item_t::hwregs[] =
     x86_hvm_ldtrregs,
     x86_hvm_idtrregs,
     x86_hvm_gdtrregs,
-    NULL, /* nonreg/exc state software-emulated */ 
-    NULL, /* execctrl   state software-emulated */ 
-    NULL /* otherregs        software-emulated */ 
+    nullptr, /* nonreg/exc state software-emulated */ 
+    nullptr, /* execctrl   state software-emulated */ 
+    nullptr /* otherregs        software-emulated */ 
 #endif 
 };
 

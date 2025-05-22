@@ -34,7 +34,7 @@
 #include <linear_ptab.h>
 #include INC_API(tcb.h)
 
-space_t *current_disas_space = NULL;
+space_t *current_disas_space = nullptr;
  
 // callback for the disassembler to access user mem
 extern "C" int SECTION(".kdebug") kdb_disas_readmem(char * s, char * d)

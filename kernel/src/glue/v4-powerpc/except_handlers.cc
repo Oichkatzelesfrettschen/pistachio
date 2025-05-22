@@ -124,7 +124,7 @@ tcb_t *get_kdebug_tcb() { return (tcb_t*)~0; }
 
 INLINE void try_to_debug( except_regs_t *regs, word_t exc_no, word_t dar=0, word_t dsisr=0 )
 {
-    if( EXPECT_TRUE(get_kip()->kdebug_entry == NULL) )
+    if( EXPECT_TRUE(get_kip()->kdebug_entry == nullptr) )
 	return;
 
     debug_param_t param;
@@ -251,7 +251,7 @@ EXCDEF( program_handler )
 	       "EXC Program Handler: IP=%p\n", srr0);
 
     space_t *space = get_current_space();
-    if( EXPECT_FALSE(space == NULL) )
+    if( EXPECT_FALSE(space == nullptr) )
 	space = get_kernel_space();
 
     word_t instr = space->get_from_user( (addr_t)srr0 );

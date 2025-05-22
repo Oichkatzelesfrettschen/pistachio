@@ -34,10 +34,10 @@
 
 Elf64_Shdr *elf64_next_shdr(Elf64_Ehdr *ehdr, int *index)						
 {														
-    Elf64_Shdr *result = NULL;
+    Elf64_Shdr *result = nullptr;
 
     if (*index < 0 )
-	return NULL;
+	return nullptr;
     
     while(*index < ehdr->e_shnum){
 	result = (Elf64_Shdr *)(((L4_Word_t) ehdr) + (L4_Word_t)ehdr->e_shoff + *(index) * ehdr->e_shentsize);	
@@ -48,15 +48,15 @@ Elf64_Shdr *elf64_next_shdr(Elf64_Ehdr *ehdr, int *index)
 	}
 	
     }
-    return NULL;													
+    return nullptr;													
 }													
 
 Elf64_Phdr *elf64_next_phdr(Elf64_Ehdr *ehdr, int *index)						
 {														
-    Elf64_Phdr *result = NULL;
+    Elf64_Phdr *result = nullptr;
 
     if (*index < 0)
-	return NULL;
+	return nullptr;
     
     while(*index < ehdr->e_phnum){
 	result = (Elf64_Phdr *)(((L4_Word_t) ehdr) + (L4_Word_t) ehdr->e_phoff + *index * ehdr->e_phentsize);	
@@ -67,7 +67,7 @@ Elf64_Phdr *elf64_next_phdr(Elf64_Ehdr *ehdr, int *index)
 	}
 	
     }
-    return NULL;
+    return nullptr;
 }													
 														
 Elf64_Ehdr *valid_elf64(L4_Word_t addr,  L4_Word64_t *entry)					
@@ -78,14 +78,14 @@ Elf64_Ehdr *valid_elf64(L4_Word_t addr,  L4_Word64_t *entry)
        e_ident[EI_MAG1] != ELFMAG1 ||										
        e_ident[EI_MAG2] != ELFMAG2 ||										
        e_ident[EI_MAG3] != ELFMAG3)										
-        return NULL;												
+        return nullptr;												
 														
     if(e_ident[EI_CLASS] != ELFCLASS64)									
-        return NULL;												
+        return nullptr;												
 														
     /* Possibly allow for old elf formats */									
     if(e_ident[EI_VERSION] != EV_CURRENT)									
-        return NULL;												
+        return nullptr;												
 														
     Elf64_Ehdr *ehdr = (Elf64_Ehdr *) addr;								
     

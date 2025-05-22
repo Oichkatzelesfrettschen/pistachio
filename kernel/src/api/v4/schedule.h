@@ -102,7 +102,7 @@ public:
 	    if ( ((first_free + 1) % schedule_queue_len) == first_alloc )
 	    {
 		lock.unlock();
-		return NULL;
+		return nullptr;
 	    }
 	    word_t idx = first_free;
 	    first_free = (first_free + 1) % schedule_queue_len;
@@ -308,7 +308,7 @@ private:
      * 
      * @return next thread to be scheduled
      */
-    tcb_t * find_next_thread(policy_sched_next_thread_t *p=NULL);
+    tcb_t * find_next_thread(policy_sched_next_thread_t *p=nullptr);
     
     
     /**

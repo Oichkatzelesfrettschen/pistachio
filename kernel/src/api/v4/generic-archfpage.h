@@ -74,12 +74,12 @@ public:
      * @return base address of the fpage
      * get_base does not size-align the address
      */
-    addr_t get_base() {  return NULL; }
+    addr_t get_base() {  return nullptr; }
 
     /**
      * @return size aligned address of the fpage
      */
-    addr_t get_address() {  return NULL; }
+    addr_t get_address() {  return nullptr; }
     
     /**
      * @return size of the flexpage

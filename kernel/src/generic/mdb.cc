@@ -91,12 +91,12 @@ void * mdb_node_t::operator new (size_t size)
  */
 void mdb_t::delete_node (mdb_node_t * node)
 {
-    if (node == NULL)
+    if (node == nullptr)
 	return;
 
     mdb_node_t * p = node->get_prev ();
 
-    ASSERT (node->get_next () == NULL ||
+    ASSERT (node->get_next () == nullptr ||
 	    node->get_next ()->get_depth () <= node->get_depth ());
 
     if (p->get_next () == node)
@@ -146,7 +146,7 @@ void * mdb_table_t::operator new (size_t size, word_t radix_log2)
 {
     mdb_table_t * t = (mdb_table_t *) mdb_alloc_buffer (sizeof (mdb_table_t));
 
-    t->node = NULL;
+    t->node = nullptr;
     t->radix = radix_log2;
     t->count = 0;
     t->entries = (word_t) mdb_alloc_buffer (sizeof (mdb_tableent_t) * 
@@ -167,7 +167,7 @@ void * mdb_table_t::operator new (size_t size, word_t radix_log2)
  */
 void mdb_table_t::operator delete (void * t)
 {
-    if (t == NULL)
+    if (t == nullptr)
 	return;
 
     mdb_table_t * table = (mdb_table_t *) t;
@@ -238,11 +238,11 @@ mdb_node_t * mdb_t::map (mdb_node_t * f_node,
     // existing table.
 
     mdb_table_t * table = f_node->get_table ();
-    mdb_table_t * prev_table = NULL;
+    mdb_table_t * prev_table = nullptr;
 
     for (;;)
     {
-	if (table != NULL && table->match_prefix (addr))
+	if (table != nullptr && table->match_prefix (addr))
 	{
 	    if (table->get_objsize () == objsize)
 	    {
@@ -274,7 +274,7 @@ mdb_node_t * mdb_t::map (mdb_node_t * f_node,
 	    {
 		// The new table should contain the current mapping
 		// table within one of the table entries.  This will
-		// be taken care of below (table != NULL).
+		// be taken care of below (table != nullptr).
 	    }
 
 	    // Create a new mapping table just below mapping node or
@@ -288,14 +288,14 @@ mdb_node_t * mdb_t::map (mdb_node_t * f_node,
 	    newtable->set_prefix (addr);
 	    newtable->set_objsize (objsize);
 	    newtable->set_node (addr, newnode);
-	    newnode->set_next (NULL);
+	    newnode->set_next (nullptr);
 
 	    if (prev_table)
 		prev_table->set_table (addr, newtable);
 	    else
 		f_node->set_table (newtable);
 
-	    if (table != NULL)
+	    if (table != nullptr)
 	    {
 		// There already existed a table which did path
 		// compression and containing objects of smaller sizes
@@ -325,12 +325,12 @@ mdb_node_t * mdb_t::map (mdb_node_t * f_node,
 	newtable->set_prefix (addr);
 	newtable->set_objsize (objsize);
 	newtable->set_node (addr, newnode);
-	newnode->set_next (NULL);
+	newnode->set_next (nullptr);
 
-	if (table != NULL)
+	if (table != nullptr)
 	{
 	    auxnode = table->get_node ();
-	    table->set_node (NULL);
+	    table->set_node (nullptr);
 
 	    // Remove old table now to avoid propagating auxiliary
 	    // mapping node upwards during the set_table operations
@@ -535,7 +535,7 @@ word_t mdb_t::mapctrl (mdb_node_t * node, range_t range,
     } r_values[MAX_MDB_RECURSION];
     word_t recurse_level = 0;
 
-    mdb_table_t * table = NULL;
+    mdb_table_t * table = nullptr;
     word_t tableidx = 0;
     bool do_modify = false;
 
@@ -650,7 +650,7 @@ word_t mdb_t::mapctrl (mdb_node_t * node, range_t range,
 	{
 	    // We need to recurse into a subtable.  Record the current
 	    // table and table entry we are working on.  Initially,
-	    // these will be NULL-entries.  Continue recursion if
+	    // these will be nullptr-entries.  Continue recursion if
 	    // selected entry in new table is another subtable.
 
 	    mdb_table_t * nexttab = node->get_table ();
@@ -694,7 +694,7 @@ word_t mdb_t::mapctrl (mdb_node_t * node, range_t range,
 
 	// --- PART 3 ---
 
-	if (node == NULL)
+	if (node == nullptr)
 	{
 	    // We have reached the end of a subtree, or alternatively,
 	    // chosen an emptry subtree from a mapping table.
@@ -737,24 +737,24 @@ word_t mdb_t::mapctrl (mdb_node_t * node, range_t range,
 
 		ASSERT (recurse_level > 0);
 
-		if (prev->get_table () != NULL)
+		if (prev->get_table () != nullptr)
 		    break;
 
 		do {
 		    node = prev;
 		    prev = prev->get_prev ();
 		    delete_node (node);
-		} while (prev->get_table () == NULL);
+		} while (prev->get_table () == nullptr);
 
 		table->remove_node (table->get_addr (tableidx));
-		node = NULL;
+		node = nullptr;
 
 		// Table may fall empty due to delete operation.  If
 		// so, delete it and recurse up to the parent table.
 		// Continue deleting tables if they also happen to
 		// fall empty.
 
-		while (table != NULL && table->get_count () == 0)
+		while (table != nullptr && table->get_count () == 0)
 		{
 		    mdb_table_t * t = table;
 
@@ -783,7 +783,7 @@ word_t mdb_t::mapctrl (mdb_node_t * node, range_t range,
 		    delete t;
 		}
 
-		if (table == NULL) ASSERT (recurse_level == 0);
+		if (table == nullptr) ASSERT (recurse_level == 0);
 		else ASSERT (recurse_level > 0);
 
 		if (prev->get_table ())
@@ -795,10 +795,10 @@ word_t mdb_t::mapctrl (mdb_node_t * node, range_t range,
 		    // we don't continue with the regular mapping node
 		    // before processing the table.
 
-		    ASSERT (table != NULL);
+		    ASSERT (table != nullptr);
 		    ASSERT (table->get_count () > 0);
 		    ASSERT (prev->get_table ()->get_count () > 0);
-		    node = NULL;
+		    node = nullptr;
 		    break;
 		}
 		else
@@ -807,7 +807,7 @@ word_t mdb_t::mapctrl (mdb_node_t * node, range_t range,
 		    // indicates that all the subtrees beneath the
 		    // mapping table have been deleted.
 
-		    if (prev->get_next () != NULL)
+		    if (prev->get_next () != nullptr)
 		    {
 			// Continue performing mapcontrol on next node.
 			node = prev->get_next ();
@@ -816,7 +816,7 @@ word_t mdb_t::mapctrl (mdb_node_t * node, range_t range,
 		    else if (recurse_level == 0)
 		    {
 			// Exit from main loop.
-			ASSERT (table == NULL);
+			ASSERT (table == nullptr);
 			break;
 		    }
 		    else
@@ -827,7 +827,7 @@ word_t mdb_t::mapctrl (mdb_node_t * node, range_t range,
 
 	    // --- PART 3b ---
 
-	    if (ctrl.reset_status && prev->get_table () == NULL)
+	    if (ctrl.reset_status && prev->get_table () == nullptr)
 	    {
 		// Reset the reference status bits and propagate the
 		// old bit contents upwards to the parent of the table
@@ -857,7 +857,7 @@ word_t mdb_t::mapctrl (mdb_node_t * node, range_t range,
 		} while (p->get_next () == node);
 
 		p->update_effective_status (this, status);
-		node = NULL;
+		node = nullptr;
 	    }
 
 	    // --- PART 3c ---
@@ -871,7 +871,7 @@ word_t mdb_t::mapctrl (mdb_node_t * node, range_t range,
 	    // mapping table entries for valid nodes or recurse into
 	    // subtables if they exist.
 
-	    while (node == NULL && table != NULL)
+	    while (node == nullptr && table != nullptr)
 	    {
 		if (tableidx < (1UL << table->get_radix ()) - 1)
 		{
@@ -932,11 +932,11 @@ word_t mdb_t::mapctrl (mdb_node_t * node, range_t range,
 	    // means that we are finished parsing the whole subtree.
 	    // Exit the main loop.
 
-	    if (node == NULL)
+	    if (node == nullptr)
 	    {
 		ASSERT (recurse_level == 0);
 		if (ctrl.unmap)
-		    ASSERT (prev->get_next () == NULL);
+		    ASSERT (prev->get_next () == nullptr);
 		break;
 	    }
 	}

@@ -64,7 +64,7 @@ public:
 	{
 	    /* prio queues */
 	    for(int i = 0; i <= MAX_PRIORITY; i++)
-		prio_queue[i] = (tcb_t *)NULL;
+		prio_queue[i] = (tcb_t *)nullptr;
 	    max_prio = -1;
 	}
 
@@ -93,7 +93,7 @@ public:
     spinlock_t lock;
     char cache_pad1[CACHE_LINE_SIZE - sizeof(spinlock_t)];
 	
-    volatile bool is_empty() { return (tcb_list == NULL); }
+    volatile bool is_empty() { return (tcb_list == nullptr); }
 	
     void enqueue_head(tcb_t *tcb)
 	{
@@ -114,7 +114,7 @@ public:
  
 	    tcb_t * tcb = tcb_list;
 	    tcb_list = tcb->sched_state.requeue;
-	    tcb->sched_state.requeue = NULL;
+	    tcb->sched_state.requeue = nullptr;
 		
 	    TRACE_SCHEDULE_DETAILS("smp_requeue:dequeue_head %t (s=%s) cpu %d (head %t)", 
 	    	    tcb, tcb->get_state().string(), tcb->get_cpu(), tcb_list);
@@ -201,7 +201,7 @@ protected:
     void policy_scheduler_init()
 	{
 	    /* wakeup list */
-	    wakeup_list = NULL;
+	    wakeup_list = nullptr;
             root_prio_queue.init();
 
 	}

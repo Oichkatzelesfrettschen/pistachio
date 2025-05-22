@@ -55,7 +55,7 @@ EXTERN_KMEM_GROUP(kmem_space);
 #define TRACE_SPACE(x...)
 //#define TRACE_SPACE(x...)	TRACEF(x)
 
-space_t *kernel_space = NULL;
+space_t *kernel_space = nullptr;
 
 //translation table
 struct transtable_t transtable[TRANSLATION_TABLE_ENTRIES];
@@ -154,7 +154,7 @@ pgent_t * space_t::page_lookup( addr_t vaddr )
 {
     pgent_t *pgent = this->pgent( page_table_index(pgent_t::size_4m, vaddr) );
     if( !pgent->is_valid(this, pgent_t::size_4m) )
-	return NULL;
+	return nullptr;
 
     pgent = pgent->subtree( this, pgent_t::size_4m );
     pgent = pgent->next( this, pgent_t::size_4k, 
@@ -225,7 +225,7 @@ addr_t space_t::map_device( paddr_t paddr, word_t size, bool kernel, word_t attr
 	    // Increment the address to the next page.
 	    start_addr = addr_offset( start_addr, POWERPC_PAGE_SIZE );
 	    if( ((word_t)start_addr + size) > DEVICE_AREA_END )
-		return NULL;
+		return nullptr;
 
 	    // Move to the next page table entry.
 	    pgent = pgent->next( this, pgent_t::size_4k, 1 );
@@ -280,10 +280,10 @@ utcb_t *space_t::allocate_utcb( tcb_t *tcb )
     {
 	// Allocate a new UTCB page.
 	page = kmem.alloc( kmem_utcb, POWERPC_PAGE_SIZE );
-	if( page == NULL )
+	if( page == nullptr )
 	{
 	    WARNING( "out of memory!\n" );
-	    return NULL;
+	    return nullptr;
 	}
 	add_mapping( utcb, (paddr_t)virt_to_phys(page), pgent_t::size_4k, true, false );
     }

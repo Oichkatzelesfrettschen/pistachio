@@ -146,12 +146,12 @@ private:
     
     bool id_pass(tracerecord_t *t)
 	{
-	    if (id[0] == NULL || ((word_t) id[0] == t->id))
+	    if (id[0] == nullptr || ((word_t) id[0] == t->id))
 		return true;
 	    
 	    for (word_t i=1; i < max_filters; i++)
 	    {
-		if (id[i] == NULL)
+		if (id[i] == nullptr)
 		    return false;
 		if ((word_t) id[i] == t->id)
 		    return true;
@@ -167,14 +167,14 @@ private:
 		? addr_to_tcb((addr_t) t->thread)
 		: tcb_t::get_tcb(threadid (t->thread));
 
-	    if (tcb[0] == NULL || (tcb[0] == rtcb))
+	    if (tcb[0] == nullptr || (tcb[0] == rtcb))
 		return true;
 	    
 	    for (word_t i=1; i < max_filters; i++)
 	    {
 		if (tcb[i] == rtcb)
 		    return true;
-		if (tcb[i] == NULL)
+		if (tcb[i] == nullptr)
 		    return false;
 	    }
 	    return false;
@@ -190,8 +190,8 @@ public:
 	{
 	    for (word_t i=0; i < max_filters; i++)
 	    {
-		id[i] = NULL;
-		tcb[i] = NULL;
+		id[i] = nullptr;
+		tcb[i] = nullptr;
 	    }
 	    cpumask = typemask = ~0UL;
 	    tsc = 0;
@@ -211,7 +211,7 @@ public:
 	    printf("\tTracepoints: \n");
 	    for (word_t i=0; i < max_filters; i++)
 	    {
-		if (id[i] == NULL)
+		if (id[i] == nullptr)
 		    break;
 		printf("\t\t%2d: %8d %s\n", i, id[i], tp_list.get(id[i]-1)->name);
 	    }    
@@ -219,7 +219,7 @@ public:
 	    printf("\tTCBs: \n");
 	    for (word_t i=0; i < max_filters; i++)
 	    {
-		if (tcb[i] == NULL)
+		if (tcb[i] == nullptr)
 		    break;
 		printf("\t\t%2d: %8t\n", i, (tcb_t *) tcb[i]);
 	    }    
@@ -888,7 +888,7 @@ DECLARE_CMD (cmd_tb_tcb, tracebuf, 'T', "tcbfilter", "TCB display filter");
 CMD(cmd_tb_tcb, cg) 
 {
     for (word_t i=0; i < tbuf_handler_t::max_filters; i++)
-	tbuf_handler.set_tcb(i, NULL);
+	tbuf_handler.set_tcb(i, nullptr);
     
     for (word_t i=0; i < tbuf_handler_t::max_filters; i++)
     {

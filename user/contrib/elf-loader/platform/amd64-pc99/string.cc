@@ -36,7 +36,7 @@
  
 #include <l4/types.h>
 #include "globals.h"
-char * ___strtok = NULL;
+char * ___strtok = nullptr;
 
 char * strcpy(char * dest,const char *src)
 {
@@ -114,13 +114,13 @@ char * strchr(const char * s,char c)
 {
 	for(; *s != c; ++s)
 		if (*s == '\0')
-			return NULL;
+			return nullptr;
 	return (char *) s;
 }
 
 char * strrchr(const char * s,char c)
 {
-	const char * r = NULL;
+	const char * r = nullptr;
 	while (*s++)
 		if (*s == c) r = s;
 	return (char *) r;
@@ -173,7 +173,7 @@ char * strpbrk(const char * cs,const char * ct)
 				return (char *) sc1;
 		}
 	}
-	return NULL;
+	return nullptr;
 }
 
 char * strtok(char * s,const char * ct)
@@ -182,12 +182,12 @@ char * strtok(char * s,const char * ct)
 
 	sbegin  = s ? s : ___strtok;
 	if (!sbegin) {
-		return NULL;
+		return nullptr;
 	}
 	sbegin += strspn(sbegin,ct);
 	if (*sbegin == '\0') {
-		___strtok = NULL;
-		return( NULL );
+		___strtok = nullptr;
+		return( nullptr );
 	}
 	send = strpbrk( sbegin, ct);
 	if (send && *send != '\0')

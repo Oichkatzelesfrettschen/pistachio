@@ -290,7 +290,7 @@ INLINE ppc_translation_t * ppc_htab_t::locate_pte( word_t virt, word_t vsid,
     word_t api = ppc_translation_t::virt_to_api( virt );
     if( (pte->x.v == 1) && (pte->x.vsid == vsid) && (pte->x.api == api) )
 	return pte;
-    return NULL;
+    return nullptr;
 }
 
 #endif	/* !ASSEMBLY */

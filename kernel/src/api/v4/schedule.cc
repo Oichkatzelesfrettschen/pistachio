@@ -217,7 +217,7 @@ word_t scheduler_t::add_schedule_request(schedule_req_t &req)
     
     cpuid_t cpu = get_current_cpu();
     cpuid_t reqcpu = req.tcb->get_cpu();
-    schedule_req_t *qreq = NULL;
+    schedule_req_t *qreq = nullptr;
 
 
     if (req.tcb->flags.is_set(tcb_t::schedule_in_progress))

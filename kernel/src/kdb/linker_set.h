@@ -76,7 +76,7 @@ public:
  */
 #define DECLARE_SET(name)						\
   linker_set_t name							\
-  __attribute__ ((__section__ (".setlist"), __unused__)) = { NULL, 0 }
+  __attribute__ ((__section__ (".setlist"), __unused__)) = { nullptr, 0 }
 
 
 /**

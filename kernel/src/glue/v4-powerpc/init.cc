@@ -104,7 +104,7 @@ SECTION(SEC_INIT) void timer_init( word_t cpu_hz, word_t bus_hz, word_t cpu )
  *                            Platform init
  *
  *****************************************************************************/
-static dtree_t *dtree = NULL;
+static dtree_t *dtree = nullptr;
 static word_t dtree_size = 0;
 
 dtree_t *get_dtree()
@@ -424,7 +424,7 @@ static SECTION(SEC_INIT) void cpu_init( cpuid_t cpu )
     if( powerpc_version_t::read().is_750() )
 	ppc750_configure();
     perfmon_init();
-    set_fp_lazy_tcb( NULL );
+    set_fp_lazy_tcb( nullptr );
 }
 
 #if defined(CONFIG_SMP)

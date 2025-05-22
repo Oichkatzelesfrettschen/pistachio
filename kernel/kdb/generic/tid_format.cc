@@ -73,7 +73,7 @@ CMD(cmd_tid_format, cg)
 	do {
 	    printf ("    Add separator before <n> lower-most bits of thread number (0-%lu) [0]: ",
 		    L4_GLOBAL_THREADNO_BITS - 1);
-	    kdb_tid_format.X.sep = get_dec (NULL, 0, NULL);
+	    kdb_tid_format.X.sep = get_dec (nullptr, 0, nullptr);
 	} while (kdb_tid_format.X.sep >= L4_GLOBAL_THREADNO_BITS);
     } else
 	kdb_tid_format.X.value = TID_FORMAT_VALUE_TCB;

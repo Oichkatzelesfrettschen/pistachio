@@ -169,7 +169,7 @@ public:
     void allocate_asid();
     void allocate_hw_asid(word_t hw_asid) {}
     void release_hw_asid(word_t hw_asid)
-	{ flush_tlb(NULL); }
+	{ flush_tlb(nullptr); }
     static asid_manager_t<space_t,CONFIG_MAX_NUM_ASIDS> *get_asid_manager();
 #endif
 
@@ -321,7 +321,7 @@ INLINE asid_manager_t<space_t, CONFIG_MAX_NUM_ASIDS> *get_asid_manager()
 INLINE asid_t *space_t::get_asid(cpuid_t cpu)
 {
 #if defined(CONFIG_X_PPC_SOFTHVM)
-    return hvm_mode ? NULL : &this->cpu[cpu].asid;
+    return hvm_mode ? nullptr : &this->cpu[cpu].asid;
 #else
     return &this->cpu[cpu].asid;
 #endif

@@ -190,7 +190,7 @@ word_t rtas_t::rtas_call( u32_t token, u32_t nargs, u32_t nret, word_t *outputs,
 
     this->lock.unlock();
 
-    if (nret > 1 && outputs != NULL)
+    if (nret > 1 && outputs != nullptr)
         for (word_t i = 0; i < nret-1; ++i)
 	    outputs[i] = rtas_args.get_ret(i+1);
 
@@ -222,7 +222,7 @@ void rtas_t::machine_restart( void )
     u32_t reboot_token;
 
     get_token( "system-reboot", &reboot_token );
-    rtas_call( reboot_token, 0, 1, NULL );
+    rtas_call( reboot_token, 0, 1, nullptr );
 
     /* We should never get here */
     asm volatile (".long 0x00000000;");
@@ -233,7 +233,7 @@ void rtas_t::machine_power_off( void )
     u32_t poweroff_token;
 
     get_token( "power-off", &poweroff_token );
-    rtas_call( poweroff_token, 0, 1, NULL );
+    rtas_call( poweroff_token, 0, 1, nullptr );
 
     /* We should never get here */
     asm volatile (".long 0x00000000;");
@@ -244,7 +244,7 @@ void rtas_t::machine_halt( void )
     u32_t poweroff_token;
 
     get_token( "power-off", &poweroff_token );
-    rtas_call( poweroff_token, 0, 1, NULL );
+    rtas_call( poweroff_token, 0, 1, nullptr );
 
     /* We should never get here */
     asm volatile (".long 0x00000000;");

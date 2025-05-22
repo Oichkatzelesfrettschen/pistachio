@@ -40,7 +40,7 @@
 #include "1275tree.h"
 
 L4_Word_t Args[16];
-char *devtree = NULL;
+char *devtree = nullptr;
 
 /* sigma0 fpage request stuff */
 #define FP_REQUEST_LABEL ((-6UL) << 4)     /* that's what the API says! */
@@ -98,7 +98,7 @@ static char * find_1275tree(void)
 {
     L4_MemoryDesc_t * md;
     L4_KernelInterfacePage_t * kip = (L4_KernelInterfacePage_t *)
-	    L4_KernelInterface( NULL, NULL, NULL );
+	    L4_KernelInterface( nullptr, nullptr, nullptr );
 
     // Parse through all memory descriptors in kip.
     for (L4_Word_t n = 0; (md = L4_MemoryDesc (kip, n)); n++)
@@ -116,14 +116,14 @@ static char * find_1275tree(void)
 		if( request_page( (void *)i ) )
 		{
 		    printf( "Cannot get 1275 device tree memory\n" );
-		    return NULL;
+		    return nullptr;
 		}
 	    }
 	    return (char *)low;
 	}
 
     }
-    return NULL;
+    return nullptr;
 }
 
 void rtas_test(void)
@@ -186,7 +186,7 @@ void all_arch_tests( void )
 /* the menu */
 static struct menuitem menu_items[] = 
 {
-    { NULL, "return" },
+    { nullptr, "return" },
     { rtas_test,  "Test RTAS" },
     { fpu_test, "Test FPU" },
     { all_arch_tests,	"All PowerPC tests" },

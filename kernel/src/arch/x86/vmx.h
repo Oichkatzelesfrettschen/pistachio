@@ -1255,7 +1255,7 @@ INLINE bool vmcs_t::load ()
     if (EXPECT_TRUE (is_loaded()))
 	return true;
 
-    current_vmcs = NULL;
+    current_vmcs = nullptr;
     
     ASSERT (this != 0);
     ASSERT (((word_t) this & ~X86_PAGE_MASK) == 0);
@@ -1273,7 +1273,7 @@ INLINE bool vmcs_t::unload ()
 {
     if (is_loaded ())
     {
-	current_vmcs = NULL;
+	current_vmcs = nullptr;
 	return (x86_vmsucceed (x86_vmclear ((word_t) this)));
     }
     else

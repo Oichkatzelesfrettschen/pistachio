@@ -218,7 +218,7 @@ CMD(cmd_sysregs, cg)
 CMD(cmd_except_regs, cg)
 {
     debug_param_t *param = (debug_param_t *)kdb.kdb_param;
-    if( param != NULL )
+    if( param != nullptr )
 	dbg_print_except_regs( param->frame );
     return CMD_NOQUIT;
 }
@@ -226,7 +226,7 @@ CMD(cmd_except_regs, cg)
 CMD(cmd_user_except_regs, cg)
 {
     except_regs_t *regs = get_user_except_regs( get_current_tcb() );
-    if( regs != NULL )
+    if( regs != nullptr )
 	dbg_print_except_regs( regs );
     return CMD_NOQUIT;
 }
@@ -240,7 +240,7 @@ CMD(cmd_print_msr, cg)
 CMD(cmd_print_except_msr, cg)
 {
     debug_param_t *param = (debug_param_t *)kdb.kdb_param;
-    if( param != NULL )
+    if( param != nullptr )
 	dbg_dump_msr( param->frame->srr1_flags );
     return CMD_NOQUIT;
 }

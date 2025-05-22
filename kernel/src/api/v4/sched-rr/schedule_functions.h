@@ -62,7 +62,7 @@ INLINE void sched_ktcb_t::init(sktcb_type_e type)
     set_sensitive_prio(priority);
     set_maximum_delay (0);
 #if defined(CONFIG_SMP)
-    requeue = NULL;
+    requeue = nullptr;
 #endif
 }
 

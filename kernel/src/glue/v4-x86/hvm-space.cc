@@ -72,7 +72,7 @@ bool x86_hvm_space_t::activate (space_t *space)
     active = true;
 
     /* Loop through existing TCBs pointing to space, and activate HVM */
-    tcb_t *last_tcb = NULL;
+    tcb_t *last_tcb = nullptr;
     for (tcb_t *tcb = tcb_list; tcb != last_tcb; tcb = tcb->get_arch ()->space_list.prev)
     {
 	ASSERT (tcb->exists ());
@@ -92,7 +92,7 @@ void x86_hvm_space_t::handle_gphys_unmap (addr_t g_paddr, word_t log2size)
      * Loop through all TCBs (VCPUs) using the space,
      * and remove the entries from their VTLBs.
      */
-    tcb_t *last_tcb = NULL;
+    tcb_t *last_tcb = nullptr;
     for (tcb_t *tcb = tcb_list; tcb != last_tcb; tcb = tcb->get_arch ()->space_list.prev)
     {
 	ASSERT (tcb->exists ());

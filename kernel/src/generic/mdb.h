@@ -452,19 +452,19 @@ INLINE mdb_node_t * mdb_node_t::get_prev (void)
 
 /**
  * Retrieve pointer to mapping table.
- * @return pointer to mapping table, or NULL if no table exists
+ * @return pointer to mapping table, or nullptr if no table exists
  */
 INLINE mdb_table_t * mdb_node_t::get_table (void)
 {
     if (! next_is_table)
-	return NULL;
+	return nullptr;
 
     return (mdb_table_t *) (next << 1);
 }
 
 /**
  * Retrieve pointer to next mapping node.
- * @return pointer to next mappings node, or NULL if no next node exists
+ * @return pointer to next mappings node, or nullptr if no next node exists
  */
 INLINE mdb_node_t * mdb_node_t::get_next (void)
 {
@@ -558,7 +558,7 @@ INLINE void mdb_node_t::set_table (mdb_table_t * t)
 {
     t->set_node (get_next ());
     if (next_is_table)
-	get_table ()->set_node (NULL);
+	get_table ()->set_node (nullptr);
     next = ((word_t) t) >> 1;
     next_is_table = 1;
 }
@@ -657,19 +657,19 @@ INLINE bool mdb_tableent_t::is_table (void)
 
 /**
  * Retrieve pointer to mapping table.
- * @return pointer to mapping table, or NULL if no table exists
+ * @return pointer to mapping table, or nullptr if no table exists
  */
 INLINE mdb_table_t * mdb_tableent_t::get_table (void)
 {
     if (! ptr_is_table)
-	return NULL;
+	return nullptr;
 
     return (mdb_table_t *) (ptr << 1);
 }
 
 /**
  * Retrieve pointer to mapping node.
- * @return pointer to next mappings node, or NULL if no next node exists
+ * @return pointer to next mappings node, or nullptr if no next node exists
  */
 INLINE mdb_node_t * mdb_tableent_t::get_node (void)
 {
@@ -688,7 +688,7 @@ INLINE void mdb_tableent_t::set_table (mdb_table_t * t)
 {
     t->set_node (get_node ());
     if (ptr_is_table)
-	get_table ()->set_node (NULL);
+	get_table ()->set_node (nullptr);
     ptr = ((word_t) t) >> 1;
     ptr_is_table = 1;
 }
@@ -735,7 +735,7 @@ INLINE bool mdb_table_t::match_prefix (word_t addr)
 
 /**
  * Retrieve auxiliary mapping node pointer.
- * @return pointer to mapping node, or NULL if no node exists
+ * @return pointer to mapping node, or nullptr if no node exists
  */
 INLINE mdb_node_t * mdb_table_t::get_node (void)
 {
@@ -756,7 +756,7 @@ INLINE mdb_tableent_t * mdb_table_t::get_entry (word_t addr)
 /**
  * Retrieve mapping node from within mapping table.
  * @param addr		address to use for indexing
- * @return pointer to mapping node, or NULL if no node exists
+ * @return pointer to mapping node, or nullptr if no node exists
  */
 INLINE mdb_node_t * mdb_table_t::get_node (word_t addr)
 {
@@ -766,7 +766,7 @@ INLINE mdb_node_t * mdb_table_t::get_node (word_t addr)
 /**
  * Retrieve sub-table from within mapping table.
  * @param addr		address to use for indexing
- * @return pointer to mapping table, or NULL if no table exists
+ * @return pointer to mapping table, or nullptr if no table exists
  */
 INLINE mdb_table_t * mdb_table_t::get_table (word_t addr)
 {
@@ -818,7 +818,7 @@ INLINE void mdb_table_t::remove_node (word_t addr)
     mdb_tableent_t * e = get_entry (addr);
     if (e->is_valid () && ! e->is_table ())
 	count--;
-    e->set_node (NULL);
+    e->set_node (nullptr);
 }
 
 /**
@@ -832,7 +832,7 @@ INLINE void mdb_table_t::remove_table (word_t addr)
 	return;
 
     mdb_node_t * n = e->get_node ();
-    if (n == NULL)
+    if (n == nullptr)
 	count--;
     e->ptr_is_table = 0;
     e->ptr = ((word_t) n) >> 1;
@@ -854,7 +854,7 @@ INLINE void mdb_table_t::set_node (mdb_node_t * n)
  */
 INLINE void mdb_table_t::set_node (word_t addr, mdb_node_t * n)
 {
-    if (n == NULL)
+    if (n == nullptr)
 	remove_node (addr);
     else
     {
@@ -872,7 +872,7 @@ INLINE void mdb_table_t::set_node (word_t addr, mdb_node_t * n)
  */
 INLINE void mdb_table_t::set_table (word_t addr, mdb_table_t * t)
 {
-    if (t == NULL)
+    if (t == nullptr)
 	remove_table (addr);
     else
     {

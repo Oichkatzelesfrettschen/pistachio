@@ -60,13 +60,13 @@ private:
 
 class processor_resources_t {
  public:
-    void init_cpu(void) { fp_lazy_tcb = NULL; }
+    void init_cpu(void) { fp_lazy_tcb = nullptr; }
 
  public:
     tcb_t *get_fp_lazy_tcb() { return fp_lazy_tcb; }
 
     void set_fp_lazy_tcb( tcb_t *tcb ) { fp_lazy_tcb = tcb; }
-    void clear_fp_lazy_tcb() { fp_lazy_tcb = NULL; }
+    void clear_fp_lazy_tcb() { fp_lazy_tcb = nullptr; }
     
  private:
     tcb_t *fp_lazy_tcb;

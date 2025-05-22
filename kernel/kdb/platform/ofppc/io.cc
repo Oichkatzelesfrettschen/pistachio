@@ -111,7 +111,7 @@ static char getc_of1275( bool block )
  ****************************************************************************/
 
 #if defined(CONFIG_KDB_CONS_PSIM_COM)
-static char *com_registers = NULL;
+static char *com_registers = nullptr;
 
 void init_psim_com_console( void )
 {
@@ -121,13 +121,13 @@ void init_psim_com_console( void )
     word_t len;
 
     dev = get_of1275_tree()->find( "/aliases" );
-    if( dev == NULL )
+    if( dev == nullptr )
 	return;
     if( !dev->get_prop("com", &alias, &len) )
 	return;
  
     dev = get_of1275_tree()->find( alias );
-    if( dev == NULL )
+    if( dev == nullptr )
 	return;
     if( !dev->get_prop("reg", (char **)&reg, &len) )
 	return;

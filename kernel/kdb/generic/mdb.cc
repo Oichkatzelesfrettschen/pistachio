@@ -125,7 +125,7 @@ static const char * sz_suf (word_t sz)
  */
 STATIC void kdb_t::dump_table (mdb_t * mdb, mdb_table_t * t, word_t depth)
 {
-    if (t == NULL)
+    if (t == nullptr)
 	return;
 
     word_t paddr = t->prefix & ~(((1UL << t->objsize) << t->radix) - 1);
@@ -152,7 +152,7 @@ STATIC void kdb_t::dump_table (mdb_t * mdb, mdb_table_t * t, word_t depth)
 	    printf ("%s%p ", indent (depth + 1), paddr);
 
 	    mdb_node_t * n = te->get_node ();
-	    if (n == NULL)
+	    if (n == nullptr)
 	    {
 		printf ("[null node]\n");
 		continue;
@@ -164,7 +164,7 @@ STATIC void kdb_t::dump_table (mdb_t * mdb, mdb_table_t * t, word_t depth)
 		dump_table (mdb, n->get_table (), depth + 2);
 
 	    n = n->get_next ();
-	    while (n != NULL)
+	    while (n != nullptr)
 	    {
 		printf ("%s%ws ", indent (depth + 1 + n->get_depth ()
 					  - start_depth), "");

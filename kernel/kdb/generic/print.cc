@@ -281,7 +281,7 @@ int SECTION(SEC_KDEBUG) do_printf(const char* format_p, va_list args)
     printf_spin_lock.lock();
     
     /* sanity check */
-    if (format == NULL)
+    if (format == nullptr)
 	goto done;
 
     while (*format)

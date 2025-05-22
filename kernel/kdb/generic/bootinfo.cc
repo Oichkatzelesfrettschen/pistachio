@@ -201,7 +201,7 @@ CMD (cmd_dump_bootinfo, cg)
     static word_t kip_bootinfo;
     bootinfo_t * bi = bootinfo_copy;
 
-    if (bi == NULL)
+    if (bi == nullptr)
     {
 	kip_bootinfo = get_kip ()->boot_info;
 	bi = (bootinfo_t *) kip_bootinfo;
@@ -211,7 +211,7 @@ CMD (cmd_dump_bootinfo, cg)
 	 * generic BootInfo structure.
 	 */
 
-	if (bi == NULL || (word_t) bi > (word_t) GB (2))
+	if (bi == nullptr || (word_t) bi > (word_t) GB (2))
 	{
 	    printf ("Doesn't look like a generic bootinfo structure "
 		    "(bootinfo=%p)\n", bi);
