@@ -50,15 +50,13 @@ for pkg in \
   python3-numpy python3-scipy python3-pandas \
   python3-matplotlib python3-scikit-learn \
   python3-torch python3-torchvision python3-torchaudio \
-  python3-onnx python3-onnxruntime \
-  python3-pytest; do
+  python3-onnx python3-onnxruntime; do
   apt_pin_install "$pkg"
 done
 
 pip3 install --no-cache-dir \
   tensorflow-cpu jax jaxlib \
-  tensorflow-model-optimization mlflow onnxruntime-tools \
-  pytest pre-commit
+  tensorflow-model-optimization mlflow onnxruntime-tools
 
 #- QEMU emulation for foreign binaries
 for pkg in \
@@ -144,6 +142,21 @@ curl -fsSL "https://raw.githubusercontent.com/protocolbuffers/protobuf/v${PROTO_
 unzip -d /usr/local /tmp/protoc.zip
 rm /tmp/protoc.zip
 
+fi
+
+# Ensure critical Python tooling is present even if package installs were skipped
+pip3 install --no-cache-dir -U pytest pre-commit || true
+
+# Create a minimal pre-commit configuration if one does not already exist
+if [ ! -f .pre-commit-config.yaml ]; then
+cat > .pre-commit-config.yaml <<'EOF'
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+EOF
 fi
 
 #- gmake alias
