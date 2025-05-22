@@ -176,6 +176,7 @@ fi
 AC_MSG_RESULT([$ac_cxx17])
 AC_SUBST([CXXSTD])
 
+
 dnl Configure parameters
 AC_ARG_WITH([comport],
 	[AC_HELP_STRING([--with-comport=PORT],
@@ -308,7 +309,7 @@ case $LDFLAGS in
 esac
 LDFLAGS="-N -L\$(top_builddir)/lib -L$LIBGCCDIR $LDFLAGS"
 CFLAGS="-nostdinc $CFLAGS"
-CXXFLAGS="-fno-exceptions $CXXFLAGS"
+CXXFLAGS="$CXXSTD -fno-exceptions"
 
 CC_VERSION=`echo __GNUC__ | $CC -E  - | grep -v "\#"`
 CC_SUBVERSION=`echo __GNUC_MINOR__ | $CC -E  - | grep -v "\#"`
@@ -381,6 +382,7 @@ case $ROOTTASK_LINKBASE in
 esac
 
 AC_SUBST([CXXFLAGS])
+AC_SUBST([CXXSTD])
 AC_SUBST([ARCH])
 AC_SUBST([KERNEL])
 AC_SUBST([KICKSTART_LINKBASE])
