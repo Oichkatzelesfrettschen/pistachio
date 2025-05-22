@@ -39,8 +39,11 @@
 #include INC_PLAT(opic.h)
 #include INC_PLAT(1275tree.h)
 
-#include INC_GLUE(intctrl.h)
-#include INC_GLUE(bat.h)
+#include <device_area.h>
+
+#if defined(CONFIG_SMP)
+extern void handle_smp_ipi(int vector);
+#endif
 
 //#define TRACE_OPIC TRACEF
 #define TRACE_OPIC(x...)
@@ -272,8 +275,7 @@ SECTION(".init") void intctrl_t::bat_map()
     if( this->opic_paddr == 0 )
 	return;
 
-    // TODO: remove glue deps
-    this->opic_vaddr = DEVICE_AREA_START;
+    this->opic_vaddr = (word_t)device_area_start();
 
     ppc_bat_t opic_bat;
     opic_bat.raw.upper = opic_bat.raw.lower = 0;
@@ -286,8 +288,8 @@ SECTION(".init") void intctrl_t::bat_map()
     opic_bat.x.m = 1;	/* memory coherent	*/
     opic_bat.x.g = 1;	/* gaurded access	*/
     opic_bat.x.pp = BAT_PP_READ_WRITE;
-    ppc_set_opic_dbat( l, opic_bat.raw.lower );
-    ppc_set_opic_dbat( u, opic_bat.raw.upper );
+    ppc_set_dbat2l( opic_bat.raw.lower );
+    ppc_set_dbat2u( opic_bat.raw.upper );
     isync();
 
     TRACE_OPIC( "mapped open-pic to %p (paddr %p)\n", 
