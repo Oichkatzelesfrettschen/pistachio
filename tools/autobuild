@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # Usage: tools/autobuild <configuration>
 # must be run from top level pistachio directory.
