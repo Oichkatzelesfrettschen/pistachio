@@ -6,6 +6,7 @@ configure
 .depend
 *~
 build
+contrib/tmp
 
 syntax: regexp
 ^amd64-build$
