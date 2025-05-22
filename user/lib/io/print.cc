@@ -34,9 +34,6 @@
 #include <l4io.h>
 #include "lib.h"
 
-#ifndef NULL
-#define NULL ((void *) 0)
-#endif
 
 /*
  * Make __l4_ prefixes for regular output functions, and create weak

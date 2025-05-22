@@ -62,9 +62,6 @@ extern int verbose;
 extern L4_KernelInterfacePage_t * kip;
 
 
-#ifndef NULL
-#define NULL ((void *) 0)
-#endif
 
 
 /**

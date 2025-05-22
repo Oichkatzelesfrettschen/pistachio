@@ -58,7 +58,7 @@ static volatile L4_Word8_t *comport = CONFIG_COMPORT;
 #define DTREE_KIP_TYPE	        (L4_BootLoaderSpecificMemoryType + (DTREE_KIP_SUBTYPE << 4))
 
 #define SIGMA0_DEVICE_RELOC     0xf0000000
-void *__l4_dtree = 0;
+void *__l4_dtree = nullptr;
 static L4_Word8_t __attribute__((aligned(4096))) comport_page[4096];
    
 
@@ -87,17 +87,17 @@ static void io_init( void )
     of1275_device_t *dev;
     of1275_tree_t *of1275_tree =  (of1275_tree_t *) L4_Sigma0_GetSpecial(DTREE_KIP_TYPE, 0, 4096);
 
-    if( of1275_tree == 0 )
+    if( of1275_tree == nullptr )
         return;
 
     dev = of1275_tree->find( "/aliases" );
-    if( dev == 0 )
+    if( dev == nullptr )
         return;
     if( !dev->get_prop("com", &alias, &len) )
         return;
 
     dev = of1275_tree->find( alias );
-    if( dev == 0 )
+    if( dev == nullptr )
         return;
     if( !dev->get_prop("reg", (char **)&reg, &len) )
         return;

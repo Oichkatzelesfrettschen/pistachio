@@ -100,7 +100,7 @@ of1275_device_t * of1275_tree_t::find( const char *name )
 {
     of1275_device_t *dev = this->first();
     if( !dev )
-	return 0;
+        return nullptr;
 
     while( dev->is_valid() )
     {
@@ -109,14 +109,14 @@ of1275_device_t * of1275_tree_t::find( const char *name )
 	dev = dev->next();
     }
 
-    return 0;
+    return nullptr;
 }
 
 of1275_device_t * of1275_tree_t::find_handle( L4_Word_t handle )
 {
     of1275_device_t *dev = this->first();
     if( !dev )
-	return 0;
+        return nullptr;
 
     while( dev->is_valid() )
     {
@@ -125,28 +125,28 @@ of1275_device_t * of1275_tree_t::find_handle( L4_Word_t handle )
 	dev = dev->next();
     }
 
-    return 0;
+    return nullptr;
 }
 
 of1275_device_t * of1275_tree_t::get_parent( of1275_device_t *dev )
 {
-    char *slash = 0;
+    char *slash = nullptr;
     int cnt, depth;
 
     if( !dev || !this->first() )
-	return 0;
+        return nullptr;
 
     // Do we have any parents?
     depth = dev->get_depth();
     if( depth <= 1 )
-	return 0;
+        return nullptr;
 
     // Locate the last slash in the name.
     for( char *c = dev->get_name(); *c; c++ )
 	if( *c == '/' )
 	    slash = c;
-    if( slash == 0 )
-	return 0;
+    if( slash == nullptr )
+        return nullptr;
 
     // Count the offset of the last slash.
     cnt = 0;
@@ -163,7 +163,7 @@ of1275_device_t * of1275_tree_t::get_parent( of1275_device_t *dev )
 	parent = parent->next();
     }
 
-    return 0;
+    return nullptr;
 }
 
 of1275_device_t * of1275_tree_t::find_device_type( const char *device_type )
@@ -174,7 +174,7 @@ of1275_device_t * of1275_tree_t::find_device_type( const char *device_type )
 
     dev = this->first();
     if( !dev )
-	return 0;
+        return nullptr;
 
     while( dev->is_valid() )
     {
@@ -184,7 +184,7 @@ of1275_device_t * of1275_tree_t::find_device_type( const char *device_type )
 	dev = dev->next();
     }
 
-    return 0;
+    return nullptr;
 }
 
 #endif	/* !CONFIG_COMPORT */

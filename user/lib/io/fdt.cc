@@ -62,7 +62,7 @@ fdt_header_t *fdt_t::find_subtree_node(fdt_node_t *node, char *name)
 	    break;
 	}
     } while(level > 0);
-    return 0;
+    return nullptr;
 }
 
 fdt_property_t *fdt_t::find_property_node(fdt_node_t *node, char *name)
@@ -92,7 +92,7 @@ fdt_property_t *fdt_t::find_property_node(fdt_node_t *node, char *name)
 	    break;
 	}
     } while(level > 0);
-    return 0;
+    return nullptr;
 }
 
 fdt_property_t *fdt_t::find_property_node(char *path)
@@ -107,17 +107,17 @@ fdt_property_t *fdt_t::find_property_node(char *path)
     for (;;)
     {
 	next_path = strchr(path, '/');
-	if (next_path != 0)
-	{
-	    *next_path = 0;
-	    node = find_subtree_node(node, path);
-	    *next_path = '/';
-	    path = next_path + 1;
-	    if (!node)
-		return 0;
-	}
-	else
-	    return find_property_node(node, path);
+        if (next_path != nullptr)
+        {
+            *next_path = 0;
+            node = find_subtree_node(node, path);
+            *next_path = '/';
+            path = next_path + 1;
+            if (!node)
+                return nullptr;
+        }
+        else
+            return find_property_node(node, path);
     } 
 }
 
@@ -133,16 +133,16 @@ fdt_header_t *fdt_t::find_subtree(char *path)
     for (;;)
     {
 	next_path = strchr(path, '/');
-	if (next_path != 0)
-	{
-	    *next_path = 0;
-	    node = find_subtree_node(node, path);
-	    *next_path = '/';
-	    path = next_path + 1;
-	    if (!node)
-		return 0;
-	}
-	else
-	    return find_subtree_node(node, path);
+        if (next_path != nullptr)
+        {
+            *next_path = 0;
+            node = find_subtree_node(node, path);
+            *next_path = '/';
+            path = next_path + 1;
+            if (!node)
+                return nullptr;
+        }
+        else
+            return find_subtree_node(node, path);
     }
 }
