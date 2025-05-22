@@ -1,5 +1,5 @@
-CFLAGS ?= -std=c2x
-CXXFLAGS ?= -std=c++23
+CFLAGS ?= -std=c23
+CXXFLAGS ?= -std=c++17
 
 build/string.o: user/contrib/elf-loader/platform/amd64-pc99/string.cc
 	echo Building string.o
