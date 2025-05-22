@@ -48,7 +48,7 @@ SHELL=		/bin/sh
 CC=		cc
 CXX=		$(CC) -x c++
 AS=		$(CC)
-CFLAGS=		-std=c2x
+CFLAGS=		-std=c23
 CXXFLAGS=       $(CXXSTD) -fno-exceptions
 CXXSTD=	-std=c++23
 LDFLAGS=	
