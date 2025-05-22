@@ -16,7 +16,7 @@ found in:
 
 L4Ka::Pistachio is built from ground up incorporating the research
 results of the last seven years of microkernel and multi-server
-research.  The code is written in C++ with a strong focus on
+research.  The code is written in C++23 with a strong focus on
 performance and portability.  The first release includes support for
 many of today's widely used commodity architectures:
 

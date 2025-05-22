@@ -2,6 +2,9 @@
 
 This document sketches the high level plan for transforming Pistachio's existing microkernel into a more minimal exokernel. The intent is to keep the kernel as small as possible while still supplying enough hooks to implement system functionality in user space.
 
+The source tree uses modern language features.  All C++ code now targets the
+C++23 standard.
+
 ## Goals
 
 - Reduce kernel complexity by stripping all but the most fundamental mechanisms from the trusted computing base.
