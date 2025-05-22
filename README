@@ -109,3 +109,15 @@ resource managers via IPC.  Replace direct invocations of the old
 paging and scheduling interfaces with RPC stubs to the appropriate
 manager to ensure compatibility with the exokernel.
 
+
+Development workflow
+--------------------
+The repository uses [pre-commit](https://pre-commit.com) to run
+formatters and linters such as **black**, **ruff**, **shellcheck** and
+**golangci-lint**.  Install the hooks once after cloning::
+
+    $ pre-commit install
+
+With the hooks installed, each commit will automatically format and
+lint changed files.
+
