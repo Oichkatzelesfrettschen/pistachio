@@ -48,8 +48,6 @@ public: // to allow initializers
 #define DECLARE_SPINLOCK(name) extern spinlock_t name;
 #define DEFINE_SPINLOCK(name) spinlock_t name = ((spinlock_t) {{_lock: 0}})
 
-// TODO: do I satisfy synchronization criteria for PowerPC?
-// TODO: should i eieio when grabbing the lock?
 
 INLINE void spinlock_t::lock()
 {
@@ -67,12 +65,13 @@ INLINE void spinlock_t::lock()
 	: "r" (&this->_lock), "r" (1)
 	: "cr0", "memory"
 	);
+    isync();
 }
 
 INLINE void spinlock_t::unlock()
 {
     // Ensure memory ordering before we unlock.
-    asm volatile ("eieio" : : : "memory");
+    asm volatile ("sync" : : : "memory");
 
     this->_lock = 0;
 }
