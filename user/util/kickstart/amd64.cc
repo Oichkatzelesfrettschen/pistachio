@@ -44,10 +44,10 @@
 /*
  * Loader formats supported for AMD64.
  */
-loader_format_t loader_formats[] = {
+std::array<loader_format_t, 2> loader_formats = {{
     { "multiboot compliant loader", mbi_probe,  mbi_init },
-    NULL_LOADER
-};
+    null_loader
+}};
 
 
 void fail(int ec)
