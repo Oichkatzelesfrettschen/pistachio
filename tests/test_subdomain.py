@@ -56,5 +56,38 @@ class DestroyTest(unittest.TestCase):
         self.assertEqual(pq_sub.refcnt,0)
         self.assertTrue(pq_sub.destroyed)
 
+    def test_clear_queue(self):
+        pq = PrioQueue()
+        state = SchedState()
+        state.set_prio_queue(pq)
+        self.assertEqual(pq.refcnt, 1)
+
+        state.set_prio_queue(None)
+        self.assertIsNone(state.prio_queue)
+        self.assertEqual(pq.refcnt, 0)
+        self.assertTrue(pq.destroyed)
+
+    def test_many_concurrent_migrations(self):
+        pq_parent = PrioQueue()
+        pq_sub = PrioQueue()
+        states = [SchedState() for _ in range(10)]
+        for st in states:
+            st.set_prio_queue(pq_sub)
+        self.assertEqual(pq_sub.refcnt, 10)
+
+        def migrate(st):
+            st.set_prio_queue(pq_parent)
+
+        threads = [threading.Thread(target=migrate, args=(st,)) for st in states]
+        for t in threads:
+            t.start()
+        for t in threads:
+            t.join()
+
+        self.assertEqual(pq_sub.refcnt, 0)
+        self.assertTrue(pq_sub.destroyed)
+        for st in states:
+            self.assertIs(st.prio_queue, pq_parent)
+
 if __name__ == '__main__':
     unittest.main()
