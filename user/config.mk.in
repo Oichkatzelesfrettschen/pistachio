@@ -50,6 +50,7 @@ CXX=		$(CC) -x c++
 AS=		$(CC)
 CFLAGS=		@CFLAGS@
 CXXFLAGS=	$(CFLAGS) -fno-exceptions
+CXXSTD=	@CXXSTD@
 LDFLAGS=	@LDFLAGS@
 CPPFLAGS=	@CPPFLAGS@
 LGCC=		-lgcc

@@ -160,6 +160,22 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([], [])],
     [AC_MSG_FAILURE([$CC does not support -std=c23])])
 CFLAGS="$save_CFLAGS"
 
+dnl Check if the compiler supports -std=c++17
+AC_MSG_CHECKING([whether $CC accepts -std=c++17])
+save_CFLAGS="$CFLAGS"
+CFLAGS="$CFLAGS -x c++ -std=c++17"
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([], [])],
+    [ac_cxx17=yes],
+    [ac_cxx17=no])
+CFLAGS="$save_CFLAGS"
+if test "$ac_cxx17" = yes; then
+  CXXSTD="-std=c++17"
+else
+  CXXSTD=""
+fi
+AC_MSG_RESULT([$ac_cxx17])
+AC_SUBST([CXXSTD])
+
 dnl Configure parameters
 AC_ARG_WITH([comport],
 	[AC_HELP_STRING([--with-comport=PORT],
