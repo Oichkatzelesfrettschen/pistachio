@@ -246,7 +246,8 @@ void intctrl_t::handle_irq(word_t cpu)
 
     //Lock all interrupts while the handler is running.
     //TODO: Is this really necessary?
-    lock.lock();
+    {
+        scoped_spinlock guard(lock);
     /*
      * Get contents of UIC0_MSR.  This register is read-only
      * and relects the value of UIC0_SR ANDed with UIC0_ER.
@@ -344,7 +345,7 @@ void intctrl_t::handle_irq(word_t cpu)
      * The current interrupt is now masked, so we can allow other
      * interrupts from this point on.
      */
-    lock.unlock();
+    }
 
     /*
      * Call the appropriate handler with the appropriate argument
@@ -384,23 +385,26 @@ void intctrl_t::raise_irq(word_t irq)
 	if (irq > INT_LEVEL_UIC1_MAX) {       /* For UIC2 */
 		irq-=INT_LEVEL_UIC2_MIN ;
 		intMask = 1 << (31 - irq) ;
-		lock.lock();
-		mtdcr(UIC2_SRS,mfdcr(UIC2_SR) | intMask);
-		lock.unlock();
+                {
+                    scoped_spinlock guard(lock);
+                    mtdcr(UIC2_SRS,mfdcr(UIC2_SR) | intMask);
+                }
 	} else if (irq > INT_LEVEL_UIC0_MAX)        /* For UIC1 */
 #else
 	if (irq > INT_LEVEL_UIC0_MAX) {       /* For UIC1 */
 #endif
 		irq-=INT_LEVEL_UIC1_MIN ;
 		intMask = 1 << (31 - irq) ;
-		lock.lock();
-		mtdcr(UIC1_SRS,mfdcr(UIC1_SR) | intMask);
-		lock.unlock();
+                {
+                    scoped_spinlock guard(lock);
+                    mtdcr(UIC1_SRS,mfdcr(UIC1_SR) | intMask);
+                }
 	} else {							/* For UIC0 */
 		intMask = 1 << (31 - irq);
-		lock.lock();
-		mtdcr(UIC0_SRS,mfdcr(UIC0_SR) | intMask);
-		lock.unlock();
+                {
+                    scoped_spinlock guard(lock);
+                    mtdcr(UIC0_SRS,mfdcr(UIC0_SR) | intMask);
+                }
 	}
 }
 
@@ -426,15 +430,15 @@ void intctrl_t::mask(word_t irq)
 		 * as the handler may crush what we just did in UIC_ER.
 		 */
 
-		lock.lock();                        /* lock interrupts */
+                {
+                    scoped_spinlock guard(lock);        /* lock interrupts */
 
-		/* really disable interrupt */
-		mtdcr(UIC2_ER, (~intMask) & mfdcr(UIC2_ER));
+                    /* really disable interrupt */
+                    mtdcr(UIC2_ER, (~intMask) & mfdcr(UIC2_ER));
 
-		mtdcr(UIC2_SR, intMask);       /* clear pending interrupts */
-		mtdcr(UIC0_SR, uic2_dchain_mask);      /* clear dchained UIC1 ints */
-
-		lock.unlock();                         /* re-enable interrupts */
+                    mtdcr(UIC2_SR, intMask);       /* clear pending interrupts */
+                    mtdcr(UIC0_SR, uic2_dchain_mask);      /* clear dchained UIC1 ints */
+                }                                       /* re-enable interrupts */
 		}
 	else if (irq > INT_LEVEL_UIC0_MAX)        /* For UIC1 */
 #else
@@ -450,15 +454,15 @@ void intctrl_t::mask(word_t irq)
 		 * as the handler may crush what we just did in UIC_ER.
 		 */
 
-		lock.lock();                        /* lock interrupts */
+                {
+                    scoped_spinlock guard(lock);        /* lock interrupts */
 
-		/* really disable interrupt */
-		mtdcr(UIC1_ER, (~intMask) & mfdcr(UIC1_ER));
+                    /* really disable interrupt */
+                    mtdcr(UIC1_ER, (~intMask) & mfdcr(UIC1_ER));
 
-		mtdcr(UIC1_SR, intMask);       /* clear pending interrupts */
-		mtdcr(UIC0_SR, uic1_dchain_mask);      /* clear dchained UIC1 ints */
-
-		lock.unlock();                         /* re-enable interrupts */
+                    mtdcr(UIC1_SR, intMask);       /* clear pending interrupts */
+                    mtdcr(UIC0_SR, uic1_dchain_mask);      /* clear dchained UIC1 ints */
+                }                                       /* re-enable interrupts */
 
 		}
 	else
@@ -471,14 +475,14 @@ void intctrl_t::mask(word_t irq)
 		 * as the handler may crush what we just did in UIC_ER.
 		 */
 
-		lock.lock();                        /* lock interrupts */
+                {
+                    scoped_spinlock guard(lock);        /* lock interrupts */
 
-		/* really disable interrupt */
-		mtdcr(UIC0_ER, (~intMask) & mfdcr(UIC0_ER));
+                    /* really disable interrupt */
+                    mtdcr(UIC0_ER, (~intMask) & mfdcr(UIC0_ER));
 
-		mtdcr(UIC0_SR, intMask);   /* clear pending interrupts */
-
-		lock.unlock();                         /* re-enable interrupts */
+                    mtdcr(UIC0_SR, intMask);   /* clear pending interrupts */
+                }                                       /* re-enable interrupts */
 		}
 
 	return;
@@ -511,14 +515,14 @@ bool intctrl_t::unmask(word_t irq)
 			 * as the handler may crush what we just did in UIC_ER.
 			 */
 
-			lock.lock();                        /* lock interrupts */
+                        {
+                            scoped_spinlock guard(lock);        /* lock interrupts */
 
-			mtdcr(UIC2_ER, intMask | mfdcr(UIC2_ER));
+                            mtdcr(UIC2_ER, intMask | mfdcr(UIC2_ER));
 
-			/* Enable dchain*/
-			mtdcr(UIC0_ER, uic2_dchain_mask | mfdcr(UIC0_ER));
-
-			lock.unlock();                         /* re-enable interrupts */
+                            /* Enable dchain*/
+                            mtdcr(UIC0_ER, uic2_dchain_mask | mfdcr(UIC0_ER));
+                        }                                           /* re-enable interrupts */
 			return false;
         }
         }
@@ -543,14 +547,14 @@ bool intctrl_t::unmask(word_t irq)
 			 * as the handler may crush what we just did in UIC_ER.
 			 */
 
-			lock.lock();                        /* lock interrupts */
+                        {
+                            scoped_spinlock guard(lock);        /* lock interrupts */
 
-			mtdcr(UIC1_ER, intMask | mfdcr(UIC1_ER));
+                            mtdcr(UIC1_ER, intMask | mfdcr(UIC1_ER));
 
-			/* Enable dchain*/
-			mtdcr(UIC0_ER, uic1_dchain_mask | mfdcr(UIC0_ER));
-
-			lock.unlock();                         /* re-enable interrupts */
+                            /* Enable dchain*/
+                            mtdcr(UIC0_ER, uic1_dchain_mask | mfdcr(UIC0_ER));
+                        }                                           /* re-enable interrupts */
 			return false;
         }
         }
@@ -570,11 +574,11 @@ bool intctrl_t::unmask(word_t irq)
 			 * as the handler may crush what we just did in UIC_ER.
 			 */
 
-			lock.lock();                        /* lock interrupts */
+                        {
+                            scoped_spinlock guard(lock);        /* lock interrupts */
 
-			mtdcr(UIC0_ER, intMask | mfdcr(UIC0_ER));
-
-			lock.unlock();                         /* re-enable interrupts */
+                            mtdcr(UIC0_ER, intMask | mfdcr(UIC0_ER));
+                        }                                           /* re-enable interrupts */
 			return false;
         }
         }
@@ -638,7 +642,7 @@ bool intctrl_t::is_pending(word_t irq) {
 }
 
 void intctrl_t::dump() {
-	lock.lock();
+        scoped_spinlock guard(lock);
 	printf("UIC0:\nSR: %08x\nER: %08x\nCR: %08x\nPR: %08x\nTR: %08x\nMSR: %08x\nVCR: %08x\nVR: %08x\n",
 			mfdcr(UIC0_SR),mfdcr(UIC0_ER),mfdcr(UIC0_CR),mfdcr(UIC0_PR),
 			mfdcr(UIC0_TR),mfdcr(UIC0_MSR),mfdcr(UIC0_VCR),mfdcr(UIC0_VR));
@@ -650,5 +654,4 @@ void intctrl_t::dump() {
 			mfdcr(UIC2_SR),mfdcr(UIC2_ER),mfdcr(UIC2_CR),mfdcr(UIC2_PR),
 			mfdcr(UIC2_TR),mfdcr(UIC2_MSR),mfdcr(UIC2_VCR),mfdcr(UIC2_VR));
 #endif
-	lock.unlock();
 }

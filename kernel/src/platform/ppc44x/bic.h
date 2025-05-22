@@ -167,22 +167,20 @@ public:
 
     void mask(word_t irq)
 	{ 
-	    lock.lock();
-	    ctrl->mask_irq(irq);
-	    lock.unlock();
-	}
+            scoped_spinlock guard(lock);
+            ctrl->mask_irq(irq);
+        }
 
     bool unmask(word_t irq)
 	{
-	    ASSERT(irq < BGP_MAX_IRQS);
-	    lock.lock();
-        ctrl->ack_irq(irq);
-        bool pending = is_pending(irq);
-        if (!pending)
-            ctrl->unmask_irq(irq, get_irq_routing(irq));
-        lock.unlock();
-	    return pending; 
-	}
+            ASSERT(irq < BGP_MAX_IRQS);
+            scoped_spinlock guard(lock);
+            ctrl->ack_irq(irq);
+            bool pending = is_pending(irq);
+            if (!pending)
+                ctrl->unmask_irq(irq, get_irq_routing(irq));
+            return pending;
+        }
 
     bool is_masked(word_t irq)
 	{ return ctrl->is_masked(irq); }

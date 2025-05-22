@@ -606,17 +606,16 @@ public:
 
     void putc(char c)
 	{ 
-	    lock.lock();
-	    out_buf[out_len++] = c;
-	    if (out_len >= BUF_SIZE || c == '\n')
-		flush_outbuf();
-	    lock.unlock();
-	}
+            scoped_spinlock guard(lock);
+            out_buf[out_len++] = c;
+            if (out_len >= BUF_SIZE || c == '\n')
+                flush_outbuf();
+        }
 
     char getc(bool block)
 	{
 	    char c = 0;
-	    lock.lock();
+            scoped_spinlock guard(lock);
 
             getc_blocked = true;
 	    do {
@@ -630,10 +629,9 @@ public:
 		c = in_buf[in_head];
 		in_head = (in_head + 1) % BUF_SIZE;
 		in_len--;
-	    }
-	    lock.unlock();
-	    return c;
-	}
+            }
+            return c;
+        }
 
     void enqueue_char(char c)
 	{ 
@@ -659,10 +657,11 @@ public:
 	{
             bool ret = false;
 #if defined(CONFIG_KDB_BREAKIN_ESCAPE)
-	    lock.lock();
-	    poll();
-	    ret = in_len != 0 && in_buf[in_head] == 0x1b;
-	    lock.unlock();
+            {
+                scoped_spinlock guard(lock);
+                poll();
+                ret = in_len != 0 && in_buf[in_head] == 0x1b;
+            }
 #endif
             return ret;
 	}
