@@ -1,0 +1,2 @@
+Checks: '-*,readability-*,modernize-*'
+WarningsAsErrors: ''

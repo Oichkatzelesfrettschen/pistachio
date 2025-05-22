@@ -21,4 +21,11 @@ repos:
     rev: v1.55.2
     hooks:
       - id: golangci-lint
+  - repo: local
+    hooks:
+      - id: clang-tidy
+        name: clang-tidy
+        entry: clang-tidy
+        language: system
+        files: \.(c|cc|cpp|cxx|h|hpp)$
 
