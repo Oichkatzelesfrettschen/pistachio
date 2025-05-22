@@ -18,6 +18,7 @@ typedef u64_t period_cycles_t;
 class schedule_req_t;
 
 #include INC_API(smp.h)
+#include INC_ARCH(atomic.h)
 
 EXTERN_KMEM_GROUP(kmem_sched);
 
@@ -195,7 +196,7 @@ public:
     s16_t max_prio;
     
 private:
-    word_t  refcnt;
+    atomic_t  refcnt;
     tcb_t * domain_tcb;
     word_t depth;
     word_t count;
