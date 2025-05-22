@@ -160,20 +160,31 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([], [])],
     [AC_MSG_FAILURE([$CC does not support -std=c23])])
 CFLAGS="$save_CFLAGS"
 
-dnl Check if the compiler supports -std=c++17
-AC_MSG_CHECKING([whether $CC accepts -std=c++17])
+dnl Check if the compiler supports -std=c++23 (or -std=c++2b)
+AC_MSG_CHECKING([whether $CC accepts -std=c++23])
 save_CFLAGS="$CFLAGS"
-CFLAGS="$CFLAGS -x c++ -std=c++17"
+CFLAGS="$CFLAGS -x c++ -std=c++23"
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([], [])],
-    [ac_cxx17=yes],
-    [ac_cxx17=no])
+    [ac_cxx23=yes],
+    [ac_cxx23=no])
 CFLAGS="$save_CFLAGS"
-if test "$ac_cxx17" = yes; then
-  CXXSTD="-std=c++17"
+if test "$ac_cxx23" = yes; then
+  CXXSTD="-std=c++23"
 else
-  CXXSTD=""
+  AC_MSG_CHECKING([whether $CC accepts -std=c++2b])
+  save_CFLAGS="$CFLAGS"
+  CFLAGS="$CFLAGS -x c++ -std=c++2b"
+  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([], [])],
+      [ac_cxx23=yes],
+      [ac_cxx23=no])
+  CFLAGS="$save_CFLAGS"
+  if test "$ac_cxx23" = yes; then
+    CXXSTD="-std=c++2b"
+  else
+    AC_MSG_FAILURE([$CC does not support -std=c++23 or -std=c++2b])
+  fi
 fi
-AC_MSG_RESULT([$ac_cxx17])
+AC_MSG_RESULT([$CXXSTD])
 AC_SUBST([CXXSTD])
 
 

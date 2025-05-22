@@ -173,7 +173,7 @@ CCFLAGS += -fno-rtti -fno-builtin  -fomit-frame-pointer -fno-exceptions \
           $(CFLAGS_$(ARCH)) $(CFLAGS_$(CPU)) $(CFLAGS_$(PLATFORM))
 
 # C++ compiler flags build on C compiler flags and set the C++ standard
-CXXFLAGS += $(CCFLAGS) -std=c++17
+CXXFLAGS += $(CCFLAGS) -std=c++23
 
 ifeq ("$(CC_VERSION)", "4")
 CCFLAGS += -Wno-conversion
