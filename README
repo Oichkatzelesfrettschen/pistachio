@@ -122,3 +122,11 @@ formatters and linters such as **black**, **ruff**, **shellcheck** and
 With the hooks installed, each commit will automatically format and
 lint changed files.
 
+Running clang-tidy
+------------------
+The tree includes a `.clang-tidy` configuration enabling the modernize
+and readability checks. The pre-commit hook runs the tool on modified
+C/C++ sources. To invoke it manually on a file::
+
+    $ clang-tidy path/to/file.cc
+
