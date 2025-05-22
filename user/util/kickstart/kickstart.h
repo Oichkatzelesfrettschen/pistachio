@@ -81,10 +81,14 @@ void fail (int ec);
 // Helper functions
 #define FAIL() do { fail(__LINE__); } while (0)
 
-L4_INLINE L4_Word_t align_up (L4_Word_t addr, L4_Word_t size)
+#ifdef __cplusplus
+constexpr inline L4_Word_t align_up (L4_Word_t addr, L4_Word_t size)
 {
     return (addr + size - 1) & ~(size - 1);
 }
+#else
+#define align_up(addr, size) (((addr) + (size) - 1) & ~((size) - 1))
+#endif
 
 
 #endif /* !__KICKSTART__KICKSTART_H__ */
