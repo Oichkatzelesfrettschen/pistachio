@@ -143,10 +143,10 @@ extern "C" void putc(int c)
 /*
  * Loader formats supported for PowerPC
  */
-loader_format_t loader_formats[] = {
+std::array<loader_format_t, 2> loader_formats = {{
     { "Flattened device tree", fdt_probe, fdt_init },
-    NULL_LOADER
-};
+    null_loader
+}};
 
 
 void fail(int ec)

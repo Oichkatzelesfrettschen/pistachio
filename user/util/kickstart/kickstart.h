@@ -33,10 +33,8 @@
 #define __KICKSTART__KICKSTART_H__
 
 #include <l4/types.h>
-
-#ifndef NULL
-#define NULL	0
-#endif
+#include <array>
+#include <cstddef>
 
 
 /**
@@ -64,13 +62,13 @@ public:
     L4_Word_t (*init)(void);
 };
 
-#define NULL_LOADER { "null", NULL, NULL }
+constexpr loader_format_t null_loader { "null", nullptr, nullptr };
 
 
 /**
  * NULL terminated array of loader formats.
  */
-extern loader_format_t loader_formats[];
+extern std::array<loader_format_t, 2> loader_formats;
 
 
 
