@@ -2,9 +2,10 @@ Building the PowerPC Kernel with Modern Toolchains
 =================================================
 
 This guide explains how to cross compile Pistachio for PowerPC using
-current versions of GCC or Clang.  The sources require a C23 compiler
-and a C++ compiler supporting at least the C++17 standard.  GCC 14 and
-Clang 17 or newer are known to work.
+current versions of GCC or Clang.  The build system now expects
+compilers that understand modern language standards: C sources require
+C23 while C++ sources require at least C++23.  GCC 14 and Clang 17 or
+newer are known to work.
 
 Prerequisites
 -------------
