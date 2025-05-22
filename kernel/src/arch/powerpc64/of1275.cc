@@ -514,7 +514,29 @@ of1275_client_interface_t::enter()
 s32_t SECTION (".init")
 interpret( const char *forth )
 {
-    return 0;
+    s32_t ret = -1;
+    int forth_len = strlen(forth) + 1;
+
+    if( (forth_len + sizeof(of1275.args.interpret)) > sizeof(of1275.args.shared) )
+        return ret;
+
+    of1275_client_interface_t *of = get_of1275();
+    of = PTRRELOC(of);
+
+    of->ci_lock.lock();
+
+    of->args.interpret.service = (word_t)("interpret");
+    of->args.interpret.nargs = 1;
+    of->args.interpret.nret = 1;
+    of->args.interpret.forth = (word_t)(of->args.shared + sizeof(of->args.interpret));
+    of->args.interpret.result = -1;
+    sstrncpy((char *)(word_t)of->args.interpret.forth, forth, forth_len);
+
+    of->call(&of->args.interpret);
+    ret = of->args.interpret.result;
+
+    of->ci_lock.unlock();
+    return ret;
 }
 
 

@@ -32,6 +32,7 @@
 #include <debug.h>
 #include <kdb/kdb.h>
 #include INC_ARCH(rtas.h)
+#include INC_ARCH(of1275.h)
 
 /*
  * Reboot the box
@@ -43,7 +44,7 @@ CMD (cmd_reboot, cg)
 #if (CONFIG_PLAT_OFPOWER3 || CONFIG_PLAT_OFPOWER4)
     get_rtas()->machine_restart();
 #else
-#error FIXME
+    get_of1275()->interpret("reset-all");
 #endif
 
     return CMD_NOQUIT;
@@ -59,7 +60,7 @@ CMD (cmd_powerdown, cg)
 #if (CONFIG_PLAT_OFPOWER3 || CONFIG_PLAT_OFPOWER4)
     get_rtas()->machine_power_off();
 #else
-#error FIXME
+    get_of1275()->interpret("shut-down");
 #endif
 
     return CMD_NOQUIT;
