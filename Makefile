@@ -8,4 +8,8 @@ build/string.o: user/contrib/elf-loader/platform/amd64-pc99/string.cc
 
 all: build/string.o
 
-.PHONY: all
+.PHONY: all clean
+
+clean:
+	rm -rf build
+	find . -name '*.o' -delete

@@ -72,6 +72,7 @@ For 64-bit machines use `--host=amd64`.  Additional link-base options
 (e.g. `--with-kickstart-linkbase`, `--with-s0-linkbase`,
 `--with-roottask-linkbase`) may be supplied as required.
 After configuration run `make` and optionally `make install`.
+Use `make clean` to remove the build directory and any generated object files.
 
 
 Launching user-level resource managers
