@@ -16,6 +16,7 @@
 EXTERN_TRACEPOINT(SCHEDULE_PM_DELAYED);
 EXTERN_TRACEPOINT(SCHEDULE_PM_DELAY_REFRESH);
 EXTERN_TRACEPOINT(SCHEDULE_IDLE);
+#include <kmemory.h>
 
 INLINE void hs_sched_ktcb_t::account_pass() 
 {
@@ -38,12 +39,34 @@ INLINE void hs_sched_ktcb_t::account_pass()
 
 INLINE void hs_sched_ktcb_t::set_prio_queue( prio_queue_t *q )
 {
-    // TODO: delete priority subdomains when they become empty. 
+    prio_queue_t *old = prio_queue;
+
+    if( q )
+        q->refcnt++;
+
     prio_queue = q;
 
-    if( flags.is_set(is_schedule_domain))
-	get_domain_prio_queue()->set_depth(prio_queue);
-   
+    if( old )
+    {
+        if( old->refcnt-- == 1 && old->get_domain_tcb() != get_idle_tcb())
+        {
+            prio_queue_t *queue = old->cpu_head;
+#if defined(CONFIG_SMP)
+            do {
+                queue->get_domain_tcb()->sched_state.prio_queue = NULL;
+                queue = queue->cpu_link;
+            } while( queue != old->cpu_head );
+#else
+            queue->get_domain_tcb()->sched_state.prio_queue = NULL;
+#endif
+            kmem.free(kmem_sched, (addr_t)old->cpu_head->get_domain_tcb(),
+                      sizeof(whole_tcb_t) * cpu_t::count);
+        }
+    }
+
+    if( flags.is_set(is_schedule_domain) && prio_queue )
+        get_domain_prio_queue()->set_depth(prio_queue);
+
 }
 
 INLINE void hs_sched_ktcb_t::migrate_prio_queue(prio_queue_t *nq)
