@@ -78,13 +78,10 @@ EOT
 if $CC -std=c23 -c conftest.c -o conftest.o >/dev/null 2>&1; then
     echo yes
     STD_CFLAG=-std=c23
-elif $CC -std=c2x -c conftest.c -o conftest.o >/dev/null 2>&1; then
-    echo "using -std=c2x"
-    STD_CFLAG=-std=c2x
 else
     echo no
     rm -f conftest.c conftest.o
-    echo "$CC does not support -std=c23 or -std=c2x" >&2
+    echo "$CC does not support -std=c23" >&2
     exit 1
 fi
 rm -f conftest.c conftest.o
@@ -96,13 +93,10 @@ EOT
 if $CC -x c++ -std=c++23 -c conftest.cpp -o conftest.o >/dev/null 2>&1; then
     echo yes
     STD_CXXFLAG=-std=c++23
-elif $CC -x c++ -std=c++2b -c conftest.cpp -o conftest.o >/dev/null 2>&1; then
-    echo "using -std=c++2b"
-    STD_CXXFLAG=-std=c++2b
 else
     echo no
     rm -f conftest.cpp conftest.o
-    echo "$CC does not support -std=c++23 or -std=c++2b" >&2
+    echo "$CC does not support -std=c++23" >&2
     exit 1
 fi
 rm -f conftest.cpp conftest.o
