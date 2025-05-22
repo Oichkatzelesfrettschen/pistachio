@@ -1,4 +1,4 @@
-## -*- mode: Makefile; -*-
+	## -*- mode: Makefile; -*-
 ######################################################################
 ##                
 ## Copyright (C) 2001-2009, 2011,  Karlsruhe University
@@ -210,7 +210,7 @@ LDSCRIPT = $(SRCDIR)/src/platform/$(PLATFORM)/linker.lds
 %.o:	%.cc
 	@$(ECHO_MSG) $(subst $(SRCDIR)/,,$<)
 	@if [ ! -d $(dir $@) ]; then $(MKDIRHIER) $(dir $@); fi
-       cd $(dir $@) && $(CXX) $(CPPFLAGS) $(CXXFLAGS) $(CFLAGS_$*) -c $<
+	cd $(dir $@) && $(CXX) $(CPPFLAGS) $(CXXFLAGS) $(CFLAGS_$*) -c $<
 
 
 

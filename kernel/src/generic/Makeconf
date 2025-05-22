@@ -1,10 +1,10 @@
 ######################################################################
-##                
+##
 ## Copyright (C) 2010,  Karlsruhe University
-##                
+##
 ## File path:     generic/Makeconf
-## Description:   Generic linkser script for x86.
-##                
+## Description:   Generic linker script for x86.
+##
 ## Redistribution and use in source and binary forms, with or without
 ## modification, are permitted provided that the following conditions
 ## are met:
@@ -13,7 +13,7 @@
 ## 2. Redistributions in binary form must reproduce the above copyright
 ##    notice, this list of conditions and the following disclaimer in the
 ##    documentation and/or other materials provided with the distribution.
-## 
+##
 ## THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
 ## ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 ## IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -25,20 +25,20 @@
 ## LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
 ## OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 ## SUCH DAMAGE.
-##                
+##
 ## $Id$
-##                
+##
 ######################################################################
-SOURCES+=	src/generic/lib.cc \ 
-	src/generic/user_mem.cc \
-	src/generic/kmemory.cc \
-	src/generic/irq_manager.cc
+SOURCES+= \
+    src/generic/lib.cc \
+    src/generic/user_mem.cc \
+    src/generic/kmemory.cc \
+    src/generic/irq_manager.cc
 
 ifeq ("$(CONFIG_ACPI)","y")
-SOURCES+=	src/generic/acpi.cc
+SOURCES+=       src/generic/acpi.cc
 endif
 
 ifeq ("$(CONFIG_X86_IO_FLEXPAGES)","y")
-SOURCES+=	src/generic/vrt.cc 
+SOURCES+=       src/generic/vrt.cc
 endif
-
