@@ -78,6 +78,19 @@ extern inline bool is_intersection(
 	|| ((start1 <= start2) && (end1 >= end2));
 }
 
-#define MB(x)			(x*1024*1024)
-#define ROUND_DOWN(x, size)	(x & ~(size-1))
-#define ROUND_UP(x, size)	(ROUND_DOWN(x, size) == x ? x : ROUND_DOWN(x, size) + size)
+constexpr inline L4_Word_t MB(L4_Word_t x)
+{
+    return x * 1024 * 1024;
+}
+
+constexpr inline L4_Word_t ROUND_DOWN(L4_Word_t x, L4_Word_t size)
+{
+    return x & ~(size - 1);
+}
+
+constexpr inline L4_Word_t ROUND_UP(L4_Word_t x, L4_Word_t size)
+{
+    L4_Word_t rd = ROUND_DOWN(x, size);
+    return rd == x ? x : rd + size;
+}
+
