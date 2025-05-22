@@ -34,6 +34,7 @@
 #include INC_PLAT(rtc.h)
 #include INC_GLUE(intctrl.h)
 #include INC_GLUE(timer.h)
+#include <irq_manager.h>
 
 #include INC_API(schedule.h)
 
@@ -74,8 +75,7 @@ X86_EXCNO_ERRORCODE(timer_interrupt, IRQLINE)
 
 void SECTION (".init") timer_t::init_global()
 {
-    /* TODO: Should be irq_manager.register(hwirq, 8, &timer_interrupt); */
-    idt.add_gate(0x20+IRQLINE, idt_t::interrupt, timer_interrupt);
+    irq_manager.register_irq(IRQLINE, 8, timer_interrupt);
 
     rtc_t<0x70> rtc;
 
@@ -92,8 +92,7 @@ void SECTION (".init") timer_t::init_global()
     /* read(0x0c) clears all interrupts in RTC */
     rtc.read(0x0c);
 
-    /* TODO: Should this become irq_manager.unmask(hwirq, 8) ? */
-    get_interrupt_ctrl()->unmask(IRQLINE);
+    irq_manager.unmask(IRQLINE);
 }
 
 
