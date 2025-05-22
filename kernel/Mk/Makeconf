@@ -87,6 +87,8 @@ endif
 CC_VERSION	= $(shell echo __GNUC__ | $(CC) -E  - | grep -v "\#")
 CC_SUBVERSION	= $(shell echo __GNUC_MINOR__ | $(CC) -E  - | grep -v "\#")
 
+# Use the C compiler in C++ mode for kernel sources
+CXX=             $(CC) -x c++
 
 ######################################################################
 #
@@ -208,7 +210,7 @@ LDSCRIPT = $(SRCDIR)/src/platform/$(PLATFORM)/linker.lds
 %.o:	%.cc
 	@$(ECHO_MSG) $(subst $(SRCDIR)/,,$<)
 	@if [ ! -d $(dir $@) ]; then $(MKDIRHIER) $(dir $@); fi
-       cd $(dir $@) && $(CC) $(CPPFLAGS) $(CXXFLAGS) $(CFLAGS_$*) -c $<
+       cd $(dir $@) && $(CXX) $(CPPFLAGS) $(CXXFLAGS) $(CFLAGS_$*) -c $<
 
 
 
