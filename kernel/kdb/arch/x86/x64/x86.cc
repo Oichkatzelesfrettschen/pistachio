@@ -163,7 +163,7 @@ DECLARE_CMD (cmd_pgtcalc, arch, 'P', "pgtcalc", "calculate page table indices");
 
 CMD(cmd_pgtcalc, cg)
 {
-    addr_t addr = (addr_t) get_hex ("Virtual address", NULL);
+    addr_t addr = (addr_t) get_hex ("Virtual address", nullptr);
     printf("%p -> %d, %d, %d, %d\n",
 	   addr,
 	   page_table_index(pgent_t::size_512g, addr),

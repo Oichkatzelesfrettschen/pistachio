@@ -71,7 +71,7 @@ void of1275_client_interface_t::init( word_t entry )
 
 word_t of1275_client_interface_t::ci( void *params )
 {
-    if( this->entry == NULL )
+    if( this->entry == nullptr )
 	return (word_t)-1;
 
     return get_of1275_space()->execute_of1275( this->entry, params );
@@ -281,7 +281,7 @@ void of1275_client_interface_t::quiesce()
     this->ci( &this->args.simple );
 
     // Prevent any further invocations of Open Firmware.
-    this->entry = NULL;
+    this->entry = nullptr;
 
     this->ci_lock.unlock();
 }

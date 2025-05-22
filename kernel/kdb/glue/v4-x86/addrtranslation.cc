@@ -47,9 +47,9 @@ DECLARE_CMD( cmd_virt_to_phys, root, 'i', "virt_to_phys", "Translate virtual add
 CMD( cmd_virt_to_phys, cg )
 {
     threadid_t space_id;
-    space_id.set_raw( get_hex("Space:", 0, NULL ) );
-    addr_t vaddr = (addr_t)get_hex("Virtual Address", 0, NULL );
-    cpuid_t cpu = (cpuid_t)get_dec("CPU", 0, NULL );
+    space_id.set_raw( get_hex("Space:", 0, nullptr ) );
+    addr_t vaddr = (addr_t)get_hex("Virtual Address", 0, nullptr );
+    cpuid_t cpu = (cpuid_t)get_dec("CPU", 0, nullptr );
     
     space_t * space;
     if ( space_id.get_raw() == 0x0 )

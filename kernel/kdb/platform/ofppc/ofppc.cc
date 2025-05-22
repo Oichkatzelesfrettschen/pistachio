@@ -220,7 +220,7 @@ word_t of1275_space_t::execute_of1275( word_t (*func)(void *), void *param )
     // large stack with sufficient space for Open Firmware.  The boot stack
     // is mapped by a bat, and rather large.
     if( this->using_of1275_stack() )
-	sp = NULL;
+	sp = nullptr;
     else
     {
 	sp = (word_t *)(this->of1275_stack_top-16);

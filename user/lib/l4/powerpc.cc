@@ -35,22 +35,22 @@
 #define NULL 0
 #endif
 
-__L4_Ipc_t __L4_Ipc = NULL;
-__L4_Lipc_t __L4_Lipc = NULL;
-__L4_Unmap_t __L4_Unmap = NULL;
-__L4_Schedule_t __L4_Schedule = NULL;
-__L4_ThreadSwitch_t __L4_ThreadSwitch = NULL;
-__L4_SystemClock_t __L4_SystemClock = NULL;
-__L4_ExchangeRegisters_t __L4_ExchangeRegisters = NULL;
+__L4_Ipc_t __L4_Ipc = nullptr;
+__L4_Lipc_t __L4_Lipc = nullptr;
+__L4_Unmap_t __L4_Unmap = nullptr;
+__L4_Schedule_t __L4_Schedule = nullptr;
+__L4_ThreadSwitch_t __L4_ThreadSwitch = nullptr;
+__L4_SystemClock_t __L4_SystemClock = nullptr;
+__L4_ExchangeRegisters_t __L4_ExchangeRegisters = nullptr;
 
-__L4_ThreadControl_t __L4_ThreadControl = NULL;
-__L4_SpaceControl_t __L4_SpaceControl = NULL;
-__L4_ProcessorControl_t __L4_ProcessorControl = NULL;
-__L4_MemoryControl_t __L4_MemoryControl = NULL;
+__L4_ThreadControl_t __L4_ThreadControl = nullptr;
+__L4_SpaceControl_t __L4_SpaceControl = nullptr;
+__L4_ProcessorControl_t __L4_ProcessorControl = nullptr;
+__L4_MemoryControl_t __L4_MemoryControl = nullptr;
 
 extern "C" void __L4_Init( void )
 {
-    L4_KernelInterfacePage_t *kip = (L4_KernelInterfacePage_t *) L4_KernelInterface( NULL, NULL, NULL );
+    L4_KernelInterfacePage_t *kip = (L4_KernelInterfacePage_t *) L4_KernelInterface( nullptr, nullptr, nullptr );
 
 #define KIP_RELOC(a) (a)
 

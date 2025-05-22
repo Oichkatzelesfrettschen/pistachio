@@ -168,7 +168,7 @@ EXCDEF( isi_handler )
     try_to_debug( frame, EXCEPT_ID(ISI) );
 
     space_t *space = get_current_tcb()->get_space();
-    if( EXPECT_FALSE(space == NULL) )
+    if( EXPECT_FALSE(space == nullptr) )
 	space = get_kernel_space();
 
     if( EXCEPT_IS_ISI_MISS(srr1) ) 
@@ -193,7 +193,7 @@ EXCDEF( dsi_handler )
 
     tcb_t *tcb = get_current_tcb();
     space_t *space = tcb->get_space();
-    if( EXPECT_FALSE(space == NULL) )
+    if( EXPECT_FALSE(space == nullptr) )
 	space = get_kernel_space();
 
     // Do we have a page hash miss?

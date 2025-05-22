@@ -231,7 +231,7 @@ INLINE word_t vrt_node_t::get_object (void)
 
 /**
  * Retrieve table pointer stored in node.
- * @return table pointer, or NULL if there is no table
+ * @return table pointer, or nullptr if there is no table
  */
 INLINE vrt_table_t * vrt_node_t::get_table (void)
 {
@@ -334,7 +334,7 @@ INLINE mdb_node_t * vrt_table_t::get_mapnode (word_t addr)
 /**
  * Retrieve sub-table from within mapping table.
  * @param addr		address to use for indexing
- * @return pointer to mapping table, or NULL if no table exists
+ * @return pointer to mapping table, or nullptr if no table exists
  */
 INLINE vrt_table_t * vrt_table_t::get_table (word_t addr)
 {
@@ -410,7 +410,7 @@ INLINE void vrt_table_t::set_object (vrt_t * vrt, word_t addr, word_t paddr,
 				     vrt_node_t * obj, word_t obj_size,
 				     word_t access)
 {
-    if (obj == NULL)
+    if (obj == nullptr)
 	clear (addr);
     else
     {
@@ -438,7 +438,7 @@ INLINE void vrt_table_t::set_mapnode (word_t addr, mdb_node_t * map)
  */
 INLINE void vrt_table_t::set_table (word_t addr, vrt_table_t * t)
 {
-    if (t == NULL)
+    if (t == nullptr)
 	clear (addr);
     else
     {

@@ -116,15 +116,15 @@ static const word_t hwreg_shadow_tlb[] = {
 #endif
 
 const word_t* const ctrlxfer_item_t::hwregs[] = {
-    frame_gprs0, frame_gprs1, frame_gprx, NULL, 
+    frame_gprs0, frame_gprs1, frame_gprx, nullptr, 
 #ifdef CONFIG_X_PPC_SOFTHVM
     hwreg_mmu, hwreg_except, hwreg_ivor, 
     hwreg_timer, hwreg_config, hwreg_debug,
     hwreg_icache, hwreg_dcache, hwreg_shadow_tlb,
-    NULL, NULL, NULL, NULL, // TLBs (probably not required)
-    NULL, NULL, NULL, NULL, 
-    NULL, NULL, NULL, NULL, 
-    NULL, NULL, NULL, NULL, 
+    nullptr, nullptr, nullptr, nullptr, // TLBs (probably not required)
+    nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, 
 #endif
 };
 

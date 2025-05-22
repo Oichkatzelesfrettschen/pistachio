@@ -93,7 +93,7 @@ void all_schedule_tests(void)
 /* the menu */
 static struct menuitem menu_items[] = 
 {
-	{ NULL, "return" },
+	{ nullptr, "return" },
 	{ test_irq_priority_unassociated,  
 	  "Change irq thread priority of an unassociated thread" },
 	{ test_irq_priority_associated,  

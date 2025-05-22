@@ -46,7 +46,7 @@ void setup_exreg(L4_Word_t *ip, L4_Word_t *sp, void (*func)(void))
   if (*sp == 0)
     {
       stack = (L4_Word_t*)get_pages( STACK_PAGES, 1 );
-      assert( stack != NULL );
+      assert( stack != nullptr );
       *sp = (L4_Word_t)&stack[max-1];
     }
 

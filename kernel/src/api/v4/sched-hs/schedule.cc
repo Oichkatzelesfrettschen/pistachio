@@ -47,8 +47,8 @@ prio_queue_t * prio_queue_t::add_prio_domain(schedule_ctrl_t prio_control)
     // Allocate dummy tcbs for the scheduling domain.
     whole_tcb_t *domain_tcbs = (whole_tcb_t *)kmem.alloc( kmem_sched, sizeof(whole_tcb_t) * num_cpus );
     
-    if( domain_tcbs == NULL )
-        return NULL;
+    if( domain_tcbs == nullptr )
+        return nullptr;
     
     // Initialize a dummy tcb for the domain, which serves as a schedulable entity.
     for( cpuid_t cpu = 0; cpu < num_cpus; cpu++ )
@@ -123,7 +123,7 @@ prio_queue_t *prio_queue_t::domain_partner( cpuid_t cpu )
     }
     return partner_queue;
 #endif
-    return NULL;
+    return nullptr;
     
 }
 
@@ -166,9 +166,9 @@ tcb_t * scheduler_t::find_next_thread(prio_queue_t * prio_queue)
     for (s16_t prio = MAX_PRIORITY; prio >= 0; prio--)
     {
 	// Proportional share stride scheduling search.
-	tcb_t *search_tcb = NULL;
+	tcb_t *search_tcb = nullptr;
 	tcb_t *tcb = prio_queue->get(prio);
-	tcb_t *return_tcb = NULL;
+	tcb_t *return_tcb = nullptr;
 	
 	while( tcb && !search_tcb )
 	{
@@ -188,14 +188,14 @@ tcb_t * scheduler_t::find_next_thread(prio_queue_t * prio_queue)
 		    tcb = tcb->sched_state.ready_list.next;
                     
 		    if( tcb == prio_queue->get(prio) )
-			tcb = NULL; // We wrapped around the list.
+			tcb = nullptr; // We wrapped around the list.
 		}
 		else 
 		{
 		    // Dequeue a blocked thread.
 		    tcb_t *next_tcb = tcb->sched_state.ready_list.next;
 		    prio_queue->dequeue(tcb);
-		    tcb = (tcb == next_tcb) ? NULL : next_tcb;
+		    tcb = (tcb == next_tcb) ? nullptr : next_tcb;
 		}
                 
 	    }
@@ -215,7 +215,7 @@ tcb_t * scheduler_t::find_next_thread(prio_queue_t * prio_queue)
 		    prio_queue->dequeue(search_tcb);
 
 		    // Prepare to restart the search at the current prio.
-		    search_tcb = NULL;
+		    search_tcb = nullptr;
 		    tcb = prio_queue->get(prio);
 		}
 		else
@@ -266,9 +266,9 @@ static void do_xcpu_domain_stride(cpu_mb_entry_t * entry)
 
 void hs_scheduler_t::policy_scheduler_init()
 {
-    wakeup_list = NULL;
-    scheduled_tcb = NULL;
-    scheduled_queue = NULL;
+    wakeup_list = nullptr;
+    scheduled_tcb = nullptr;
+    scheduled_queue = nullptr;
     cpuid_t cpu = get_current_cpu();
     
     root_prio_queue.init(get_on_cpu(cpu, get_idle_tcb()));
@@ -336,7 +336,7 @@ void hs_scheduler_t::hs_extended_schedule(schedule_req_t *req)
             ASSERT(queue->get_domain_tcb());
             cpuid_t cpu = queue->get_domain_tcb()->get_cpu();
             if( cpu != get_current_cpu() )
-                xcpu_request( cpu, do_xcpu_domain_reset_period, NULL, (word_t) queue );
+                xcpu_request( cpu, do_xcpu_domain_reset_period, nullptr, (word_t) queue );
             queue = queue->cpu_link;
         } while( queue != queue->cpu_head );
 #endif /* defined(CONFIG_SMP)*/
@@ -509,7 +509,7 @@ void hs_scheduler_t::smp_requeue(bool holdlock)
     if (!rq->is_empty() || holdlock)
     {
         rq->lock.lock();
-        tcb_t *tcb = NULL;
+        tcb_t *tcb = nullptr;
 
         while (!rq->is_empty()) 
         {
@@ -519,7 +519,7 @@ void hs_scheduler_t::smp_requeue(bool holdlock)
             if (tcb->sched_state.requeue_callback) 
             {
                 tcb->sched_state.requeue_callback(tcb);
-                tcb->sched_state.requeue_callback = NULL;
+                tcb->sched_state.requeue_callback = nullptr;
             }
             else
             {
@@ -605,7 +605,7 @@ void scheduler_t::move_tcb(tcb_t *tcb, cpuid_t cpu)
 
 
     smp_requeue(true);
-    ASSERT(tcb->sched_state.requeue == NULL);
+    ASSERT(tcb->sched_state.requeue == nullptr);
 
     if (tcb->get_space())
         tcb->get_space()->move_tcb(tcb, get_current_cpu(), cpu);

@@ -221,7 +221,7 @@ void all_arch_tests( void )
 
 static struct menuitem menu_items[] =
 {
-    { NULL,		"return" },
+    { nullptr,		"return" },
     { exception_test,	"Exception test" },
     { ctrlxfer_test,	"CtrlXfer test" },
     { all_arch_tests,	"All IA32 tests" }

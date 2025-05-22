@@ -191,7 +191,7 @@ void all_s0_tests(void)
 /* the menu */
 static struct menuitem menu_items[] = 
 {
-	{ NULL, "return" },
+	{ nullptr, "return" },
 	{ request_mem,  "Request Memory" },
 	{ bad_send,     "Phony Send" },
 	{ bad_recv,     "Phony Receive" },

@@ -99,13 +99,13 @@ INLINE except_regs_t *get_user_except_regs( tcb_t *tcb )
 
 INLINE void tcb_t::set_utcb_location( word_t utcb_location )
 {
-    utcb_t *dummy = (utcb_t *)NULL;
+    utcb_t *dummy = (utcb_t *)nullptr;
     myself_local.set_raw( utcb_location + (word_t)dummy->mr );
 }
 
 INLINE word_t tcb_t::get_utcb_location()
 {
-    utcb_t *dummy = (utcb_t *)NULL;
+    utcb_t *dummy = (utcb_t *)nullptr;
     return myself_local.get_raw() - (word_t)dummy->mr;
 }
 

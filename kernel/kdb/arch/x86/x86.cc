@@ -146,7 +146,7 @@ CMD(cmd_ports, cg)
 {
     char dir  = get_choice ("Access mode", "In/Out", 'i');
     char width = get_choice ("Access width", "Byte/Word/Dword", 'b');
-    u16_t port = get_hex ("Port", 0x80, NULL);
+    u16_t port = get_hex ("Port", 0x80, nullptr);
 
     u32_t val = 0;
 
@@ -160,7 +160,7 @@ CMD(cmd_ports, cg)
 	printf("Value = %x\n", val);
 	break;
     case 'o':
-	val = get_hex ("Value", 0, NULL);
+	val = get_hex ("Value", 0, nullptr);
 	switch (width) {
 	case 'b': out_u8(port, val); break;
 	case 'w': out_u16(port, val); break;
@@ -200,7 +200,7 @@ DECLARE_CMD (cmd_send_nmi, arch, 'N', "send_nmi", "send NMI to CPU");
 
 CMD(cmd_send_nmi, cg)
 {
-    word_t cpuid = get_dec("CPU id", 0, NULL);
+    word_t cpuid = get_dec("CPU id", 0, nullptr);
     cpu_t* cpu = cpu_t::get(cpuid);
     local_apic_t<APIC_MAPPINGS_START> local_apic;
     // don't nmi ourselfs
@@ -218,7 +218,7 @@ extern void kdb_wait_for_cpu();
 CMD(cmd_switch_cpus, cg)
 {
     cpuid_t cpu = get_current_cpu();
-    word_t dst_cpu = get_dec("CPU id", 0, NULL);
+    word_t dst_cpu = get_dec("CPU id", 0, nullptr);
     if (dst_cpu >= CONFIG_SMP_MAX_CPUS ||
 	dst_cpu == cpu || 
 	!cpu_t::get(dst_cpu)->is_valid())

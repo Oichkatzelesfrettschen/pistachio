@@ -244,7 +244,7 @@ void rr_scheduler_t::end_of_timeslice (tcb_t * tcb)
     tsched_state->renew_timeslice(tsched_state->get_timeslice_length());
 
     /* clear the accounted TCB */
-    prio_queue->set_timeslice_tcb(NULL);
+    prio_queue->set_timeslice_tcb(nullptr);
 }
 
 #if defined(CONFIG_SMP)
@@ -257,7 +257,7 @@ void rr_scheduler_t::smp_requeue(bool holdlock)
     if (!rq->is_empty() || holdlock)
     {
 	rq->lock.lock();
-	tcb_t *tcb = NULL;
+	tcb_t *tcb = nullptr;
 
 	while (!rq->is_empty()) 
 	{
@@ -267,7 +267,7 @@ void rr_scheduler_t::smp_requeue(bool holdlock)
 	    if (tcb->sched_state.requeue_callback) 
 	    {
 		tcb->sched_state.requeue_callback(tcb);
-		tcb->sched_state.requeue_callback = NULL;
+		tcb->sched_state.requeue_callback = nullptr;
 	    }
             else
             {
@@ -352,7 +352,7 @@ void scheduler_t::move_tcb(tcb_t *tcb, cpuid_t cpu)
 
 
     smp_requeue(true);
-    ASSERT(tcb->sched_state.requeue == NULL);
+    ASSERT(tcb->sched_state.requeue == nullptr);
 
     if (tcb->get_space())
 	tcb->get_space()->move_tcb(tcb, get_current_cpu(), cpu);

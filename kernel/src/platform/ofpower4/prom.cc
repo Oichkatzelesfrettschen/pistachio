@@ -79,7 +79,7 @@ SECTION(".init") void of1275_tree_init( kernel_interface_page_t *kip )
     // Not found.  Things won't work, but ...
     prom_puts( "*** Error: the boot loader didn't supply a copy of the\n\r"
 	       "*** Open Firmware device tree!\n\r" );
-    PTRRELOC(get_of1275_tree())->init( NULL );
+    PTRRELOC(get_of1275_tree())->init( nullptr );
 }
 
 

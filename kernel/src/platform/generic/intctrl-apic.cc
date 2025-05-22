@@ -162,7 +162,7 @@ void intctrl_t::init_arch()
 
     TRACE_INIT("\tRSDP is at %p\n", rsdp);
     
-    if (rsdp == NULL)
+    if (rsdp == nullptr)
     {
 	TRACE_INIT("\tAssuming local APIC defaults");
         get_kernel_space()->add_mapping(addr_t(APIC_MAPPINGS_START),
@@ -180,25 +180,25 @@ void intctrl_t::init_arch()
 	return;
     }
     
-    acpi_rsdt_t *rsdt = NULL, *rsdt_phys = rsdp->rsdt();
-    acpi_xsdt_t *xsdt = NULL, *xsdt_phys = rsdp->xsdt();
+    acpi_rsdt_t *rsdt = nullptr, *rsdt_phys = rsdp->rsdt();
+    acpi_xsdt_t *xsdt = nullptr, *xsdt_phys = rsdp->xsdt();
 
-    if ((rsdt_phys == NULL) && (xsdt_phys == NULL))
+    if ((rsdt_phys == nullptr) && (xsdt_phys == nullptr))
 	return;
 
     TRACE_INIT("\tRSDT is at %p\n", rsdt_phys);
     TRACE_INIT("\tXSDT is at %p\n", xsdt_phys);
 
-    acpi_fadt_t *fadt = NULL, *_fadt;
-    acpi_madt_t *madt = NULL, *_madt; 
+    acpi_fadt_t *fadt = nullptr, *_fadt;
+    acpi_madt_t *madt = nullptr, *_madt; 
    
-    if (xsdt_phys != NULL)
+    if (xsdt_phys != nullptr)
     {
 	xsdt = (acpi_xsdt_t*)acpi_remap(xsdt_phys);	
 	fadt = (acpi_fadt_t*) xsdt->find("FACP", (addr_t) xsdt_phys);
 	madt = (acpi_madt_t*) xsdt->find("APIC", (addr_t) xsdt_phys);
     }
-    if ((madt == NULL) && (rsdt_phys != NULL))
+    if ((madt == nullptr) && (rsdt_phys != nullptr))
     {
 	rsdt = (acpi_rsdt_t*)acpi_remap(rsdt_phys);
 	rsdt->list(rsdt_phys);	
@@ -218,7 +218,7 @@ void intctrl_t::init_arch()
     else 
 	pmtimer_available = false;
 
-    if (madt == NULL)
+    if (madt == nullptr)
 	return;
 
     _madt = (acpi_madt_t*)acpi_remap(madt);
@@ -244,7 +244,7 @@ void intctrl_t::init_arch()
     {
 	word_t total_cpus = 0;
 	acpi_madt_lapic_t* p;
-	for (word_t i = 0; ((p = _madt->lapic(i)) != NULL); i++)
+	for (word_t i = 0; ((p = _madt->lapic(i)) != nullptr); i++)
 	{
 	    TRACE_INIT("\tlocal APIC: apic_id=%d use=%s proc_id=%d\n",
 		       p->id, p->flags.enabled ? "ok" : "disabled",
@@ -272,7 +272,7 @@ void intctrl_t::init_arch()
     {
 	acpi_madt_ioapic_t* p;
 
-	for (word_t i = 0; ((p = _madt->ioapic(i)) != NULL); i++)
+	for (word_t i = 0; ((p = _madt->ioapic(i)) != nullptr); i++)
 	{
 	    TRACE_INIT("\tIOAPIC: id=%d irq_base=%d addr=%p\n",
 		       p->id, p->irq_base, p->address);
@@ -291,7 +291,7 @@ void intctrl_t::init_arch()
     /* IRQ source overrides */
     {
 	acpi_madt_irq_t* p;
-	for (word_t i = 0; ((p = _madt->irq(i)) != NULL); i++)
+	for (word_t i = 0; ((p = _madt->irq(i)) != nullptr); i++)
 	{
 	    TRACE_INIT("  IRQ source override: "
 		       "srcbus=%d, srcirq=%d, dest=%d, "
@@ -325,7 +325,7 @@ void intctrl_t::init_arch()
     {
 	acpi_madt_hdr_t* p;
 	for (u8_t t = 3; t <= 8; t++)
-	    for (word_t i = 0; ((p = _madt->find(t, i)) != NULL); i++)
+	    for (word_t i = 0; ((p = _madt->find(t, i)) != nullptr); i++)
 		TRACE_INIT("MADT: found unknown type=%d, len=%d\n", p->type, p->len);
     }
     

@@ -139,18 +139,18 @@ word_t *ppc_softhvm_t::get_spr(int spr, bool read)
     case 0x1a: return &this->srr0;
     case 0x1b: return &this->srr1;
     case 0x30: return &this->pid;
-    case 0x36: return read ? NULL : &this->decar;
+    case 0x36: return read ? nullptr : &this->decar;
     case 0x3a: return &this->csrr0;
     case 0x3b: return &this->csrr1;
     case 0x3d: return &this->dear;
     case 0x3e: return &this->esr;
     case 0x3f: return &this->ivpr;
     case 0x110 ... 0x117: return &this->sprg[spr - 0x110];
-    case 0x11c: return read ? NULL : &this->tbl;
-    case 0x11d: return read ? NULL : &this->tbu;
-    case 0x11e: return read ? &this->pir : NULL;
-    case 0x11f: return read ? &this->pvr : NULL;
-    case 0x130: return read ? &this->dbsr : NULL;
+    case 0x11c: return read ? nullptr : &this->tbl;
+    case 0x11d: return read ? nullptr : &this->tbu;
+    case 0x11e: return read ? &this->pir : nullptr;
+    case 0x11f: return read ? &this->pvr : nullptr;
+    case 0x130: return read ? &this->dbsr : nullptr;
     case 0x134 ... 0x136: return &this->dbcr[spr - 0x134];
     case 0x138 ... 0x13b: return &this->iac[spr - 0x138];
     case 0x13c ... 0x13d: return &this->dac[spr - 0x13c];
@@ -168,14 +168,14 @@ word_t *ppc_softhvm_t::get_spr(int spr, bool read)
     case 0x394 ... 0x397: return &this->dtv[spr - 0x394];
     case 0x398: return &this->dvlim;
     case 0x399: return &this->ivlim;
-    case 0x39b: return read ? &this->rstcfg : NULL;
-    case 0x39c ... 0x39d: return read ? &this->dcdbt[spr - 0x39c] : NULL;
-    case 0x39e ... 0x39f: return read ? &this->icdbt[spr - 0x39c] : NULL;
+    case 0x39b: return read ? &this->rstcfg : nullptr;
+    case 0x39c ... 0x39d: return read ? &this->dcdbt[spr - 0x39c] : nullptr;
+    case 0x39e ... 0x39f: return read ? &this->icdbt[spr - 0x39c] : nullptr;
     case 0x3b2: return &this->mmucr.raw;
     case 0x3b3: return &this->ccr0;
     case 0x3d3: return &this->icdbdr;
     case 0x3f3: return &this->dbdr;
-    default: return NULL;
+    default: return nullptr;
     }
 }
 

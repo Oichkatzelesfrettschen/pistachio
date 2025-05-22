@@ -34,7 +34,7 @@
 #include "globals.h"
 
 
-/* L4µK */
+/* L4ÂµK */
 static char kip_magic[] = {'L', '4', 230, 'K'};
 
 
@@ -69,7 +69,7 @@ extern "C" void startup(struct multiboot_info *mb_info, unsigned int mb_magic ){
 
     
     /* Check Kernel */
-    if ((kernel_ehdr = valid_elf64((L4_Word_t)_binary_kernel_mod_start, &kernel_entry_addr)) == NULL){
+    if ((kernel_ehdr = valid_elf64((L4_Word_t)_binary_kernel_mod_start, &kernel_entry_addr)) == nullptr){
 	printf("PANIC: Wrong kernel image format at 0x%x!\n", (L4_Word_t) &_binary_kernel_mod_start);
 	spin(1);
     }
@@ -145,7 +145,7 @@ extern "C" void startup(struct multiboot_info *mb_info, unsigned int mb_magic ){
     L4_Word64_t sigma0_start;
     L4_Word64_t sigma0_end;
       
-    if ((module_ehdr = valid_elf64(modules[0].mod_start, &sigma0_entry)) == NULL){
+    if ((module_ehdr = valid_elf64(modules[0].mod_start, &sigma0_entry)) == nullptr){
 	printf("PANIC: Wrong sigma0 image format at 0x%x!\n", (L4_Word_t) sigma0_entry);
 	spin(1);
 	 	
@@ -166,7 +166,7 @@ extern "C" void startup(struct multiboot_info *mb_info, unsigned int mb_magic ){
     L4_Word64_t root_start;
     L4_Word64_t root_end;
       
-    if ((module_ehdr = valid_elf64(modules[1].mod_start, &root_entry)) == NULL){
+    if ((module_ehdr = valid_elf64(modules[1].mod_start, &root_entry)) == nullptr){
 	printf("PANIC: Wrong root image format at 0x%x!\n", (L4_Word_t) root_entry);
 	spin(1);
 	 	

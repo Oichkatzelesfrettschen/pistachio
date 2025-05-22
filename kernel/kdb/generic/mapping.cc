@@ -97,7 +97,7 @@ static void dump_mdbmaps (mapnode_t * map, addr_t paddr,
 			  mapnode_t::pgsize_e size,
 			  rootnode_t * proot, char * spc)
 {
-    mapnode_t * pmap = NULL;
+    mapnode_t * pmap = nullptr;
 
     while (map)
     {
@@ -114,7 +114,7 @@ static void dump_mdbmaps (mapnode_t * map, addr_t paddr,
 	
 	pmap = map;
 	if (map->is_next_root () || (map->is_next_both () &&
-                                     map->get_nextroot () != NULL))
+                                     map->get_nextroot () != nullptr))
 	{
 	    dump_mdbroot (mdb_index_root (size-1, map->get_nextroot (), paddr),
 			  paddr, size-1, spc - 2 - map->get_depth () * 2);

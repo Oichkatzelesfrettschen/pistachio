@@ -161,7 +161,7 @@ int __l4_vsnprintf(char *str, L4_Size_t size, const char *fmt, va_list ap)
     /*
      * Sanity check on fmt string.
      */
-    if ( fmt == NULL ) {
+    if ( fmt == nullptr ) {
 	PUTSTR( "(null fmt string)" );
 	goto Done;
     }
@@ -505,7 +505,7 @@ int __l4_vsnprintf(char *str, L4_Size_t size, const char *fmt, va_list ap)
 	    /*
 	     * Sanity check.
 	     */
-	    if ( string == NULL ) {
+	    if ( string == nullptr ) {
 		PUTSTR( "(null)" );
 		break;
 	    }
@@ -581,7 +581,7 @@ int __l4_snprintf(char *str, L4_Size_t size, const char *fmt, ...)
     /*
      * Safety check
      */
-    if ( fmt == NULL )
+    if ( fmt == nullptr )
 	return 0;
 
     /*
@@ -609,7 +609,7 @@ int __l4_printf(const char *fmt, ...)
     /*
      * Safety check
      */
-    if ( fmt == NULL )
+    if ( fmt == nullptr )
 	return 0;
 
     /*

@@ -84,7 +84,7 @@ void * vrt_table_t::operator new (size_t size, word_t radix_log2)
  */
 void vrt_table_t::operator delete (void * t)
 {
-    if (t == NULL)
+    if (t == nullptr)
 	return;
 
     vrt_table_t * table = (vrt_table_t *) t;

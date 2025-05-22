@@ -560,7 +560,7 @@ void all_ipc_tests (void)
 
 static struct menuitem menu_items[] = 
 {
-    { NULL, 		"return" },
+    { nullptr, 		"return" },
     { simple_ipc, 	"Simple IPC" },
     { string_ipc, 
       "String copy IPC, inter address space (no pagefaults)"},

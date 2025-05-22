@@ -169,7 +169,7 @@ static inline mps_mp_floating_t * mps_mp_floating_t::scan(addr_t start, addr_t e
 	    return (mps_mp_floating_t*)start;
 	start = addr_offset(start, 0x10);
     }
-    return NULL;
+    return nullptr;
 }
 
 

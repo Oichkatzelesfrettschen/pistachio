@@ -185,7 +185,7 @@ extern "C" void ppc64_except_unhandled( word_t vect, powerpc64_irq_context_t *co
     {
 	printf( "\n-- KD# %s exception --\n", vector );
 
-	if( EXPECT_FALSE(get_kip()->kdebug_entry != NULL) )
+	if( EXPECT_FALSE(get_kip()->kdebug_entry != nullptr) )
 	    get_kip()->kdebug_entry(context);
 
 	halt_user_thread();
@@ -244,7 +244,7 @@ extern "C" void dsi_handler( word_t dar, word_t dsisr, powerpc64_irq_context_t *
     // Use kernel space if we have kernel fault in TCB area or
     // when no space is set (e.g., running on the idle thread)
     if ( EXPECT_FALSE( is_kernel && space->is_tcb_area ((addr_t)dar) )
-			    || space == NULL)
+			    || space == nullptr)
     {
         space = get_kernel_space();
 	//TRACEF( "kernel space\n" );
@@ -289,7 +289,7 @@ extern "C" void dsi_handler( word_t dar, word_t dsisr, powerpc64_irq_context_t *
 	if ( !send_exception_ipc( 0x300, dsisr, true, dar) )
 	{
 	    printf( "\n-- KD# data address exception --\n" );
-	    if( EXPECT_FALSE(get_kip()->kdebug_entry != NULL) )
+	    if( EXPECT_FALSE(get_kip()->kdebug_entry != nullptr) )
 		get_kip()->kdebug_entry(context);
 	}
     }
@@ -340,7 +340,7 @@ extern "C" void program_check_handler( word_t vect, powerpc64_irq_context_t *con
 	context->r3 = (u64_t) space->get_kip_page_area ().get_base ();
 	context->r4 = get_kip ()->api_version;
 	context->r5 = get_kip ()->api_flags;
-	context->r6 = (NULL != get_kip()->kernel_desc_ptr) ?
+	context->r6 = (nullptr != get_kip()->kernel_desc_ptr) ?
 		    *(word_t *)((word_t)get_kip() + get_kip()->kernel_desc_ptr) : 0;
 
 	except_return();
@@ -350,7 +350,7 @@ exception:
     if ( !send_exception_ipc( vect, 0, 0, 0) )
     {
 	printf( "\n-- KD# Program check --\n" );
-	if( EXPECT_FALSE(get_kip()->kdebug_entry != NULL) )
+	if( EXPECT_FALSE(get_kip()->kdebug_entry != nullptr) )
 	    get_kip()->kdebug_entry(context);
 
 	halt_user_thread();
@@ -401,7 +401,7 @@ extern "C" void isi_handler( powerpc64_irq_context_t *context )
     // Use kernel space if we have kernel fault in TCB area or
     // when no space is set (e.g., running on the idle thread)
     if ( EXPECT_FALSE( is_kernel && space->is_tcb_area ((addr_t)srr0) )
-			    || space == NULL)
+			    || space == nullptr)
     {
         space = get_kernel_space();
 	//TRACEF( "kernel space\n" );
@@ -433,7 +433,7 @@ extern "C" void isi_handler( powerpc64_irq_context_t *context )
 	}
     } else {
 	printf( "-- KD# Unknown instruction fault --\n");
-	if( EXPECT_FALSE(get_kip()->kdebug_entry != NULL) )
+	if( EXPECT_FALSE(get_kip()->kdebug_entry != nullptr) )
 	    get_kip()->kdebug_entry(context);
     }
 
@@ -452,7 +452,7 @@ extern "C" void isi_handler( powerpc64_irq_context_t *context )
 extern "C" void ppc64_except_trace( word_t vect, powerpc64_irq_context_t *context )
 {
     printf( "--KD# Trace Point: IP=%p, SRR1=%p --\n", context->srr0, context->srr1 );
-    if( EXPECT_FALSE(get_kip()->kdebug_entry != NULL) )
+    if( EXPECT_FALSE(get_kip()->kdebug_entry != nullptr) )
 	get_kip()->kdebug_entry(context);
     except_return();
 }
@@ -550,7 +550,7 @@ extern "C" void ppc64_except_syscall( word_t vect, powerpc64_irq_context_t *cont
     if ( !send_syscall_ipc( context ) )
     {
 	printf("-- KD# Unhandled user system call --\n");
-	if( EXPECT_FALSE(get_kip()->kdebug_entry != NULL) )
+	if( EXPECT_FALSE(get_kip()->kdebug_entry != nullptr) )
 	    get_kip()->kdebug_entry(context);
 
 	halt_user_thread();

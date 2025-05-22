@@ -61,7 +61,7 @@ void SECTION (".init") kdb_t::init (void)
 {
     /* initialize state */
     kdb_cmd_mode = CMD_KEYMODE;
-    kdb_param = NULL;
+    kdb_param = nullptr;
 
     /*
      * Ensure that linker sets are initialized.
@@ -75,7 +75,7 @@ void SECTION (".init") kdb_t::init (void)
 
     kdb_initfunc_t initfunc;
     kdb_initfuncs.reset ();
-    while ((initfunc = (kdb_initfunc_t) kdb_initfuncs.next ()) != NULL)
+    while ((initfunc = (kdb_initfunc_t) kdb_initfuncs.next ()) != nullptr)
 	initfunc ();
     
 #if defined(CONFIG_TRACEPOINTS)

@@ -45,7 +45,7 @@ acpi_madt_hdr_t* acpi_madt_t::find(u8_t type, int index)
 	}
 	i += h->len;
     };
-    return NULL;
+    return nullptr;
 }
 
 acpi_madt_lapic_t* acpi_madt_t::lapic(int index)

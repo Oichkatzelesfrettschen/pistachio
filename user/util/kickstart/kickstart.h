@@ -66,7 +66,7 @@ constexpr loader_format_t null_loader { "null", nullptr, nullptr };
 
 
 /**
- * NULL terminated array of loader formats.
+ * nullptr terminated array of loader formats.
  */
 extern std::array<loader_format_t, 2> loader_formats;
 

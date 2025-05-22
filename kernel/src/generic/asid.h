@@ -83,11 +83,11 @@ public:
 
     void init(word_t start, word_t end)
 	{
-	    free_list = NULL;
+	    free_list = nullptr;
 	    timestamp = 0;
 
 	    for (word_t asid = 0; asid <= SIZE; asid++)
-		asid_user[asid] = NULL;
+		asid_user[asid] = nullptr;
 
 	    for (word_t asid = start; asid <= end; asid++)
 		free_asid(asid);

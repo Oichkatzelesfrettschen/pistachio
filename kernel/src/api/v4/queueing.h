@@ -34,7 +34,7 @@
 
 #define ENQUEUE_LIST_TAIL(head, tcb, list)	\
 do {						\
-    if (head == NULL)				\
+    if (head == nullptr)				\
     {						\
 	head = tcb;				\
 	tcb->list.next = tcb->list.prev = tcb;	\
@@ -50,7 +50,7 @@ do {						\
 
 #define ENQUEUE_LIST_HEAD(head, tcb, list)	\
 do {						\
-    if (head == NULL)				\
+    if (head == nullptr)				\
 	tcb->list.next = tcb->list.prev = tcb;	\
     else					\
     {						\
@@ -66,7 +66,7 @@ do {						\
 do {							\
     if (tcb->list.next == tcb)				\
     {							\
-	head = NULL;					\
+	head = nullptr;					\
     }							\
     else						\
     {							\
@@ -75,7 +75,7 @@ do {							\
 	(tcb->list.next)->list.prev = tcb->list.prev;	\
 	(tcb->list.prev)->list.next = tcb->list.next;	\
     }							\
-    tcb->list.next = tcb->list.prev = NULL;		\
+    tcb->list.next = tcb->list.prev = nullptr;		\
 } while(0)
     
 #endif /* !__API__V4__QUEUEING_H__ */

@@ -81,7 +81,7 @@ MDB_INIT_FUNCTION (3, init_mdb_mem)
     ASSERT (sigma0_memnode);
 
     sigma0_memnode->set_prev (sigma0_memnode);
-    sigma0_memnode->set_next (NULL);
+    sigma0_memnode->set_next (nullptr);
     sigma0_memnode->set_depth (0);
     sigma0_memnode->set_inrights (~0UL);
     sigma0_memnode->set_outrights (~0UL);

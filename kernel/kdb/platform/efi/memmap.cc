@@ -65,7 +65,7 @@ CMD(cmd_efi_memmap, cg)
     printf ("EFI memory map:\n");
 
     efi_memmap.reset ();
-    while ((desc = efi_memmap.next ()) != NULL)
+    while ((desc = efi_memmap.next ()) != nullptr)
     {
 	// Name
 	int n = 30 - printf ("  %s", maptypes[desc->type ()]);

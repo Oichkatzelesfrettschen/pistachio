@@ -81,7 +81,7 @@ void x86_hvm_vtlb_t::free()
     if (hpdir_nonpaged)
 	kmem.free (kmem_vtlb, hpdir_nonpaged, X86_PAGE_SIZE);
 
-    this->space = NULL;
+    this->space = nullptr;
 }
 
 
@@ -276,7 +276,7 @@ void x86_hvm_vtlb_t::set_gphys_entry (addr_t gvaddr, addr_t gpaddr, pgent_t::pgs
 				      word_t rwx, word_t attrib, bool kernel, bool global,
 				      word_t access)
 {
-    pgent_t *gppgent = NULL;
+    pgent_t *gppgent = nullptr;
     pgent_t::pgsize_e gppgsz;
     
     tcb_t *current = get_current_tcb();

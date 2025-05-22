@@ -52,7 +52,7 @@ INLINE fdt_header_t *find_cpu( fdt_t *fdt, word_t cpu )
 	printf("FDT prop: %s\n", curr->name);
 	curr = fdt->find_next_subtree_node(curr);
     }
-    return NULL;
+    return nullptr;
 }
 
 INLINE bool get_cpu_speed( word_t cpu, word_t *cpu_hz, word_t *bus_hz )

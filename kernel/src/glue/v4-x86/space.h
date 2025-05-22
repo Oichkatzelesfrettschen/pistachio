@@ -214,7 +214,7 @@ INLINE x86_pgent_t * space_t::get_top_pdir_phys(cpuid_t cpu)
 
 INLINE bool space_t::has_cpu_top_pdir(cpuid_t cpu)
 {
-    return data.cpu_ptab[cpu].top_pdir != NULL;
+    return data.cpu_ptab[cpu].top_pdir != nullptr;
 }
 
 /**
@@ -313,7 +313,7 @@ INLINE pgent_t * space_t::pgent (word_t num, word_t cpu)
 {
     ASSERT(cpu < CONFIG_SMP_MAX_CPUS);
     if (!data.cpu_ptab[cpu].top_pdir)
-	return NULL;
+	return nullptr;
     return &data.cpu_ptab[cpu].top_pdir->pgent[num];
 }
 

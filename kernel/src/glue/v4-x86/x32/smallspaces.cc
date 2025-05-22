@@ -61,7 +61,7 @@ DEFINE_SPINLOCK (small_space_owner_lock);
 /**
  * Linked list of spaces that are polluted with small space mappings.
  */
-static x86_space_t * polluted_spaces = NULL;
+static x86_space_t * polluted_spaces = nullptr;
 
 
 /**
@@ -184,7 +184,7 @@ bool x86_space_t::make_small (smallspace_id_t id)
     // Try allocation small space slots.
     for (i = 0; i < size; i++)
     {
-	if (small_space_owner[offset + i] == NULL)
+	if (small_space_owner[offset + i] == nullptr)
 	    small_space_owner[offset + i] = this;
 	else
 	    break;
@@ -195,7 +195,7 @@ bool x86_space_t::make_small (smallspace_id_t id)
     if (i < size)
     {
 	while (i > 0)
-	    small_space_owner[offset + --i] = NULL;
+	    small_space_owner[offset + --i] = nullptr;
 
 	small_space_owner_lock.unlock ();
 	return false;
@@ -261,7 +261,7 @@ void x86_space_t::make_large (void)
     for (word_t i = 0; i < size; i++)
     {
 	ASSERT (small_space_owner[offset + i] == this);
-	small_space_owner[offset + i] = NULL;
+	small_space_owner[offset + i] = nullptr;
     }
 
     smallid ()->set_large ();
@@ -337,14 +337,14 @@ void x86_space_t::dequeue_polluted (void)
 {
     polluted_spaces_lock.lock ();
 
-    if (get_next () == NULL)
+    if (get_next () == nullptr)
     {
 	// Space is not in list.
     }
     else if (get_next () == this)
     {
 	// Space is only member of list.
-	polluted_spaces = NULL;
+	polluted_spaces = nullptr;
     }
     else
     {
@@ -357,8 +357,8 @@ void x86_space_t::dequeue_polluted (void)
 	    polluted_spaces = n;
     }
 
-    set_prev (NULL);
-    set_next (NULL);
+    set_prev (nullptr);
+    set_next (nullptr);
 
     polluted_spaces_lock.unlock ();
 }
@@ -371,11 +371,11 @@ void x86_space_t::enqueue_polluted (void)
 {
     polluted_spaces_lock.lock ();
 
-    if (get_next () != NULL)
+    if (get_next () != nullptr)
     {
 	// Space already in list.
     }
-    else if (polluted_spaces != NULL)
+    else if (polluted_spaces != nullptr)
     {
 	// Insert into list.
 	x86_space_t * p = polluted_spaces->get_prev ();

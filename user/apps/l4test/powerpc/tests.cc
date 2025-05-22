@@ -582,7 +582,7 @@ void all_arch_tests( void )
 
 static struct menuitem menu_items[] =
 {
-    { NULL,			"return" },
+    { nullptr,			"return" },
     { generic_exc_test,		"Generic exception test" },
     { syscall_exc_test,		"Legacy system call exception test" },
     { generic_unwind_test,	"Generic exception unwind" },

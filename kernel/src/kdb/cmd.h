@@ -125,7 +125,7 @@ private:
  */
 #define DECLARE_CMD_GROUP(group)					\
     DECLARE_SET(__kdb_group_##group);					\
-    cmd_group_t group = { &__kdb_group_##group, NULL, NULL };		\
+    cmd_group_t group = { &__kdb_group_##group, nullptr, nullptr };		\
     DECLARE_CMD (cmd__help, group, '?', "help", "this help message");   \
     DECLARE_CMD (cmd__abort, group, KEY_BS, "up", "back up to previous menu"); \
     DECLARE_CMD (cmd__prior, group, KEY_ESC, "prior", "back to previous menu")

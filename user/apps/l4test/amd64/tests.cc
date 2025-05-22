@@ -46,7 +46,7 @@ void all_arch_tests( void )
 
 static struct menuitem menu_items[] =
 {
-    { NULL,		"return" },
+    { nullptr,		"return" },
     { all_arch_tests,	"All AMD64 tests" },
 };
 

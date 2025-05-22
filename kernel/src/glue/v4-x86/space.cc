@@ -38,8 +38,8 @@ EXTERN_KMEM_GROUP (kmem_tcb);
 DECLARE_KMEM_GROUP (kmem_iofp);
 DECLARE_KMEM_GROUP (kmem_utcb);
 
-space_t * kernel_space = NULL;
-addr_t utcb_page = NULL;
+space_t * kernel_space = nullptr;
+addr_t utcb_page = nullptr;
 
 /**********************************************************************
  *
@@ -448,9 +448,9 @@ addr_t space_t::get_io_bitmap(cpuid_t cpu)
     if (this->lookup_mapping(tss.get_io_bitmap(), &pgent, &pgsize, cpu))
 	return phys_to_virt(pgent->address(this, pgsize));
     
-    TRACEF("BUG: get_io_bitmap_phys returns NULL\n");
+    TRACEF("BUG: get_io_bitmap_phys returns nullptr\n");
     enter_kdebug("IO-Fpage BUG?");
-    return NULL;
+    return nullptr;
 }
 
 
@@ -462,14 +462,14 @@ addr_t space_t::get_io_bitmap(cpuid_t cpu)
  */
 addr_t space_t::install_io_bitmap(bool create)
 {
-    addr_t new_bitmap = NULL;
+    addr_t new_bitmap = nullptr;
     cpuid_t cpu = get_current_cpu();
     
     if (create)
     {
 	new_bitmap = (word_t*) kmem.alloc(kmem_iofp, IOPERMBITMAP_SIZE);
 	if (!new_bitmap) 
-	    return NULL;
+	    return nullptr;
     }
     else
     {
@@ -495,10 +495,10 @@ addr_t space_t::install_io_bitmap(bool create)
     {
 	pgent_t *new_subtree = (pgent_t *) kmem.alloc (kmem_iofp, X86_PAGE_SIZE);
 	
-	if (new_subtree == NULL)
+	if (new_subtree == nullptr)
 	{
 	    kmem.free(kmem_iofp, new_bitmap, IOPERMBITMAP_SIZE);
-	    return NULL;
+	    return nullptr;
 	}
 
 		
@@ -559,7 +559,7 @@ void space_t::free_io_bitmap()
     /*
      * Do not release the default IOPBM
      */
-    if (get_io_bitmap() == tss.get_io_bitmap() || get_io_bitmap() == NULL)
+    if (get_io_bitmap() == tss.get_io_bitmap() || get_io_bitmap() == nullptr)
 	return;
     
 
@@ -960,7 +960,7 @@ X86_EXCWITH_ERRORCODE(exc_pagefault, 0)
      * we will get a pagefault with an invalid space
      * so we use CR3 to figure out the space
      */
-    if (EXPECT_FALSE( space == NULL ))
+    if (EXPECT_FALSE( space == nullptr ))
 	space = space_t::top_pdir_to_space(x86_mmu_t::get_active_pagetable());
     
     ASSERT(space);
@@ -1002,7 +1002,7 @@ static void flush_tlb_remote()
 {
     for (cpuid_t cpu = 0; cpu < cpu_t::count; cpu++)
 	if (cpu_remote_flush & (1 << cpu))
-	    sync_xcpu_request(cpu, do_xcpu_flush_tlb, NULL,
+	    sync_xcpu_request(cpu, do_xcpu_flush_tlb, nullptr,
 			      cpu_remote_flush_global & (1 << cpu));
     cpu_remote_flush = 0;
     cpu_remote_flush_global = 0;
@@ -1128,7 +1128,7 @@ void space_t::free_cpu_top_pdir(cpuid_t cpu)
     ASSERT(data.cpu_ptab[cpu].top_pdir);
     ASSERT(data.cpu_ptab[cpu].thread_count == 0);
     top_pdir_t* pdir = data.cpu_ptab[cpu].top_pdir;
-    data.cpu_ptab[cpu].top_pdir = NULL; // mem ordering, for X86 no barrier needed
+    data.cpu_ptab[cpu].top_pdir = nullptr; // mem ordering, for X86 no barrier needed
     kmem.free(kmem_space, (addr_t)pdir, sizeof(top_pdir_t));
 }
 

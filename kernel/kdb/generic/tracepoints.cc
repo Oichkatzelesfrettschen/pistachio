@@ -60,7 +60,7 @@ void init_tracepoints()
 {
     tracepoint_t * tp;
     word_t id = 1;
-    while ((tp = tp_list.next ()) != NULL)
+    while ((tp = tp_list.next ()) != nullptr)
 	tp->id = id++;
 }
 
@@ -116,7 +116,7 @@ CMD(cmd_tp_list, cg)
 #endif
 
     tp_list.reset ();
-    for (int i = 0; (tp = tp_list.next ()) != NULL; i++)
+    for (int i = 0; (tp = tp_list.next ()) != nullptr; i++)
     {
 	printf ("%3d   %28s  %c    %c ",
 		i+1, tp->name, tp->enabled ? 'y' : 'n',
@@ -208,7 +208,7 @@ CMD(cmd_tp_enable_all, cg)
     tracepoint_t * tp;
 
     tp_list.reset ();
-    while ((tp = tp_list.next ()) != NULL)
+    while ((tp = tp_list.next ()) != nullptr)
     {
 	tp->enabled = ~0UL;
 	tp->enter_kdb = 0;
@@ -230,7 +230,7 @@ CMD(cmd_tp_disable_all, cg)
     tracepoint_t * tp;
 
     tp_list.reset ();
-    while ((tp = tp_list.next ()) != NULL)
+    while ((tp = tp_list.next ()) != nullptr)
 	tp->enabled = tp->enter_kdb = 0;
 
     return CMD_NOQUIT;
@@ -247,7 +247,7 @@ CMD(cmd_tp_reset, cg)
     tracepoint_t * tp;
 
     tp_list.reset ();
-    while ((tp = tp_list.next ()) != NULL)
+    while ((tp = tp_list.next ()) != nullptr)
 	tp->reset_counter();
     
     return CMD_NOQUIT;

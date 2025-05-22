@@ -63,7 +63,7 @@ CMD (cmd_kmem_stats, cg)
 	num_chunks[idx] = 0;
     max_chunks = 0;
 
-    for (num = 1, cur = kmem_free_list, prev = NULL;
+    for (num = 1, cur = kmem_free_list, prev = nullptr;
 	 cur;
 	 prev = cur, cur = (word_t *) *cur )
     {
@@ -122,7 +122,7 @@ CMD (cmd_kmem_stats, cg)
     printf ("\nKernel memory distribution:\n");
     __kmem_groups.reset ();
     kmem_group_t * group;
-    while ((group = (kmem_group_t *) __kmem_groups.next ()) != NULL)
+    while ((group = (kmem_group_t *) __kmem_groups.next ()) != nullptr)
     {
 	printf ("  %16s %6d %cB\n",
 		group->name,

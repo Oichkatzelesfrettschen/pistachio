@@ -199,7 +199,7 @@ tcb_t SECTION (SEC_KDEBUG) * get_thread (const char * prompt)
 			break;
 		    case '\e':
 			printf ("\n");
-			return (tcb_t *) NULL;
+			return (tcb_t *) nullptr;
 		    case KEY_RETURN:
 			break;
 		    default:

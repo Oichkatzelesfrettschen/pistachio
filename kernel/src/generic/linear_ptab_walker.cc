@@ -103,7 +103,7 @@ void space_t::map_fpage (fpage_t snd_fp, word_t base,
     word_t offset, f_num, t_num, f_off;
     pgent_t *fpg, *tpg;
     pgent_t::pgsize_e f_size, t_size, pgsize;
-    mapnode_t *newmap, *map = NULL;
+    mapnode_t *newmap, *map = nullptr;
     addr_t f_addr, t_addr;
    
     pgent_t * r_fpg[pgent_t::size_max];
@@ -744,10 +744,10 @@ void space_t::map_fpage (fpage_t snd_fp, word_t base,
     Next_sender_entry:
 
 #if defined(CONFIG_NEW_MDB)
-	if (grant && map != NULL)
+	if (grant && map != nullptr)
 	{
 	    mdb_mem.flush (map);
-	    map = NULL;
+	    map = nullptr;
 	}
 #endif
 	f_addr = addr_offset (f_addr, page_size (f_size));

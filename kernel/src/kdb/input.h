@@ -44,21 +44,21 @@ class vrt_t;
 #define ABORT_MAGIC	(0x19022002)
 
 
-word_t get_hex (const char * prompt = NULL,
+word_t get_hex (const char * prompt = nullptr,
 		const word_t defnum = 0,
-		const char * defstr = NULL);
+		const char * defstr = nullptr);
 
-word_t get_dec (const char * prompt = NULL,
+word_t get_dec (const char * prompt = nullptr,
 		const word_t defnum = 0,
-		const char * defstr = NULL);
+		const char * defstr = nullptr);
 
 char get_choice (const char * prompt,
 		 const char * choices,
 		 char def);
 
-space_t * get_space (const char * prompt = NULL);
-tcb_t * get_thread (const char * prompt = NULL);
-comspace_t * get_comspace (const char * prompt = NULL);
-vrt_t * get_thrspace (const char * prompt = NULL);
+space_t * get_space (const char * prompt = nullptr);
+tcb_t * get_thread (const char * prompt = nullptr);
+comspace_t * get_comspace (const char * prompt = nullptr);
+vrt_t * get_thrspace (const char * prompt = nullptr);
 
 #endif /* !__KDB__INPUT_H__ */

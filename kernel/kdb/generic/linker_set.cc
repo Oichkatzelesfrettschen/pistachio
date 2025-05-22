@@ -121,7 +121,7 @@ void linker_set_t::reset (void)
 
 /**
  * linker_set_t::next: Retrieves pointer to next entry in linker set,
- * or NULL if all entries have been iterated over.
+ * or nullptr if all entries have been iterated over.
  */
 addr_t linker_set_t::next (void)
 {
@@ -146,6 +146,6 @@ word_t linker_set_t::size (void)
 addr_t linker_set_t::get (word_t n)
 {
     if (n >= entries)
-	return NULL;
+	return nullptr;
     return list[n].get_entry ();
 }

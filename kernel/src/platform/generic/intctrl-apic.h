@@ -66,14 +66,14 @@ private:
     class ioapic_redir_table_t 
     {
     public:
-	void init() { ioapic = NULL; } // mark entry invalid
+	void init() { ioapic = nullptr; } // mark entry invalid
 	void set(ioapic_t * ioapic, word_t line) 
 	    {
 		this->ioapic = ioapic;
 		this->line = line;
 		this->pending = false;
 	    }
-	bool is_valid() { return this->ioapic != NULL; }
+	bool is_valid() { return this->ioapic != nullptr; }
 
     public:
 	ioapic_redir_t entry;

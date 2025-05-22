@@ -101,9 +101,9 @@ public:
     bool migrate_to_processor(cpuid_t processor);
     
     bool exists() 
-	{ return space != NULL; }
+	{ return space != nullptr; }
     bool is_activated()
-	{ return utcb != NULL; }
+	{ return utcb != nullptr; }
 
     void unwind (unwind_reason_e reason);
     

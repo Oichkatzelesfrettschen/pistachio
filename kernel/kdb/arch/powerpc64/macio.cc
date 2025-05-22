@@ -58,8 +58,8 @@ static void switch_console( const char *name )
  *
  ****************************************************************************/
 
-volatile u8_t *scca_control = NULL;
-volatile u8_t *scca_data = NULL;
+volatile u8_t *scca_control = nullptr;
+volatile u8_t *scca_data = nullptr;
 
 static void putc_null( char c )
 {
@@ -334,8 +334,8 @@ void kdebug_check_breakin (void)
  ****************************************************************************/
 
 kdb_console_t kdb_consoles[] = {
-    { NULL_NAME, NULL, putc_null, getc_null },
-    { SCCA_NAME, NULL, putc_serial, getc_serial },
+    { NULL_NAME, nullptr, putc_null, getc_null },
+    { SCCA_NAME, nullptr, putc_serial, getc_serial },
     KDB_NULL_CONSOLE
 };
 

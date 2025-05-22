@@ -42,13 +42,13 @@ acpi_rsdp_t* acpi_rsdp_t::locate(addr_t addr)
 
     /* look for ACPI 2.0 RSDT pointer */
     p = (acpi_rsdp_t*) efi_config_table.find_table(ACPI_20_TABLE_GUID);
-    if (p != NULL)
+    if (p != nullptr)
 	return p;
 
     /* look for ACPI 1.0 RSDT pointer */
     p = (acpi_rsdp_t*) efi_config_table.find_table(ACPI_TABLE_GUID);
-    if (p != NULL)
+    if (p != nullptr)
 	return p;
 
-    return NULL;
+    return nullptr;
 };

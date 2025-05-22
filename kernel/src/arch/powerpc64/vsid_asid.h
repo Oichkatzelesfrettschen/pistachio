@@ -90,7 +90,7 @@ INLINE void vsid_asid_cache_t::init( space_t *kernel_space )
     for ( word_t i = 0; i < ( ASID_MAX ); i++ )
     {
 	cache[i].asid = ASID_INVALID;
-	cache[i].space = NULL;
+	cache[i].space = nullptr;
     }
     cache[0].asid = 0;
     cache[0].space = kernel_space;

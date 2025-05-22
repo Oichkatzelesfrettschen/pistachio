@@ -86,7 +86,7 @@ kdb_console_t kdb_consoles[] = {
     { "serial", &init_serial, &putc_serial, &getc_serial },
 #endif 
 #if defined(CONFIG_KDB_CONS_KBD)
-    { "screen", NULL, &putc_screen, &getc_screen },
+    { "screen", nullptr, &putc_screen, &getc_screen },
 #endif 
     KDB_NULL_CONSOLE
 };
@@ -466,7 +466,7 @@ CMD (cmd_dump_iospace, cg)
 {
     space_t * space = get_space("Address space of IO space");
     vrt_t * iospace = space->get_io_space ();
-    if (iospace == NULL)
+    if (iospace == nullptr)
 	return CMD_NOQUIT;
 
     printf ("IO space %p (space %p):\n", iospace, space);

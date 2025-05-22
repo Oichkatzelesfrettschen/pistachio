@@ -59,7 +59,7 @@ static void switch_console( const char *name )
 
 /****************************************************************************
  *
- *    NULL console support
+ *    nullptr console support
  *
  ****************************************************************************/
 
@@ -98,9 +98,9 @@ static void putc_rtas( char c )
     if (putc_token)
     {
 	if (c == '\n')
-	    get_rtas()->rtas_call( putc_token, 1, 1, NULL, '\r' );
+	    get_rtas()->rtas_call( putc_token, 1, 1, nullptr, '\r' );
 
-	get_rtas()->rtas_call( putc_token, 1, 1, NULL, c );
+	get_rtas()->rtas_call( putc_token, 1, 1, nullptr, c );
     }
 }
 
@@ -159,7 +159,7 @@ void init_serial_console()
     char *path, *type;
     u32_t len, *cellptr, adrcells, sizcells;
 
-    serial_regs = NULL;
+    serial_regs = nullptr;
  
     aliases = get_of1275_tree()->find( "/aliases" );
     if (!aliases) goto error;
@@ -307,11 +307,11 @@ void kdebug_check_breakin (void)
  ****************************************************************************/
 
 kdb_console_t kdb_consoles[] = {
-    { NULL_NAME, NULL, putc_null, getc_null },
+    { NULL_NAME, nullptr, putc_null, getc_null },
 #if defined(CONFIG_KDB_CONS_RTAS)
-    { RTAS_NAME, NULL, putc_rtas, getc_rtas },
+    { RTAS_NAME, nullptr, putc_rtas, getc_rtas },
 #endif
-    { SERIAL_NAME, NULL, putc_serial, getc_serial },
+    { SERIAL_NAME, nullptr, putc_serial, getc_serial },
     KDB_NULL_CONSOLE
 };
 

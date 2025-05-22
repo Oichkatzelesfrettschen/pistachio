@@ -327,17 +327,17 @@ bool allocate_page (L4_ThreadId_t tid, L4_Paddr_t addr, L4_Word_t log2size,
     }
 
     region_pool_t * pools[] = { &conv_memory_pool, &memory_pool,
-				(region_pool_t *) NULL };
+				(region_pool_t *) nullptr };
 
     // Check if we only want to try the conventional memory pool
     if (only_conventional)
-	pools[1] = (region_pool_t *) NULL;
+	pools[1] = (region_pool_t *) nullptr;
 
     // Try allocating from one of the memory pools.
-    for (L4_Word_t i = 0; pools[i] != NULL; i++)
+    for (L4_Word_t i = 0; pools[i] != nullptr; i++)
     {
 	pools[i]->reset ();
-	while ((r = pools[i]->next ()) != NULL)
+	while ((r = pools[i]->next ()) != nullptr)
 	{
 	    if (r->low > addr_high || r->high < addr)
 		continue;
@@ -354,7 +354,7 @@ bool allocate_page (L4_ThreadId_t tid, L4_Paddr_t addr, L4_Word_t log2size,
 
     // Check if memory has already been allocated.
     alloc_pool.reset ();
-    while ((r = alloc_pool.next ()) != NULL)
+    while ((r = alloc_pool.next ()) != nullptr)
     {
 	if (r->can_allocate (addr, log2size, tid))
 	{
@@ -369,11 +369,11 @@ bool allocate_page (L4_ThreadId_t tid, L4_Paddr_t addr, L4_Word_t log2size,
     region_pool_t * allpools[] = { &conv_memory_pool,
 				   &alloc_pool,
 				   &memory_pool,
-				   (region_pool_t *) NULL };
+				   (region_pool_t *) nullptr };
 
     // Check if we only want to try the conventional memory pool
     if (only_conventional)
-	allpools[2] = (region_pool_t *) NULL;
+	allpools[2] = (region_pool_t *) nullptr;
 
     // Loop once for checking followed by once for allocating
     for (L4_Word_t phase = 0; phase < 2; phase++)
@@ -386,10 +386,10 @@ bool allocate_page (L4_ThreadId_t tid, L4_Paddr_t addr, L4_Word_t log2size,
 	    bool failed = true;
 
 	    // Try the different pools
-	    for (L4_Word_t i = 0; failed && allpools[i] != NULL; i++)
+	    for (L4_Word_t i = 0; failed && allpools[i] != nullptr; i++)
 	    {
 		allpools[i]->reset ();
-		while ((r = allpools[i]->next ()) != NULL)
+		while ((r = allpools[i]->next ()) != nullptr)
 		{
 		    if (r->low > a_end || r->high < a)
 			continue;
@@ -446,7 +446,7 @@ bool allocate_page (L4_ThreadId_t tid, L4_Word_t log2size, L4_MapItem_t & map)
 
     // Try allocating memory from pool of real memory.
     conv_memory_pool.reset ();
-    while ((r = conv_memory_pool.next ()) != NULL)
+    while ((r = conv_memory_pool.next ()) != nullptr)
     {
 	fp = r->allocate (log2size, tid, L4_FpageLog2);
 	if (! L4_IsNilFpage (fp))

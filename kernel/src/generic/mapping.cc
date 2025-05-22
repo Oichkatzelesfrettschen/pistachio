@@ -63,11 +63,11 @@ void SECTION (".init") init_mdb (void)
     mdb_lock.lock();
 
     // Frame table for the complete address space.
-    dual = mdb_create_dual (NULL, mdb_create_roots (mapnode_t::size_max));
+    dual = mdb_create_dual (nullptr, mdb_create_roots (mapnode_t::size_max));
 
     // Let sigma0 own the whole address space.
     sigma0_mapnode = &__sigma0_mapnode;
-    sigma0_mapnode->set_backlink ((mapnode_t *) NULL, (pgent_t *) NULL);
+    sigma0_mapnode->set_backlink ((mapnode_t *) nullptr, (pgent_t *) nullptr);
     sigma0_mapnode->set_space ((space_t *) 0);
     sigma0_mapnode->set_depth (0);
     sigma0_mapnode->set_next (dual);
@@ -250,7 +250,7 @@ mapnode_t * mdb_map (mapnode_t * f_map, pgent_t * f_pg,
 	return newmap;
     }
 
-    root = NULL;
+    root = nullptr;
 
     while (f_pgsize > t_pgsize)
     {
@@ -362,7 +362,7 @@ word_t mdb_flush (mapnode_t * f_map, pgent_t * f_pg,
 					     Bit 0 cleared indicates root. */
     rcnt = 0;
     startdepth = f_map->get_depth ();
-    root = NULL;
+    root = nullptr;
 
     if (unmap_self)
     {
@@ -381,7 +381,7 @@ word_t mdb_flush (mapnode_t * f_map, pgent_t * f_pg,
 	f_map->set_rwx (0);
 	f_pg->reset_reference_bits (space, f_hwpgsize);
 
-	parent_pg = NULL;
+	parent_pg = nullptr;
     }
     else
     {
@@ -418,11 +418,11 @@ word_t mdb_flush (mapnode_t * f_map, pgent_t * f_pg,
 	//
 	//   f_map - the current mapping node
 	//   f_pg  - the current pgent node
-	//   pmap  - the previous mapping node (or NULL if prev is root)
-	//   proot - the previous root node (or NULL if prev is map)
-	//   nmap  - the next mapping node (may be NULL)
-	//   dual  - next dual node (or NULL if no such node)
-	//   root  - Current root array pointer (or NULL)
+	//   pmap  - the previous mapping node (or nullptr if prev is root)
+	//   proot - the previous root node (or nullptr if prev is map)
+	//   nmap  - the next mapping node (may be nullptr)
+	//   dual  - next dual node (or nullptr if no such node)
+	//   root  - Current root array pointer (or nullptr)
 
 //	printf("New: f_map=%p  dual=%p  nmap=%p  pmap=%p  proot=%p  "
 //	       "fsize=%d   tsize=%d  root=%p\n",
@@ -455,7 +455,7 @@ word_t mdb_flush (mapnode_t * f_map, pgent_t * f_pg,
 		f_pg->reset_reference_bits (space, f_hwpgsize);
 		f_pg->flush (space, f_hwpgsize, false, vaddr);
 		pmap = f_map;
-		proot = NULL;
+		proot = nullptr;
 	    }
 
 	    // We might have to flush some TLB entries
@@ -467,9 +467,9 @@ word_t mdb_flush (mapnode_t * f_map, pgent_t * f_pg,
 	{
 	    f_pg->reset_reference_bits (space, f_hwpgsize);
 	    pmap = f_map;
-	    proot = NULL;
+	    proot = nullptr;
 	}
-	f_map = NULL;
+	f_map = nullptr;
 
 	// Variables `f_map' and `f_pg' are no longer valid here
 
@@ -529,7 +529,7 @@ word_t mdb_flush (mapnode_t * f_map, pgent_t * f_pg,
 		rcnt  = r_rcnt[f_pgsize];
 		if (r_prev[f_pgsize] & 1)
 		{
-		    proot = NULL;
+		    proot = nullptr;
 		    pmap = (mapnode_t *) (r_prev[f_pgsize] & ~1UL);
 		    if (f_map)
 			f_pg = f_map->get_pgent (pmap);
@@ -537,7 +537,7 @@ word_t mdb_flush (mapnode_t * f_map, pgent_t * f_pg,
 		else
 		{
 		    proot = (rootnode_t *) r_prev[f_pgsize];
-		    pmap = NULL;
+		    pmap = nullptr;
 		    if (f_map)
 			f_pg = f_map->get_pgent (proot);
 		}
@@ -573,7 +573,7 @@ word_t mdb_flush (mapnode_t * f_map, pgent_t * f_pg,
 		r_root[f_pgsize] = root;
 		r_rcnt[f_pgsize] = rcnt;
 
-		f_map = NULL;
+		f_map = nullptr;
 		root = nroot - 1;
 		rcnt = mdb_arraysize (f_pgsize);
 
@@ -585,7 +585,7 @@ word_t mdb_flush (mapnode_t * f_map, pgent_t * f_pg,
 		if (f_map)
 		{
 		    f_pg = f_map->get_pgent (root);
-		    pmap = NULL;
+		    pmap = nullptr;
 		    proot = root;
 		}
 	    }
@@ -626,7 +626,7 @@ static NOINLINE rootnode_t * mdb_create_roots (mapnode_t::pgsize_e size)
     newnodes = (rootnode_t *) mdb_alloc_buffer (sizeof (rootnode_t) * num);
 
     for (n = newnodes; num--; n++)
-	n->set_ptr ((mapnode_t *) NULL);
+	n->set_ptr ((mapnode_t *) nullptr);
 
     return newnodes;
 }

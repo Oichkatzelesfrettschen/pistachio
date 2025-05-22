@@ -173,7 +173,7 @@ public:
         {
    
             for( int i = 0; i < MAX_PRIORITY; i++ )
-                prio_queue[i] = NULL;
+                prio_queue[i] = nullptr;
             
             global_pass = 0;
             max_prio = -1;
@@ -182,7 +182,7 @@ public:
             depth = 0;
 	    count = 0;
 	    
-            ON_CONFIG_SMP(cpu_link = cpu_head = NULL);
+            ON_CONFIG_SMP(cpu_link = cpu_head = nullptr);
             reset_period_cycles(get_cpu_cycles());
         }
 
@@ -223,7 +223,7 @@ public:
     spinlock_t lock;
     char cache_pad1[CACHE_LINE_SIZE - sizeof(spinlock_t)];
 	
-    volatile bool is_empty() { return (tcb_list == NULL); }
+    volatile bool is_empty() { return (tcb_list == nullptr); }
 	
     void enqueue_head(tcb_t *tcb)
 	{
@@ -244,7 +244,7 @@ public:
  
 	    tcb_t * tcb = tcb_list;
 	    tcb_list = tcb->sched_state.requeue;
-	    tcb->sched_state.requeue = NULL;
+	    tcb->sched_state.requeue = nullptr;
 		
 	    TRACE_SCHEDULE_DETAILS("smp_requeue:dequeue_head %t (s=%s) cpu %d (head %t)", 
                                    tcb, tcb->get_state().string(), tcb->get_cpu(), tcb_list);

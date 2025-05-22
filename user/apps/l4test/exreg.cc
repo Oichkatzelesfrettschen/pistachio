@@ -76,7 +76,7 @@ dumb_exreg_thread( L4_ThreadId_t tid )
 	/* Make an invalid exreg on it */
 	control = EX_RECV | EX_SEND | EX_SP | EX_IP | EX_PAGR;
 
-	ret = L4_ExchangeRegisters( tid, control, NULL, NULL, 0, 0, pager, 
+	ret = L4_ExchangeRegisters( tid, control, nullptr, nullptr, 0, 0, pager, 
 				    &control, &sp, &pc, &flags, &user, 
 				    &pager );
 
@@ -132,8 +132,8 @@ exreg_to_null(void)
 
 	//printf( "Starting with exreg..." );
 
-	/* exreg it to the NULL */
-	do_exreg_thread_pager( L4_nilthread, tid, NULL, NULL );
+	/* exreg it to the nullptr */
+	do_exreg_thread_pager( L4_nilthread, tid, nullptr, nullptr );
 
 	/* wait a bit */
 	/* it should print out now... */
@@ -194,7 +194,7 @@ ex_thrash(void)
 	int x = 0;
 
 	/* init a new stack & all */
-	sp = NULL;
+	sp = nullptr;
 	setup_exreg( &ip, &sp, printy_thread );
 
 	/* get a TID */
@@ -243,7 +243,7 @@ ex_thrash2(void)
 	int x = 0;
 
 	/* init a new stack & all */
-	sp = NULL;
+	sp = nullptr;
 	setup_exreg( &ip, &sp, printy_thread );
 
 	/* get a TID */
@@ -369,7 +369,7 @@ void all_exreg_tests(void)
 /* the menu */
 static struct menuitem menu_items[] = 
 {
-	{ NULL, "return" },
+	{ nullptr, "return" },
 	{ exreg_ret,  "Test return value" },
 	{ exreg_g2l,  "Test global <-> local" },
 	{ ex_thrash,  "ExReg many times (with wait)" },
@@ -377,7 +377,7 @@ static struct menuitem menu_items[] =
 	{ ex_tc    ,  "ExReg then ThreadControl" },
 	{ exreg_inactive_thread,
 	  "ExchangeRegisters on inactive thread" },
-	{ exreg_to_null, "Try to start a thread with no pager (@NULL)" },
+	{ exreg_to_null, "Try to start a thread with no pager (@nullptr)" },
         { all_exreg_tests, "All exreg tests" },
 
 };

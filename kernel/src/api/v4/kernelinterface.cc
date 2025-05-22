@@ -163,7 +163,7 @@ procdesc_t processor_descriptors[CONFIG_SMP_MAX_CPUS] UNIT (KIP_SECTION ".pdesc"
 
 procdesc_t * processor_info_t::get_procdesc (word_t num)
 {
-    return num < CONFIG_SMP_MAX_CPUS ? &processor_descriptors[num] : NULL;
+    return num < CONFIG_SMP_MAX_CPUS ? &processor_descriptors[num] : nullptr;
 }
 
 /*
@@ -186,12 +186,12 @@ extern "C" {
  *
  * @param num	the descritor number to return
  *
- * @return pointer to memory descriptor, or NULL if NUM is out of range
+ * @return pointer to memory descriptor, or nullptr if NUM is out of range
  */
 memdesc_t * memory_info_t::get_memdesc (word_t num)
 {
     if (num >= n)
-	return NULL;
+	return nullptr;
     return &KIP_MEMDESCS[num];
 }
 

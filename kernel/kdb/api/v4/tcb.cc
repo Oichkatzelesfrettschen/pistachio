@@ -341,7 +341,7 @@ tcb_t SECTION(SEC_KDEBUG) * kdb_get_tcb()
     word_t val = get_hex("tcb/tid", (word_t) space, "current");
 
     if (val == ABORT_MAGIC)
-	return NULL;
+	return nullptr;
 
     if (!tcb_t::is_tcb((addr_t)val) &&
 	(val != (word_t)get_idle_tcb()))

@@ -48,7 +48,7 @@ template<typename T> INLINE T *get_on_cpu(cpuid_t cpu, T *item)
         return (T *) addr_offset(phys_to_virt((addr_t)pgent->address(kspace, pgsize)),
                                  addr_mask(item, page_mask (pgsize)));
     else 
-        return NULL;
+        return nullptr;
     
 #else
     return item;
@@ -132,7 +132,7 @@ public:
 	    if ( ((first_free + 1) % MAX_MAILBOX_ENTRIES) == first_alloc )
 	    {
 		lock.unlock();
-		return NULL;
+		return nullptr;
 	    }
 	    unsigned idx = first_free;
 	    first_free = (first_free + 1) % MAX_MAILBOX_ENTRIES;
@@ -186,7 +186,7 @@ INLINE cpu_mb_t * get_cpu_mailbox (cpuid_t dst)
 }
 
 INLINE void xcpu_request(cpuid_t dstcpu, xcpu_handler_t handler, 
-			 tcb_t * tcb = NULL, 
+			 tcb_t * tcb = nullptr, 
 			 word_t param0 = 0, word_t param1 = 0, 
 			 word_t param2 = 0 )
 {
@@ -263,7 +263,7 @@ public:
 };
 
 void sync_xcpu_request(cpuid_t dstcpu, xcpu_handler_t handler,
-		       tcb_t * tcb = NULL, word_t param0 = 0, 
+		       tcb_t * tcb = nullptr, word_t param0 = 0, 
 		       word_t param1 = 0, word_t param2 = 0);
 
 #endif /* CONFIG_SMP_SYNC_REQUEST */

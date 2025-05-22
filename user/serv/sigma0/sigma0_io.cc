@@ -87,7 +87,7 @@ bool allocate_iopage (L4_ThreadId_t tid, L4_Fpage_t iofp, L4_MapItem_t & map)
 
     io_pool.reset ();
     
-    while ((r = io_pool.next ()) != NULL)
+    while ((r = io_pool.next ()) != nullptr)
     {
 	if (r->low > addr_high || r->high < addr)
 	    continue;
@@ -105,7 +105,7 @@ bool allocate_iopage (L4_ThreadId_t tid, L4_Fpage_t iofp, L4_MapItem_t & map)
 
     // Check if memory has already been allocated.
     io_alloc_pool.reset ();
-    while ((r = io_alloc_pool.next ()) != NULL)
+    while ((r = io_alloc_pool.next ()) != nullptr)
     {
 	if (r->can_allocate (addr, log2size, tid))
 	{
@@ -120,7 +120,7 @@ bool allocate_iopage (L4_ThreadId_t tid, L4_Fpage_t iofp, L4_MapItem_t & map)
 
     region_pool_t * all_io_pools[] = { &io_pool,
 					  &io_alloc_pool,
-					  (region_pool_t *) NULL };
+					  (region_pool_t *) nullptr };
     
     // Loop once for checking followed by once for allocating
     for (L4_Word_t phase = 0; phase < 2; phase++)
@@ -132,10 +132,10 @@ bool allocate_iopage (L4_ThreadId_t tid, L4_Fpage_t iofp, L4_MapItem_t & map)
 	    bool failed = true;
 
 	    // Try the different pools
-	    for (L4_Word_t i = 0; failed && all_io_pools[i] != NULL; i++)
+	    for (L4_Word_t i = 0; failed && all_io_pools[i] != nullptr; i++)
 	    {
 		all_io_pools[i]->reset ();
-		while ((r = all_io_pools[i]->next ()) != NULL)
+		while ((r = all_io_pools[i]->next ()) != nullptr)
 		{
 		    if (r->low > a_end || r->high < a)
 			continue;

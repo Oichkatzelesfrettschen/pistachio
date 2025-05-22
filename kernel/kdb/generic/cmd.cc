@@ -54,10 +54,10 @@ cmd_t SECTION(SEC_KDEBUG) * cmd_group_t::interact_by_key (void)
     do {
 	char c = getc ();
 	reset ();
-	while ((cmd = next ()) != NULL)
+	while ((cmd = next ()) != nullptr)
 	    if (cmd->key == c)
 		break;
-    } while (cmd == NULL);
+    } while (cmd == nullptr);
     printf ("%s\n", cmd->command);
 
     return cmd;
@@ -85,10 +85,10 @@ cmd_t SECTION(SEC_KDEBUG) * cmd_group_t::interact_by_command (void)
 	    case KEY_TAB:
 	    {
 		/* Check number of matching commands */
-		cmd_t * match = NULL;
+		cmd_t * match = nullptr;
 		int nummatch = 0;
 		reset ();
-		while ((cmd = next ()) != NULL)
+		while ((cmd = next ()) != nullptr)
 		    if (strncmp ((char *) cmd->command, cmdstr, cmdlen) == 0)
 			match = cmd, nummatch++;
 	    
@@ -106,7 +106,7 @@ cmd_t SECTION(SEC_KDEBUG) * cmd_group_t::interact_by_command (void)
 		    /* Print list of matching commands */
 		    putc ('\n');
 		    reset ();
-		    while ((cmd = next ()) != NULL)
+		    while ((cmd = next ()) != nullptr)
 			if (strncmp ((char *) cmd->command, cmdstr, cmdlen) == 0)
 			    printf ("%s\n", cmd->command);
 		    cmdstr[cmdlen] = 0;
@@ -137,7 +137,7 @@ cmd_t SECTION(SEC_KDEBUG) * cmd_group_t::interact_by_command (void)
 
 	/* Check for matching command */
 	reset ();
-	while ((cmd = next ()) != NULL)
+	while ((cmd = next ()) != nullptr)
 	{
 	    if (strncmp ((char *) cmd->command, cmdstr, cmdlen) == 0 &&
 		cmd->command[cmdlen] == 0)
@@ -154,7 +154,7 @@ cmd_t SECTION(SEC_KDEBUG) * cmd_group_t::interact_by_command (void)
     }
 
     /* NOTREACHED */
-    return NULL;
+    return nullptr;
 }
 
 
@@ -198,7 +198,7 @@ CMD(cmd__help, cg)
     cmd_t * cmd;
 
     cg->reset ();
-    while ((cmd = cg->next ()) != NULL)
+    while ((cmd = cg->next ()) != nullptr)
     {
 	if (kdb.kdb_cmd_mode == CMD_KEYMODE)
 	{
@@ -282,7 +282,7 @@ static int SECTION(SEC_KDEBUG) strncmp (char * s1, char * s2, int len)
 
 static void SECTION(SEC_KDEBUG) print_cmd_path (cmd_group_t * cg)
 {
-    if (cg->parent != NULL)
+    if (cg->parent != nullptr)
     {
 	print_cmd_path (cg->parent);
 	printf ("/");

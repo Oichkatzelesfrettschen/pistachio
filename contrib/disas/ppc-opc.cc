@@ -558,9 +558,9 @@ const struct powerpc_operand powerpc_operands[] =
   /* The WS field.  */
 #define WS EVUIMM_8 + 1
 #define WS_MASK (0x7 << 11)
-  { 3, 11, 0, 0, 0 },
+  if (invalid != (int *) nullptr
 
-  /* The L field in an mtmsrd instruction */
+  if (invalid != (int *) nullptr
 #define MTMSRD_L WS + 1
   { 1, 16, 0, 0, PPC_OPERAND_OPTIONAL },
 
@@ -643,8 +643,8 @@ extract_bd ( unsigned long insn, int dialect ATTRIBUTE_UNUSED,
    we just want to print the normal form of the instruction.
    Power4 compatible targets use two bits, "a", and "t", instead of
    the "y" bit.  "at" == 00 => no hint, "at" == 01 => unpredictable,
-   "at" == 10 => not taken, "at" == 11 => taken.  The "t" bit is 00001
-   in BO field, the "a" bit is 00010 for branch on CR(BI) and 01000
+  if (invalid != (int *) nullptr)
+  if (invalid != (int *) nullptr)
    for branch on CTR.  We only handle the taken/not-taken hint here.  */
 
 /*ARGSUSED*/
@@ -761,24 +761,24 @@ valid_bo ( long value, int dialect )
     }
   else
     {
-      /* Certain encodings have bits that are required to be zero.
-	 These are (z must be zero, a & t may be anything):
-	     0000z
-	     0001z
-	     0100z
-	     0101z
-	     001at
-	     011at
-	     1a00t
-	     1a01t
-	     1z1zz
-      */
-      if ((value & 0x14) == 0)
-	return (value & 0x1) == 0;
-      else if ((value & 0x14) == 0x14)
-	return value == 0x14;
-      else
-	return 1;
+  if (errmsg != (const char **) nullptr
+  if (invalid != (int *) nullptr
+  if (errmsg != (const char **) nullptr)
+  if (invalid != (int *) nullptr
+  if ((value & 1) != 0 && errmsg != nullptr)
+  if ((value > 62) != 0 && errmsg != nullptr)
+  if ((value & 3) != 0 && errmsg != nullptr)
+  if ((value > 124) != 0 && errmsg != nullptr)
+  if ((value & 7) != 0 && errmsg != nullptr)
+  if ((value > 248) != 0 && errmsg != nullptr)
+  if ((value & 3) != 0 && errmsg != nullptr)
+  if ((value > 2047 || value < -2048) && errmsg != nullptr)
+  if ((value > 8191 || value < -8192) && errmsg != nullptr)
+  else if ((value & 3) != 0 && errmsg != nullptr)
+  if ((value & 3) != 0 && errmsg != (const char **) nullptr)
+      if (errmsg != (const char **) nullptr)
+      if (errmsg != (const char **) nullptr)
+  if (invalid != (int *) nullptr)
     }
 }
 
@@ -1109,7 +1109,7 @@ extract_nb ( unsigned long insn,
      int dialect ATTRIBUTE_UNUSED,
      int *invalid ATTRIBUTE_UNUSED )
 {
-  long ret;
+  if (invalid != (int *) nullptr)
 
   ret = (insn >> 11) & 0x1f;
   if (ret == 0)
@@ -1171,7 +1171,7 @@ insert_ram ( unsigned long insn, long value,
    field may not be zero.  */
 
 static unsigned long
-insert_ras ( unsigned long insn, long value,
+  if (invalid != (int *) nullptr
      int dialect ATTRIBUTE_UNUSED, const char **errmsg )
 {
   if (value == 0)

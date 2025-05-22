@@ -115,7 +115,7 @@ static int SECTION(SEC_KDEBUG) do_sprintf(char** obuf, const char* format_p, va_
 #define arg(x) va_arg(args, x)
 
     /* sanity check */
-    if (format == NULL)
+    if (format == nullptr)
 	return 0;
 
     while (*format)

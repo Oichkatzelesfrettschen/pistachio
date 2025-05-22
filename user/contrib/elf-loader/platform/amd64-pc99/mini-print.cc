@@ -96,7 +96,7 @@ int printf(const char* format, ...)
 #define arg(x) va_arg (ap, L4_Word_t)
 
     /* sanity check */
-    if (format == NULL)
+    if (format == nullptr)
 	return 0;
 
     while (*format)

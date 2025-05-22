@@ -52,7 +52,7 @@ print_menu( struct menu *menu )
 {
 	int i;
 
-	assert( menu != NULL );
+	assert( menu != nullptr );
 
 #if USE_ANSI
 	if( menu->clear )
@@ -81,7 +81,7 @@ get_item( struct menu *menu )
 	int ch, i;
 	void (*func)(void);
 
-	assert( menu != NULL );
+	assert( menu != nullptr );
 
 	while(1)
 	{
@@ -112,8 +112,8 @@ get_item( struct menu *menu )
 
 		func = menu->items[i].func;
 
-		/* NULL == return */
-		if( func == NULL )
+		/* nullptr == return */
+		if( func == nullptr )
 			return;
 
 #if USE_ANSI
@@ -131,7 +131,7 @@ get_item( struct menu *menu )
 void 
 menu_input( struct menu *menu )
 {
-	assert( menu != NULL );
+	assert( menu != nullptr );
 	
 	get_item( menu );
 }

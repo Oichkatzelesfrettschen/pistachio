@@ -40,7 +40,7 @@
 
 intctrl_t intctrl;
 
-open_pic_t *opic = NULL;
+open_pic_t *opic = nullptr;
 
 SECTION(".init") void intctrl_t::init_arch()
 {

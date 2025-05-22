@@ -73,7 +73,7 @@ void all_mem_tests()
 /* the menu */
 static struct menuitem menu_items[] = 
 {
-	{ NULL, "return" },
+	{ nullptr, "return" },
 	{ page_touch,  "Page Touch" },
 	{ all_mem_tests,  "All mem tests" },
 };

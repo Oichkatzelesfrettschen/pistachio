@@ -447,7 +447,7 @@ void arch_hvm_ktcb_t::disable_hvm ()
     if (vmcs)
     {
 	vmcs_t::free_vmcs (vmcs);
-	vmcs = NULL;
+	vmcs = nullptr;
     }
     vtlb.free ();
 }

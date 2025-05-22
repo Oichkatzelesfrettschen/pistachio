@@ -69,7 +69,7 @@ char kernel_space_segment_table[POWERPC64_STAB_SIZE] __attribute__((aligned(POWE
 #endif
 
 space_t *kernel_space = (space_t*)&kernel_space_object;
-tcb_t *dummy_tcb = NULL;
+tcb_t *dummy_tcb = nullptr;
 
 //translation table
 struct transTable_t transTable[TRANSLATION_TABLE_ENTRIES];

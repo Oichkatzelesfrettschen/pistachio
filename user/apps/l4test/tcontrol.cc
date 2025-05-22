@@ -70,7 +70,7 @@ run_a_thread(void)
 	L4_ThreadId_t tid;
 
 	/* init a new stack & all */
-	sp = NULL;
+	sp = nullptr;
 	setup_exreg( &ip, &sp, printy_thread );
 
 	/* get a TID */
@@ -108,7 +108,7 @@ tc_then_exreg(void)
 	L4_ThreadId_t tid;
 
 	/* init a new stack & all */
-	sp = NULL;
+	sp = nullptr;
 	setup_exreg( &ip, &sp, print_ok_thread );
 
 	/* get a TID */
@@ -152,7 +152,7 @@ void all_tc_tests(void)
 /* the menu */
 static struct menuitem menu_items[] = 
 {
-	{ NULL, "return" },
+	{ nullptr, "return" },
 	{ run_a_thread,  "Run a thread" },
 	{ delete_self,  "Delete self" },
 	{ tc_then_exreg, "ThreadControl + ExReg" },

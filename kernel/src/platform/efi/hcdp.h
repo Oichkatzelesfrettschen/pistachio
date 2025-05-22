@@ -71,7 +71,7 @@ public:
 	    if (hcdp_dev[i].type == type)
 		return &hcdp_dev[i];
 	}
-	return NULL;
+	return nullptr;
     }
 } __attribute__((packed));
 

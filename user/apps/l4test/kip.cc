@@ -299,7 +299,7 @@ void all_kip_tests(void)
 /* the menu */
 static struct menuitem menu_items[] = 
 {
-	{ NULL, "return" },
+	{ nullptr, "return" },
 	{ print_kip,  "Print KIP" },
 	{ thrash_kip, "Thrash GetKip" },
         { all_kip_tests, "All KIP tests" },

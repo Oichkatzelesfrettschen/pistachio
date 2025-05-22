@@ -90,7 +90,7 @@ public:
     
     cpu_kdb_t()
 	{
-	    user_tcb = NULL;
+	    user_tcb = nullptr;
 	    kdb_tcb = (tcb_t *) &__kdb_tcb;
 	    get_idle_tcb()->create_kernel_thread(NILTHREAD, &__kdb_utcb, sktcb_hi);
 	    kdb_tcb->set_cpu(get_current_cpu());

@@ -60,7 +60,7 @@ INLINE acpi_rsdp_t* acpi_rsdp_t::locate(addr_t addr)
 	    return r;
     };
     /* not found */
-    return NULL;
+    return nullptr;
 };
 
 #endif /* !__PLATFORM__PC99__ACPI_H__ */

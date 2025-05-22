@@ -113,7 +113,7 @@ static void sigma0_ipc (word_t type, word_t arg)
     tag = current->do_ipc (s0id, NILTHREAD, timeout_t::never());
 
     // Abort kernel thread execution.
-    current->set_space (NULL);
+    current->set_space (nullptr);
     current->set_state (thread_state_t::aborted);
     get_current_scheduler ()->deschedule (current);
     current->sched_state.init (sktcb_lo);
