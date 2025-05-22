@@ -192,7 +192,11 @@ void SECTION(SEC_INIT) setup_gdt(x86_tss_t &tss, cpuid_t cpuid)
     gdt.segdsc[GDT_IDX(X86_UCS32)].set_seg((u64_t) 0, x86_segdesc_t::code, 3, x86_segdesc_t::m_comp);
 #endif /* defined(CONFIG_X86_COMPATIBILITY_MODE) */
 
-    /* TODO: Assertion correct ? */
+    /*
+     * Per-CPU GDT entries live in a cache line sized slot inside the
+     * cpulocal area which is mapped as one superpage.  Ensure that the
+     * offset derived from the CPU id does not exceed this mapping.
+     */
     ASSERT(unsigned(cpuid * X86_X64_CACHE_LINE_SIZE) < X86_SUPERPAGE_SIZE);
     
     /* Set TSS */

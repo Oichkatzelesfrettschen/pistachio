@@ -318,7 +318,19 @@ private:
      */
     void commit_schedule_parameters(schedule_req_t &req);
 
+    /**
+     * forward scheduling parameters to the user level scheduler
+     */
+    void send_schedule_ipc(schedule_req_t &req);
+
     static schedule_request_queue_t schedule_request_queue[CONFIG_SMP_MAX_CPUS];
+
+    /* context switch control */
+    static volatile bool switch_request;
+public:
+    static void request_switch() { switch_request = true; }
+    static void clear_switch_request() { switch_request = false; }
+    static bool switch_pending() { return switch_request; }
 };
 
 /**

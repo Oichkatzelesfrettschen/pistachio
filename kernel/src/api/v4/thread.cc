@@ -1578,10 +1578,14 @@ void SECTION(".init") init_root_servers()
 	panic ("Sigma0's memory region is empty, "
 	       "system will not be functional.  Halting.\n");
 
-    threadid_t sigma0, sigma1, root_server;
+    threadid_t sigma0, sigma1, root_server, memory_server;
     sigma0.set_global_id(ubase, ROOT_VERSION);
     sigma1.set_global_id(ubase+1, ROOT_VERSION);
     root_server.set_global_id(ubase+2, ROOT_VERSION);
+    memory_server.set_global_id(ubase+3, ROOT_VERSION);
+
+    extern "C" void set_memory_server_id(threadid_t id);
+    set_memory_server_id(memory_server);
     
     TRACE_INIT ("Creating sigma0 (%t)\n", TID(sigma0));
     tcb = create_root_server(

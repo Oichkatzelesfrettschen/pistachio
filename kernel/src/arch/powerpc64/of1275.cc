@@ -45,7 +45,7 @@ of1275_client_interface_t of1275 SECTION (".init.data");
 s32_t SECTION (".init")
 of1275_client_interface_t::call( void *params )
 {
-    register s32_t result;
+    s32_t result;
     s32_t args = (word_t)params;
     asm volatile (
 	"mtctr	%1; "

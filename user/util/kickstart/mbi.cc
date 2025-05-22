@@ -76,8 +76,8 @@ void mbi_t::copy( mbi_t *target )
     {
 	target->cmdline = strings;
 	strcpy( target->cmdline, this->cmdline );
-	strings = strings + 1 + strlen(this->cmdline);
-	// TODO: align the strings pointer.
+        strings = strings + 1 + strlen(this->cmdline);
+        strings = (char *)align_up((L4_Word_t)strings, sizeof(L4_Word_t));
     }
 
     // Put modules at end of the target mbi.  Assume this will get
@@ -93,8 +93,8 @@ void mbi_t::copy( mbi_t *target )
 	{
 	    target->mods[i].cmdline = strings;
 	    strcpy( target->mods[i].cmdline, this->mods[i].cmdline );
-	    strings = strings + 1 + strlen(this->mods[i].cmdline);
-	    // TODO: align the strings pointer.
+            strings = strings + 1 + strlen(this->mods[i].cmdline);
+            strings = (char *)align_up((L4_Word_t)strings, sizeof(L4_Word_t));
 	}
     }
 }

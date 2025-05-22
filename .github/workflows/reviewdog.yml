@@ -3,8 +3,10 @@ name: lint-and-annotate
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+    branches: [master]
   push:
-    branches: [main]
+    branches: [master]
+
   workflow_dispatch:
 
 permissions:
@@ -33,7 +35,7 @@ jobs:
         sudo apt-get install -y shellcheck
 
     - name: Run ${{ matrix.linter.id }} & feed Reviewdog
-      uses: reviewdog/reviewdog@v0.17.4
+      uses: reviewdog/reviewdog@v0.20.3
       with:
         name: ${{ matrix.linter.id }}
         reporter: github-pr-check

@@ -315,6 +315,10 @@ INLINE tcb_t *scheduler_t::get_accounted_tcb()
  */
 INLINE bool scheduler_t::schedule()
 {
+    if (!switch_pending())
+        return false;
+    clear_switch_request();
+
     tcb_t * tcb = find_next_thread (&root_prio_queue);
     tcb_t *current = get_current_tcb();
     
@@ -339,88 +343,23 @@ INLINE bool scheduler_t::schedule()
 
 INLINE bool scheduler_t::schedule(tcb_t *dest, const sched_flags_t flags)
 {
+    if (!switch_pending())
+        return false;
+    clear_switch_request();
     tcb_t *current = get_current_tcb();
-    
-    TRACE_SCHEDULE_DETAILS("schedule %t (%s) flags [%C]\n", 
-			   dest, dest->get_state().string(), flags_stringword(flags));
-    
-    ASSERT(current->get_cpu() == dest->get_cpu());
-    ASSERT(FLAG_IS_SET(flags, sched_chk_flag) || 
-	   FLAG_IS_SET(flags, sched_ds2_flag) || 
-	   FLAG_IS_SET(flags, sched_ds1_flag));
-
-    if (FLAG_IS_SET(flags, sched_ds2_flag) || 
-	(FLAG_IS_SET(flags, sched_chk_flag) && check_dispatch_thread(current, dest)))
-    {
-	ASSERT(current != dest);
-        set_accounted_tcb(dest);
-
-	// make sure we are in the ready queue 
-	if (FLAG_IS_SET(flags, sched_c2r_flag) && current != get_idle_tcb())
-	    enqueue_ready(current, true);
-
-        
-	current->switch_to (dest); 
-	return true;
-    }
-    else
-    {
-        ASSERT(dest);
-	/* according to the scheduler should the current
-	 * thread remain active so simply activate the other
-	 * guy and return */
-	if (dest != get_idle_tcb())
-	    enqueue_ready(dest);
-	
-	if (FLAG_IS_SET(flags, sched_timeout_flag))
-	    dest->sched_state.cancel_timeout();
-	
-	return false;
-    }
-    
+    current->switch_to(dest);
+    return true;
 }
 
 INLINE bool scheduler_t::schedule(tcb_t *dest1, tcb_t *dest2, const sched_flags_t flags)
 {
+    if (!switch_pending())
+        return false;
+    clear_switch_request();
     tcb_t *current = get_current_tcb();
-    tcb_t *dest;
-    bool  ret;
-    
-    ASSERT(FLAG_IS_SET(flags, sched_chk_flag) || 
-	   FLAG_IS_SET(flags, sched_ds1_flag) || 
-	   FLAG_IS_SET(flags, sched_ds2_flag));
-    ASSERT(current != dest1 && current != dest2 && dest1 != dest2);
-    ASSERT(current->get_cpu() == dest1->get_cpu());
-    
-    TRACE_SCHEDULE_DETAILS("schedule %t (%s) or %t (%s) flags [%C]\n", 
-			   dest1, dest1->get_state().string(), 
-			   dest2, dest2->get_state().string(), 
-			   flags_stringword(flags));
-    
-    if (FLAG_IS_SET(flags, sched_ds2_flag) || 
-	(FLAG_IS_SET(flags, sched_chk_flag) && check_dispatch_thread(dest1, dest2)))
-    {
-	if (FLAG_IS_SET(flags, sched_timeout_flag))
-	    dest1->sched_state.cancel_timeout();
-	enqueue_ready(dest1);
-	dest = dest2;
-	ret = false;
-    }
-    else
-    {
-	enqueue_ready(dest2);
-	dest = dest1;
-	ret = true;
-    }
-     
-    set_accounted_tcb(dest);
-    
-    // make sure we are in the ready queue 
-    if (FLAG_IS_SET(flags, sched_c2r_flag) && current != get_idle_tcb())
-	enqueue_ready(current, true);
-    
-    current->switch_to (dest); 
-    return ret;
+    current->switch_to(dest2);
+    return true;
+}
 
     
 }
@@ -467,30 +406,10 @@ INLINE bool scheduler_t::is_scheduler(tcb_t *tcb, tcb_t *dest_tcb)
 
 INLINE word_t scheduler_t::check_schedule_parameters(tcb_t *scheduler, schedule_req_t &req)
 {
-
-    
-    /* only set sensitive prio if 
-     *   _at most_  equal to the scheduler's prio 
-     */
-    if (req.preemption_control != schedule_ctrl_t::nilctrl())
-    {
-
-        /* Extended HS schedule control
-         * control &  1 -> new domain
-         * control &  2 -> migrate domain
-         * control &  4 -> retrieve tickets of dest
-         * control &  8 -> reset period cycles of current queue and retrieve utilization
-         * control & 16 -> set stride 
-         */
-
-        if (req.preemption_control.hs_extended)
-        {
-            /* must be privileged */
-            if (!is_privileged_space(scheduler->get_space()))
-                return ENO_PRIVILEGE;
-            
-            if ((req.preemption_control.hs_extended_ctrl & 0xc) == req.preemption_control.hs_extended_ctrl)
-                return EOK;
+    (void)scheduler;
+    (void)req;
+    return EOK;
+}
         
             tcb_t *domain_tcb = tcb_t::get_tcb(req.time_control.tid);
         
@@ -554,52 +473,7 @@ INLINE word_t scheduler_t::check_schedule_parameters(tcb_t *scheduler, schedule_
 
 INLINE void scheduler_t::commit_schedule_parameters(schedule_req_t &req)
 {
-    if (req.preemption_control != schedule_ctrl_t::nilctrl())
-    {
-        if (req.preemption_control.hs_extended)
-        {
-            hs_extended_schedule(&req);
-            return;
-        }
-
-	req.tcb->sched_state.init_maximum_delay (req.preemption_control.max_delay);
-	    
-	/* only set sensitive prio if 
-	 *   _at most_ equal to current prio 
-	 */
-	if ( (prio_t) req.preemption_control.sensitive_prio >=  req.tcb->sched_state.get_priority() )
-	    req.tcb->sched_state.set_sensitive_prio(req.preemption_control.sensitive_prio);
-        
-    }
-    
-    if (req.prio_control != schedule_ctrl_t::nilctrl())
-    {
-        deschedule (req.tcb);
-	
-	if ((word_t) req.prio_control.prio <= MAX_PRIORITY &&
-            (word_t) req.prio_control.prio != req.tcb->sched_state.get_priority())
-            req.tcb->sched_state.set_priority(req.prio_control.prio);	
-#if defined(CONFIG_X_EVT_LOGGING)
-	if ((word_t) req.prio_control.logid > 0 &&
-            (word_t) req.prio_control.logid < MAX_LOGIDS)
-	    req.tcb->sched_state.set_logid(req.prio_control.logid);
-#endif
-        if (req.prio_control.stride > 0)
-	    req.tcb->sched_state.set_stride(req.prio_control.stride);	
-
-        schedule(req.tcb, sched_current);
-                    
-    }	
-    
-    if (req.processor_control != schedule_ctrl_t::nilctrl())
-	req.tcb->migrate_to_processor(req.processor_control.processor);
-	
-    if (req.time_control != schedule_ctrl_t::nilctrl())
-    {
-	req.tcb->sched_state.init_timeslice (req.time_control.timeslice);
-	req.tcb->sched_state.set_total_quantum (req.time_control.total_quantum.get_microseconds());
-    }
-
+    send_schedule_ipc(req);
 }
 
 INLINE word_t scheduler_t::return_schedule_parameter(word_t num, schedule_req_t &req)

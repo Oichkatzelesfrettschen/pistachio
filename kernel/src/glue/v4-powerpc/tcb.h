@@ -316,9 +316,9 @@ INLINE void tcb_t::switch_to(tcb_t * dest)
     }
 #endif
 
-    register word_t dummy0 asm("r27");
-    register word_t dummy1 asm("r28");
-    register word_t dummy2 asm("r29");
+    word_t dummy0 asm("r27");
+    word_t dummy1 asm("r28");
+    word_t dummy2 asm("r29");
 
     asm volatile (
 	    "stw %%r30, -4(%%r1) ;"		/* Preserve r30 on the stack. */
@@ -445,9 +445,9 @@ INLINE msg_tag_t tcb_t::do_ipc( threadid_t to_tid, threadid_t from_tid, timeout_
 {
     this->resources.set_kernel_ipc( this );
 
-    register word_t r3 asm("r3") = to_tid.get_raw();
-    register word_t r4 asm("r4") = from_tid.get_raw();
-    register word_t r5 asm("r5") = timeout.raw;
+    word_t r3 asm("r3") = to_tid.get_raw();
+    word_t r4 asm("r4") = from_tid.get_raw();
+    word_t r5 asm("r5") = timeout.raw;
 
     /* ABI stack */
     asm volatile (
