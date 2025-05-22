@@ -46,6 +46,8 @@ public: // to allow initializers
     volatile word_t _lock;
 };
 
+class scoped_spinlock;
+
 #define DECLARE_SPINLOCK(name) extern spinlock_t name;
 #define DEFINE_SPINLOCK(name) spinlock_t name = {_lock: 0}
 

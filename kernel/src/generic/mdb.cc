@@ -203,7 +203,7 @@ mdb_node_t * mdb_t::map (mdb_node_t * f_node,
 		get_name (),  f_node,  obj, objsize,   addr,  (out_rights & 7UL), 
 		(in_rights & 7UL));
 
-    mdb_lock.lock();
+    scoped_spinlock guard(mdb_lock);
 
     // Allocate and initialize new mapping node.
 
@@ -228,7 +228,7 @@ mdb_node_t * mdb_t::map (mdb_node_t * f_node,
 	if (f_node->get_next ())
 	    f_node->get_next ()->set_prev (newnode);
 	f_node->set_next (newnode);
-	mdb_lock.unlock();
+
 	return newnode;
     }
 
@@ -256,7 +256,7 @@ mdb_node_t * mdb_t::map (mdb_node_t * f_node,
 		if (n)
 		    n->set_prev (newnode);
 		table->set_node (addr, newnode);
-		mdb_lock.unlock();
+
 		return newnode;
 	    }
 	    else if (table->get_objsize () > objsize)
@@ -308,7 +308,6 @@ mdb_node_t * mdb_t::map (mdb_node_t * f_node,
 		newtable->set_table (table->get_prefix (), table);
 	    }
 
-	    mdb_lock.unlock();
 	    return newnode;
 	}
 
@@ -398,7 +397,7 @@ mdb_node_t * mdb_t::map (mdb_node_t * f_node,
 	    f_node->set_table (newtable);
 
 	newtable->set_node (auxnode);
-	mdb_lock.unlock();
+
 	return newnode;
     }
 }
@@ -436,7 +435,7 @@ word_t mdb_t::mapctrl (mdb_node_t * node, range_t range,
 		ctrl.raw, (word_t) ctrl.string(),
 		rights & 0x7, node->get_phys_address (this));
 
-    mdb_lock.lock();
+    scoped_spinlock guard(mdb_lock);
 
     // If we are unmapping the whole node there is no need to perform
     // any updates on it first.  We do need to read out the status
@@ -1011,7 +1010,6 @@ word_t mdb_t::mapctrl (mdb_node_t * node, range_t range,
 	}
     }
 
-    mdb_lock.unlock();
     return status_bits;
 }
 

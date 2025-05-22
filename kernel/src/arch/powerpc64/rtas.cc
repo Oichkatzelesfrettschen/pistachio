@@ -184,11 +184,10 @@ word_t rtas_t::rtas_call( u32_t token, u32_t nargs, u32_t nret, word_t *outputs,
 	rtas_args.set_arg( i, (rtas_arg_t)(va_arg(list, word_t) & 0xffffffff));
     va_end(list);
 
-    this->lock.lock();
+    scoped_spinlock guard(this->lock);
 
     __call_rtas((void *)virt_to_phys(&rtas_args));
 
-    this->lock.unlock();
 
     if (nret > 1 && outputs != NULL)
         for (word_t i = 0; i < nret-1; ++i)
@@ -204,11 +203,10 @@ word_t rtas_t::rtas_call( word_t *data, u32_t token, u32_t nargs, u32_t nret )
     for (word_t i = 0; i < nargs; i++)
 	rtas_args.set_arg( i, data[i] & 0xffffffff );
 
-    this->lock.lock();
+    scoped_spinlock guard2(this->lock);
 
     __call_rtas((void *)virt_to_phys(&rtas_args));
 
-    this->lock.unlock();
 
     if (nret > 1 )
         for (word_t i = 0; i < nret-1; ++i)

@@ -47,7 +47,7 @@ DECLARE_CMD(cmd_show_sched_empty, root, 'Q', "showqueue",  "show scheduling queu
 static void show_sched_queue(bool empty)
 {
     int abort = 1000000;
-    present_list_lock.lock();
+    scoped_spinlock guard(present_list_lock);
 
     for (cpuid_t cpu = 0; cpu < cpu_t::count; cpu++)
     {
@@ -118,7 +118,6 @@ static void show_sched_queue(bool empty)
 	}
     }
     printf("idle : %t\n\n", get_idle_tcb());
-    present_list_lock.unlock();
     return;
 }
 

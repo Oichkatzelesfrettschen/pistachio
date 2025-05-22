@@ -52,6 +52,30 @@ public: // to allow initializers
     volatile word_t _lock;
 };
 
+/**
+ * Scoped spinlock helper
+ *
+ * Locks the given spinlock on construction and releases it when going
+ * out of scope.
+ */
+class scoped_spinlock
+{
+public:
+    explicit scoped_spinlock(spinlock_t &lock)
+        : lock(&lock)
+    {
+        this->lock->lock();
+    }
+
+    ~scoped_spinlock()
+    {
+        this->lock->unlock();
+    }
+
+private:
+    spinlock_t *lock;
+};
+
 #define DECLARE_SPINLOCK(name) extern spinlock_t name;
 #define DEFINE_SPINLOCK(name) spinlock_t name = {_lock: 0}
 

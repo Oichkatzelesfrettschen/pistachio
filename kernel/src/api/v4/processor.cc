@@ -67,7 +67,7 @@ init_cpu(cpuid_t processor, word_t external_freq, word_t internal_freq)
 {
     TRACE_INIT("\tRegistering processor %d in KIP (%dMHz, %dMHz)\n", 
 	       processor, external_freq/1000, internal_freq/1000);
-    kiplock.lock();
+    scoped_spinlock guard(kiplock);
 
     procdesc_t * pdesc = get_kip()->processor_info.get_procdesc(processor);
     ASSERT (pdesc);
@@ -79,5 +79,4 @@ init_cpu(cpuid_t processor, word_t external_freq, word_t internal_freq)
     if ( get_kip()->processor_info.processors < processor )
 	get_kip()->processor_info.processors = processor;
     
-    kiplock.unlock();
 }
