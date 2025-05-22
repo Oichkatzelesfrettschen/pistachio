@@ -98,6 +98,7 @@ public:
 
 #define X86_EXCWITH_ERRORCODE(name, reason)			\
 extern "C" void name##handler(x86_exceptionframe_t *frame);	\
+static const u64_t name##_reason = (reason); \
 void name##_wrapper()						\
 {								\
     __asm__ (							\
@@ -119,9 +120,10 @@ void name##_wrapper()						\
     	"pushq %%r13			\n"			\
     	"pushq %%r14			\n"			\
     	"pushq %%r15			\n"			\
-	"pushq %0			\n"			\
+        "leaq  "#name"handler(%%rip), %%rax\n"\ 
+	"pushq "#name"_reason(%%rip)			\n"			\
 	"movq  %%rsp, %%rdi		\n"			\
-	"call "#name"handler		\n"			\
+	"call *%%rax		\n"			\
 	"addq  $8, %%rsp		\n"			\
     	"popq  %%r15			\n"			\
     	"popq  %%r14			\n"			\
@@ -147,10 +149,11 @@ void name##_wrapper()						\
 void name##handler(x86_exceptionframe_t *frame)
 
 
-/* JS: TODO use RIP relative addressing !!!*/
+/* uses RIP-relative addressing for handler calls */
 #define X86_EXCNO_ERRORCODE(name, reason)		\
 extern "C" void name (void);					\
 extern "C" void name##handler(x86_exceptionframe_t *frame);	\
+static const u64_t name##_reason = (reason); \
 void name##_wrapper()						\
 {								\
     __asm__ (							\
@@ -173,9 +176,10 @@ void name##_wrapper()						\
     	"pushq %%r13			\n"			\
     	"pushq %%r14			\n"			\
     	"pushq %%r15			\n"			\
-	"pushq %0			\n"			\
+        "leaq  "#name"handler(%%rip), %%rax\n"\ 
+	"pushq "#name"_reason(%%rip)			\n"			\
 	"movq  %%rsp, %%rdi		\n"			\
-	"call "#name"handler		\n"			\
+	"call *%%rax		\n"			\
 	"addq  $8, %%rsp		\n"			\
     	"popq  %%r15			\n"			\
     	"popq  %%r14			\n"			\
