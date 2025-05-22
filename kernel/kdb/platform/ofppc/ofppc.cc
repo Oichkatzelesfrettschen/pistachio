@@ -213,7 +213,7 @@ word_t of1275_space_t::execute_of1275( word_t (*func)(void *), void *param )
     word_t result;
     word_t *sp;
 
-    this->lock.lock();
+    scoped_spinlock guard(this->lock);
 
     // Choose a stack.  Note: to avoid TLB faults, it is important that we 
     // use a stack mapped by a bat register.  It is also important to use a 
@@ -236,7 +236,6 @@ word_t of1275_space_t::execute_of1275( word_t (*func)(void *), void *param )
 	    this->current_ptab_loc, this->current_segments,
 	    this->of1275_stack_top-16, func, param );
 
-    this->lock.unlock();
 
     return result;
 }

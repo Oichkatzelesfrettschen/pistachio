@@ -278,7 +278,7 @@ int SECTION(SEC_KDEBUG) do_printf(const char* format_p, va_list args)
     
 #define arg(x) va_arg(args, x)
     
-    printf_spin_lock.lock();
+    scoped_spinlock guard(printf_spin_lock);
     
     /* sanity check */
     if (format == nullptr)
@@ -414,7 +414,6 @@ int SECTION(SEC_KDEBUG) do_printf(const char* format_p, va_list args)
     }
     
 done:
-    printf_spin_lock.unlock();
     return n;
 }
 

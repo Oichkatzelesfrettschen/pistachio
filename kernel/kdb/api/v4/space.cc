@@ -40,7 +40,7 @@ DECLARE_CMD(cmd_list_spaces, root, 'S', "listspaces",  "list all address spaces"
 
 CMD(cmd_list_spaces, cg)
 {
-    spaces_list_lock.lock();
+    scoped_spinlock guard(spaces_list_lock);
     space_t * walk = global_spaces_list;
 
     do {
@@ -64,7 +64,6 @@ CMD(cmd_list_spaces, cg)
 	walk = walk->get_spaces_list().next;
     } while (walk != global_spaces_list);
 
-    spaces_list_lock.unlock();
     return CMD_NOQUIT;
 }
 

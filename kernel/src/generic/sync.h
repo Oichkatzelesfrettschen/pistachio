@@ -52,6 +52,12 @@ public:
     bool is_locked() { return false; }
 };
 
+class scoped_spinlock
+{
+public:
+    explicit scoped_spinlock(spinlock_t &) {}
+};
+
 
 #else /* CONFIG_SMP */
 /* 

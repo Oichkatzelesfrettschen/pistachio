@@ -60,7 +60,7 @@ void SECTION (".init") init_mdb (void)
     void mdb_buflist_init (void);
     mdb_buflist_init ();
 
-    mdb_lock.lock();
+    scoped_spinlock guard(mdb_lock);
 
     // Frame table for the complete address space.
     dual = mdb_create_dual (nullptr, mdb_create_roots (mapnode_t::size_max));
@@ -87,7 +87,6 @@ void SECTION (".init") init_mdb (void)
 	    panic ("mdb_pgshifts[] is not a superset of valid hw_pgshifts[]");
     }
 
-    mdb_lock.unlock();
 }
 
 
@@ -202,7 +201,7 @@ mapnode_t * mdb_map (mapnode_t * f_map, pgent_t * f_pg,
     mapnode_t *nmap;
 
     //space_t::begin_update();
-    mdb_lock.lock();
+    scoped_spinlock guard(mdb_lock);
 
     // Grant operations simply reuse the old mapping node
     if (grant)
@@ -213,7 +212,7 @@ mapnode_t * mdb_map (mapnode_t * f_map, pgent_t * f_pg,
 	    f_map->set_backlink (f_map->get_prevmap (f_pg), t_pg);
 
 	f_map->set_space (t_space);
-	mdb_lock.unlock();
+
 	//space_t::end_update();
 	return f_map;
     }
@@ -245,7 +244,6 @@ mapnode_t * mdb_map (mapnode_t * f_map, pgent_t * f_pg,
 	if (nmap)
 	    nmap->set_backlink (newmap, nmap->get_pgent (f_map));
 
-	mdb_lock.unlock();
 	//space_t::end_update();
 	return newmap;
     }
@@ -318,7 +316,6 @@ mapnode_t * mdb_map (mapnode_t * f_map, pgent_t * f_pg,
     if (nmap)
 	nmap->set_backlink (newmap, nmap->get_pgent (root));
 
-    mdb_lock.unlock();
     //space_t::end_update();
     return newmap;
 }
@@ -400,7 +397,7 @@ word_t mdb_flush (mapnode_t * f_map, pgent_t * f_pg,
     mapnode_t::pgsize_e f_pgsize = mdb_pgsize (f_hwpgsize);
     mapnode_t::pgsize_e t_pgsize = mdb_pgsize (t_hwpgsize);
 
-    mdb_lock.lock();
+    scoped_spinlock guard(mdb_lock);
 
     do {
 	// Variables `f_map' and `f_pg' are valid at this point
@@ -602,8 +599,7 @@ word_t mdb_flush (mapnode_t * f_map, pgent_t * f_pg,
     // XXX: Handle the case where one does flush instead of unmap.
     if (parent_pg)
 	parent_pg->update_reference_bits (parent_space, parent_pgsize, rwx);
-   
-    mdb_lock.unlock();
+
 
     return rwx;
 }

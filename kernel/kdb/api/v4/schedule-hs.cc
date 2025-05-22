@@ -124,7 +124,7 @@ static void show_prio_queue( int depth, scheduler_t *scheduler, prio_queue_t *pr
 
 CMD(cmd_show_sched, cg)
 {
-    present_list_lock.lock();
+    scoped_spinlock guard(present_list_lock);
     printf("\n");
     
     for (cpuid_t cpu = 0; cpu < cpu_t::count; cpu++)
@@ -139,7 +139,6 @@ CMD(cmd_show_sched, cg)
     }
     printf("idle : %p\n\n", get_idle_tcb());
 
-    present_list_lock.unlock();
     return CMD_NOQUIT;
 }
 

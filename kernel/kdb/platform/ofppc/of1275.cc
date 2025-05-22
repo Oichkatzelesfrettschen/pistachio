@@ -85,7 +85,7 @@ of1275_phandle_t of1275_client_interface_t::find_device( const char *name )
     if( (sizeof(this->args.find_device) + namelen) > sizeof(this->args.shared) )
 	return OF1275_INVALID_PHANDLE;
 
-    this->ci_lock.lock();
+    scoped_spinlock guard(this->ci_lock);
 
     // Install all parameters in the shared data area.
     this->args.find_device.service = "finddevice";
@@ -100,7 +100,6 @@ of1275_phandle_t of1275_client_interface_t::find_device( const char *name )
 
     of1275_phandle_t ret = this->args.find_device.phandle;
 
-    this->ci_lock.unlock();
     return ret;
 }
 
@@ -109,7 +108,7 @@ int of1275_client_interface_t::get_prop( of1275_phandle_t phandle,
 {
     int ret = -1;
 
-    this->ci_lock.lock();
+    scoped_spinlock guard(this->ci_lock);
 
     // Initialize the argument structure, fitting all data within our
     // shared memory region.
@@ -142,7 +141,6 @@ int of1275_client_interface_t::get_prop( of1275_phandle_t phandle,
 	}
     }
 
-    this->ci_lock.unlock();
     return ret;
 }
 
@@ -155,7 +153,7 @@ int of1275_client_interface_t::write( of1275_phandle_t phandle,
     if( (len + sizeof(this->args.write)) > sizeof(this->args.shared) )
 	len = sizeof(this->args.shared) - sizeof(this->args.write);
 
-    this->ci_lock.lock();
+    scoped_spinlock guard(this->ci_lock);
 
     // Initialize the argument structure, fitting all data within our
     // shared data region.
@@ -172,7 +170,6 @@ int of1275_client_interface_t::write( of1275_phandle_t phandle,
     this->ci( &this->args.write );
     ret = this->args.write.actual;
 
-    this->ci_lock.unlock();
     return ret;
 }
 
@@ -181,7 +178,7 @@ int of1275_client_interface_t::read( of1275_phandle_t phandle,
 {
     int ret = -1;
 
-    this->ci_lock.lock();
+    scoped_spinlock guard(this->ci_lock);
 
     // Adjust the size of the requested data to fit our shared buffer size.
     if( (len + sizeof(this->args.read)) > sizeof(this->args.shared) )
@@ -207,13 +204,12 @@ int of1275_client_interface_t::read( of1275_phandle_t phandle,
     else
 	ret = -1;
 
-    this->ci_lock.unlock();
     return ret;
 }
 
 void of1275_client_interface_t::exit()
 {
-    this->ci_lock.lock();
+    scoped_spinlock guard(this->ci_lock);
 
     // Pack the arguments into our shared data region.
     this->args.simple.service = "exit";
@@ -224,12 +220,12 @@ void of1275_client_interface_t::exit()
     this->ci( &this->args.simple );
 
     // Hopefully the Open Firmware will never return to us ...
-    this->ci_lock.unlock();
+
 }
 
 void of1275_client_interface_t::enter()
 {
-    this->ci_lock.lock();
+    scoped_spinlock guard(this->ci_lock);
 
     // Pack the arguments into our shared data region.
     this->args.simple.service = "enter";
@@ -239,7 +235,6 @@ void of1275_client_interface_t::enter()
     // Invoke OF.
     this->ci( &this->args.simple );
 
-    this->ci_lock.unlock();
 }
 
 int of1275_client_interface_t::interpret( const char *forth )
@@ -250,7 +245,7 @@ int of1275_client_interface_t::interpret( const char *forth )
     if( (forth_len + sizeof(this->args.interpret)) > sizeof(this->args.shared))
 	return ret;
 
-    this->ci_lock.lock();
+    scoped_spinlock guard(this->ci_lock);
 
     // Pack the arguments into our shared data region.
     this->args.interpret.service = "interpret";
@@ -264,13 +259,12 @@ int of1275_client_interface_t::interpret( const char *forth )
     this->ci( &this->args.interpret );
     ret = this->args.interpret.result;
 
-    this->ci_lock.unlock();
     return ret;
 }
 
 void of1275_client_interface_t::quiesce()
 {
-    this->ci_lock.lock();
+    scoped_spinlock guard(this->ci_lock);
 
     // Pack the arguments into our shared data region.
     this->args.simple.service = "quiesce";
@@ -283,7 +277,6 @@ void of1275_client_interface_t::quiesce()
     // Prevent any further invocations of Open Firmware.
     this->entry = nullptr;
 
-    this->ci_lock.unlock();
 }
 
 #endif	/* CONFIG_KDB_CONS_OF1275 */
