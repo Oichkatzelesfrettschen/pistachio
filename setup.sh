@@ -50,13 +50,15 @@ for pkg in \
   python3-numpy python3-scipy python3-pandas \
   python3-matplotlib python3-scikit-learn \
   python3-torch python3-torchvision python3-torchaudio \
-  python3-onnx python3-onnxruntime; do
+  python3-onnx python3-onnxruntime \
+  python3-pytest; do
   apt_pin_install "$pkg"
 done
 
 pip3 install --no-cache-dir \
   tensorflow-cpu jax jaxlib \
-  tensorflow-model-optimization mlflow onnxruntime-tools
+  tensorflow-model-optimization mlflow onnxruntime-tools \
+  pytest pre-commit
 
 #- QEMU emulation for foreign binaries
 for pkg in \
