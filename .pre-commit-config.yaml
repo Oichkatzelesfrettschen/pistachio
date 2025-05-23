@@ -27,7 +27,7 @@ repos:
     hooks:
       - id: clang-tidy
         name: clang-tidy
-        entry: clang-tidy
+        entry: clang-tidy -p user
         language: system
         files: \.(c|cc|cpp|cxx|h|hpp)$
 
