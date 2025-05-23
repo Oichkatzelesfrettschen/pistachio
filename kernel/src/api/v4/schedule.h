@@ -135,10 +135,9 @@ public:
 
     request_guard_t reserve_request()
         {
-            lock.lock();
+            scoped_spinlock guard(lock);
             if ( ((first_free + 1) % schedule_queue_len) == first_alloc )
             {
-                lock.unlock();
                 return request_guard_t();
             }
             word_t idx = first_free;
