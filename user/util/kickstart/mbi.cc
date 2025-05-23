@@ -32,6 +32,7 @@
 
 #include "mbi.h"
 #include "lib.h"
+#include <assert.h>
 
 /**
  * Returns the total size of the mbi.  Includes the size of module
@@ -65,9 +66,22 @@ L4_Word_t mbi_t::get_size()
  */
 void mbi_t::copy( mbi_t *target )
 {
-    // Put strings after the target mbi and after the modules.
-    char *strings = (char *)( L4_Word_t(target) + sizeof(mbi_t) + 
-	    sizeof(mbi_module_t)*this->modcount );
+    // Layout memory for modules first and align appropriately.
+    char *mem = reinterpret_cast<char *>(target) + sizeof(mbi_t);
+    mem = reinterpret_cast<char *>(
+            align_up(reinterpret_cast<L4_Word_t>(mem),
+                     alignof(mbi_module_t)));
+    target->mods = reinterpret_cast<mbi_module_t *>(mem);
+    assert(((reinterpret_cast<L4_Word_t>(target->mods) &
+            (alignof(mbi_module_t) - 1)) == 0));
+    mem += sizeof(mbi_module_t) * this->modcount;
+
+    // Put strings after the modules and align to L4_Word_t.
+    char *strings = reinterpret_cast<char *>(
+            align_up(reinterpret_cast<L4_Word_t>(mem),
+                     alignof(L4_Word_t)));
+    assert(((reinterpret_cast<L4_Word_t>(strings) &
+            (alignof(L4_Word_t) - 1)) == 0));
 
     // Copy the structure.
     memcopy( target, this, sizeof(mbi_t) );
@@ -79,10 +93,6 @@ void mbi_t::copy( mbi_t *target )
         strings = strings + 1 + strlen(this->cmdline);
         strings = (char *)align_up((L4_Word_t)strings, sizeof(L4_Word_t));
     }
-
-    // Put modules at end of the target mbi.  Assume this will get
-    // proper aligment.
-    target->mods = (mbi_module_t *)( L4_Word_t(target) + sizeof(mbi_t) );
 
     for( L4_Word_t i = 0; i < this->modcount; i++ )
     {
