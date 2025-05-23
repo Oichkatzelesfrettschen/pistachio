@@ -34,7 +34,6 @@
 #include <multiboot.h>
 #include <stdarg.h>
 
-#define NULL    (0)
 
 
 /* From elf.cc */
