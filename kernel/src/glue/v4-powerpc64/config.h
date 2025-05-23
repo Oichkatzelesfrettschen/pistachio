@@ -57,7 +57,8 @@
 #if defined(CONFIG_PLAT_OFPOWER4) || defined(CONFIG_PLAT_OFPOWER3) || defined(CONFIG_PLAT_OFG5)
 #define KIP_API_FLAGS   {SHUFFLE2(endian:1, word_size:1)}       // 64-bit, big endian
 #else
-#error "Unsupported PowerPC64 platform: please define KIP_API_FLAGS"
+#warning "Unknown PowerPC64 platform. Assuming big-endian 64-bit defaults for KIP_API_FLAGS"
+#define KIP_API_FLAGS   {SHUFFLE2(endian:1, word_size:1)}
 #endif
 
 /**
