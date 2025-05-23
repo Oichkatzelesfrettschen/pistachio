@@ -67,6 +67,23 @@ class DestroyTest(unittest.TestCase):
         self.assertEqual(pq.refcnt, 0)
         self.assertTrue(pq.destroyed)
 
+    def test_set_queue_none_when_none(self):
+        pq = PrioQueue()
+        state = SchedState()
+        state.set_prio_queue(pq)
+        self.assertEqual(pq.refcnt, 1)
+
+        state.set_prio_queue(None)
+        self.assertIsNone(state.prio_queue)
+        self.assertEqual(pq.refcnt, 0)
+        self.assertTrue(pq.destroyed)
+
+        # setting None again should be a no-op
+        state.set_prio_queue(None)
+        self.assertIsNone(state.prio_queue)
+        self.assertEqual(pq.refcnt, 0)
+        self.assertTrue(pq.destroyed)
+
     def test_many_concurrent_migrations(self):
         pq_parent = PrioQueue()
         pq_sub = PrioQueue()
@@ -88,6 +105,33 @@ class DestroyTest(unittest.TestCase):
         self.assertTrue(pq_sub.destroyed)
         for st in states:
             self.assertIs(st.prio_queue, pq_parent)
+
+    def test_concurrent_migrations_more_than_cpus(self):
+        import os
+        pq_parent = PrioQueue()
+        pq_sub = PrioQueue()
+        n_threads = (os.cpu_count() or 1) + 2
+        states = [SchedState() for _ in range(n_threads)]
+
+        for st in states:
+            st.set_prio_queue(pq_sub)
+        self.assertEqual(pq_sub.refcnt, n_threads)
+
+        def migrate(st):
+            st.set_prio_queue(pq_parent)
+
+        threads = [threading.Thread(target=migrate, args=(st,)) for st in states]
+        for t in threads:
+            t.start()
+        for t in threads:
+            t.join()
+
+        self.assertEqual(pq_sub.refcnt, 0)
+        self.assertTrue(pq_sub.destroyed)
+        for st in states:
+            self.assertIs(st.prio_queue, pq_parent)
+        self.assertEqual(pq_parent.refcnt, n_threads)
+        self.assertFalse(pq_parent.destroyed)
 
 if __name__ == '__main__':
     unittest.main()
