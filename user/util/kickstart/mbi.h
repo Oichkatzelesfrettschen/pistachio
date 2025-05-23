@@ -39,6 +39,8 @@
    \brief       GRUB MultiBoot Info Structure
 
    Assumptions: Pointers are the same size as L4_Word_t
+   The copy() helper places the mods table and all command line
+   strings on L4_Word_t boundaries to maintain proper alignment.
  */
 
 
@@ -77,6 +79,10 @@ public:
     /* Module info.  Valid if flags.mods is set */
     L4_Word_t           modcount;       //< Number of modules
     mbi_module_t*       mods;           //< Base of mbi_module_t table
+                                        // Pointer is aligned to
+                                        // alignof(mbi_module_t). Command
+                                        // line strings are placed on
+                                        // L4_Word_t boundaries.
 
     /* Kernel symbol info.  Valid if either one of flags:syms is set */
     L4_Word_t           syms[4];        
