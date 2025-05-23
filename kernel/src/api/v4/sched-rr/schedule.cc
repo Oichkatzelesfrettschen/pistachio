@@ -256,8 +256,11 @@ void rr_scheduler_t::smp_requeue(bool holdlock)
     
     if (!rq->is_empty() || holdlock)
     {
-	rq->lock.lock();
-	tcb_t *tcb = nullptr;
+        tcb_t *tcb = nullptr;
+        if (holdlock)
+            rq->lock.lock();
+        else
+            scoped_spinlock guard(rq->lock);
 
 	while (!rq->is_empty()) 
 	{
@@ -276,8 +279,7 @@ void rr_scheduler_t::smp_requeue(bool holdlock)
                     enqueue_ready( tcb );
             }
 	}
-	if (!holdlock) 
-	    rq->lock.unlock();
+
         
         get_current_scheduler()->schedule();
     }
@@ -288,18 +290,17 @@ void scheduler_t::remote_schedule(tcb_t * tcb)
     if (!tcb->sched_state.requeue)
     {
 	cpuid_t cpu = tcb->get_cpu();
-	smp_requeue_t * rq = &smp_requeue_lists[cpu];
-	rq->lock.lock();
-	if (tcb->get_cpu() != cpu) 
-	{
-	    // thread may have migrated meanwhile
-	    TRACEF("curr=%p, %p, CPU#%d != CPU#%d\n", get_current_tcb(), 
-		   tcb, cpu, tcb->get_cpu());
-	    UNIMPLEMENTED();
-	}
-	rq->enqueue_head(tcb);
-	rq->lock.unlock();
-	smp_xcpu_trigger(cpu);
+        smp_requeue_t * rq = &smp_requeue_lists[cpu];
+        scoped_spinlock guard(rq->lock);
+        if (tcb->get_cpu() != cpu)
+        {
+            // thread may have migrated meanwhile
+            TRACEF("curr=%p, %p, CPU#%d != CPU#%d\n", get_current_tcb(),
+                   tcb, cpu, tcb->get_cpu());
+            UNIMPLEMENTED();
+        }
+        rq->enqueue_head(tcb);
+        smp_xcpu_trigger(cpu);
     }
 }
 

@@ -82,32 +82,69 @@ public:
     schedule_req_t (void) { init();  }
 };
 
-class schedule_request_queue_t 
+class schedule_request_queue_t
 {
 public:
+    class request_guard_t
+    {
+    public:
+        request_guard_t(schedule_request_queue_t *q = nullptr, schedule_req_t *r = nullptr)
+            : queue(q), req(r) {}
+
+        request_guard_t(const request_guard_t&) = delete;
+        request_guard_t& operator=(const request_guard_t&) = delete;
+
+        request_guard_t(request_guard_t&& other)
+            : queue(other.queue), req(other.req) { other.queue = nullptr; other.req = nullptr; }
+
+        request_guard_t& operator=(request_guard_t&& other)
+        {
+            if (this != &other)
+            {
+                if (queue)
+                    queue->lock.unlock();
+                queue = other.queue;
+                req = other.req;
+                other.queue = nullptr;
+                other.req = nullptr;
+            }
+            return *this;
+        }
+
+        ~request_guard_t() { if (queue) queue->lock.unlock(); }
+
+        schedule_req_t *operator->() { return req; }
+        operator schedule_req_t *() const { return req; }
+        bool valid() const { return req != nullptr; }
+
+    private:
+        schedule_request_queue_t *queue;
+        schedule_req_t *req;
+    };
+
     static const word_t schedule_queue_len = 128;
     schedule_req_t entries[schedule_queue_len];
     word_t first_alloc;
     word_t first_free;
     spinlock_t lock;
-    
+
 public:
     char pad2[CACHE_LINE_SIZE - sizeof(spinlock_t)];
 
     schedule_request_queue_t (void) { lock.init(); first_alloc = first_free = 0; }
-    
-    schedule_req_t *reserve_request() 
-	{ 
-	    lock.lock();
-	    if ( ((first_free + 1) % schedule_queue_len) == first_alloc )
-	    {
-		lock.unlock();
-		return nullptr;
-	    }
-	    word_t idx = first_free;
-	    first_free = (first_free + 1) % schedule_queue_len;
-	    return &entries[idx];
-	}
+
+    request_guard_t reserve_request()
+        {
+            lock.lock();
+            if ( ((first_free + 1) % schedule_queue_len) == first_alloc )
+            {
+                lock.unlock();
+                return request_guard_t();
+            }
+            word_t idx = first_free;
+            first_free = (first_free + 1) % schedule_queue_len;
+            return request_guard_t(this, &entries[idx]);
+        }
     
     schedule_req_t process_request ()
 	{
@@ -122,10 +159,7 @@ public:
 	}
 
 
-    void commit_request ()
-	{
-	    lock.unlock();
-	}
+    /* committing a request is handled by request_guard_t's destructor */
 
     
     bool is_empty() { return  (first_alloc == first_free); };
