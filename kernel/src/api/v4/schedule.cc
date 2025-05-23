@@ -217,6 +217,7 @@ word_t scheduler_t::add_schedule_request(schedule_req_t &req)
     
     cpuid_t cpu = get_current_cpu();
     cpuid_t reqcpu = req.tcb->get_cpu();
+    schedule_request_queue_t::request_guard_t guard;
     schedule_req_t *qreq = nullptr;
 
 
@@ -228,8 +229,11 @@ word_t scheduler_t::add_schedule_request(schedule_req_t &req)
     
     do 
     {
-	if ((qreq = schedule_request_queue[reqcpu].reserve_request()))
-	    break;
+        guard = schedule_request_queue[reqcpu].reserve_request();
+        if (guard.valid()) {
+            qreq = guard;
+            break;
+        }
 	
 	TRACE_SCHEDULE_DETAILS("schedule request queue cpu %d full, empty it\n", reqcpu);
 	
@@ -258,7 +262,7 @@ word_t scheduler_t::add_schedule_request(schedule_req_t &req)
     qreq->processor_control = req.processor_control;
     qreq->valid = 1;	
 	
-    schedule_request_queue[reqcpu].commit_request();
+    // guard will release the queue lock when going out of scope
     
     return EOK;
 
