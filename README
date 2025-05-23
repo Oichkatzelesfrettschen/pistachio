@@ -115,12 +115,15 @@ Development workflow
 --------------------
 The repository uses [pre-commit](https://pre-commit.com) to run
 formatters and linters such as **black**, **ruff**, **shellcheck** and
-**golangci-lint**.  Install the hooks once after cloning::
+**golangci-lint**.  The `setup.sh` script installs `pre-commit` via
+`pip` and fetches the hook environments automatically.  After cloning
+the repository you can re-install the hooks manually if desired::
 
-    $ pre-commit install
+    $ pre-commit install --install-hooks
 
 With the hooks installed, each commit will automatically format and
-lint changed files.
+lint changed files.  Run `pre-commit` manually to check all files or
+`pre-commit autoupdate` to refresh hook versions.
 
 Running clang-tidy
 ------------------
