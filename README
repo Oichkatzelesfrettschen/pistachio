@@ -129,7 +129,9 @@ Running clang-tidy
 ------------------
 The tree includes a `.clang-tidy` configuration enabling the modernize
 and readability checks. The pre-commit hook runs the tool on modified
-C/C++ sources. To invoke it manually on a file::
+C/C++ sources.  A `compile_commands.json` database is generated under
+`user/` to provide build flags.  Invoke the tool manually with the
+database path::
 
-    $ clang-tidy path/to/file.cc
+    $ clang-tidy -p user path/to/file.cc
 
