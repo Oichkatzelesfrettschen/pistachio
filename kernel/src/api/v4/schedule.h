@@ -113,11 +113,10 @@ public:
 	{
 	    ASSERT(!is_empty());
 	    
-	    lock.lock();
-	    schedule_req_t req = entries[first_alloc];
-	    entries[first_alloc].valid = false;
-	    first_alloc = (first_alloc + 1) % schedule_queue_len;
-	    lock.unlock();
+            scoped_spinlock guard(lock);
+            schedule_req_t req = entries[first_alloc];
+            entries[first_alloc].valid = false;
+            first_alloc = (first_alloc + 1) % schedule_queue_len;
 	    
 	    return req;
 	}

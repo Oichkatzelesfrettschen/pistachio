@@ -86,25 +86,27 @@ void timer_t::init_cpu(cpuid_t cpu)
     word_t delay = 0;
     
     /* calculate processor speed */
+    u64_t cpu_cycles;
+    u32_t bus_cycles;
+
     if (!pmtimer)
     {
-        timer_lock.lock();
+        scoped_spinlock guard(timer_lock);
         delay = 1000;
         wait_for_second_tick();
-    }
 
-    u64_t cpu_cycles = x86_rdtsc();
-    u32_t bus_cycles = local_apic.timer_get();
-    
-    if (pmtimer)
-    {
-        delay = 100;
-        intctrl->pmtimer_wait(delay);
+        cpu_cycles = x86_rdtsc();
+        bus_cycles = local_apic.timer_get();
+
+        wait_for_second_tick();
     }
     else
     {
-        wait_for_second_tick();
-        timer_lock.unlock();
+        cpu_cycles = x86_rdtsc();
+        bus_cycles = local_apic.timer_get();
+
+        delay = 100;
+        intctrl->pmtimer_wait(delay);
     }
 
     word_t local_apic_cpu_mhz;
