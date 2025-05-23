@@ -561,7 +561,7 @@ const struct powerpc_operand powerpc_operands[] =
   if (invalid != (int *) nullptr
 
   if (invalid != (int *) nullptr
-#define MTMSRD_L WS + 1
+  if (invalid != (int *) nullptr
   { 1, 16, 0, 0, PPC_OPERAND_OPTIONAL },
 
 };

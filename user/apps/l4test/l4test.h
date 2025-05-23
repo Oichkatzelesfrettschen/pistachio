@@ -53,9 +53,6 @@
 /* memory stuff */
 #define PAGE_MASK   (~(PAGE_SIZE-1))
 
-#if !defined(NULL)
-#define NULL	0
-#endif
 
 /* ex-reg flags */
 #define EX_HALT (1<<0)

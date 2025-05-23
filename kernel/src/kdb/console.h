@@ -45,7 +45,7 @@ public:
     char (*getc) (bool block);
 };
 
-#define KDB_NULL_CONSOLE { NULL, NULL, NULL, NULL }
+#define KDB_NULL_CONSOLE { nullptr, nullptr, nullptr, nullptr }
 
 extern kdb_console_t kdb_consoles[];
 extern word_t kdb_current_console;
