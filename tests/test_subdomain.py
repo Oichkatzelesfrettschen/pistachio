@@ -133,5 +133,71 @@ class DestroyTest(unittest.TestCase):
         self.assertEqual(pq_parent.refcnt, n_threads)
         self.assertFalse(pq_parent.destroyed)
 
+    def test_race_domain_destroy_and_migrate(self):
+        """Domain queue destroyed while both domain and thread migrate."""
+        pq_old = PrioQueue()
+        pq_new = PrioQueue()
+
+        domain_state = SchedState(is_domain=True)
+        domain_state.set_prio_queue(pq_old)
+
+        th_state = SchedState()
+        th_state.set_prio_queue(pq_old)
+
+        self.assertEqual(pq_old.refcnt, 2)
+        self.assertFalse(pq_old.destroyed)
+
+        def migrate_domain():
+            domain_state.set_prio_queue(pq_new)
+
+        def migrate_thread():
+            th_state.set_prio_queue(pq_new)
+
+        t1 = threading.Thread(target=migrate_domain)
+        t2 = threading.Thread(target=migrate_thread)
+        t1.start(); t2.start()
+        t1.join(); t2.join()
+
+        self.assertEqual(pq_old.refcnt, 0)
+        self.assertTrue(pq_old.destroyed)
+        self.assertEqual(pq_new.refcnt, 2)
+        self.assertFalse(pq_new.destroyed)
+        self.assertIs(domain_state.prio_queue, pq_new)
+        self.assertIs(th_state.prio_queue, pq_new)
+
+    def test_race_domain_destroy_with_many_threads(self):
+        """Multiple threads and the domain migrate simultaneously."""
+        pq_old = PrioQueue()
+        pq_new = PrioQueue()
+
+        domain_state = SchedState(is_domain=True)
+        domain_state.set_prio_queue(pq_old)
+
+        states = [SchedState() for _ in range(5)]
+        for st in states:
+            st.set_prio_queue(pq_old)
+
+        self.assertEqual(pq_old.refcnt, 1 + len(states))
+        self.assertFalse(pq_old.destroyed)
+
+        def migrate(st):
+            st.set_prio_queue(pq_new)
+
+        threads = [threading.Thread(target=migrate, args=(st,)) for st in states]
+        threads.append(threading.Thread(target=migrate, args=(domain_state,)))
+
+        for t in threads:
+            t.start()
+        for t in threads:
+            t.join()
+
+        self.assertEqual(pq_old.refcnt, 0)
+        self.assertTrue(pq_old.destroyed)
+        self.assertEqual(pq_new.refcnt, 1 + len(states))
+        self.assertFalse(pq_new.destroyed)
+        self.assertIs(domain_state.prio_queue, pq_new)
+        for st in states:
+            self.assertIs(st.prio_queue, pq_new)
+
 if __name__ == '__main__':
     unittest.main()
