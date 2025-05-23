@@ -34,6 +34,7 @@
 #include <debug.h>
 #include <kdb/kdb.h>
 #include <kdb/console.h>
+#include <sync.h>
 
 #include INC_GLUE(debug.h)
 
@@ -50,7 +51,7 @@ static bool user_kdb_enter = true;
 bool kdb_t::pre() 
 { 
     bool enter_kdb = false;
-    kdb_lock.lock();
+    scoped_spinlock guard(kdb_lock);
 
     tcb_t *current = get_current_tcb();
     debug_param_t *param = (debug_param_t *)kdb_param;
@@ -194,14 +195,13 @@ bool kdb_t::pre()
 	}
 	printf( "\n" );
     }
-    else
-	kdb_lock.unlock();
+
 
     return enter_kdb; 
 }
 
-void kdb_t::post() 
-{ 
-    kdb_lock.unlock();
+void kdb_t::post()
+{
+    scoped_spinlock guard(kdb_lock);
 }
 

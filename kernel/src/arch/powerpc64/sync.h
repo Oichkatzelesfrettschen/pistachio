@@ -45,7 +45,23 @@ public: // to allow initializers
     volatile word_t _lock;
 };
 
-class scoped_spinlock;
+class scoped_spinlock
+{
+public:
+    explicit scoped_spinlock(spinlock_t &lock)
+        : lock(&lock)
+    {
+        this->lock->lock();
+    }
+
+    ~scoped_spinlock()
+    {
+        this->lock->unlock();
+    }
+
+private:
+    spinlock_t *lock;
+};
 
 #define DECLARE_SPINLOCK(name) extern spinlock_t name;
 #define DEFINE_SPINLOCK(name) spinlock_t name = ((spinlock_t) {{_lock: 0}})

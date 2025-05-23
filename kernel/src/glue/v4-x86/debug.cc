@@ -41,6 +41,7 @@
 #include INC_API(tcb.h)
 #include INC_API(smp.h)
 #include INC_API(cpu.h)
+#include <sync.h>
 #include INC_ARCH(traps.h)
 #include INC_ARCH(trapgate.h)
 #include INC_ARCH(apic.h)
@@ -63,12 +64,12 @@ extern "C" void sync_debug (word_t address)
     
     if (!sync_dbg_enter)
     {
-	printf_spin_lock.unlock();
-	sync_dbg_enter = true;
- 	TRACEPOINT(DEBUG_LOCK, "CPU %d, tcb %t, spinlock BUG (lock %x) @ %x\n", 
-		   get_current_cpu(), get_current_tcb(), 
-		   address, __builtin_return_address((0)));
-	enter_kdebug("spinlock BUG");
+        scoped_spinlock guard(printf_spin_lock);
+        sync_dbg_enter = true;
+        TRACEPOINT(DEBUG_LOCK, "CPU %d, tcb %t, spinlock BUG (lock %x) @ %x\n",
+                   get_current_cpu(), get_current_tcb(),
+                   address, __builtin_return_address((0)));
+        enter_kdebug("spinlock BUG");
     }
     sync_dbg_enter = false;
 }
