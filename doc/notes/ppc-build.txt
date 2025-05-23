@@ -72,3 +72,12 @@ line to boot the kernel is::
 
 For 64-bit targets use `qemu-system-ppc64` instead.
 
+Configuration Notes
+-------------------
+
+When configuring a PowerPC64 kernel the build system checks for
+platform macros such as `CONFIG_PLAT_OFPOWER4`.  If no known platform
+is selected the kernel now defaults to big-endian 64-bit API flags and
+issues a compile-time warning rather than aborting the build.  Override
+`KIP_API_FLAGS` if your environment requires different settings.
+
