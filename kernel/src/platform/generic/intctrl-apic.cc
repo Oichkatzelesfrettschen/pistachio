@@ -98,7 +98,7 @@ INLINE hwirqfunc_t get_interrupt_entry(word_t irq)
 
 u8_t intctrl_t::setup_idt_entry(word_t irq, u8_t prio)
 {
-    idt_lock.lock();
+    scoped_spinlock guard(idt_lock);
     u8_t vector = IDT_IOAPIC_BASE + irq;
     if (vector < IDT_IOAPIC_MAX) {
 	//TRACEF("IRQ %d, vector=%d, prio=%d, entry=%p\n", 
@@ -111,7 +111,6 @@ u8_t intctrl_t::setup_idt_entry(word_t irq, u8_t prio)
 	UNIMPLEMENTED();
 	vector = 0;
     }
-    idt_lock.unlock();
     return vector;
 }
 
@@ -125,7 +124,7 @@ INLINE void intctrl_t::free_idt_entry(word_t irq, u8_t vector)
 INLINE void intctrl_t::sync_redir_entry(ioapic_redir_table_t * entry, sync_redir_part_e part)
 {
     ASSERT(entry && entry->is_valid());
-    entry->ioapic->lock.lock();
+    scoped_spinlock guard(entry->ioapic->lock);
     if (part == sync_all)
 	entry->ioapic->i82093->set_redir_entry(entry->line, entry->entry);
     else if (part == sync_low)
@@ -134,7 +133,6 @@ INLINE void intctrl_t::sync_redir_entry(ioapic_redir_table_t * entry, sync_redir
 	/* part == sync_high */
 	entry->ioapic->i82093->set_redir_entry_high(entry->line, entry->entry);
     }
-    entry->ioapic->lock.unlock();
 }
 
 void intctrl_t::init_arch()
@@ -424,8 +422,8 @@ void intctrl_t::init_local_apic()
      */
     if (local_apic.id() >= num_cpus)
     {
-	static spinlock_t apicid_init;
-	apicid_init.lock();
+        static spinlock_t apicid_init;
+        scoped_spinlock guard(apicid_init);
 
 	/* try to find an unused local APIC id */
 	for (word_t i = 0; i < num_cpus; i++)
@@ -439,7 +437,6 @@ void intctrl_t::init_local_apic()
 		break;
 	    }
 
-	apicid_init.unlock();
     }
 #endif
 

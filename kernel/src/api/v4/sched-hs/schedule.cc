@@ -508,7 +508,7 @@ void hs_scheduler_t::smp_requeue(bool holdlock)
     
     if (!rq->is_empty() || holdlock)
     {
-        rq->lock.lock();
+        scoped_spinlock guard(rq->lock);
         tcb_t *tcb = nullptr;
 
         while (!rq->is_empty()) 
@@ -541,7 +541,7 @@ void scheduler_t::remote_schedule(tcb_t * tcb)
     {
         cpuid_t cpu = tcb->get_cpu();
         smp_requeue_t * rq = &smp_requeue_lists[cpu];
-        rq->lock.lock();
+        scoped_spinlock guard(rq->lock);
         if (tcb->get_cpu() != cpu) 
         {
             // thread may have migrated meanwhile
@@ -550,7 +550,6 @@ void scheduler_t::remote_schedule(tcb_t * tcb)
             UNIMPLEMENTED();
         }
         rq->enqueue_head(tcb);
-        rq->lock.unlock();
         smp_xcpu_trigger(cpu);
     }
 }

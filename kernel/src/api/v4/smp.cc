@@ -129,12 +129,11 @@ void cpu_mb_t::walk_mailbox()
 {
     while(first_free != first_alloc)
     {
-	lock.lock();
-	cpu_mb_entry_t entry = entries[first_alloc];
-	entries[first_alloc].handler = nullptr;
-	first_alloc = (first_alloc + 1) % MAX_MAILBOX_ENTRIES;
-	lock.unlock();
-	ASSERT(entry.handler);
+        scoped_spinlock guard(lock);
+        cpu_mb_entry_t entry = entries[first_alloc];
+        entries[first_alloc].handler = nullptr;
+        first_alloc = (first_alloc + 1) % MAX_MAILBOX_ENTRIES;
+        ASSERT(entry.handler);
 	
 	//printf("CPU%d: XCPU-entry (handler: %t)\n", get_current_cpu(), entry.handler);
 	entry.handler(&entry);
