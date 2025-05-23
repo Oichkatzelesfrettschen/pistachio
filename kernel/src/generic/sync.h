@@ -55,7 +55,19 @@ public:
 class scoped_spinlock
 {
 public:
-    explicit scoped_spinlock(spinlock_t &) {}
+    explicit scoped_spinlock(spinlock_t &lock)
+        : lock(&lock)
+    {
+        this->lock->lock();
+    }
+
+    ~scoped_spinlock()
+    {
+        this->lock->unlock();
+    }
+
+private:
+    spinlock_t *lock;
 };
 
 
