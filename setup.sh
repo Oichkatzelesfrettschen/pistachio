@@ -178,7 +178,13 @@ fi
 fi
 
 # Ensure critical Python tooling is present even if package installs were skipped
-for pip_pkg in pytest pre-commit; do
+for pip_pkg in \
+  pre-commit \
+  configuredb \
+  pytest \
+  pyyaml \
+  pylint \
+  pyfuzz; do
   pip3 install --no-cache-dir -U "$pip_pkg" || echo "pip install $pip_pkg failed" | tee -a "$FAIL_LOG"
 done
 python3 -m pre_commit --version >/dev/null 2>&1 || echo "pre-commit not available" | tee -a "$FAIL_LOG"
@@ -195,6 +201,19 @@ repos:
       - id: end-of-file-fixer
       - id: check-yaml
       - id: check-added-large-files
+EOF
+fi
+
+# Create a default pylint configuration if one does not already exist
+if [ ! -f .pylintrc ]; then
+  pylint --generate-rcfile > .pylintrc || echo "pylint config generation failed" | tee -a "$FAIL_LOG"
+fi
+
+# Add a minimal pytest configuration if missing
+if [ ! -f pytest.ini ]; then
+cat > pytest.ini <<'EOF'
+[pytest]
+addopts = -ra
 EOF
 fi
 
