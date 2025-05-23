@@ -31,8 +31,17 @@
  ********************************************************************/
 
 #include <kdb/kdb.h>
+#include <sync.h>
 
 static spinlock_t powerpc64_kdb_lock;
 
-bool kdb_t::pre() { powerpc64_kdb_lock.lock(); return true; }
-void kdb_t::post() { powerpc64_kdb_lock.unlock(); }
+bool kdb_t::pre()
+{
+    scoped_spinlock guard(powerpc64_kdb_lock);
+    return true;
+}
+
+void kdb_t::post()
+{
+    scoped_spinlock guard(powerpc64_kdb_lock);
+}
