@@ -171,7 +171,8 @@ fi
   # Ensure pre-commit and its hook environments are installed while network is available
   pip3 install --no-cache-dir -U pre-commit || echo "pip install pre-commit failed" | tee -a "$FAIL_LOG"
   if [ -f .pre-commit-config.yaml ]; then
-    pre-commit install --install-hooks || echo "pre-commit hook install failed" | tee -a "$FAIL_LOG"
+    python3 -m pre_commit install --install-hooks \
+      || echo "pre-commit hook install failed" | tee -a "$FAIL_LOG"
   fi
 
 fi
@@ -180,16 +181,20 @@ fi
 for pip_pkg in pytest pre-commit; do
   pip3 install --no-cache-dir -U "$pip_pkg" || echo "pip install $pip_pkg failed" | tee -a "$FAIL_LOG"
 done
+python3 -m pre_commit --version >/dev/null 2>&1 || echo "pre-commit not available" | tee -a "$FAIL_LOG"
 
 # Create a minimal pre-commit configuration if one does not already exist
 if [ ! -f .pre-commit-config.yaml ]; then
 cat > .pre-commit-config.yaml <<'EOF'
+minimum_pre_commit_version: '3.7.0'
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
 EOF
 fi
 
