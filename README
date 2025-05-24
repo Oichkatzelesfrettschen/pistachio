@@ -24,21 +24,10 @@ operation and super-fast IPC.
 Building with modern compilers
 ==============================
 
-The build system now expects compilers that understand modern
-language standards: C sources require C23 while C++ sources require at
-least C++23. GCC 14 and Clang 17 are known to work. Autoconf 2.69 or
-later is required to regenerate the configure script.
-
-Example build steps on a typical Linux host::
-
-    $ cd user
-    $ autoreconf -i        # requires autoconf and autoheader
-    $ ./configure --host=i686-pc-linux-gnu   # or x86_64-pc-linux-gnu
-    $ make
-
-When building the kernel choose either `SUBARCH=x32` for i686 or
-`SUBARCH=x64` for x86_64 in `kernel/Makeconf.local` before invoking
-`make` inside the build directory.
+The build system expects C23 and C++23 capable compilers. GCC 14 and
+Clang 17 are known to work. Autoconf 2.69 or later is required to
+regenerate the configure script. Detailed instructions, including
+cross‑compilation tips, are available in `docs/building.md`.
 
 
 Requirements
@@ -49,30 +38,9 @@ known to work are GCC 14 and Clang 17.
 
 Building on i686 and x86_64 hosts
 --------------------------------
-If you obtained this tree from version control, run the following in
-`user/` before configuring:
-
-    autoheader
-    autoconf
-
-After modifying the build system remember to regenerate and apply the
-configuration:
-
-    autoconf && ./configure
-
-Create a build directory and configure the system:
-
-    mkdir build && cd build
-    ../configure --host=i686 \
-                 --with-comport=0 \
-                 --with-comspeed=115200 \
-                 --with-kerneldir=/path/to/kernel
-
-For 64-bit machines use `--host=amd64`.  Additional link-base options
-(e.g. `--with-kickstart-linkbase`, `--with-s0-linkbase`,
-`--with-roottask-linkbase`) may be supplied as required.
-After configuration run `make` and optionally `make install`.
-Use `make clean` to remove the build directory and any generated object files.
+Typical build steps are outlined in `docs/building.md`.  After
+configuring a build directory you can run `make` and optionally
+`make install`.
 
 
 Launching user-level resource managers
@@ -99,6 +67,14 @@ Then launch them together with the kernel using `kickstart`::
     $ user/util/kickstart/kickstart \
           -roottask=user/serv/memory/memory \
           user/serv/scheduler/scheduler
+
+Additional servers can be started in the same manner.  For example,
+to also launch a device service pass its binary as another argument::
+
+    $ user/util/kickstart/kickstart \
+          -roottask=user/serv/memory/memory \
+          user/serv/scheduler/scheduler \
+          user/serv/device/device
 
 
 Migration from the microkernel API
