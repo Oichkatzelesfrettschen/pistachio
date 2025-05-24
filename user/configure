@@ -71,17 +71,17 @@ esac
 
 CC=${CC:-cc}
 
-printf "checking whether $CC accepts -std=c23... "
+printf "checking whether $CC accepts -std=c2x... "
 cat > conftest.c <<'EOT'
 int main(void){return 0;}
 EOT
-if $CC -std=c23 -c conftest.c -o conftest.o >/dev/null 2>&1; then
+if $CC -std=c2x -c conftest.c -o conftest.o >/dev/null 2>&1; then
     echo yes
-    STD_CFLAG=-std=c23
+    STD_CFLAG=-std=c2x
 else
     echo no
     rm -f conftest.c conftest.o
-    echo "$CC does not support -std=c23" >&2
+    echo "$CC does not support -std=c2x" >&2
     exit 1
 fi
 rm -f conftest.c conftest.o

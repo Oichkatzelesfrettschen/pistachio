@@ -2,7 +2,7 @@ Build Requirements
 ==================
 
 This repository ships a lightweight `configure` script in the `user`
-directory.  A POSIX shell and a compiler supporting the `-std=c23`
+directory.  A POSIX shell and a compiler supporting the `-std=c2x`
 option are sufficient.  Detailed kernel and user land instructions are
 available in `../docs/building.md`.
 

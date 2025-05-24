@@ -1,4 +1,4 @@
-CFLAGS ?= -std=c23
+CFLAGS ?= -std=c2x
 CXXFLAGS ?= -std=c++23
 
 build/string.o: user/contrib/elf-loader/platform/amd64-pc99/string.cc
