@@ -13,8 +13,8 @@ $ cmake --build .
 ```
 
 The default target compiles the example `string.o` object, builds the
-kernel using the Makefile under `kernel/` and builds the userland
-libraries from `src-userland/lib`.
+ kernel using the Makefile under `kernel/` and builds the userland
+ libraries from `user/lib`.
 
 To build individual pieces you can specify the targets explicitly:
 
