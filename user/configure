@@ -139,6 +139,21 @@ sed \
     -e "s|@builddir@|$(pwd)|g" \
     "$srcdir/Makefile.in" > Makefile
 
+# Generate Makefiles for subdirectories
+find "$srcdir" -mindepth 1 -name 'Makefile.in' | while read -r mf; do
+    mf_srcdir=$(dirname "$mf")
+    mf_rel=${mf_srcdir#$srcdir/}
+    mkdir -p "$mf_rel"
+    sed \
+        -e "s|@srcdir@|$mf_srcdir|g" \
+        -e "s|@top_srcdir@|$srcdir|g" \
+        -e "s|@top_builddir@|$(pwd)|g" \
+        "$mf" > "$mf_rel/Makefile"
+done
+
+# Ensure lib directory exists in build tree
+mkdir -p lib
+
 # Create a minimal config.status for compatibility
 cat > config.status <<CONFEOF
 #!/bin/sh
