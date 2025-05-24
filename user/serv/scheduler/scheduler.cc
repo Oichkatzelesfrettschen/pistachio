@@ -2,7 +2,7 @@
 #include <l4/ipc.h>
 #include <stdio.h>
 #include <deque>
-#include "../../src-userland/lib/sched/sched_client.h"
+#include "../../lib/sched/sched_client.h"
 
 static const L4_Word_t SCHED_LABEL = 0x1234;
 
