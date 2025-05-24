@@ -1,6 +1,7 @@
 #include <l4/memory.h>
 #include <l4/ipc.h>
 #include <l4/message.h>
+#include <l4/kip.h>
 
 #include <stddef.h>
 
@@ -40,4 +41,11 @@ void memory_free(L4_ThreadId_t server, L4_Word_t addr, L4_Word_t size)
     L4_MsgAppendWord(&msg, req.addr);
     L4_MsgLoad(&msg);
     L4_Call(server);
+}
+
+L4_ThreadId_t memory_server(void)
+{
+    void *kip = L4_KernelInterface(nullptr, nullptr, nullptr);
+    L4_Word_t ubase = L4_ThreadIdUserBase(kip);
+    return L4_GlobalId(ubase + 3, 1); /* ROOT_VERSION */
 }

@@ -4,7 +4,9 @@
  *                
  * File path:     glue/v4-x86/x32/syscalls.h
  * Description:   syscall macros
- *                
+ * TODO: remove pager parameter from syscall wrappers once
+ *       memory server API is fully integrated.
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
