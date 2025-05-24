@@ -53,4 +53,5 @@ lib$(LIBRARY).a: $(OBJS)
 	@$(ECHO_MSG) Linking `echo $(srcdir)/$@ | sed s,^$(top_srcdir)/,,`
 	$(AR) cru $@ $(OBJS)
 	$(RANLIB) $@
+	$(MKDIRHIER) $(top_builddir)/lib
 	cp $@ $(top_builddir)/lib/$@
