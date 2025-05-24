@@ -2,7 +2,7 @@
 #include <l4/ipc.h>
 #include <stdio.h>
 #include <deque>
-#include "../../src-userland/lib/sched/sched_client.h"
+#include "../../lib/sched/sched_client.h"
 
 int main()
 {
