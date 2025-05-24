@@ -17,7 +17,7 @@ apt_pin_install(){
       echo "APT install failed for $pkg" | tee -a "$FAIL_LOG"
       _pip_pkg=${pkg#python3-}
       if [[ "$pkg" == python3-* && "$_pip_pkg" != "$pkg" ]]; then
-        pip3 install --no-cache-dir "$_pip_pkg" || echo "pip fallback failed for $_pip_pkg" | tee -a "$FAIL_LOG"
+        pip3 install ${PIP_FLAGS:-} "$_pip_pkg" || echo "pip fallback failed for $_pip_pkg" | tee -a "$FAIL_LOG"
       fi
       return 0
     fi
@@ -26,7 +26,7 @@ apt_pin_install(){
       echo "APT install failed for $pkg" | tee -a "$FAIL_LOG"
       _pip_pkg=${pkg#python3-}
       if [[ "$pkg" == python3-* && "$_pip_pkg" != "$pkg" ]]; then
-        pip3 install --no-cache-dir "$_pip_pkg" || echo "pip fallback failed for $_pip_pkg" | tee -a "$FAIL_LOG"
+        pip3 install ${PIP_FLAGS:-} "$_pip_pkg" || echo "pip fallback failed for $_pip_pkg" | tee -a "$FAIL_LOG"
       fi
       return 0
     fi
@@ -48,7 +48,18 @@ else
 fi
 
 if [ "$HAVE_NET" -eq 1 ]; then
-  apt-get update -y || echo "apt-get update failed" | tee -a "$FAIL_LOG"
+  PIP_FLAGS="--no-cache-dir"
+else
+  PIP_FLAGS="--no-index"
+fi
+
+APT_OK=1
+if [ "$HAVE_NET" -eq 1 ]; then
+  if ! apt-get update -y; then
+    echo "apt-get update failed" | tee -a "$FAIL_LOG"
+    APT_OK=0
+  fi
+  if [ "$APT_OK" -eq 1 ]; then
 
 #- core build tools, formatters, analysis, science libs
 for pkg in \
@@ -78,7 +89,7 @@ done
 for pip_pkg in \
   tensorflow-cpu jax jaxlib \
   tensorflow-model-optimization mlflow onnxruntime-tools; do
-  pip3 install --no-cache-dir "$pip_pkg" || echo "pip install $pip_pkg failed" | tee -a "$FAIL_LOG"
+  pip3 install ${PIP_FLAGS:-} "$pip_pkg" || echo "pip install $pip_pkg failed" | tee -a "$FAIL_LOG"
 done
 
 #- QEMU emulation for foreign binaries
@@ -169,12 +180,14 @@ fi
   rm -f /tmp/protoc.zip
 
   # Ensure pre-commit and its hook environments are installed while network is available
-  pip3 install --no-cache-dir -U pre-commit || echo "pip install pre-commit failed" | tee -a "$FAIL_LOG"
+  pip3 install ${PIP_FLAGS:-} -U pre-commit || echo "pip install pre-commit failed" | tee -a "$FAIL_LOG"
   if [ -f .pre-commit-config.yaml ]; then
     python3 -m pre_commit install --install-hooks \
       || echo "pre-commit hook install failed" | tee -a "$FAIL_LOG"
   fi
-
+else
+  echo "Skipping APT package installation due to failed apt-get update" | tee -a "$FAIL_LOG"
+fi
 fi
 
 # Ensure critical Python tooling is present even if package installs were skipped
@@ -185,8 +198,12 @@ for pip_pkg in \
   pyyaml \
   pylint \
   pyfuzz; do
-  pip3 install --no-cache-dir -U "$pip_pkg" || echo "pip install $pip_pkg failed" | tee -a "$FAIL_LOG"
+  pip3 install ${PIP_FLAGS:-} -U "$pip_pkg" || echo "pip install $pip_pkg failed" | tee -a "$FAIL_LOG"
 done
+if ! python3 -m pre_commit --version >/dev/null 2>&1; then
+  echo "pre-commit not available; attempting local install" | tee -a "$FAIL_LOG"
+  pip3 install --no-index pre-commit && python3 -m pre_commit --version >/dev/null 2>&1 && echo "pre-commit installed from local cache" >>"$FAIL_LOG"
+fi
 python3 -m pre_commit --version >/dev/null 2>&1 || echo "pre-commit not available" | tee -a "$FAIL_LOG"
 
 # Create a minimal pre-commit configuration if one does not already exist
@@ -223,5 +240,12 @@ command -v gmake >/dev/null 2>&1 || ln -s "$(command -v make)" /usr/local/bin/gm
 #- clean up
 apt-get clean
 rm -rf /var/lib/apt/lists/*
+
+if [ -s "$FAIL_LOG" ]; then
+  echo "=== Setup completed with issues ==="
+  echo "Review $FAIL_LOG for details. When offline, install packages manually via apt or pip once network is available." >&2
+else
+  echo "=== Setup completed successfully ==="
+fi
 
 exit 0
