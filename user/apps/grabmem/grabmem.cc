@@ -30,8 +30,8 @@
  *                
  ********************************************************************/
 #include <l4io.h>
-#include <l4/sigma0.h>
 #include <l4/kdebug.h>
+#include <l4/memory.h>
 
 #define KB(x) (x*1024)
 #define MB(x) (x*1024*1024)
@@ -42,30 +42,14 @@ int main (void)
     printf ("Hello world, I will now allocate all available memory.\n\n");
 
     L4_Word_t tsize = 0;
-
-    for (L4_Word_t s = sizeof (L4_Word_t) * 8 - 1; s >= 10; s--)
+    L4_ThreadId_t memsrv = memory_server();
+    const L4_Word_t pagesz = 4096;
+    while (true)
     {
-	L4_Fpage_t f;
-	int n = -1;
-
-	do {
-	    f = L4_Sigma0_GetAny (L4_nilthread, s, L4_CompleteAddressSpace);
-	    n++;
-	} while (! L4_IsNilFpage (f));
-
-	L4_Word_t size = n * (1UL << s);
-	tsize += size;
-
-	if (n)
-	    printf ("Allocated %d pages of %3ld%cB (log2size %2ld) [%ld%cB]\n",
-		    n,
-		    s >= 30 ? 1UL << (s-30) :
-		    s >= 20 ? 1UL << (s-20) : 1UL << (s-10),
-		    s >= 30 ? 'G' : s >= 20 ? 'M' : 'K',
-		    s,
-		    size >= GB(1) ? size/GB(1) :
-		    size >= MB(1) ? size/MB(1) : size/KB(1),
-		    size >= GB(1) ? 'G' : size >= MB(1) ? 'M' : 'K');
+        L4_Word_t addr = memory_alloc(memsrv, pagesz);
+        if (!addr)
+            break;
+        tsize += pagesz;
     }
 
     // Avoid using floating point
