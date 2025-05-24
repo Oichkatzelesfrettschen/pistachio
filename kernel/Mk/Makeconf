@@ -190,7 +190,7 @@ ifeq ("$(CONFIG_DEBUG_SYMBOLS)","y")
 CCFLAGS  += -g
 endif
 
-CFLAGS = -ffreestanding $(CCFLAGS) -std=c23
+CFLAGS = -ffreestanding $(CCFLAGS) -std=c2x
 
 # these for assembly files only
 ASMFLAGS += $(ASMFLAGS_$(PLATFORM)) $(ASMFLAGS_$(ARCH)) $(ASMFLAGS_$(CPU))

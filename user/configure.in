@@ -139,25 +139,25 @@ AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 AC_PROG_LN_S
 AC_PROG_AWK
-AC_MSG_CHECKING([whether $CC supports -std=c23])
+AC_MSG_CHECKING([whether $CC supports -std=c2x])
 ac_save_CFLAGS="$CFLAGS"
-CFLAGS="$CFLAGS -std=c23"
+CFLAGS="$CFLAGS -std=c2x"
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([], [])],
         [ac_c23=yes],
         [ac_c23=no])
 CFLAGS="$ac_save_CFLAGS"
 if test "$ac_c23" != yes; then
-  AC_MSG_ERROR([compiler does not support -std=c23])
+  AC_MSG_ERROR([compiler does not support -std=c2x])
 fi
 AC_MSG_RESULT([$ac_c23])
 
-dnl Check if the compiler supports -std=c23
-AC_MSG_CHECKING([whether $CC accepts -std=c23])
+dnl Check if the compiler supports -std=c2x
+AC_MSG_CHECKING([whether $CC accepts -std=c2x])
 save_CFLAGS="$CFLAGS"
-CFLAGS="$CFLAGS -std=c23"
+CFLAGS="$CFLAGS -std=c2x"
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([], [])],
     [AC_MSG_RESULT([yes])],
-    [AC_MSG_FAILURE([$CC does not support -std=c23])])
+    [AC_MSG_FAILURE([$CC does not support -std=c2x])])
 CFLAGS="$save_CFLAGS"
 
 AC_MSG_CHECKING([whether $CC accepts -std=c++23])
