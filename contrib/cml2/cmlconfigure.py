@@ -381,17 +381,17 @@ class tty_style_base(cmd.Cmd):
         "Set the value of a symbol -- line-oriented error messages."
         if symbol.is_numeric() and symbol.range:
             if not configuration.range_check(symbol, value):
-                print(lang["OUTOFBOUNDS"] % (value, symbol.range,))
+                print((lang["OUTOFBOUNDS"] % (value, symbol.range,)))
                 return
         (ok, effects, violations) = configuration.set_symbol(symbol, value, freeze)
         if effects:
-            print(lang["EFFECTS"])
+            print((lang["EFFECTS"]))
             sys.stdout.write(string.join(effects, "\n") + "\n\n")
         if ok:
             if not interactively_visible(symbol):
-                print(lang["INVISOUT"] % symbol.name)
+                print((lang["INVISOUT"] % symbol.name))
         else:
-            print(lang["ROLLBACK"] % (symbol.name, value))
+            print((lang["ROLLBACK"] % (symbol.name, value)))
             sys.stdout.write(string.join(list(map(repr, violations)), "\n") + "\n")
 
     def page(self, text):
@@ -407,9 +407,9 @@ class tty_style_base(cmd.Cmd):
                 for i in range(base, base+pagedepth):
                     if i >= len(text):
                         break;
-                    print(text[i])
+                    print((text[i]))
                 base = base + pagedepth
-                input(lang["PAGEPROMPT"])
+                eval(input(lang["PAGEPROMPT"]))
         except KeyboardInterrupt:
             print("")
 
@@ -429,22 +429,22 @@ class tty_style_base(cmd.Cmd):
             self.current = configuration.dictionary[line]
             configuration.visit(self.current)
             if not interactively_visible(self.current) and not self.current.frozen():
-                print(lang["SUPPRESSOFF"])
+                print((lang["SUPPRESSOFF"]))
                 self.suppressions = 0
             if self.current.type in ("menu", "message"):
                 self.skip_to_query(configuration.next_node, 1)
         else:
-            print(lang["NONEXIST"] % line)
+            print((lang["NONEXIST"] % line))
     def do_i(self, line):
         file = string.strip(line)
         try:
             (changes, errors) = configuration.load(file, freeze=0)
         except IOError:
-            print(lang["LOADFAIL"] % file)
+            print((lang["LOADFAIL"] % file))
         else:
             if errors:
                 print(errors)
-            print(lang["INCCHANGES"] % (changes,file))
+            print((lang["INCCHANGES"] % (changes,file)))
             if configuration.side_effects:
                 sys.stdout.write(string.join(configuration.side_effects, "\n") + "\n")
     def do_I(self, line):
@@ -452,11 +452,11 @@ class tty_style_base(cmd.Cmd):
         try:
             (changes, errors) = configuration.load(file, freeze=1)
         except IOError:
-            print(lang["LOADFAIL"] % file)
+            print((lang["LOADFAIL"] % file))
         else:
             if errors:
                 print(errors)
-            print(lang["INCCHANGES"] % (changes,file))
+            print((lang["INCCHANGES"] % (changes,file)))
             if configuration.side_effects:
                 sys.stdout.write(string.join(configuration.side_effects, "\n") + "\n")
     def do_y(self, line):
@@ -466,12 +466,12 @@ class tty_style_base(cmd.Cmd):
             # Undocumented feature -- "y FOO" sets FOO to y.
             line = string.strip(line)
             if line not in configuration.dictionary:
-                print(lang["NONEXIST"] % line)
+                print((lang["NONEXIST"] % line))
                 return
             else:
                 target = configuration.dictionary[line]
         if not target.type in ("trit", "bool"):
-            print(lang["YNOTVALID"] % (target.name))
+            print((lang["YNOTVALID"] % (target.name)))
         else:
             self.set_symbol(target, cml.y)
         return None
@@ -484,14 +484,14 @@ class tty_style_base(cmd.Cmd):
             # Undocumented feature -- "m FOO" sets FOO to m.
             line = string.strip(line)
             if line not in configuration.dictionary:
-                print(lang["NONEXIST"] % line)
+                print((lang["NONEXIST"] % line))
                 return
             else:
                 target = configuration.dictionary[line]
         if not target.type == "trit":
-            print(lang["MNOTVALID"] % (target.name))
+            print((lang["MNOTVALID"] % (target.name)))
         elif not configuration.trits_enabled:
-            print(lang["MNOTVALID"] % (target.name))
+            print((lang["MNOTVALID"] % (target.name)))
         else:
             self.set_symbol(target, cml.m)
         return None
@@ -504,12 +504,12 @@ class tty_style_base(cmd.Cmd):
             # Undocumented feature -- "n FOO" sets FOO to n.
             line = string.strip(line)
             if line not in configuration.dictionary:
-                print(lang["NONEXIST"] % line)
+                print((lang["NONEXIST"] % line))
                 return
             else:
                 target = configuration.dictionary[line]
         if not target.type in ("trit", "bool"):
-            print(lang["NNOTVALID"] % (target.name))
+            print((lang["NNOTVALID"] % (target.name)))
         else:
             self.set_symbol(target, cml.n)
         return None
@@ -539,9 +539,9 @@ class tty_style_base(cmd.Cmd):
             if filter and filter not in cml.flatten_expr(constraint):
                 continue
             if constraint == reduced:
-                print(cml.display_expression(reduced)[1:-1])
+                print((cml.display_expression(reduced)[1:-1]))
             else:
-                print("%s -> %s" % (constraint,cml.display_expression(reduced)[1:-1]))
+                print(("%s -> %s" % (constraint,cml.display_expression(reduced)[1:-1])))
         return 0
     def do_q(self, line):
         # Terminate this cmd instance, not saving configuration
@@ -553,7 +553,7 @@ class tty_style_base(cmd.Cmd):
             configuration.debug += 1
         else:
             configuration.debug = int(line)
-        print(lang["VERBOSITY"] % configuration.debug)
+        print((lang["VERBOSITY"] % configuration.debug))
         return 0
     def do_e(self, line):
         # Examine the state of a given symbol
@@ -562,64 +562,64 @@ class tty_style_base(cmd.Cmd):
             entry = configuration.dictionary[symbol]
             print(entry)
             if entry.constraints:
-                print(lang["CONSTRAINTS"])
+                print((lang["CONSTRAINTS"]))
                 for wff in entry.constraints:
-                    print(cml.display_expression(wff))
+                    print((cml.display_expression(wff)))
             if interactively_visible(entry):
-                print(lang["VISIBLE"])
+                print((lang["VISIBLE"]))
             elif entry.visibility is None:
-                print(lang["INVISINONE"])
+                print((lang["INVISINONE"]))
             elif configuration.eval_frozen(entry.visibility):
-                print(lang["INVISIBLE"] + lang["INVISILOCK"])
+                print((lang["INVISIBLE"] + lang["INVISILOCK"]))
             else:
-                print(lang["INVISIBLE"])
+                print((lang["INVISIBLE"]))
             if entry.saveability == None:
-                print(lang["NOSAVEP"])
+                print((lang["NOSAVEP"]))
             if configuration.saveable(entry):
-                print(lang["SAVEABLE"])
+                print((lang["SAVEABLE"]))
             else:
-                print(lang["UNSAVEABLE"])
+                print((lang["UNSAVEABLE"]))
             if entry.setcount:
-                print(lang["SETCOUNT"] % entry.setcount)
+                print((lang["SETCOUNT"] % entry.setcount))
         else:
-            print(lang["NOSUCHAS"], symbol) 
+            print((lang["NOSUCHAS"], symbol)) 
         return 0
     def do_E(self, dummy):
         # Dump the state of the bindings stack
-        print(configuration.binddump())
+        print((configuration.binddump()))
         return 0
     def do_S(self, dummy):
         # Toggle the suppressions flag
         configuration.suppressions = not configuration.suppressions
         if configuration.suppressions:
-            print(lang["SUPPRESSON"])
+            print((lang["SUPPRESSON"]))
         else:
-            print(lang["SUPPRESSOFF"])
+            print((lang["SUPPRESSOFF"]))
         return 0
     def help_e(self):
-        print(lang["EHELP"])
+        print((lang["EHELP"]))
     def help_E(self):
-        print(lang["ECAPHELP"])
+        print((lang["ECAPHELP"]))
     def help_g(self):
-        print(lang["GHELP"])
+        print((lang["GHELP"]))
     def help_i(self):
-        print(lang["IHELP"])
+        print((lang["IHELP"]))
     def help_I(self):
-        print(lang["ICAPHELP"])
+        print((lang["ICAPHELP"]))
     def help_y(self):
-        print(lang["YHELP"])
+        print((lang["YHELP"]))
     def help_m(self):
-        print(lang["MHELP"])
+        print((lang["MHELP"]))
     def help_n(self):
-        print(lang["NHELP"])
+        print((lang["NHELP"]))
     def help_s(self):
-        print(lang["SHELP"])
+        print((lang["SHELP"]))
     def help_q(self):
-        print(lang["QHELP"])
+        print((lang["QHELP"]))
     def help_v(self):
-        print(lang["VHELP"])
+        print((lang["VHELP"]))
     def help_x(self):
-        print(lang["XHELP"])
+        print((lang["XHELP"]))
     def do_help(self, line):
         line = line.strip()
         if line in configuration.dictionary:
@@ -630,7 +630,7 @@ class tty_style_base(cmd.Cmd):
         if help:
             self.page(help)
         else:
-            print(lang["NOHELP"] % (self.current.name,))
+            print((lang["NOHELP"] % (self.current.name,)))
 
 class tty_style_menu(tty_style_base):
     "Interface for configuring with line-oriented commands."
@@ -741,13 +741,13 @@ class tty_style_menu(tty_style_base):
             except ValueError:
                 ind = -1
             if ind <= 0 or ind > len(self.current.items):
-                print(lang["RADIOBAD"])
+                print((lang["RADIOBAD"]))
             else:
                 # print lang["TTYSETTING"] % (`self.current.items[ind - 1]`)
                 self.set_symbol(self.current.items[ind - 1], cml.y)
                 self.skip_to_query(configuration.next_node)
         elif self.current.type in ("bool", "trit"):
-            print(lang["CANNOTSET"])
+            print((lang["CANNOTSET"]))
         else:
             self.set_symbol(self.current, v)
             self.skip_to_query(configuration.next_node)
@@ -762,7 +762,7 @@ class tty_style_menu(tty_style_base):
         return 0
 
     def help_p(self):
-        print(lang["PHELP"])
+        print((lang["PHELP"]))
 
     def postcmd(self, stop, dummy):
         if stop:
@@ -783,18 +783,18 @@ class debugger_style_menu(tty_style_base):
         if newsystem:
             global configuration
             configuration = cmlsystem.CMLSystem(newsystem)
-            print(lang["COMPILEOK"])
+            print((lang["COMPILEOK"]))
         else:
-            print(lang["COMPILEFAIL"])
+            print((lang["COMPILEFAIL"]))
         return 0
 
     def do_V(self,line):
-        print("V",line)
+        print(("V",line))
         for setting in line.split():
             symbol,expected=setting.split('=')
             if symbol not in configuration.dictionary:
                 sys.stderr.write((lang["NONEXIST"] % symbol) + "\n")
-                print(lang["NONEXIST"] % line)
+                print((lang["NONEXIST"] % line))
                 continue
             dictsym = configuration.dictionary[symbol]
             dictval = cml.evaluate(dictsym)
@@ -806,63 +806,63 @@ class debugger_style_menu(tty_style_base):
         return 0
         
     def do_y(self, line):
-        print(line + "=y")
+        print((line + "=y"))
         if not line:
-            print(lang["NOSYMBOL"])
+            print((lang["NOSYMBOL"]))
         else:
             tty_style_base.do_y(self, line)
             if configuration.debug:
-                print(configuration.binddump())
+                print((configuration.binddump()))
     def do_m(self, line):
-        print(line + "=m")
+        print((line + "=m"))
         if not line:
-            print(lang["NOSYMBOL"])
+            print((lang["NOSYMBOL"]))
         else:
             tty_style_base.do_m(self, line)
             if configuration.debug:
-                print(configuration.binddump())
+                print((configuration.binddump()))
     def do_n(self, line):
-        print(line + "=n")
+        print((line + "=n"))
         if not line:
-            print(lang["NOSYMBOL"])
+            print((lang["NOSYMBOL"]))
         else:
             tty_style_base.do_n(self, line)
             if configuration.debug:
-                print(configuration.binddump())
+                print((configuration.binddump()))
 
     def do_f(self, line):
-        print("f", line)
+        print(("f", line))
         line = line.strip()
         if not line:
-            print(lang["NOSYMBOL"])
+            print((lang["NOSYMBOL"]))
         elif line not in configuration.dictionary:
-            print(lang["NONEXIST"] % line)
+            print((lang["NONEXIST"] % line))
         else:
             configuration.dictionary[line].freeze()
         return None
 
     def do_c(self, line):
-        print("c", line)
+        print(("c", line))
         configuration.clear()
         return None
 
     def do_p(self, line):
-        print("p", line)
+        print(("p", line))
         configuration.save(sys.stdout, baton=None, all=1)
         return None
 
     def do_u(self, line):
-        print("u", line)
+        print(("u", line))
         configuration.interactive = not configuration.interactive
         return None
 
     def do_h(self, line):
-        print(string.join([lang[x] for x in ("TTYSUMMARY",
+        print((string.join([lang[x] for x in ("TTYSUMMARY",
                                "YHELP", "MHELP", "NHELP", "PDHELP",
                                "FHELP", "CHELP",
                                "EHELP", "ECAPHELP", "CCAPHELP",
                                "IHELP", "ICAPHELP", "SHELP", "UHELP",
-                               "QHELP", "XHELP", "VCAPHELP", "VHELP")], "\n"))
+                               "QHELP", "XHELP", "VCAPHELP", "VHELP")], "\n")))
 
     def default(self, line):
         if line.strip()[0] == "#":
@@ -883,16 +883,16 @@ class debugger_style_menu(tty_style_base):
         return None
 
     def help_f(self):
-        print(lang["FHELP"])
+        print((lang["FHELP"]))
 
     def help_c(self):
-        print(lang["CHELP"])
+        print((lang["CHELP"]))
 
     def help_V(self):
-        print(lang["VCAPHELP"])
+        print((lang["VCAPHELP"]))
 
     def help_p(self):
-        print(lang["PDHELP"])
+        print((lang["PDHELP"]))
 
     def do_EOF(self, line):
         print("")
@@ -1139,7 +1139,7 @@ class curses_style_menu:
 
         (self.lines, self.columns) = self.window.getmaxyx()
         if self.lines < 9 or self.columns < 60:
-            raise "TERMTOOSMALL"
+            raise Exception("TERMTOOSMALL")
         self.menus.viewport_height = self.lines-2 + (not configuration.expert_tie or cml.evaluate(configuration.expert_tie) != cml.n)
         if curses.has_colors():
             curses.init_pair(curses.COLOR_CYAN, curses.COLOR_CYAN, curses.COLOR_BLACK)
@@ -3034,12 +3034,12 @@ def menu_tree_list(node, indent):
     "Print a map of a menu subtree."
     totalindent = (indent + 4 * node.depth)
     trailer = (" " * (40 - totalindent - len(node.name))) + repr(node.prompt)
-    print(" " * totalindent, node.name, trailer)
+    print((" " * totalindent, node.name, trailer))
     if configuration.debug:
         if node.visibility:
-            print(" " * 41, lang["VISIBILITY"], cml.display_expression(node.visibility))
+            print((" " * 41, lang["VISIBILITY"], cml.display_expression(node.visibility)))
         if node.default:
-            print(" " * 41, lang["DEFAULT"], cml.display_expression(node.default))
+            print((" " * 41, lang["DEFAULT"], cml.display_expression(node.default)))
     if node.items:
         for child in node.items:
             menu_tree_list(child, indent + 4)
@@ -3071,7 +3071,7 @@ def load_system(cmd_options, cmd_arguments):
     try:
         open(rulebase, 'rb')
     except IOError:
-        print(lang["NOFILE"] % (rulebase,))
+        print((lang["NOFILE"] % (rulebase,)))
         raise SystemExit
     configuration = cmlsystem.CMLSystem(rulebase)
 
@@ -3095,12 +3095,12 @@ def process_include(configuration, file, freeze):
     try:
         (changes, errors) = configuration.load(file, freeze)
     except IOError:
-        print(lang["LOADFAIL"] % file)
+        print((lang["LOADFAIL"] % file))
         return
     if errors:
         print(errors)
     elif configuration.side_effects:
-        print(lang["SIDEFROM"] % file)
+        print((lang["SIDEFROM"] % file))
         sys.stdout.write(string.join(configuration.side_effects, "\n") + "\n")
 
 def process_define(configuration, val, freeze):
@@ -3126,10 +3126,10 @@ def process_define(configuration, val, freeze):
         elif parts[1] == 'n':
             val = 'n'
         else:
-            print(lang["BADBOOL"])
+            print((lang["BADBOOL"]))
             sys.exit(1)
     elif len(parts) == 1:
-        print(lang["NOCMDLINE"] % (repr(sym),))
+        print((lang["NOCMDLINE"] % (repr(sym),)))
         sys.exit(1)
     else:
         val = parts[1]
@@ -3137,10 +3137,10 @@ def process_define(configuration, val, freeze):
                                  configuration.value_from_string(sym, val),
                                  freeze)
     if effects:
-        print(lang["EFFECTS"])
+        print((lang["EFFECTS"]))
         sys.stdout.write(string.join(effects,"\n")+"\n")
     if not ok:
-        print(lang["ROLLBACK"] % (sym.name, val))
+        print((lang["ROLLBACK"] % (sym.name, val)))
         sys.stdout.write("\n".join(map(repr, violations))+"\n")
 
 def process_options(configuration, options):
@@ -3216,17 +3216,17 @@ def main(options, arguments):
             curses.wrapper(curses_style_menu, config, banner)
             return
         except "TERMTOOSMALL":
-            print(lang["TERMTOOSMALL"])
+            print((lang["TERMTOOSMALL"]))
             force_tty = 1
 
     # If both failed, go glass-tty
     if force_debugger:
-        print(lang["DEBUG"] % configuration.banner)
+        print((lang["DEBUG"] % configuration.banner))
         debugger_style_menu(config, banner).cmdloop()        
     elif force_tty:
-        print(lang["WELCOME"]%(configuration.banner,) + lang["VERSION"]%(cml.version,))
+        print((lang["WELCOME"]%(configuration.banner,) + lang["VERSION"]%(cml.version,)))
         configuration.errout = sys.stdout
-        print(lang["TTYQUERY"])
+        print((lang["TTYQUERY"]))
         tty_style_menu(config, banner).cmdloop()
 
 if __name__ == '__main__':
@@ -3239,13 +3239,13 @@ if __name__ == '__main__':
                 runopts)
             options = envopts + options
     except:
-        print(lang["BADOPTION"])
-        print(lang["CLIHELP"])
+        print((lang["BADOPTION"]))
+        print((lang["CLIHELP"]))
         sys.exit(1)
 
     for (switch, val) in options:
         if switch == "-V":
-            print("cmlconfigure", cml.version)
+            print(("cmlconfigure", cml.version))
             raise SystemExit
         elif switch == '-P':
             proflog = val
@@ -3273,7 +3273,7 @@ if __name__ == '__main__':
             from tkinter import *
             from tkinter.dialog import *
         except:
-            print(lang["NOTKINTER"])
+            print((lang["NOTKINTER"]))
             time.sleep(5)
             force_curses = 1
             force_x = force_q = 0
@@ -3281,7 +3281,7 @@ if __name__ == '__main__':
     # Probe the environment to see if we can come up in ncurses mode
     if not force_tty and not force_x and not force_q:
         if 'TERM' not in os.environ:
-            print(lang["TERMNOTSET"])
+            print((lang["TERMNOTSET"]))
             force_tty = 1
         else:
             import traceback
@@ -3290,7 +3290,7 @@ if __name__ == '__main__':
                 force_curses = 1
             except:
                 ImportError
-                print(lang["NOCURSES"])
+                print((lang["NOCURSES"]))
                 force_tty = 1
 
     if force_tty or force_debugger:
@@ -3311,11 +3311,11 @@ if __name__ == '__main__':
     except KeyboardInterrupt:
         #if configuration.commits > 0:
         #    print lang["NOTSAVED"]
-        print(lang["ABORTED"])
+        print((lang["ABORTED"]))
         raise SystemExit(2)
     except "UNSATISFIABLE":
         #configuration.save("post.mortem")
-        print(lang["POSTMORTEM"])
+        print((lang["POSTMORTEM"]))
         raise SystemExit(3)
 
 # That's all, folks!
