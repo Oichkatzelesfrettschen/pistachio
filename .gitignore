@@ -3,3 +3,21 @@
 user/autom4te.cache/
 user/config.h.in
 contrib/tmp
+# Patterns migrated from .hgignore
+autom4te.cache/
+config.h.in
+configure
+.depend
+*~
+# Build directories
+amd64-build/
+bluegene-build/
+ebony-build/
+x86-build/
+user-build/
+user-install/
+.project
+.cproject
+.settings/
+kernel/src/generic/simics.h
+
