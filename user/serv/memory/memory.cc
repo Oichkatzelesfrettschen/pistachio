@@ -5,6 +5,8 @@
 #include <cstring>
 #include <l4/memory.h>
 
+static const L4_Word_t MEM_LABEL = 0;
+
 static L4_Word_t handle_request(const mem_request &req)
 {
     if (req.op == MEM_ALLOC) {
@@ -26,9 +28,15 @@ int main()
         L4_ThreadId_t partner;
         partner = L4_Wait(&tag);
         L4_StoreMR(0, &label);
+        if (label != MEM_LABEL) {
+            L4_Reply(partner);
+            continue;
+        }
+
         mem_request req;
         L4_StoreMRs(1, sizeof(req)/sizeof(L4_Word_t), (L4_Word_t*)&req);
         L4_Word_t res = handle_request(req);
+
         L4_MsgClear(&msg);
         L4_MsgAppendWord(&msg, res);
         L4_Set_MsgLabel(&msg, label);

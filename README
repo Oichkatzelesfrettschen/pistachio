@@ -68,6 +68,14 @@ Then launch them together with the kernel using `kickstart`::
           -roottask=user/serv/memory/memory \
           user/serv/scheduler/scheduler
 
+Additional servers can be started in the same manner.  For example,
+to also launch a device service pass its binary as another argument::
+
+    $ user/util/kickstart/kickstart \
+          -roottask=user/serv/memory/memory \
+          user/serv/scheduler/scheduler \
+          user/serv/device/device
+
 
 Migration from the microkernel API
 ----------------------------------
