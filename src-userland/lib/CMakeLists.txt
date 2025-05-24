@@ -1,11 +1,11 @@
 # Build userland static libraries
 
 add_library(useripc STATIC
-    ipc/user_ipc.cc
+    ${CMAKE_SOURCE_DIR}/user/lib/ipc/user_ipc.cc
 )
 
 add_library(sched STATIC
-    sched/sched_client.cc
+    ${CMAKE_SOURCE_DIR}/user/lib/sched/sched_client.cc
 )
 
 # Include directories match the Makefile
