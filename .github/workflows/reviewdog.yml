@@ -26,9 +26,12 @@ jobs:
           - { id: "ruff",        cmd: "ruff --output-format=github ." }
           - { id: "clang-tidy",  cmd: "clang-tidy $(git ls-files '*.c' '*.cc' '*.cpp' '*.cxx' '*.h' '*.hpp') --quiet" }
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-go@v5
-    - uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+      - uses: actions/setup-python@v5
+      - name: Install pre-commit
+        run: |
+          python3 -m pip install --user pre-commit
 
     - name: Install linter runtime deps
       run: |
