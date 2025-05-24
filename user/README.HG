@@ -1,14 +1,12 @@
 Build Requirements
 ==================
 
-This repository no longer relies on Autoconf tools.  A small shell
-script named `configure` is provided in the `user` directory and acts
-as a lightweight replacement.  No special build tools are required
-other than a POSIX compatible shell and a C compiler supporting the
-`-std=c23` option.
+This repository ships a lightweight `configure` script in the `user`
+directory.  A POSIX shell and a compiler supporting the `-std=c23`
+option are sufficient.  Detailed kernel and user land instructions are
+available in `../docs/building.md`.
 
-To prepare the build simply invoke the script from a build directory,
-for example:
+To prepare the build simply invoke the script from a build directory:
 
     $ mkdir build && cd build
     $ ../user/configure
