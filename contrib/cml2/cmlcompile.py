@@ -76,7 +76,7 @@ class Token:
     def __init__(self, type, attr=None):
         self.type = type
         self.attr = attr
-        if compstate.debug > 1: print("CML token: ", repr(self))
+        if compstate.debug > 1: print(("CML token: ", repr(self)))
     def __repr__(self):
         if self.type == "EOF":
             return "EOF"
@@ -213,7 +213,7 @@ def parse_atom(input):
     if compstate.debug >= 2: print("entering parse_atom...")
     op = input.lex_token()
     if op.type in _atoms:
-        if compstate.debug >= 2: print("parse_atom returns", op.attr)
+        if compstate.debug >= 2: print(("parse_atom returns", op.attr))
         return op
     elif op.type == '(':
         sub = parse_expr_inner(input)
@@ -221,12 +221,12 @@ def parse_atom(input):
         if close != ')':
             raise ExpressionError("while expecting a close paren")
         else:
-            if compstate.debug >= 2: print("parse_atom returns singleton", sub)
+            if compstate.debug >= 2: print(("parse_atom returns singleton", sub))
             return sub
     elif op.type in _keywords:
         raise ExpressionError("keyword %s while expecting atom" % op.type)
     elif op.type == 'word':
-        if compstate.debug >= 2: print("parse_atom returns", op.attr)
+        if compstate.debug >= 2: print(("parse_atom returns", op.attr))
         return op
 
 def parse_term(input):
@@ -235,11 +235,11 @@ def parse_term(input):
     op = input.lex_token()
     if op.type not in _termops:
         input.push_token(op)
-        if compstate.debug >= 2: print("parse_term returns singleton", left)
+        if compstate.debug >= 2: print(("parse_term returns singleton", left))
         return left
     right = parse_term(input)
     expr = (op.type, left, right)
-    if compstate.debug >= 2: print("parse_term returns", expr)
+    if compstate.debug >= 2: print(("parse_term returns", expr))
     return expr
 
 def parse_relational(input):
@@ -248,11 +248,11 @@ def parse_relational(input):
     op = input.lex_token()
     if op.type not in _relops:
         input.push_token(op)
-        if compstate.debug >= 2: print("parse_relational returns singleton", left)
+        if compstate.debug >= 2: print(("parse_relational returns singleton", left))
         return left
     right = parse_term(input)
     expr = (op.type, left, right)
-    if compstate.debug >= 2: print("parse_relational returns", expr)
+    if compstate.debug >= 2: print(("parse_relational returns", expr))
     return(op.type, left, right)
 
 def parse_assertion(input):
@@ -269,11 +269,11 @@ def parse_conjunct(input):
     op = input.lex_token()
     if op.type !=  'and': 
         input.push_token(op)
-        if compstate.debug >= 2: print("parse_conjunct returns singleton", left)
+        if compstate.debug >= 2: print(("parse_conjunct returns singleton", left))
         return left
     else:
         expr = ('and', left, parse_conjunct(input))
-        if compstate.debug >= 2: print("parse_conjunct returns", expr)
+        if compstate.debug >= 2: print(("parse_conjunct returns", expr))
         return expr
 
 def parse_disjunct(input):
@@ -282,11 +282,11 @@ def parse_disjunct(input):
     op = input.lex_token()
     if op.type != 'or':
         input.push_token(op)
-        if compstate.debug >= 2: print("parse_disjunct returns singleton", left)
+        if compstate.debug >= 2: print(("parse_disjunct returns singleton", left))
         return left
     else:
         expr = ('or', left, parse_disjunct(input))
-        if compstate.debug >= 2: print("parse_disjunct returns", expr)
+        if compstate.debug >= 2: print(("parse_disjunct returns", expr))
         return expr
 
 def parse_factor(input):
@@ -296,11 +296,11 @@ def parse_factor(input):
     op = input.lex_token()
     if op.type != 'implies':
         input.push_token(op)
-        if compstate.debug >= 2: print("parse_factor returns singleton", left)
+        if compstate.debug >= 2: print(("parse_factor returns singleton", left))
         return left
     else:
         expr = ('implies', left, parse_disjunct(input))
-        if compstate.debug >= 2: print("parse_factor returns", expr)
+        if compstate.debug >= 2: print(("parse_factor returns", expr))
         return expr
 
 def parse_summand(input):
@@ -309,11 +309,11 @@ def parse_summand(input):
     op = input.lex_token()
     if op.type != '*':
         input.push_token(op)
-        if compstate.debug >= 2: print("parse_summand returns singleton", left)
+        if compstate.debug >= 2: print(("parse_summand returns singleton", left))
         return left
     else:
         expr = ('*', left, parse_expr_inner(input))
-        if compstate.debug >= 2: print("parse_summand returns", expr)
+        if compstate.debug >= 2: print(("parse_summand returns", expr))
         return expr
 
 def parse_ternary(input):
@@ -322,7 +322,7 @@ def parse_ternary(input):
     op = input.lex_token()
     if op.type != '?':
         input.push_token(op)
-        if compstate.debug >= 2: print("parse_ternary returns singleton", guard)
+        if compstate.debug >= 2: print(("parse_ternary returns singleton", guard))
         return guard
     else:
         trueval = parse_summand(input)
@@ -331,7 +331,7 @@ def parse_ternary(input):
             raise ExpressionError("while expecting : in ternary")
         falseval = parse_summand(input)
         expr = ('?', guard, trueval, falseval)
-        if compstate.debug >= 2: print("parse_ternary returns", expr)
+        if compstate.debug >= 2: print(("parse_ternary returns", expr))
         return expr
 
 def parse_expr_inner(input):
@@ -340,11 +340,11 @@ def parse_expr_inner(input):
     op = input.lex_token()
     if op.type not in ('+', '-'):
         input.push_token(op)
-        if compstate.debug >= 2: print("parse_expr_inner returns singleton", left)
+        if compstate.debug >= 2: print(("parse_expr_inner returns singleton", left))
         return left
     else:
         expr = (op.type, left, parse_expr_inner(input))
-        if compstate.debug >= 2: print("parse_expr_inner returns", expr)
+        if compstate.debug >= 2: print(("parse_expr_inner returns", expr))
         return expr
 
 def parse_expr(input):
@@ -359,7 +359,7 @@ def parse_expr(input):
 def make_dependent(guard, symbol):
     "Create a dependency lnk, indirecting properly through menus."
     if compstate.debug > 0:
-        print("Making %s dependent on %s" % (symbol.name, guard.name))
+        print(("Making %s dependent on %s" % (symbol.name, guard.name)))
     # If symbol is a menu, we'd really like to create a dependency link
     # for each of its children.  But they won't be defined at this point
     # if the reference is forward.
@@ -406,16 +406,16 @@ def intern_symbol(input, name=None, oktypes=None, record=0):
 
 def intern_symbol_list(input, record=0):
     "Get a list of symbols (terminate on keyword)."
-    list = []
+    symlist = []
     while 1:
         symbol = intern_symbol(input, None, None, record)
         if symbol == None:
             break
         else:
-            list.append(symbol)
-    if not list:
+            symlist.append(symbol)
+    if not symlist:
         input.complain("syntax error, expected a nonempty word list")
-    return list
+    return symlist
 
 def parse(input, baton):
     # Parse an entire CML program
@@ -427,7 +427,7 @@ def parse(input, baton):
         if not compstate.debug and not compstate.errors:
             baton.twirl()
         leader = input.lex_token()
-        if compstate.debug > 1: print("Parsing declaration beginning with %s..." % (leader,))
+        if compstate.debug > 1: print(("Parsing declaration beginning with %s..." % (leader,)))
         # Language constructs begin here 
         if leader.type == "EOF":
             break
@@ -458,7 +458,7 @@ def parse(input, baton):
                 else:
                     input.push_token(tok)
             if compstate.debug:
-                print("%d symbols read" % (len(rulebase.dictionary),))
+                print(("%d symbols read" % (len(rulebase.dictionary),)))
         elif leader.type in ("unless", "when"):
             guard = parse_expr(input)
             maybe = input.lex_token()
@@ -471,9 +471,9 @@ def parse(input, baton):
                     make_dep = 1
                 else:
                     input.push_token(dependent)
-                list = intern_symbol_list(input)
-                list.reverse()
-                for symbol in list:
+                symlist = intern_symbol_list(input)
+                symlist.reverse()
+                for symbol in symlist:
                     if make_dep:
                         traverse_make_dep(symbol, guard, input)
                     # Add it to ordinary visibility constraints
@@ -484,9 +484,9 @@ def parse(input, baton):
             elif maybe == "save":
                 if leader.type == "unless":
                     guard = ("==", guard, cml.n)
-                list = intern_symbol_list(input)
-                list.reverse()
-                for symbol in list:
+                symlist = intern_symbol_list(input)
+                symlist.reverse()
+                for symbol in symlist:
                     if symbol.saveability:
                         symbol.saveability = ('and', guard, symbol.saveability)
                     else:
@@ -502,35 +502,35 @@ def parse(input, baton):
         elif leader.type == "menu":
             menusym = intern_symbol(input, None, ('bool', 'menu', 'choices'), record=1)
             menusym.type = "menu"
-            list = parse_symbol_tree(input)
-            #print "Adding %s to %s" % (list, menusym.name)
+            items = parse_symbol_tree(input)
+            #print "Adding %s to %s" % (items, menusym.name)
             # Add and validate items
-            menusym.items += list
-            for symbol in list:
+            menusym.items += items
+            for symbol in items:
                 if symbol.menu:
-                    input.complain("symbol %s in %s occurs in another menu (%s)"
+                    input.complain("symbol %s in %s occurs in another menu (%s)" 
                                        % (symbol.name, menusym.name, symbol.menu.name))
                 else:
                     symbol.menu = menusym
         elif leader.type == "choices":
             menusym = intern_symbol(input, None, ('bool', 'menu', 'choices'), record=1)
             menusym.type = "choices"
-            list = parse_symbol_tree(input)
-            for symbol in list:
+            items = parse_symbol_tree(input)
+            for symbol in items:
                 symbol.type = "bool"
-                symbol.choicegroup = list(filter(lambda x, s=symbol: x != s, list))
+                symbol.choicegroup = list(filter(lambda x, s=symbol: x != s, items))
             dflt = input.lex_token()
             if dflt.type != 'default':
-                default = list[0].name
+                default = items[0].name
                 input.push_token(dflt)
             else:
                 default = intern_symbol(input, None, None, record=1)
-            if default not in list:
+            if default not in items:
                 input.complain("default %s must be in the menu" % (repr(default),))
             else:
                 menusym.default = default
-                menusym.items = list
-                for symbol in list:
+                menusym.items = items
+                for symbol in items:
                     if symbol.menu:
                         input.complain("symbol %s occurs in another menu (%s)"
                                        % (symbol.name, symbol.menu.name))
@@ -630,10 +630,10 @@ def parse(input, baton):
                 input.push_token(next)
                 continue
         elif leader.type == 'give':
-            list = intern_symbol_list(input)
+            symlist = intern_symbol_list(input)
             input.demand('property')
             label = input.lex_token()
-            for symbol in list:
+            for symbol in symlist:
                 symbol.setprop(label.attr)
         elif leader.type == 'debug':
             compstate.debug = input.lex_token().attr
@@ -738,7 +738,7 @@ def get_symbol_declaration(input):
         compstate.property_stack.pop()
         return 0
     elif symbol.type == 'word':         # Declaration
-        if compstate.debug >= 2: print("interning %s" % symbol.attr)
+        if compstate.debug >= 2: print(("interning %s" % symbol.attr))
         entry = intern_symbol(input, symbol.attr, record=1)
         compstate.symbol_list.append(entry)
         entry.depth = len(compstate.condition_stack)
@@ -1022,7 +1022,7 @@ def compile(debug, arguments, profile, endtok=None):
 
     if profile:
         now = time.time();
-        print("Rule parsing:", now - basetime)
+        print(("Rule parsing:", now - basetime))
         basetime = now
     if not debug and not compstate.errors:
         baton.twirl()
@@ -1254,7 +1254,7 @@ def compile(debug, arguments, profile, endtok=None):
 
     if profile:
         now = time.time();
-        print("Sanity checks:", now - basetime)
+        print(("Sanity checks:", now - basetime))
         basetime = now
 
     # We only need the banner string, not the banner symbol
@@ -1279,11 +1279,11 @@ def compile(debug, arguments, profile, endtok=None):
                     dc = dc + 1
                 if symbol.constraints:
                     cc = cc + 1
-            print("%d total symbols; %d symbols are involved in constraints; %d in dependencies." % (tc, cc, dc))
+            print(("%d total symbols; %d symbols are involved in constraints; %d in dependencies." % (tc, cc, dc)))
 
         if profile:
             now = time.time();
-            print("Total compilation time:", now - zerotime)
+            print(("Total compilation time:", now - zerotime))
 
         # We have a rulebase object.
         return rulebase
@@ -1296,7 +1296,7 @@ if __name__ == '__main__':
             raise SystemExit(1)
         else:
             try:
-                if debug: print("cmlcompile: output directed to %s" % (outfile))
+                if debug: print(("cmlcompile: output directed to %s" % (outfile)))
                 out = open(outfile, "wb")
                 pickle.dump(rulebase, out, 1)
                 out.close()

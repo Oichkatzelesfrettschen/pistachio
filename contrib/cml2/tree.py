@@ -5,7 +5,7 @@
 # 99/??/?? CEC release to comp.lang.python.announce
 # Trimmed for CML2 by ESR, December 2001 (cut-paste support removed).
 import os, string
-from Tkinter import *
+from tkinter import *
 
 # this is initialized later, after Tkinter is started
 open_icon=None
@@ -216,7 +216,7 @@ class Node:
         self.widget.configure(scrollregion=(x1, y1, x2+5, y2+5))
         # call customization hook
         if self.widget.after_hook:
-            print 'calling after_hook'
+            print('calling after_hook')
             self.widget.after_hook(self)
         # release mutex
         self.spinlock=0
@@ -231,8 +231,8 @@ class Node:
             for n in self.subnodes:
                 if n.id == dirs[0]:
                     return n.expand(dirs[1:])
-            print "Can't find path %s in %s" % (dirs, self.id)
-            print "- Available subnodes: %s" % map(lambda n: n.id, self.subnodes)
+            print("Can't find path %s in %s" % (dirs, self.id))
+            print("- Available subnodes: %s" % [n.id for n in self.subnodes])
         return self
     
     # handle mouse clicks by moving cursor and toggling folder state
@@ -241,7 +241,7 @@ class Node:
         self.toggle_state()
 
     # return next lower visible node
-    def next(self):
+    def __next__(self):
         n=self
         if n.subnodes:
             # if you can go right, do so
@@ -280,7 +280,7 @@ class Tree(Canvas):
                  distx=15, disty=15, textoff=10, lineflag=1, **kw_args):
         global open_icon, shut_icon, file_icon,yes_icon,no_icon
         # pass args to superclass
-        apply(Canvas.__init__, (self, master), kw_args)
+        Canvas.__init__(*(self, master), **kw_args)
         # try creating an image, work around Tkinter bug
         # ('global' should do it, but it doesn't)
         if open_icon is not None:
@@ -288,7 +288,7 @@ class Tree(Canvas):
                 item = self.create_image(0,0,image=open_icon)
                 self.delete(item)
             except:
-                print "recreating Tree PhotoImages"
+                print("recreating Tree PhotoImages")
                 open_icon = None # need to recreate PhotoImages
         # default images (BASE64-encoded GIF files)
         # we have to delay initialization until Tk starts up or PhotoImage()
@@ -316,7 +316,7 @@ class Tree(Canvas):
             'gjUIAolILpDB70zxxnieJBxl6n1FiGLiuW4tgJcSGuKRI/h/oAX8FADs=')
         # function to return subnodes (not very much use w/o this)
         if not getcontents:
-            raise ValueError, 'must have "get_contents" function'
+            raise ValueError('must have "get_contents" function')
         self.get_contents=getcontents
         # horizontal distance that subtrees are indented
         self.distx=distx
@@ -360,7 +360,7 @@ class Tree(Canvas):
         self.bind('<Next>', self.pagedown)
         self.bind('<Prior>', self.pageup)
         # arrow-up/arrow-down
-        self.bind('<Down>', self.next)
+        self.bind('<Down>', self.__next__)
         self.bind('<Up>', self.prev)
         # arrow-left/arrow-right
         self.bind('<Left>', self.ascend)
@@ -374,7 +374,7 @@ class Tree(Canvas):
 
     # scroll (in a series of nudges) so items are visible
     def see(self, *items):
-        x1, y1, x2, y2=apply(self.bbox, items)
+        x1, y1, x2, y2=self.bbox(*items)
         while x2 > self.canvasx(0)+self.winfo_width():
             old=self.canvasx(0)
             self.xview('scroll', 1, 'units')
@@ -423,7 +423,7 @@ class Tree(Canvas):
 
     # move to next lower visible node
     def next(self, event=None):
-        self.move_cursor(self.pos.next())
+        self.move_cursor(next(self.pos))
             
     # move to next higher visible node
     def prev(self, event=None):
@@ -443,7 +443,7 @@ class Tree(Canvas):
             self.move_cursor(self.pos.subnodes[0])
         else:
             # if no subnodes, move to next sibling
-            self.next()
+            next(self)
 
     # go to root
     def first(self, event=None):
@@ -472,7 +472,7 @@ class Tree(Canvas):
         n=self.pos
         j=self.winfo_height()/self.disty
         for i in range(j-3):
-            n=n.next()
+            n=next(n)
         self.yview('scroll', 1, 'pages')
         self.move_cursor(n)
 
