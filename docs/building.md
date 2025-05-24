@@ -96,3 +96,5 @@ so that formatting and linting tools run automatically.
 
 Further notes on PowerPC cross compilation can be found in
 `doc/notes/ppc-build.txt`.
+
+See the top-level LICENSE file for the project's terms.
