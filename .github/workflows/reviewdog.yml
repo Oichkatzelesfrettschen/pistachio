@@ -29,9 +29,12 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
       - uses: actions/setup-python@v5
-      - name: Install pre-commit
+      - name: Install Python tools
         run: |
-          python3 -m pip install --user pre-commit
+          python3 -m pip install --user pre-commit compiledb configuredb
+          pre-commit --version
+          compiledb --version
+          configuredb --help
 
     - name: Install linter runtime deps
       run: |

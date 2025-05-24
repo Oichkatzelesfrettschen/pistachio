@@ -193,6 +193,7 @@ fi
 # Ensure critical Python tooling is present even if package installs were skipped
 for pip_pkg in \
   pre-commit \
+  compiledb \
   configuredb \
   pytest \
   pyyaml \
@@ -205,6 +206,8 @@ if ! python3 -m pre_commit --version >/dev/null 2>&1; then
   pip3 install --no-index pre-commit && python3 -m pre_commit --version >/dev/null 2>&1 && echo "pre-commit installed from local cache" >>"$FAIL_LOG"
 fi
 python3 -m pre_commit --version >/dev/null 2>&1 || echo "pre-commit not available" | tee -a "$FAIL_LOG"
+compiledb --version >/dev/null 2>&1 || echo "compiledb not available" | tee -a "$FAIL_LOG"
+configuredb --help >/dev/null 2>&1 || echo "configuredb not available" | tee -a "$FAIL_LOG"
 
 # Create a minimal pre-commit configuration if one does not already exist
 if [ ! -f .pre-commit-config.yaml ]; then
