@@ -176,6 +176,7 @@ CCFLAGS += -fno-rtti -fno-builtin  -fomit-frame-pointer -fno-exceptions \
 
 # C++ compiler flags build on C compiler flags and set the C++ standard
 CXXFLAGS += $(CCFLAGS) -std=c++23
+CXXFLAGS += -Werror
 
 ifeq ("$(CC_VERSION)", "4")
 CCFLAGS += -Wno-conversion
@@ -191,6 +192,7 @@ CCFLAGS  += -g
 endif
 
 CFLAGS = -ffreestanding $(CCFLAGS) -std=c2x
+CFLAGS += -Werror
 
 # these for assembly files only
 ASMFLAGS += $(ASMFLAGS_$(PLATFORM)) $(ASMFLAGS_$(ARCH)) $(ASMFLAGS_$(CPU))
