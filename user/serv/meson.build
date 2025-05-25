@@ -1,0 +1,5 @@
+subdir('memory')
+subdir('process')
+subdir('scheduler')
+subdir('mlp_scheduler')
+subdir('vfs')
