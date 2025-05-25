@@ -7,6 +7,11 @@ This document summarises how L4 IPC is used by the example servers and where add
 `L4_Ipc` is the kernel syscall that sends a message to one thread while optionally receiving from another. The operation uses the message registers (`MR0`..`MR63`) for payload. `MR0` stores the `L4_MsgTag_t` which encodes the message label, counts of untyped and typed words and several flags. `L4_UserIpc` wraps the syscall and performs a user mode fast path when the destination is the current thread and no receive phase is required.
 
 Most high level calls such as `L4_Call`, `L4_Send` and `L4_Receive` are implemented on top of `L4_UserIpc` in `l4/ipc.h`.
+`Recv_T` from `mailbox_t.h` builds on these helpers and waits for an incoming
+message with a timeout. It repeatedly performs a non-blocking wait and sleeps
+for short periods using `nanosleep` until either a message is delivered or the
+timeout expires. The function returns the sender's thread ID and stores the
+received tag in the supplied pointer.
 
 ## Message formats
 
