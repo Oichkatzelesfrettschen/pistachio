@@ -18,10 +18,10 @@ typedef struct {
 } SchedRequest;
 
 void sched_set_server(L4_ThreadId_t tid);
-L4_ThreadId_t sched_get_server(void);
+[[nodiscard]] L4_ThreadId_t sched_get_server(void);
 
-L4_MsgTag_t sched_send_request(const SchedRequest *req);
-L4_MsgTag_t sched_wait_request(SchedRequest *req, L4_ThreadId_t *from);
+[[nodiscard]] L4_MsgTag_t sched_send_request(const SchedRequest *req);
+[[nodiscard]] L4_MsgTag_t sched_wait_request(SchedRequest *req, L4_ThreadId_t *from);
 void sched_switch(L4_ThreadId_t next);
 
 #ifdef __cplusplus

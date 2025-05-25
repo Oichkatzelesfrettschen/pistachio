@@ -6,10 +6,10 @@
 #include <stddef.h>
 
 
-L4_Word_t memory_alloc(L4_ThreadId_t server, L4_Word_t size)
+[[nodiscard]] L4_Word_t memory_alloc(L4_ThreadId_t server, L4_Word_t size)
 {
     mem_request req;
-    req.op = MEM_ALLOC;
+    req.op = mem_opcode::Alloc;
     req.size = size;
     req.addr = 0;
 
@@ -29,7 +29,7 @@ L4_Word_t memory_alloc(L4_ThreadId_t server, L4_Word_t size)
 void memory_free(L4_ThreadId_t server, L4_Word_t addr, L4_Word_t size)
 {
     mem_request req;
-    req.op = MEM_FREE;
+    req.op = mem_opcode::Free;
     req.size = size;
     req.addr = addr;
 
@@ -43,7 +43,7 @@ void memory_free(L4_ThreadId_t server, L4_Word_t addr, L4_Word_t size)
     L4_Call(server);
 }
 
-L4_ThreadId_t memory_server(void)
+[[nodiscard]] L4_ThreadId_t memory_server(void)
 {
     void *kip = L4_KernelInterface(nullptr, nullptr, nullptr);
     L4_Word_t ubase = L4_ThreadIdUserBase(kip);

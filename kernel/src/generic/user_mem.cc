@@ -24,7 +24,7 @@ extern "C" void *user_mem_alloc(word_t size)
     tcb_t *current = get_current_tcb();
 
     mem_request req;
-    req.op = MEM_ALLOC;
+    req.op = mem_opcode::Alloc;
     req.size = size;
     req.addr = 0;
 
@@ -47,7 +47,7 @@ extern "C" void user_mem_free(void *addr, word_t size)
     tcb_t *current = get_current_tcb();
 
     mem_request req;
-    req.op = MEM_FREE;
+    req.op = mem_opcode::Free;
     req.size = size;
     req.addr = (word_t)addr;
 
