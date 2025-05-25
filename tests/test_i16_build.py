@@ -1,3 +1,4 @@
+import os
 import subprocess
 import tempfile
 from pathlib import Path
@@ -14,8 +15,9 @@ class I16CompilationTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as td:
             src = Path(td) / "test.cpp"
             src.write_text(CODE)
+            compiler = os.getenv("CXX", "clang++")
             cmd = [
-                "g++",
+                compiler,
                 "-m16",
                 "-std=c++23",
                 "-Werror",
@@ -26,8 +28,8 @@ class I16CompilationTest(unittest.TestCase):
             ]
             try:
                 subprocess.check_output(cmd, stderr=subprocess.STDOUT)
-            except subprocess.CalledProcessError as e:
-                self.skipTest(f"16-bit build not supported: {e.output.decode()}")
+            except (subprocess.CalledProcessError, FileNotFoundError) as e:
+                self.skipTest(f"{compiler} 16-bit build not supported: {getattr(e, 'output', e)}")
 
 if __name__ == "__main__":
     unittest.main()
