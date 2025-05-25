@@ -15,6 +15,7 @@
 #include INC_API(schedule.h)
 #include INC_API(interrupt.h)
 #include INC_API(queueing.h)
+#include <runqueue.h>
 #include INC_API(syscalls.h)
 #include INC_API(smp.h)
 #include INC_API(cpu.h)
