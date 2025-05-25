@@ -626,6 +626,15 @@ static inline L4_Bool_t operator != (const L4_Time_t &l, const L4_Time_t &r)
 #endif
 #endif
 
+static_assert(sizeof(L4_Fpage_t) == sizeof(L4_Word_t),
+              "L4_Fpage_t must be one machine word");
+static_assert(sizeof(L4_ThreadId_t) == sizeof(L4_Word_t),
+              "L4_ThreadId_t must be one machine word");
+static_assert(sizeof(L4_Clock_t) == sizeof(L4_Word64_t),
+              "L4_Clock_t must be 64 bits");
+static_assert(sizeof(L4_Time_t) == sizeof(L4_Word_t),
+              "L4_Time_t must be one machine word");
+
 
 
 #undef __14
