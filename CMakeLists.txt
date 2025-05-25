@@ -20,6 +20,9 @@ if("${CMAKE_CXX_FLAGS_RELEASE}" STREQUAL "")
     set(CMAKE_CXX_FLAGS_RELEASE "${CPU_CFLAGS}")
 endif()
 
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Werror")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")
+
 # Build the string.o example from the legacy Makefile
 add_library(string_obj OBJECT
     user/contrib/elf-loader/platform/amd64-pc99/string.cc

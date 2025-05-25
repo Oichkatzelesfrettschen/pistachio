@@ -50,6 +50,8 @@ else
 CFLAGS += -Wconversion
 endif
 
+CFLAGS += -Werror
+CXXFLAGS += -Werror
 
 # Create early targets so that a make without args (implicit all) does
 # not take the first target in worker makefile (e.g., a clean target).
