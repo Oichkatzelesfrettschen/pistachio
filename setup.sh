@@ -2,6 +2,14 @@
 set -euo pipefail
 export DEBIAN_FRONTEND=noninteractive
 
+# Optional offline mode installs packages from offline_packages/*.deb
+OFFLINE=0
+for arg in "$@"; do
+  if [ "$arg" = "--offline" ]; then
+    OFFLINE=1
+  fi
+done
+
 # Log file for any failures during setup
 FAIL_LOG="/tmp/setup_failures.log"
 echo "Recording install failures to $FAIL_LOG"
@@ -43,12 +51,18 @@ done
 PIP_FLAGS="--no-cache-dir"
 
 APT_OK=1
-if apt-get update -y; then
-  APT_OK=1
+if [ "$OFFLINE" -eq 0 ]; then
+  if apt-get update -y; then
+    APT_OK=1
+  else
+    echo "apt-get update failed" | tee -a "$FAIL_LOG"
+    APT_OK=0
+    # When we cannot update packages assume offline and avoid network access in pip
+    PIP_FLAGS="--no-index"
+  fi
 else
-  echo "apt-get update failed" | tee -a "$FAIL_LOG"
+  echo "Offline mode: skipping apt-get update" | tee -a "$FAIL_LOG"
   APT_OK=0
-  # When we cannot update packages assume offline and avoid network access in pip
   PIP_FLAGS="--no-index"
 fi
 
@@ -201,6 +215,14 @@ fi
 else
   echo "Skipping APT package installation due to failed apt-get update" | tee -a "$FAIL_LOG"
 fi
+
+if [ "$OFFLINE" -eq 1 ]; then
+  echo "Installing packages from offline_packages directory" | tee -a "$FAIL_LOG"
+  if ls offline_packages/*.deb >/dev/null 2>&1; then
+    dpkg -i offline_packages/*.deb || echo "dpkg install issues" | tee -a "$FAIL_LOG"
+  else
+    echo "No .deb packages found in offline_packages" | tee -a "$FAIL_LOG"
+  fi
 fi
 
 # Ensure critical Python tooling is present even if package installs were skipped
@@ -259,7 +281,7 @@ rm -rf /var/lib/apt/lists/*
 
 if [ -s "$FAIL_LOG" ]; then
   echo "=== Setup completed with issues ==="
-  echo "Review $FAIL_LOG for details. When offline, install packages manually via apt or pip once network is available." >&2
+  echo "Review $FAIL_LOG for details. When offline, populate offline_packages with .deb files and rerun with --offline or install packages once network is available." >&2
 else
   echo "=== Setup completed successfully ==="
 fi
