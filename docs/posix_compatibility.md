@@ -65,3 +65,11 @@ applications.
 
 Full copies of the POSIX specification are available under `docs/ben-books`. The `susv4-2018` HTML tree contains the Single UNIX Specification, version 4 (2018). Consult these documents when implementing system calls or verifying behaviour.
 
+## Networking Helpers
+
+`libposix` currently exposes a few networking wrappers for convenience.
+`posix_setsockopt()` and `posix_getsockopt()` merely delegate to the host
+implementation.  Helper functions `posix_inet_pton()` and
+`posix_inet_ntop()` convert between text addresses and their binary forms.
+In the future these calls will forward requests to a user-level network stack.
+
