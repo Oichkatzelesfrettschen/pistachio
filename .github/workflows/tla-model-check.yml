@@ -1,0 +1,26 @@
+name: tla-model-check
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+permissions:
+  contents: read
+
+jobs:
+  tlc:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Java and TLA+
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y default-jre unzip wget
+          wget -q https://github.com/tlaplus/tlaplus/releases/latest/download/tlaplus.zip
+          unzip -q tlaplus.zip -d $HOME/tla
+          echo "$HOME/tla" >> $GITHUB_PATH
+      - name: Run TLC
+        run: |
+          java -cp "$HOME/tla/lib/*" tlc2.TLC -deadlock tla/TicketLock.tla
