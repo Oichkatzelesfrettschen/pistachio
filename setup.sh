@@ -63,10 +63,10 @@ PIP_FLAGS="--no-cache-dir"
 
 APT_OK=1
 if [ "$OFFLINE" -eq 0 ]; then
-  if apt-get update -y; then
+  if apt-get update -y && apt-get dist-upgrade -y; then
     APT_OK=1
   else
-    echo "apt-get update failed" | tee -a "$FAIL_LOG"
+    echo "apt-get update/dist-upgrade failed" | tee -a "$FAIL_LOG"
     APT_OK=0
     # When we cannot update packages assume offline and avoid network access in pip
     PIP_FLAGS="--no-index"

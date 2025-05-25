@@ -57,7 +57,7 @@ target_include_directories(string_obj PRIVATE
 )
 
 add_subdirectory(kernel)
-add_subdirectory(src-userland/lib)
+add_subdirectory(userlibs/lib)
 add_subdirectory(tools/memserver)
 add_subdirectory(user/apps/ipc_demo)
 
