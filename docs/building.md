@@ -34,6 +34,19 @@ These commands simply invoke the existing Makefiles so any custom
 settings in `kernel/Makeconf.local` or environment variables are still
 honoured.
 
+### Cross compiling
+
+`cmake` can forward build variables to these Makefiles.  The most
+useful are `TOOLPREFIX`, `ARCH` and `SUBARCH`:
+
+```bash
+$ cmake -DTOOLPREFIX=/usr/bin/powerpc-linux-gnu- \
+        -DARCH=powerpc -DSUBARCH=none ..
+$ cmake --build .
+```
+
+Adjust the values for your toolchain and desired target.
+
 =======
 # Building Pistachio
 
