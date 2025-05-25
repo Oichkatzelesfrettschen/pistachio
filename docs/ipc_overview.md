@@ -37,3 +37,25 @@ New servers should pick a unique label and define packed request/reply structure
 ## Cap'n Proto integration
 
 Cap'n Proto RPC framing can ride on top of these IPC primitives. A service could send Cap'n Proto segments using the message registers or map shared buffers via flexpages to avoid copying large payloads. Framing information would be defined in the Cap'n Proto schema while delivery still uses `L4_Ipc` or `L4_UserIpc`. This would allow rich RPC semantics without changing the underlying kernel interface.
+
+## `exo_ipc_status` enumeration
+
+To simplify reasoning about IPC results, Pistachio provides a small helper
+enumeration defined in `l4/exo_ipc.h`. The helpers convert the raw message tag
+and thread error code into one of the following status values:
+
+| Value | Meaning |
+|-------|--------------------------------------------------------------|
+| `Ok` | Operation completed successfully. |
+| `SendTimeout` | The send phase timed out. |
+| `NoPartner` | The destination thread does not exist. |
+| `Cancelled` | The IPC was cancelled before completion. |
+| `MsgOverflow` | More words were sent than fit into the partner's buffer. |
+| `XferTimeoutCurrent` | Copy phase timed out in the current thread. |
+| `XferTimeoutPartner` | Copy phase timed out in the partner thread. |
+| `Aborted` | Transfer was aborted due to page faults or interrupts. |
+
+The `exo_call`, `exo_send`, `exo_reply` and `exo_receive` helpers return this
+enumeration instead of a raw `L4_MsgTag_t`, making it easier for unit tests and
+applications to check for specific failure modes.
+
