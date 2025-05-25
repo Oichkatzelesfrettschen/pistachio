@@ -191,6 +191,15 @@ header that translates the historic SVR4 machine dependencies into a
 typed C++23 interface.  A short usage sample lives in
 `docs/svr4_machdep_cpp23.cpp`.
 
+### Calling conventions
+
+Both the kernel and user land use explicit calling convention attributes.
+The header `l4/compiler.h` defines macros such as `L4_CDECL` and
+`L4_FASTCALL` which expand to the GNU style attributes `[[gnu::cdecl]]` and
+`[[gnu::fastcall]]`.  All exported kernel entry points and public API
+functions are annotated with these macros to make the required ABI
+visible in the source code.
+
 See the top-level LICENSE file for the project's terms.
 
 ## Running tests

@@ -33,8 +33,9 @@
 #include INC_API(user.h)
 #include INC_API(tcb.h)
 #include INC_API(ipc.h)
+#include <l4/compiler.h>
 
-extern "C" void user_nop()
+extern "C" L4_CDECL void user_nop()
 {
     __asm__ (
 	"	syscall			\n"
@@ -45,8 +46,8 @@ extern "C" void user_nop()
 
 #define OFS_USER_UTCB_MYGLOBAL  (OFS_UTCB_MY_GLOBAL_ID - OFS_UTCB_MR)
 #define OFS_USER_UTCB_PROC      (OFS_UTCB_PROCESSOR_NO - OFS_UTCB_MR)
-extern "C" void SECTION(".user.syscall.ipc") user_ipc_wrapper();
-void user_ipc_wrapper() 
+extern "C" L4_CDECL void SECTION(".user.syscall.ipc") user_ipc_wrapper();
+void L4_CDECL user_ipc_wrapper()
 {
     __asm__ (
 	"	.global user_ipc, user_lipc	\n"
@@ -79,7 +80,7 @@ void user_ipc_wrapper()
 	);
 }
 
-extern "C" void user_exchange_registers()
+extern "C" L4_CDECL void user_exchange_registers()
 {
     __asm__ __volatile__ (
 	"	test	$0x3f, %al		\n"
@@ -91,7 +92,7 @@ extern "C" void user_exchange_registers()
 }
 
 
-extern "C" void user_system_clock()
+extern "C" L4_CDECL void user_system_clock()
 {
     __asm__ __volatile__ ("syscall\n");
 #if 0
@@ -116,7 +117,7 @@ extern "C" void user_system_clock()
 #endif
 }
 
-extern "C" void user_thread_switch()
+extern "C" L4_CDECL void user_thread_switch()
 {
     __asm__ __volatile__ (
 	"	test	%rdi, %rdi		\n"
@@ -129,7 +130,7 @@ extern "C" void user_thread_switch()
 	);
 }
 
-extern "C" void user_schedule()
+extern "C" L4_CDECL void user_schedule()
 {
     __asm__ __volatile__ (
 	"	test	%rdi, %rdi		\n"
@@ -142,7 +143,7 @@ extern "C" void user_schedule()
 	);
 }
 
-extern "C" void user_unmap()
+extern "C" L4_CDECL void user_unmap()
 {
     __asm__ __volatile__ (
 	"movq	 %r9,  (%rdi)			\n"	// save mr0
@@ -166,7 +167,7 @@ extern "C" void user_unmap()
 	);
 }
 
-extern "C" void user_thread_control()
+extern "C" L4_CDECL void user_thread_control()
 {
     __asm__ __volatile__ (
 	"	test	%rsi, %rsi		\n"
@@ -189,7 +190,7 @@ extern "C" void user_thread_control()
 	);
 }
 
-extern "C" void user_space_control()
+extern "C" L4_CDECL void user_space_control()
 {
     __asm__ __volatile__ (
 	"	test	%r9, %r9		\n"
@@ -202,12 +203,12 @@ extern "C" void user_space_control()
 	);
 }
 
-extern "C" void user_processor_control()
+extern "C" L4_CDECL void user_processor_control()
 {
     __asm__ __volatile__ ("syscall\n");
 }
 
-extern "C" void user_memory_control()
+extern "C" L4_CDECL void user_memory_control()
 {
     __asm__ __volatile__ ("syscall\n");
 }
