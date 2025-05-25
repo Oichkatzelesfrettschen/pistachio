@@ -178,95 +178,20 @@ char * strpbrk(const char * cs,const char * ct)
 
 char * strtok(char * s,const char * ct)
 {
-	char *sbegin, *send;
+        char *sbegin, *send;
 
-	sbegin  = s ? s : ___strtok;
-	if (!sbegin) {
-		return nullptr;
-	}
-	sbegin += strspn(sbegin,ct);
-	if (*sbegin == '\0') {
-		___strtok = nullptr;
-		return( nullptr );
-	}
-	send = strpbrk( sbegin, ct);
-	if (send && *send != '\0')
-		*send++ = '\0';
-	___strtok = send;
-	return (sbegin);
-}
-
-void * memset(void * s, int c, unsigned int count)
-{
-	char *xs = (char *) s;
-
-	while (count--)
-		*xs++ = c;
-
-	return s;
-}
-
-char * bcopy(const char * src, char * dest, int count)
-{
-	char *tmp = dest;
-
-	while (count--)
-		*tmp++ = *src++;
-
-	return dest;
-}
-
-void * memmove(void * dest,const void *src,unsigned int count)
-{
-	char *tmp, *s;
-
-	if (dest <= src) {
-		tmp = (char *) dest;
-		s = (char *) src;
-		while (count--)
-			*tmp++ = *s++;
-		}
-	else {
-		tmp = (char *) dest + count;
-		s = (char *) src + count;
-		while (count--)
-			*--tmp = *--s;
-		}
-
-	return dest;
-}
-
-int memcmp(const void *cs, const void *ct, unsigned int count)
-{
-    char *su1, *su2;
-    signed char res = 0;
-    
-    for(su1 = (char *)cs, su2 = (char *) ct; 0 < count; ++su1, ++su2, count--)
-	if ((res = *su1 - *su2) != 0)
-	    break;
-    return res;
-}
-
-/*
- * find the first occurrence of byte 'c', or 1 past the area if none
- */
-void * memscan(void * addr, unsigned char c, unsigned int size)
-{
-	unsigned char * p = (unsigned char *) addr;
-
-	while (size) {
-		if (*p == c)
-			return (void *) p;
-		p++;
-		size--;
-	}
-  	return (void *) p;
-}
-
-void memcpy(void * dst, void * src, unsigned long size)
-{
-    L4_Word_t * _src = (L4_Word_t*)src;
-    L4_Word_t * _dst = (L4_Word_t*)dst;
-    for (unsigned int i = 0; i < size; i += sizeof(L4_Word_t))
-	*_dst++ = *_src++;
+        sbegin  = s ? s : ___strtok;
+        if (!sbegin) {
+                return nullptr;
+        }
+        sbegin += strspn(sbegin,ct);
+        if (*sbegin == '\0') {
+                ___strtok = nullptr;
+                return( nullptr );
+        }
+        send = strpbrk( sbegin, ct);
+        if (send && *send != '\0')
+                *send++ = '\0';
+        ___strtok = send;
+        return (sbegin);
 }

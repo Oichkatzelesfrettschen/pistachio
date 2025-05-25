@@ -31,6 +31,7 @@
  ********************************************************************/
 
 #include "globals.h"
+#include <cstring>
 
 Elf64_Shdr *elf64_next_shdr(Elf64_Ehdr *ehdr, int *index)						
 {														
@@ -110,10 +111,11 @@ void elf64_install_image(Elf64_Ehdr *ehdr,  L4_Word64_t *image_start,  L4_Word64
 	//(L4_Word_t) phdr->p_filesz,
 	//(void *) ((L4_Word_t) phdr->p_paddr));
 
-	if (copy)
-	    memcpy((void *) ( (L4_Word_t) phdr->p_paddr),\
-		   (void *) ( (L4_Word_t) ehdr + (L4_Word_t) phdr->p_offset),\
-		   (L4_Word_t) phdr->p_filesz);
+        if (copy)
+            std::memcpy(reinterpret_cast<void *>(phdr->p_paddr),
+                        reinterpret_cast<void *>(
+                            (L4_Word_t)ehdr + (L4_Word_t)phdr->p_offset),
+                        (L4_Word_t)phdr->p_filesz);
 	
        
 	start <?= ((L4_Word_t) phdr->p_paddr);

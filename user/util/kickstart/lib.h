@@ -61,7 +61,6 @@ extern "C" char *strstr(const char *s, const char *find) __attribute__((weak));
 extern "C" unsigned long strtoul(const char *cp, char **endp, int base) __attribute__((weak));
 extern "C" char *strchr(const char *p, int ch) __attribute__((weak));
 extern "C" void memcopy(L4_Word_t dst, L4_Word_t src, L4_Word_t len) __attribute__((weak));
-extern "C" void memset(L4_Word_t dst, L4_Word8_t val, L4_Word_t len) __attribute__((weak));
 
 extern inline void memcopy(void *dst, void *src, L4_Word_t len)
 {

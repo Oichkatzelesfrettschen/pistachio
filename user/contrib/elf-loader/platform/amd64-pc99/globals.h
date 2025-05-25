@@ -45,7 +45,6 @@ void elf64_install_image(Elf64_Ehdr *ehdr,  L4_Word64_t *image_start,  L4_Word64
 /* From string.cc */
 int strcmp(const char * cs,const char * ct);
 int strncmp(const char * cs,const char * ct, unsigned int count);
-void memcpy(void * dst, void * src, unsigned long size);
     
 /* From screen.c */
 void putc(int c);
