@@ -46,7 +46,7 @@ jobs:
       - name: Run tests
         run: |
           pip install pytest
-          pytest tests/test_subdomain.py
+          pytest tests/test_subdomain.py tests/test_waitqueue.py
 
   build-kernel:
     runs-on: ubuntu-latest
