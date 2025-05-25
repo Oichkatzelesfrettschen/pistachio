@@ -159,6 +159,15 @@ ARM builds are similar.  For 64‑bit ARM:
 
 These examples mirror the toolchains installed by `setup.sh`.
 
+### i16 example
+
+The minimal real mode port builds with GCC's m16c cross compiler.  After
+installing `m16c-elf-gcc` the kernel can be compiled with:
+
+```bash
+$ make -C kernel BUILDDIR=build-i16 TOOLPREFIX=m16c-elf- ARCH=i16 SUBARCH=x16
+```
+
 ### CPU tuning flags
 
 Both the CMake and Makefile builds use `-march=native` by default.  The
