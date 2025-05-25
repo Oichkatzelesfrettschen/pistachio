@@ -214,4 +214,17 @@ one address space to another with significantly less overhead.  On the
 receiver's side the parameters can be directly used from the message
 register store.
 
+\section{POSIX Compatibility}
+The new design document in \texttt{docs/exokernel\_migration.md}
+describes how \Pistachio has shifted towards a microkernel plus user
+space architecture.  Only minimal mechanisms remain in the kernel while
+servers in user land implement higher level services.  Using this
+approach the system can support full POSIX semantics by providing user
+level servers for process management, filesystems and networking.  Thin
+libraries link these servers with applications so that standard POSIX
+APIs such as \texttt{fork()}, \texttt{open()} and \texttt{pthread\_create()}
+behave as expected.  The kernel merely multiplexes hardware and enforces
+protection, keeping the trusted computing base small while allowing a
+complete POSIX personality to run on top of specialised servers.
+
 \end{document}
