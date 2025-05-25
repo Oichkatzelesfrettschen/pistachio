@@ -2,6 +2,19 @@
 #include <l4/message.h>
 #include <l4/thread.h>
 #include <time.h>
+#include <string.h>
+
+#ifndef MAILBOX_BUFSZ
+#define MAILBOX_BUFSZ 16
+#endif
+
+typedef struct {
+    L4_MsgTag_t tags[MAILBOX_BUFSZ];
+    L4_ThreadId_t senders[MAILBOX_BUFSZ];
+    unsigned head;
+} mailbox_ipc_queue_t;
+
+static mailbox_ipc_queue_t mailbox_ipcs;
 
 static inline unsigned long long timeout_to_us(L4_Time_t t)
 {
@@ -12,7 +25,9 @@ static inline unsigned long long timeout_to_us(L4_Time_t t)
     return man << exp;
 }
 
-L4_ThreadId_t mailbox_recv_t(L4_MsgTag_t *tag, L4_Time_t timeout)
+static L4_ThreadId_t kernel_ipc_queue_recv_timed(mailbox_ipc_queue_t *q,
+                                                 L4_MsgTag_t *tag,
+                                                 L4_Time_t timeout)
 {
     const struct timespec nap = {0, 1000000}; /* 1ms */
     unsigned long long us = timeout_to_us(timeout);
@@ -28,6 +43,10 @@ L4_ThreadId_t mailbox_recv_t(L4_MsgTag_t *tag, L4_Time_t timeout)
     for (;;) {
         t = L4_Wait_Timeout(L4_ZeroTime, &from);
         if (!L4_IpcFailed(t)) {
+            unsigned idx = q->head % MAILBOX_BUFSZ;
+            q->tags[idx] = t;
+            q->senders[idx] = from;
+            q->head++;
             if (tag)
                 *tag = t;
             return from;
@@ -39,4 +58,15 @@ L4_ThreadId_t mailbox_recv_t(L4_MsgTag_t *tag, L4_Time_t timeout)
         }
         nanosleep(&nap, NULL);
     }
+}
+
+L4_ThreadId_t mailbox_recv_t(L4_MsgTag_t *tag, L4_Time_t timeout)
+{
+    static int initialised;
+    if (!initialised) {
+        memset(&mailbox_ipcs, 0, sizeof(mailbox_ipcs));
+        initialised = 1;
+    }
+
+    return kernel_ipc_queue_recv_timed(&mailbox_ipcs, tag, timeout);
 }
