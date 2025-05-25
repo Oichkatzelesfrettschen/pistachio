@@ -21,7 +21,7 @@ class TypeSizeCompilationTest(unittest.TestCase):
                 "g++",
                 flag,
                 "-std=c++23",
-                "-fpermissive",
+                "-Werror",
                 "-I",
                 str(ROOT / "user/include"),
                 "-c",

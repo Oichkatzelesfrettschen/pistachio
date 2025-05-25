@@ -31,6 +31,8 @@ class CompilerAttributeTest(unittest.TestCase):
             subprocess.run([
                 os.getenv('CXX', 'g++'),
                 '-std=c++23',
+                '-Werror',
+                '-Wno-attributes',
                 '-Iuser/include',
                 '-c',
                 name,

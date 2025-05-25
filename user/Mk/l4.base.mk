@@ -40,7 +40,7 @@ ECHO_MSG=	$(ECHO) ===\>
 MKDIRHIER=	$(top_srcdir)/../tools/mkdirhier
 
 CPPFLAGS+=	$(CPPFLAGS_$(ARCH))
-CFLAGS+=	-O2 -g -Wall -Wshadow \
+CFLAGS+=	-O2 -g -Wall -Wshadow -Werror \
 		$(CFLAGS_$(ARCH))
 LDFLAGS+=	$(LDFLAGS_$(ARCH))
 

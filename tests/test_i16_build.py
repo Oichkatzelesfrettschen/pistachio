@@ -18,6 +18,7 @@ class I16CompilationTest(unittest.TestCase):
                 "g++",
                 "-m16",
                 "-std=c++23",
+                "-Werror",
                 "-I",
                 str(ROOT / "user/include"),
                 "-c",
