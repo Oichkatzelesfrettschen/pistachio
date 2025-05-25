@@ -52,7 +52,7 @@ CFLAGS=		@CFLAGS@
 CXXFLAGS=       $(CXXSTD) -fno-exceptions
 CXXSTD=	@CXXSTD@
 LDFLAGS=	@LDFLAGS@
-CPPFLAGS=	@CPPFLAGS@
+CPPFLAGS=       @CPPFLAGS@ -I$(top_srcdir)/../third_party/eigen
 LGCC=		-lgcc
 
 TOOLPREFIX=	@TOOLPREFIX@

@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.16)
 project(pistachio C CXX)
 
+# Add Eigen headers if present
+include_directories(${CMAKE_SOURCE_DIR}/third_party/eigen)
+
 # Allow passing cross build settings through CMake
 set(TOOLPREFIX "" CACHE STRING "Prefix for cross compilation tools")
 set(SUBARCH "" CACHE STRING "Kernel sub-architecture")
