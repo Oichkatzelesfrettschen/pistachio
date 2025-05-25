@@ -14,5 +14,10 @@ PROGRAM=        memory
 PROGRAM_DEPS=   $(top_builddir)/lib/l4/libl4.a $(top_builddir)/lib/io/libio.a
 SRCS=           memory.cc
 LIBS+=          -ll4 -lio
+ifdef WITH_CAPNP
+PROGRAM_DEPS+=  $(top_builddir)/lib/capnp/libcapnp.a
+LIBS+=          -lcapnp
+CPPFLAGS+=      -DWITH_CAPNP
+endif
 
 include $(top_srcdir)/Mk/l4.prog.mk

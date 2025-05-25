@@ -4,6 +4,9 @@
 #include <cstdlib>
 #include <cstring>
 #include <l4/memory.h>
+#ifdef WITH_CAPNP
+#include "../../lib/capnp/capnp.h"
+#endif
 
 static const L4_Word_t MEM_LABEL = 0;
 
@@ -34,7 +37,16 @@ int main()
         }
 
         mem_request req;
+#ifdef WITH_CAPNP
+        L4_Word_t raw[capnp::MEM_REQ_WORDS];
+        L4_StoreMRs(1, capnp::MEM_REQ_WORDS, raw);
+        if (!capnp::decode_mem_request(raw, capnp::MEM_REQ_WORDS, req)) {
+            L4_Reply(partner);
+            continue;
+        }
+#else
         L4_StoreMRs(1, sizeof(req)/sizeof(L4_Word_t), (L4_Word_t*)&req);
+#endif
         L4_Word_t res = handle_request(req);
 
         L4_MsgClear(&msg);
