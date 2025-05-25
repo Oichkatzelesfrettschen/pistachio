@@ -61,6 +61,11 @@ By layering the POSIX subsystem on top of the exokernel's primitives, the kernel
 remains small while user-level servers provide the rich API expected by
 applications.
 
+## Threading Support
+
+`libpthread` offers a very small subset of the POSIX threads interface.  Only
+`pthread_create()` and `pthread_join()` merely execute the start routine synchronously in the calling thread. Mutex functions exist only as stubs and provide no mutual exclusion. Condition variables and the rest of the API are unimplemented.
+
 ## Reference Specification
 
 Full copies of the POSIX specification are available under `docs/ben-books`. The `susv4-2018` HTML tree contains the Single UNIX Specification, version 4 (2018). Consult these documents when implementing system calls or verifying behaviour.
