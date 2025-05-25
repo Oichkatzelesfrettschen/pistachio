@@ -32,6 +32,9 @@ later is needed only when regenerating the legacy `configure` script.
 Detailed instructions, including cross‑compilation tips, are available in the
 [`docs/building.md`](docs/building.md#cross-compilation) guide.
 
+Only C++23 and platform‑agnostic assembly sources are permitted in the tree.
+Other languages must be transpiled or otherwise converted before inclusion.
+
 
 Requirements
 ------------
@@ -105,6 +108,8 @@ hooks manually if desired::
 With the hooks installed, each commit will automatically format and
 lint changed files.  Run `pre-commit` manually to check all files or
 `pre-commit autoupdate` to refresh hook versions.
+An additional hook rejects any staged files that are not C++23 or
+assembly sources, ensuring the repository remains language limited.
 
 Running clang-tidy
 ------------------
