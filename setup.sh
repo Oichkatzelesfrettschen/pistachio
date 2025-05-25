@@ -10,8 +10,9 @@ echo "Recording install failures to $FAIL_LOG"
 #- helper to pin to the repo's exact version if it exists
 apt_pin_install(){
   pkg="$1"
-  ver=$(apt-cache show "$pkg" 2>/dev/null \
-        | awk '/^Version:/{print $2; exit}')
+  set +e
+  ver=$(apt-cache show "$pkg" 2>/dev/null | awk '/^Version:/{print $2; exit}')
+  set -e
   if [ -n "$ver" ]; then
     if ! apt-get install -y "${pkg}=${ver}"; then
       echo "APT install failed for $pkg" | tee -a "$FAIL_LOG"
@@ -39,27 +40,19 @@ for arch in i386 armel armhf arm64 riscv64 powerpc ppc64el ia64; do
   dpkg --add-architecture "$arch"
 done
 
-if curl -fsSL http://deb.debian.org/ >/dev/null; then
-  echo "Network detected, performing package installation"
-  HAVE_NET=1
-else
-  echo "WARNING: no network connectivity, skipping package installation" >&2
-  HAVE_NET=0
-fi
+PIP_FLAGS="--no-cache-dir"
 
-if [ "$HAVE_NET" -eq 1 ]; then
-  PIP_FLAGS="--no-cache-dir"
+APT_OK=1
+if apt-get update -y; then
+  APT_OK=1
 else
+  echo "apt-get update failed" | tee -a "$FAIL_LOG"
+  APT_OK=0
+  # When we cannot update packages assume offline and avoid network access in pip
   PIP_FLAGS="--no-index"
 fi
 
-APT_OK=1
-if [ "$HAVE_NET" -eq 1 ]; then
-  if ! apt-get update -y; then
-    echo "apt-get update failed" | tee -a "$FAIL_LOG"
-    APT_OK=0
-  fi
-  if [ "$APT_OK" -eq 1 ]; then
+if [ "$APT_OK" -eq 1 ]; then
 
 #- core build tools, formatters, analysis, science libs
 for pkg in \
