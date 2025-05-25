@@ -55,6 +55,9 @@
 # elif defined(__x86_64__)
 #  define L4_ARCH_AMD64
 #  define __L4_ARCH__ amd64
+# elif (defined(__WORDSIZE) && __WORDSIZE == 16) || defined(__m16c__) || defined(__MSP430__)
+#  define L4_ARCH_I16
+#  define __L4_ARCH__ i16
 # else
 #  error Unknown hardware architecture.
 # endif

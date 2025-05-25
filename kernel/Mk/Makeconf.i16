@@ -1,0 +1,22 @@
+################ -*- mode: Makefile; -*- #############################
+## Minimal Makeconf for i16 architecture
+######################################################################
+SRCSRC+= src/arch/i16/x16 src/glue/$(API)-i16/x16
+
+UNDEFS   += $(SUBARCH)
+DEFINES  += __SUBARCH__=$(SUBARCH)
+
+CFLAGS_i16_x16 += -O2
+CFLAGS_i16     += $(CFLAGS_i16_$(SUBARCH))
+
+LDFLAGS_i16_x16 +=
+LDFLAGS_i16     += $(LDFLAGS_i16_$(SUBARCH))
+
+ASMFLAGS_i16_x16 +=
+ASMFLAGS_i16     += $(ASMFLAGS_i16_$(SUBARCH))
+
+VFLAGS_i16_x16   =
+VFLAGS           += $(VFLAGS_i16_$(SUBARCH))
+
+LIBS_i16_x16  += -lgcc
+LIBS_i16      += $(LIBS_i16_$(SUBARCH))
