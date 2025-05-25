@@ -214,7 +214,7 @@ See the top-level LICENSE file for the project's terms.
 ## Running tests
 
 The repository provides a small test suite consisting of Python unit tests,
-a C stress test for the ticket-lock implementation and a pair of simple
+a C stress test for the ticket-lock implementation and a trio of simple
 POSIX programs under `tests/posix`.  The Makefile exposes a `check` target
 which builds these programs and runs all tests:
 
@@ -229,6 +229,7 @@ $ cmake --build . --target tests
 ./spinlock_fairness
 ./posix_test_file
 ./posix_test_process
+./posix_test_spawn_wait
 ```
 
 The `spinlock_fairness` binary spawns multiple threads, measures how many times

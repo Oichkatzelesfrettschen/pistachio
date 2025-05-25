@@ -48,7 +48,21 @@ add_executable(spinlock_fairness tests/spinlock_fairness.c)
 target_link_libraries(spinlock_fairness PRIVATE pthread)
 
 add_executable(posix_test_file tests/posix/test_file.c)
-add_executable(posix_test_process tests/posix/test_process.c)
+add_executable(posix_test_process
+    tests/posix/test_process.c
+    user/lib/posix/posix.cc
+)
+target_include_directories(posix_test_process PRIVATE ${CMAKE_SOURCE_DIR}/user/lib/posix)
+add_executable(posix_spawn_child
+    tests/posix/spawn_child.c
+    user/lib/posix/posix.cc
+)
+target_include_directories(posix_spawn_child PRIVATE ${CMAKE_SOURCE_DIR}/user/lib/posix)
+add_executable(posix_test_spawn_wait
+    tests/posix/test_spawn_wait.c
+    user/lib/posix/posix.cc
+)
+target_include_directories(posix_test_spawn_wait PRIVATE ${CMAKE_SOURCE_DIR}/user/lib/posix)
 
-add_custom_target(tests DEPENDS spinlock_fairness posix_test_file posix_test_process)
+add_custom_target(tests DEPENDS spinlock_fairness posix_test_file posix_test_process posix_spawn_child posix_test_spawn_wait)
 
