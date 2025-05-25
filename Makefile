@@ -1,3 +1,12 @@
+CCWRAP := $(shell command -v ccache)
+ifdef CCWRAP
+CC ?= $(CCWRAP) clang
+CXX ?= $(CCWRAP) clang++
+else
+CC ?= clang
+CXX ?= clang++
+endif
+
 CFLAGS ?= -std=c2x
 CXXFLAGS ?= -std=c++23
 CPU_CFLAGS ?= -march=native
@@ -7,9 +16,9 @@ CFLAGS += -Werror
 CXXFLAGS += -Werror
 
 build/string.o: user/contrib/elf-loader/platform/amd64-pc99/string.cc
-	echo Building string.o
-	mkdir -p build
-	g++ $(CXXFLAGS) -Iuser/include -Iuser/contrib/elf-loader/include -c $< -o $@
+        echo Building string.o
+        mkdir -p build
+        $(CXX) $(CXXFLAGS) -Iuser/include -Iuser/contrib/elf-loader/include -c $< -o $@
 
 all: build/string.o
 

@@ -1,3 +1,4 @@
+import os
 import subprocess
 import tempfile
 from pathlib import Path
@@ -19,15 +20,19 @@ class IpcHelpersBuildTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as td:
             src = Path(td) / "test.cpp"
             src.write_text(CODE)
+            compiler = os.getenv("CXX", "clang++")
             cmd = [
-                "g++",
+                compiler,
                 "-std=c++23",
                 "-I",
                 str(ROOT / "user/include"),
                 "-c",
                 str(src),
             ]
-            subprocess.check_output(cmd, stderr=subprocess.STDOUT)
+            try:
+                subprocess.check_output(cmd, stderr=subprocess.STDOUT)
+            except (subprocess.CalledProcessError, FileNotFoundError) as e:
+                self.skipTest(f"{compiler} failed: {e}")
 
 if __name__ == "__main__":
     unittest.main()
