@@ -154,6 +154,26 @@ for pkg in \
   apt_pin_install "$pkg"
 done
 
+#- theorem provers and modeling tools
+for pkg in \
+  coq coqide coq-theories libcoq-ocaml-dev \
+  ocaml ocaml-findlib; do
+  apt_pin_install "$pkg"
+done
+
+# Install TLA+ tools
+TLA_VER=$(curl -fsSL https://api.github.com/repos/tlaplus/tlaplus/releases/latest \
+          | awk -F\" '/tag_name/{print $4; exit}')
+if [ -n "$TLA_VER" ]; then
+  if curl -fsSL "https://github.com/tlaplus/tlaplus/releases/download/${TLA_VER}/tlaplus.zip" \
+    -o /tmp/tlaplus.zip && unzip -q /tmp/tlaplus.zip -d /opt/tlaplus; then
+    echo '/opt/tlaplus' >> /etc/profile.d/tlaplus.sh
+  else
+    echo "TLA+ install failed" | tee -a "$FAIL_LOG"
+  fi
+  rm -f /tmp/tlaplus.zip
+fi
+
 #- IA-16 (8086/286) cross-compiler
 IA16_VER=$(curl -fsSL https://api.github.com/repos/tkchia/gcc-ia16/releases/latest \
            | awk -F\" '/tag_name/{print $4; exit}')
