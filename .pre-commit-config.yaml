@@ -30,4 +30,9 @@ repos:
         entry: clang-tidy -p user
         language: system
         files: \.(c|cc|cpp|cxx|h|hpp)$
+      - id: check-sources
+        name: check-allowed-sources
+        entry: tools/check_allowed_sources.py
+        language: python
+        pass_filenames: false
 
