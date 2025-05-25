@@ -63,8 +63,7 @@ so that formatting and linting tools run automatically.
    TOOLPREFIX=/usr/bin/powerpc-linux-gnu-
    ```
 
-4. Build the kernel with `make`.  On PowerPC a minimal QEMU command line is
-   `qemu-system-ppc -M g3beige -kernel kernel/powerpc-kernel`.
+4. Build the kernel with `make`.
 
 ## User land
 
@@ -94,8 +93,58 @@ so that formatting and linting tools run automatically.
 
 3. Install the built binaries with `make install` if desired.
 
-Further notes on PowerPC cross compilation can be found in
-`doc/notes/ppc-build.txt`.
+## Cross-compilation
+
+The kernel and user land can be built for other architectures using
+standard cross compilers.  Modern GCC and Clang toolchains from Debian or
+Ubuntu packages work well.
+
+### PowerPC example
+
+Install `gcc-powerpc-linux-gnu` and `g++-powerpc-linux-gnu` or use Clang
+with the LLVM binutils:
+
+```sh
+$ sudo apt install gcc-powerpc-linux-gnu g++-powerpc-linux-gnu binutils-powerpc-linux-gnu
+
+# Clang variant
+export CC="clang --target=powerpc-linux-gnu"
+export CXX="clang++ --target=powerpc-linux-gnu"
+export AR=llvm-ar
+export LD=ld.lld
+```
+
+Configure the kernel in a separate directory and set `TOOLPREFIX` in
+`Makeconf.local`:
+
+```make
+TOOLPREFIX=/usr/bin/powerpc-linux-gnu-
+```
+
+Build the kernel with `make`.  To run under QEMU:
+
+```sh
+qemu-system-ppc -M g3beige -kernel kernel/powerpc-kernel
+```
+
+For 64‑bit targets use `qemu-system-ppc64`.
+
+### x86 and ARM examples
+
+Cross compiling to 32‑bit x86 uses the `i686` target triple:
+
+```sh
+../configure --host=i686-linux-gnu CC=i686-linux-gnu-gcc CXX=i686-linux-gnu-g++
+```
+
+ARM builds are similar.  For 64‑bit ARM:
+
+```sh
+../configure --host=aarch64-linux-gnu CC=aarch64-linux-gnu-gcc \
+             CXX=aarch64-linux-gnu-g++
+```
+
+These examples mirror the toolchains installed by `setup.sh`.
 
 The `contrib/include` directory also provides `svr4_machdep.hpp`, a
 header that translates the historic SVR4 machine dependencies into a

@@ -29,7 +29,8 @@ Building with modern compilers
 The build system expects C23 and C++23 capable compilers. GCC 14 and
 Clang 17 are known to work. Autoconf 2.69 or later is required to
 regenerate the configure script. Detailed instructions, including
-cross‑compilation tips, are available in `docs/building.md`.
+cross‑compilation tips, are available in the
+[`docs/building.md`](docs/building.md#cross-compilation) guide.
 
 
 Requirements
