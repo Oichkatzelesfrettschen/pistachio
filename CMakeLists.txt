@@ -49,6 +49,8 @@ target_link_libraries(spinlock_fairness PRIVATE pthread)
 
 add_executable(posix_test_file tests/posix/test_file.c)
 add_executable(posix_test_process tests/posix/test_process.c)
+add_executable(fifo_test user/apps/fifo_test/fifo_test.c)
+target_link_libraries(fifo_test PRIVATE posix)
 
-add_custom_target(tests DEPENDS spinlock_fairness posix_test_file posix_test_process)
+add_custom_target(tests DEPENDS spinlock_fairness posix_test_file posix_test_process fifo_test)
 

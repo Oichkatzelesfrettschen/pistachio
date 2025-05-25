@@ -13,6 +13,10 @@ add_library(mlp STATIC
     ${CMAKE_SOURCE_DIR}/user/lib/mlp/mlp.cc
 )
 
+add_library(posix STATIC
+    ${CMAKE_SOURCE_DIR}/user/lib/posix/posix.cc
+)
+
 # Include directories match the Makefile
 # using absolute paths from the repository root
 
@@ -33,8 +37,13 @@ target_include_directories(mlp PRIVATE
     ${CMAKE_SOURCE_DIR}/third_party/eigen
 )
 
+target_include_directories(posix PRIVATE
+    ${CMAKE_SOURCE_DIR}/user/include
+    ${CMAKE_SOURCE_DIR}/user/contrib/elf-loader/include
+)
+
 add_custom_target(userlib_target ALL
-    DEPENDS useripc sched mlp
+    DEPENDS useripc sched mlp posix
 )
 
 add_custom_target(userlib_clean
