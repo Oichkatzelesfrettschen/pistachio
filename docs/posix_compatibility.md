@@ -61,6 +61,19 @@ By layering the POSIX subsystem on top of the exokernel's primitives, the kernel
 remains small while user-level servers provide the rich API expected by
 applications.
 
+## Library wrappers
+
+The accompanying `libposix` library offers simple wrappers around the host
+system calls. They currently implement:
+
+- `posix_open`
+- `posix_read`
+- `posix_write`
+- `posix_fork`
+- `posix_sigaction`
+- `posix_sigprocmask`
+- `posix_killpg`
+
 ## Reference Specification
 
 Full copies of the POSIX specification are available under `docs/ben-books`. The `susv4-2018` HTML tree contains the Single UNIX Specification, version 4 (2018). Consult these documents when implementing system calls or verifying behaviour.
