@@ -564,6 +564,7 @@ extern "C" void SECTION(".init.init64") startup_system(u32_t is_ap)
 #endif /* defined(CONFIG_X86_COMPATIBILITY_MODE) */
 
     /* initialize the scheduler */
+    sched_lock.init();
     get_current_scheduler()->init(true);
     /* get the thing going - we should never return */
     get_current_scheduler()->start(cpuid);

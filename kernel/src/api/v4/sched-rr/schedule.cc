@@ -121,8 +121,9 @@ void rr_scheduler_t::total_quantum_expired(tcb_t * tcb)
 
 tcb_t * rr_scheduler_t::parse_wakeup_queues(tcb_t * current)
 {
+    scoped_spinlock guard(sched_lock);
     if (!wakeup_list)
-	return current;
+        return current;
 
     // use thread owning the current timeslice
     tcb_t * highest_wakeup = get_prio_queue()->get_timeslice_tcb();
@@ -218,6 +219,8 @@ void rr_scheduler_t::end_of_timeslice (tcb_t * tcb)
     ASSERT(tcb);
     ASSERT(tcb != get_idle_tcb()); // the idler never yields
 
+    scoped_spinlock guard(sched_lock);
+
     prio_queue_t * prio_queue = get_prio_queue();
     ASSERT(prio_queue);
 
@@ -276,7 +279,10 @@ void rr_scheduler_t::smp_requeue(bool holdlock)
             {
                 tcb->sched_state.cancel_timeout ();
                 if (tcb->get_state().is_runnable())
+                {
+                    scoped_spinlock sched_guard(sched_lock);
                     enqueue_ready( tcb );
+                }
             }
 	}
 
