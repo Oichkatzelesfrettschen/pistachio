@@ -74,23 +74,7 @@ extern "C" void memcopy(L4_Word_t dst, L4_Word_t src, L4_Word_t len)
 }
 
 
-/**
- * Fill memory with a constant byte
- *
- * @param dst   destination address
- * @param val   byte to write to memory block
- * @param len   length of memory block in bytes
- *
- * The memset() function fills the first len bytes of the memory
- * block pointed to by dst with the constant byte val.
- */
-extern "C" void memset(L4_Word_t dst, L4_Word8_t val, L4_Word_t len)
-{
-    L4_Word8_t* d = (L4_Word8_t*) dst;
 
-    while (len--)
-        *d++ = val;
-}
 
 
 

@@ -35,6 +35,7 @@
 #include "kickstart.h"
 #include "elf.h"
 #include "lib.h"
+#include <cstring>
 
 #if defined(L4_32BIT)
 #define BI_NS BI32
@@ -130,7 +131,8 @@ bool __elf_func(elf_load) (L4_Word_t file_start,
             // Copy bytes from "file" to memory - load address
             memcopy(dst_start, src_start, ph->fsize);
             // Zero "non-file" bytes
-            memset(dst_start + ph->fsize, 0, ph->msize - ph->fsize);
+            std::memset(reinterpret_cast<void *>(dst_start + ph->fsize), 0,
+                        ph->msize - ph->fsize);
             // Update min and max
             min_addr = min(min_addr, dst_start);
             max_addr = max(max_addr, dst_end);
@@ -161,7 +163,7 @@ bool __elf_func(elf_find_sections) (L4_Word_t addr,
         return false;
 
     // Initialize a local bootinfo record
-    memset ((L4_Word_t) exec, 0, sizeof (*exec));
+    std::memset(exec, 0, sizeof(*exec));
     exec->type = L4_BootInfo_SimpleExec;
     exec->version = 1;
     exec->initial_ip = eh->entry;
