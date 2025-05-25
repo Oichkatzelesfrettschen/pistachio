@@ -1,6 +1,11 @@
 cmake_minimum_required(VERSION 3.16)
 project(pistachio C CXX)
 
+# Allow passing cross build settings through CMake
+set(TOOLPREFIX "" CACHE STRING "Prefix for cross compilation tools")
+set(SUBARCH "" CACHE STRING "Kernel sub-architecture")
+set(ARCH "" CACHE STRING "Kernel architecture")
+
 set(CMAKE_C_STANDARD 23)
 set(CMAKE_CXX_STANDARD 23)
 
