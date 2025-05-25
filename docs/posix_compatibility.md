@@ -34,7 +34,8 @@ the kernel only for low level IPC and context switching.
 
 - **Virtual File System (VFS) server** – handles path resolution and dispatches
   file operations to specific file system or device servers.  It maintains
-  per-process file descriptor tables and enforces permissions.
+  per-process file descriptor tables and enforces permissions as described in
+  [the VFS overview](vfs.md).
 - **Process server** – implements `fork`, `exec` and other process management
   primitives.  It coordinates address space creation with the memory server and
   arranges for threads to start running via the scheduler.
