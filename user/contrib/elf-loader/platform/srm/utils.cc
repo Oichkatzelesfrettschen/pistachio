@@ -59,10 +59,10 @@ memcpy (void * dst, const void * src, unsigned int len)
 }
 
 
-unsigned long find_pa(unsigned long *vptb, unsigned long *pcb)
+uintptr_t find_pa(uintptr_t *vptb, void *pcb)
 {
-         unsigned long address = (unsigned long) pcb;
-         unsigned long result;
+         uintptr_t address = reinterpret_cast<uintptr_t>(pcb);
+         uintptr_t result;
  
          result = vptb[address >> 13];
          result >>= 32;
@@ -97,16 +97,18 @@ void init_pal(void)
 	L1 = (unsigned long *) 0x200802000UL; /* (1<<33 | 1<<23 | 1<<13) */
 
 	/* Bad assumption here that we are running on CPU 0 */
-	percpu = (struct percpu_struct *) (INIT_HWRPB->processor_offset
-					   + (unsigned long) INIT_HWRPB),
+        percpu = reinterpret_cast<struct percpu_struct *>(
+            INIT_HWRPB->processor_offset +
+            reinterpret_cast<uintptr_t>(INIT_HWRPB)),
 	pcb_va->ksp = 0;
 	pcb_va->usp = 0;
 	pcb_va->ptbr = L1[1] >> 32;
 	pcb_va->asn = 0;
 	pcb_va->pcc = 0;
 	pcb_va->unique = 0;
-	pcb_va->flags = 1;
-	pcb_pa = (struct pcb_struct *) find_pa((unsigned long *) old_vptb, (unsigned long *) pcb_va);
+        pcb_va->flags = 1;
+        pcb_pa = reinterpret_cast<struct pcb_struct *>(
+            find_pa(reinterpret_cast<uintptr_t *>(old_vptb), pcb_va));
 
 	printf("elf-loader:\tswitching to OSF/1 PALcode ");
 	/*
@@ -116,12 +118,12 @@ void init_pal(void)
 	 * a3 = new virtual page table pointer
 	 * a4 = KSP (but we give it 0, asm sets it)
 	 */
-	i = switch_to_osf_pal(
-		2,
-		(L4_Word_t) pcb_va,
-		(L4_Word_t) pcb_pa,
-		old_vptb,
-		0);
+        i = switch_to_osf_pal(
+                2,
+                static_cast<L4_Word_t>(reinterpret_cast<uintptr_t>(pcb_va)),
+                static_cast<L4_Word_t>(reinterpret_cast<uintptr_t>(pcb_pa)),
+                old_vptb,
+                0);
 	if (i) {
 		printf("--- failed, code %ld\n", i);
 		halt();

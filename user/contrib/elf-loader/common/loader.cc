@@ -59,7 +59,7 @@ static int validate_kip(L4_Word_t kip_addr)
 {
     kip = (L4_KernelConfigurationPage_t *)kip_addr;
 
-    printf("elf-loader: Looking for KIP at %lx\n", (unsigned long) kip);
+    printf("elf-loader: Looking for KIP at %lx\n", static_cast<uintptr_t>(kip));
     if(!kip) {
 	printf("elf-loader:\tCan't find KIP!\n");
 	return 1;
