@@ -1,0 +1,65 @@
+#
+# $RCSfile: Makefile.nolibs,v $
+#
+# x-kernel v3.2
+#
+# Copyright (c) 1993,1991,1990  Arizona Board of Regents
+#
+# $Revision: 1.16 $
+# $Date: 1993/10/28 20:09:23 $
+#
+
+#
+# Makefile directives for building without libraries
+#
+
+XLIBS :=
+
+$(XRT)/protocols/ComposeFiles.$(HOW):
+	@touch $@
+#	@make protCompose
+
+$(XRT)/$(XPLATFORM)/ComposeFiles.$(HOW):
+	@touch $@
+#	@make pxkCompose
+
+$(XRT)/pi/ComposeFiles.$(HOW): 		
+	@touch $@
+#	@make piCompose
+
+XK_NO_LIBRARIES := TRUE
+
+STD_OBJ := 
+include $(XRT)/protocols/ComposeFiles.$(HOW)
+include $(XRT)/protocols/ComposeHacks
+
+STD_OBJ := 
+include $(XRT)/$(XPLATFORM)/ComposeFiles.$(HOW)
+include $(XRT)/$(XPLATFORM)/ComposeHacks
+PLAT_STD_OBJ := $(STD_OBJ)
+STD_OBJ :=
+
+include $(XRT)/pi/ComposeFiles.$(HOW)
+PI_STD_OBJ := $(STD_OBJ)
+
+
+#
+# COMPOSE_LIB_OBJ is defined in Makefile.local in the build directory,
+# which is built by compose from graph.comp.  It names the collections
+# which should be included in the LIB_OBJ object list.
+#
+TMP_LIB_OBJ = $(addprefix $(XRT)/, \
+		$(PI_STD_OBJ) $(PLAT_STD_OBJ) $(sort $(COMPOSE_LIB_OBJ)))
+
+#
+# If there is locally compiled source, strip object files with the
+# same name from the LIB_OBJ list.
+#
+ifeq ($(PRIVOBJ),)
+LIB_OBJ = $(TMP_LIB_OBJ)
+else
+LIB_OBJ = $(filter-out $(addprefix %/, $(notdir $(PRIVOBJ))), $(TMP_LIB_OBJ))
+endif
+
+
+COMPOSE_LIBS := $(sort $(COMPOSE_EXT_LIBS))

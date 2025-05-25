@@ -1,0 +1,236 @@
+%
+% simsimeth.tex
+%
+% $Revision: 1.4 $
+% $Date: 1993/11/18 06:05:06 $
+%
+
+\subsection*{NAME}
+
+\noindent SIMSIMETH ( Simulated Simulated Ethernet Driver Protocol)
+
+\subsection*{SPECIFICATION}
+
+\noindent
+SIMSIMETH simulates an \xk{} ethernet driver by sending and receiving
+messages using any x-kernel protocol that accepts UDP addresses. SIMSIMETH is platform independent. SIMSIMETH interoperates with SIMETH
+( and itself). SIMSIMETH's primary purpose is to support the testing of 
+protocols between x-kernel simulators such as the SunOS simulator 
+and native mode x-kernel implementations such as the Mach 3.0 implementation. 
+
+
+\subsection*{SYNOPSIS}
+
+\noindent 
+Each instantiation of SIMSIMETH is associates a {\em simulated} 
+Ethernet address with a specific UDP address and simulates an 
+Ethernet driver for a single interface.  
+SIMSIMETH reads the UDP port from the ROM file and gets its IP
+address by performing a GETMYHOST control operation on 
+the protocol configured below it. 
+
+The mapping between Unix UDP ports and SIMSIMETH Ethernet addresses is
+very simple.  The six bytes of SIMSIMETH Ethernet address are formed by
+the concatenation of the four byte IP host number for the Unix host on
+which the simulator is running and the two byte UDP port used
+by the SIMSIMETH instantiation.  Note that this IP host must be 
+valid and defined by the protocol graph below SIMSIMETH. Since one 
+generally runs two copies of ARP when SIMSIMETH is configured
+keeping your  IP addresses straight is sometimes difficult. 
+See the CONFIGURATION section below.
+
+When a message is sent using SIMSIMETH a map is checked to see 
+if a lower level session exists for that destination address. 
+If no lower level  session exists one is created by performing an  
+open on the protocol  configured below SIMSIMETH (most probably) UDP. 
+Once SIMSIMETH has opened a lower level session it is never closed. 
+SIMSIMETH then pushes an Ethernet header on the message 
+and pushes the message using the lower level session.
+When a packet arrives at SIMSIMETH the Ethernet header is removed 
+and SIMSIMETH presents the packet received  as 
+an incoming Ethernet packet.
+
+Note that an \xk{} may be configured with multiple instantiations of
+SIMSIMETH, each with its own UDP port, to simulate a multihomed host.
+SIMSIMETH can awkwardly simulate Ethernet broadcast messages.  
+When an
+outgoing broadcast message is sent to SIMSIMETH, SIMSIMETH asks its
+corresponding  ARP
+protocol  for a dump of all hosts in its table.
+SIMSIMETH then sends the message to each of these hosts in a
+point-to-point fashion.  Note that for a reasonable simulation of
+Ethernet broadcast, all
+\xk{}s in communication should have the same ARP table (see the ARP
+appendix.) 
+
+The primary purpose of SIMSIMETH is to allow simulated x-kernels and 
+native x-kernels to interoperate. This is possible because SIMSIMETH 
+interoperates with the SIMETH protocol. Interoperability is achieved as 
+follows. The graph.comp file for the simulated x-kernel is unchanged and 
+is rooted at SIMETH the simulated Ethernet driver.  The graph.comp for the
+machine running a native x-kernel must contain the same graph in the 
+simulated version accept that SIMSIMETH is configured instead of SIMETH
+and SIMSIMETH is configured on top of the standard Internet protocol 
+graph.  If the following was the graph.comp on the SunOS simulator:
+
+\begin{verbatim}
+#SunOS Graph.comp
+@;
+name=simeth;
+name=eth protocols=simeth;
+name=arp protocols=eth; 
+name=vnet protocols=eth,arp; 
+name=ip protocols=vnet; 
+name=udp protocols=ip;
+name=udptest protocols=udp;
+@;
+prottbl = ../prottbl.simsimeth;
+\end{verbatim}
+
+The corresponding graph for the native mode x-kernel would be:
+
+\begin{verbatim}
+#Mach 3.0 Graph.comp
+@;
+name=ethdrv/SE0;
+name=eth/lower protocols=ethdrv/SE0;
+name=arp/lower protocols=eth/lower;
+name=vnet/lower protocols=eth/lower,arp/lower;
+name=ip/lower protocols=vnet/lower;
+name=icmp/lower protocols=ip/lower;
+name=udp/lower protocols=ip/lower;
+name=simsimeth protocols=udp/lower;
+name=eth/upper protocols=simsimeth;
+name=arp/upper protocols=eth/upper;
+name=vnet/upper protocols=eth/upper,arp/upper;
+name=ip/upper protocols=vnet/upper;
+name=udp/upper protocols=ip/upper;
+name=udptest protocols=udp/upper;
+@;
+prottbl = ../prottbl.simsimeth;
+\end{verbatim}
+
+The /lower protocols in the above graph.comp correspond to the Internet 
+protocol suite implemented in the SunOS kernel. The /upper protocols 
+correspond the protocols running on the simulated x-kernel. Note that 
+a user defined protocol table is needed. This is done because the 
+protocol table must define the correct (800) relative ETH protocol id for 
+IP for this  technique to work. The default protocol table defined by 
+the x-kernel defines the IP protocol number as 3900 to avoid interference 
+when testing new protocols. Note also that if you use SIMSIMETH 
+please make sure that your versions of UDP, IP, ARP, VNET, and ETH
+are at least as new as SIMSIMETH. 
+
+There must be a similar correspondence between the ROM files on the 
+SunOS side and the native Mach 3.0 side. For example the following 
+is an example ROM file for the SunOS platform:
+
+\begin{verbatim}
+simeth 9875
+eth mtu 1400
+arp 192.12.69.1 192.12.69.67 9875
+arp 192.12.69.2 192.12.69.99 1234
+\end{verbatim}
+
+
+While the following is an example ROM file for the Mach 3 
+platform:
+
+\begin{verbatim}
+arp/lower     192.12.69.99    08:00:2b:23:6d:ec # mozart 
+simsimeth 1234
+eth/upper mtu 1400
+arp/upper 192.12.69.1 c0:0c:45:43:26:93 # translation:  192.12.69.67 9875
+arp/upper 192.12.69.2 c0:0c:45:63:04:d2 # translation:  192.12.69.99 1234
+\end{verbatim}
+
+The SunOS ROM file is identical to the standard ROM file except for the
+addition of a line to set the Ethernet MTU to 1400 bytes. 
+If the default MTU of 1500 bytes were to be used SunOS IP would 
+fragment the outgoing simulated Ethernet packets into two 
+real Ethernet packets of 1500 bytes and 64 bytes respectively. 
+This pattern of packets can result in a serious increase in the number 
+of dropped packets. The MTU of the simulated Ethernet driver 
+on the Mach platform (eth/upper) is also set to 1400 bytes to 
+avoid the same problem. Note you should always manually set 
+the MTU's of the simulated Ethernet drivers to the same number!
+
+The ROM for Mach 3.0 must be changed 
+to set the appropriate IP to Ethernet address correspondence for the real
+ARP (ARP/lower). While the simulated ARP (ARP/upper) must be configured 
+with the same information as given in the SunOS ROM file. This is made
+more complex because ARP on Mach 3.0 platforms expects real Ethernet 
+addresses while the ARP on the SunOS platform expects to find simulated
+Ethernet address. Therefore the user must manually convert a port 
+IP address pair into an Ethernet address using the algorithm given 
+above. For example the "Ethernet address": c0:0c:45:43:26:93 is 
+simply the hex translation of 192.12.69.67 9875. 
+
+Note that when the client is started it should be passed the simulated 
+IP address of the server (192.12.69.{1or2}) not the real IP address 
+of the server.
+
+Working graph.comp, ROM, and protocol table files can be found in the 
+Template directory. 
+
+\subsection*{REALM}
+
+SIMSIMETH is in the ASYNC realm, supporting the Ethernet driver interface
+described in the ETH appendix.
+
+
+\subsection*{PARTICIPANTS}
+
+SIMSIMETH supports the Ethernet driver interface rather than a standard
+xkernel UPI interface and thus makes no use of participant stacks.
+
+
+\subsection*{CONTROL OPERATIONS}
+
+\begin{description}
+
+\item[{\tt ETH\_REGISTER\_ARP:}]
+Used by an ARP instantiation to register itself with its corresponding
+SIMSIMETH driver.  This is used to simulate Ethernet broadcasts as
+described above.  If no ARP protocol registers with a SIMSIMETH
+instantiation, broadcasts on that instantiation will not be
+possible. 
+\begin{description}
+\item[{\rm Input:}] {\tt XObj /* ARP protocol object */ }
+\item[{\rm Output:}] none
+\end{description}
+
+\end{description}
+
+
+\subsection*{EXTERNAL INTERFACE}
+
+SIMSIMETH supports the Ethernet driver interface
+described in the ETH appendix.
+
+
+\subsection*{CONFIGURATION}
+
+SIMSIMETH should be configured on top of any protocol that takes 
+UDP addresses and below any protocol which supports the ETH 
+lower level driver interface.  It can be configured in either the
+driver section or the protocol section of graph.comp. 
+
+
+\medskip
+
+\noindent
+SIMSIMETH recognizes the following ROM options:
+
+\smallskip
+
+{\tt simsimeth nnnn}:
+This instantiation of simsimeth should use UDP port nnnn.  There must be
+such a line for each instantiation of SIMSIMETH in the \xk{}.
+
+
+\subsection*{AUTHOR}
+
+\noindent Sean O'Malley
+
+

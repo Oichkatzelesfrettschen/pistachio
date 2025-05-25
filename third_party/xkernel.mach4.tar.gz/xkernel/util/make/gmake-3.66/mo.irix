@@ -1,0 +1,48 @@
+/bin/sh config.status
+creating Makefile
+creating build.sh
+creating glob/Makefile
+creating config.h
+touch stamp-config
+gcc -DHAVE_CONFIG_H -DLIBDIR=\"/usr/local/lib\" -DINCLUDEDIR=\"/usr/local/include\" -c -I. -I. -I./glob -g commands.c -o commands.o
+gcc -DHAVE_CONFIG_H -DLIBDIR=\"/usr/local/lib\" -DINCLUDEDIR=\"/usr/local/include\" -c -I. -I. -I./glob -g job.c -o job.o
+job.c: In function reap_children:
+job.c:244: warning: argument passing between incompatible pointer types
+job.c: In function exec_command:
+job.c:1075: warning: argument passing between incompatible pointer types
+job.c:1075: warning: argument passing between incompatible pointer types
+job.c:1112: warning: argument passing between incompatible pointer types
+job.c:1112: warning: argument passing between incompatible pointer types
+gcc -DHAVE_CONFIG_H -DLIBDIR=\"/usr/local/lib\" -DINCLUDEDIR=\"/usr/local/include\" -c -I. -I. -I./glob -g dir.c -o dir.o
+gcc -DHAVE_CONFIG_H -DLIBDIR=\"/usr/local/lib\" -DINCLUDEDIR=\"/usr/local/include\" -c -I. -I. -I./glob -g file.c -o file.o
+gcc -DHAVE_CONFIG_H -DLIBDIR=\"/usr/local/lib\" -DINCLUDEDIR=\"/usr/local/include\" -c -I. -I. -I./glob -g misc.c -o misc.o
+gcc -DHAVE_CONFIG_H -DLIBDIR=\"/usr/local/lib\" -DINCLUDEDIR=\"/usr/local/include\" -c -I. -I. -I./glob -g main.c -o main.o
+gcc -DHAVE_CONFIG_H -DLIBDIR=\"/usr/local/lib\" -DINCLUDEDIR=\"/usr/local/include\" -c -I. -I. -I./glob -g read.c -o read.o
+gcc -DHAVE_CONFIG_H -DLIBDIR=\"/usr/local/lib\" -DINCLUDEDIR=\"/usr/local/include\" -c -I. -I. -I./glob -g remake.c -o remake.o
+gcc -DHAVE_CONFIG_H -DLIBDIR=\"/usr/local/lib\" -DINCLUDEDIR=\"/usr/local/include\" -c -I. -I. -I./glob -g rule.c -o rule.o
+gcc -DHAVE_CONFIG_H -DLIBDIR=\"/usr/local/lib\" -DINCLUDEDIR=\"/usr/local/include\" -c -I. -I. -I./glob -g implicit.c -o implicit.o
+gcc -DHAVE_CONFIG_H -DLIBDIR=\"/usr/local/lib\" -DINCLUDEDIR=\"/usr/local/include\" -c -I. -I. -I./glob -g default.c -o default.o
+gcc -DHAVE_CONFIG_H -DLIBDIR=\"/usr/local/lib\" -DINCLUDEDIR=\"/usr/local/include\" -c -I. -I. -I./glob -g variable.c -o variable.o
+gcc -DHAVE_CONFIG_H -DLIBDIR=\"/usr/local/lib\" -DINCLUDEDIR=\"/usr/local/include\" -c -I. -I. -I./glob -g expand.c -o expand.o
+gcc -DHAVE_CONFIG_H -DLIBDIR=\"/usr/local/lib\" -DINCLUDEDIR=\"/usr/local/include\" -c -I. -I. -I./glob -g function.c -o function.o
+gcc -DHAVE_CONFIG_H -DLIBDIR=\"/usr/local/lib\" -DINCLUDEDIR=\"/usr/local/include\" -c -I. -I. -I./glob -g vpath.c -o vpath.o
+gcc -DHAVE_CONFIG_H -DLIBDIR=\"/usr/local/lib\" -DINCLUDEDIR=\"/usr/local/include\" -c -I. -I. -I./glob -g version.c -o version.o
+gcc -DHAVE_CONFIG_H -DLIBDIR=\"/usr/local/lib\" -DINCLUDEDIR=\"/usr/local/include\" -c -I. -I. -I./glob -g ar.c -o ar.o
+gcc -DHAVE_CONFIG_H -DLIBDIR=\"/usr/local/lib\" -DINCLUDEDIR=\"/usr/local/include\" -c -I. -I. -I./glob -g arscan.c -o arscan.o
+gcc -DHAVE_CONFIG_H -DLIBDIR=\"/usr/local/lib\" -DINCLUDEDIR=\"/usr/local/include\" -c -I. -I. -I./glob -g signame.c -o signame.o
+gcc -DHAVE_CONFIG_H -DLIBDIR=\"/usr/local/lib\" -DINCLUDEDIR=\"/usr/local/include\" -c -I. -I. -I./glob -g remote-stub.c -o remote-stub.o
+cd glob; make CC='gcc' CFLAGS='-g -I..' CPPFLAGS=' -DHAVE_CONFIG_H' libglob.a
+	gcc -I. -I. -c -DHAVE_CONFIG_H -g -I.. glob.c 
+	gcc -I. -I. -c -DHAVE_CONFIG_H -g -I.. fnmatch.c 
+	ar rv libglob.a glob.o fnmatch.o
+a - glob.o
+a - fnmatch.o
+s - creating symbol hash table. Wait...
+ar: Warning: creating libglob.a
+s - done
+	: libglob.a
+gcc -DHAVE_CONFIG_H -DLIBDIR=\"/usr/local/lib\" -DINCLUDEDIR=\"/usr/local/include\" -c -I. -I. -I./glob -g getopt.c -o getopt.o
+gcc -DHAVE_CONFIG_H -DLIBDIR=\"/usr/local/lib\" -DINCLUDEDIR=\"/usr/local/include\" -c -I. -I. -I./glob -g getopt1.c -o getopt1.o
+gcc -DHAVE_CONFIG_H -DLIBDIR=\"/usr/local/lib\" -DINCLUDEDIR=\"/usr/local/include\" -c -I. -I. -I./glob -g getloadavg.c -o getloadavg.o
+gcc -g commands.o job.o dir.o file.o misc.o main.o read.o remake.o rule.o implicit.o default.o variable.o expand.o function.o vpath.o version.o ar.o arscan.o signame.o remote-stub.o glob/libglob.a getopt.o getopt1.o  getloadavg.o  -o make.new
+mv -f make.new make

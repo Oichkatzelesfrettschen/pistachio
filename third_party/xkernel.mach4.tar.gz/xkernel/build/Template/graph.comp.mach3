@@ -1,0 +1,35 @@
+#
+# $RCSfile: graph.comp.mach3,v $
+#
+# x-kernel v3.2
+#
+# Copyright (c) 1993,1991,1990  Arizona Board of Regents
+#
+#
+# $Revision: 1.8 $
+# $Date: 1993/11/30 20:00:16 $
+
+#
+# This is an example graph.comp file for the mach3 platform. 
+# This graph exercises the TCP protocol.
+#
+
+@;
+
+#
+# Be sure to check whether the name SE0 corresponds to your ethernet
+# device (see /etc/NETWORKS)
+#
+
+name=ethdrv/SE0;
+name=eth protocols=ethdrv/SE0;
+name=arp protocols=eth;
+name=vnet protocols=eth,arp;
+name=ip protocols=vnet;
+name=icmp protocols=ip;
+name=tcp protocols=ip;
+name=tcptest protocols=tcp;
+
+@;
+
+name=prottest	trace=TR_MAJOR_EVENTS;

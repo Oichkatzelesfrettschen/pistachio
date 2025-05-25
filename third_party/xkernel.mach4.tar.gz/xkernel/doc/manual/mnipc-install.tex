@@ -1,0 +1,234 @@
+%     
+% $RCSfile: mnipc-install.tex,v $
+%
+% x-kernel v3.2
+%
+% Copyright (c) 1993,1991,1990  Arizona Board of Regents
+%
+%
+% $Log: mnipc-install.tex,v $
+% Revision 1.3  1993/12/01  23:00:09  menze
+% msg_internal.h added to list of file modifications
+%
+% Revision 1.2  1993/11/30  17:19:24  menze
+% Rewrote section on specially-compiling msg.c, etc.
+%
+% Minor fixes to conform to the rest of the manual's typographical
+% conventions
+%
+
+
+
+\section{Installing MachNetIPC - A Network Extension of Mach3 IPC}
+\label{installmni}
+
+By compiling a protocol graph with the machnetipc protocol
+and its supporting protocols, one can construct a server that
+runs in the Mach3 environment and turns the native IPC mechanism into
+one that extends across a set of machines.
+This can be used as replacement for the Mach program known as
+the ``netmsgserver.''  MachNetIPC is faster than the
+netmsgserver and supports all Mach3 IPC semantics and the netname
+interface.  In addition, the protocols can work over internetworked
+configurations.  This release is a beta test release.  We
+expect and welcome problem reports (see section \ref{mnibugs}).  Our testing
+has established that the transmission of simple messages appears
+correct and robust; complex messages involving port transfers are
+correct and robust in so far as our environment has allowed testing.
+Our test platforms have been HP 720's running OSF/1 from Utah,
+DecStations, running MK74 and UX35 and higher, and Intel 486-based
+machines running MK82 and UX41.
+
+The files in the mach3/api/netipc directory comprise the interface
+between the user tasks and the protocols that transport data.  When
+they are composed with a protocol graph providing the transport
+and liveness services they require,
+the resulting {\sanss xkernel} image file can run as a task that supports
+the netnameserver interface for registering and retrieving Mach ports
+on other machines running the same software.  NB this software will not
+interoperate with the netmsgserver distributed by CMU.
+
+The implementation of MachNetIPC is described in the Usenix Proceedings of
+the Mach III Symposium, Santa Fe NM, April 1993.
+
+
+\subsection{Building MachNetIPC}
+
+To build a MachNetIPC service, begin by creating a ``build'' directory
+as described in \ref{building}.  Copy the file 
+{\sanss mach3/api/netipc/graph.comp}
+to that directory and configure the graph.comp file to refer to the
+name of the ethernet device for your system.
+
+You can then type {\tt make compose; make depend; make} to build an
+xkernel image file.  
+
+\subsection{Running MachNetIPC}
+
+Application programs registering and using cross-machine services make
+use of the netname interface to MachNetIPC.  The ``nns'' interface to
+MachNetIPC can operate either as the sole name server on a node, or in
+cooperation with a service that is already running (such as ``snames''
+or ``netmsgserver''), although this latter configuration slightly
+complicates the initial contact with the service.  See the appendix
+section about ``nns'' for more information on how to use this service.
+The host administrator should decide whether to run MachNetIPC alone
+or in cooperation with other services.
+
+The MachNetIPC service can be added to the boot time server startup
+script {\sanss nanny.config} in place of the ``netmsgserver''.  Consult
+your local system administration guide for more information about
+server startup procedures.  Note that the $x$\/-kernel must be started
+with a user id that has permission to access the master device port.
+If your site does not a RARP server (an unusual circumstance), you may
+find it necessary to create a ROM file and start the xkernel image file
+from the directory with the rom file.  See section \ref{romfile} and
+the ARP man page in appendix \ref{protman} for details.
+
+If the $x$\/-kernel terminates or is terminated, it can be restarted
+easily (``xkernel \&'').
+
+\subsection{Using MachNetIPC}
+
+You can use the xkernel image built with MachNetIPC in place of the older
+netmsgserver.  The most common way of utilizing it takes advantage of
+the netname interface, which is supported by the netmsgserver and by
+the ``snames'' program.  This supports registering a name string and a
+port for access by remote machines, and lookup of the port
+corresponding to the name.  The ports can be used just like any other
+Mach port port (with respect to send and receive operations).
+
+Documentation for the netname interface can be found in either the
+/usr/mach/man area on your system or in this $x$\/-kernel distribution
+in the {\sanss mach3/api/netipc/netname\_*.3} files.
+
+CAVEAT: This release does support using DNS hostnames for netname lookups.
+Use the full IP address of remote hosts.  See also the protocol
+appendix section for the ``nns'' service.
+
+There is an aspect of the netname interface that depends on having
+a broadcast address available.  If one machine wants to look up
+a name without specifying the IP address of the destination, a
+broadcast query is used.  If the machine offering the name is not
+accessible via broadcast, then the lookup will fail.  See section
+\ref{mniptbl} for information about setting the UDP port number for
+this service.
+
+With the exception of broadcast name lookup, all MachNetIPC functions
+work transparently between machines with local area network or
+Internet connectivity.
+
+\subsection{Protocol Tables}
+\label{mniptbl}
+
+The protocol table defines the UDP port number to use for broadcasts.
+We have set it to be the same as is used by the netmsgserver.  If this
+causes problems at your site, you can change the entry at the nns
+line:
+
+\begin{quote}
+\begin{verbatim}
+udp     5
+{
+        pmap    111
+        nns     x7823
+}
+\end{verbatim}
+\end{quote}
+
+The illustration shows that the hex number ``7823'' is used.
+
+If your site will not be using the broadcast mechanism for netname
+lookup, the protocol number is irrelevant.
+
+
+\subsection{Large Messages}
+
+There is no inherent limit on the total size of a message sent using
+Mach IPC.  MachNetIPC has a default configuration that is limited
+to sending datagrams no larger than 64K.  Programs that transfer large
+amounts of out-of-line data may be inconvenienced by this.  We provide
+an alternate configuration that supports arbitrarily large messages.
+We also note that very large message transfers may adversely affect
+the performance of a host node, due to having to buffer the message
+in the $x$\/-kernel task while it is being transferred (this is worse for
+the receiver than the sender).
+
+The file {\sanss mach3/api/netipc/graph.comp.large} can be used in 
+place of the
+standard graph.comp to support large messages.  It relies on
+a newly developed protocol (RAT) that implements a reliable datagram
+protocol over TCP.
+
+If you wish to 
+use RAT for very large messages (more than 1M byte or so), you will
+need to recompile several \xk{} files in a special manner.  We
+recommend that you recompile these files in your local build
+directory in order to avoid conflicts with other users.  The relevant
+files are:
+
+\begin{quote}
+\begin{verbatim}
+xkernel/pi/msg.c
+xkernel/pi/msg_internal.h
+xkernel/mach3/pxk/malloc.c
+xkernel/mach3/pxk/stack.c
+\end{verbatim}
+\end{quote}
+
+\noindent
+The file {\sanss msg.c} contains the message tool implementation,
+which must be compiled with the MSG\_NON\_REC flag to work with large
+messages.  The standard Mach malloc doesn't return and reuse large
+storage blocks very well, so we recommend compiling our distributed
+version of {\sanss malloc.c} for large messages.  
+You might also wish to compile and use the {\sanss stack.c}
+that we provide; it limits cthread stacks to 64K and
+uses less virtual memory.
+
+To compile special versions of these files:
+
+\begin{itemize}
+
+\item{}
+Copy (or link) these files to your build directory.  Edit your
+Makefile in your build directory to indicate that these files will be
+locally compiled, by adding to the PRIVSRC and PRIVOBJ variables:
+
+\begin{quote}
+\begin{verbatim}
+PRIVSRC = \
+        msg.c    \
+        malloc.c \
+        stack.c  
+
+PRIVOBJ = \
+        ./$(HOW)/msg.o    \
+        ./$(HOW)/malloc.o \
+        ./$(HOW)/stack.o
+\end{verbatim}
+\end{quote}
+
+\item{}
+Add -DMSG\_NON\_REC to the TMP\_CPPFLAGS variable in your Makefile.
+
+\item{}
+Run {\tt make depend} and {\tt make}.  
+
+\end{itemize}
+
+
+
+\subsection{Access Control and Privacy}
+
+This release of MachNetIPC has no access control or privacy
+mechanisms.  We have expectations of providing these services in 1994.
+
+
+\subsection{Reporting Problems}
+\label{mnibugs}
+Problems can be reported to xkernel-bugs@cs.arizona.edu, but problems
+and discussion that are specific to MachNetIPC should go to
+xkernel-mnipc@cs.arizona.edu; if you wish to be a member of this list
+send a note to xkernel-mnipc-request.  If you aren't sure which list
+to use for a problem, use xkernel-bugs.

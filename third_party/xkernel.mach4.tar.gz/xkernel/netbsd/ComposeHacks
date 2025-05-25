@@ -1,0 +1,25 @@
+#
+# $RCSfile: ComposeHacks,v $
+#
+# x-kernel v3.2
+#
+# Copyright (c) 1993,1991,1990  Arizona Board of Regents
+#
+#
+# $Revision: 1.1 $
+# $Date: 1993/09/17 01:25:54 $
+
+# The normal non-library build procedure depends on a protocol having
+# the same name as its source directory.  If there are protocols,
+# drivers or apis which are actually defined in a different directory,
+# their FILES and LIBS variables should be remapped here.  
+#
+# E.g., the protocol SRX is built from source code in a directory
+# named machnetipc.  The build procedure will define the variables
+# machnetipc_FILES and machnetipc_LIBS, but the remapping of srx_FILES
+# and srx_LIBS would need to be made in the appropriate ComposeHacks
+# directory: 
+#
+#	srx_FILES = $(machnetipc_FILES)
+#	srx_LIBS = $(machnetipc_LIBS)
+

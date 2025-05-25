@@ -1,0 +1,110 @@
+%
+% $RCSfile: bind.tex,v $
+%
+% $Revision: 1.4 $
+% $Date: 1993/11/18 06:04:56 $
+%
+
+\subsection*{NAME}
+\label{BIND}
+
+\noindent BIND ( A Layered Encryption Key Manager )
+
+\input cryptDist
+
+\subsection*{SPECIFICATION}
+
+\noindent
+BIND sits on top of an instance of the KM protocol and 
+maps a participant to a id which is then used by the KM 
+to provide a key.  
+
+\subsection*{SYNOPSIS}
+As we have discovered in decomposing Kerberos, any binding 
+between network addresses and keys can be very transient. The 
+BIND protocol was designed to be inserted between CRYPT and 
+KM to manage temporary bindings. Thus the KM data base will 
+contain name to key bindings while the BIND data base will 
+contain address to name bindings. CRYPT will open a BIND 
+session just as it would a KM session. When the address to 
+name  mapping is set (through calling a KM\_SET or BIND\_SET  
+control op) BIND will open a KM session using the name as its 
+participant. When CRYPT performs a KM\_RESLOVE on the BIND 
+session it in turns perform a KM\_RESLOVE on the 
+corresponding KM session. 
+
+In this organization the KM data base is fairly stable and 
+managed via a separate key management protocol suite.  The 
+address name bindings are set by performing a CRYPT\_IN(or 
+OUT)\_SET on the appropriate session with  the name which 
+corresponds to this session. Note names in this  version are 
+fixed length byte strings. 
+
+Note that a KM\_RESLOVE on BIND gets you a key from the KM 
+data base while a KM\_SET takes a name not DES key. This is 
+not symmetric and exists only to support Kerberos.
+
+Names are simply fixed length byte strings.
+
+The keys file name is formed by concatenating the strings 
+``bindings'' with the instance name of the protocol (which may 
+be null).
+
+\noindent 
+\subsection*{REALM}
+
+BIND is in the ASYNC realm.
+
+\subsection*{PARTICIPANTS}
+
+
+BIND accepts participants in order to do a table lookup to find 
+the key. The entire participant list is converted into a byte 
+string which is then used to lookup the key. 
+
+\subsection*{CONTROL OPERATIONS}
+
+BIND\_RESOLVE returns a copy of the name stored in that session. 
+This name is the name which is associated with the participant 
+list passed at open time. BIND can fail if no key has been set or 
+that key has been invalidated.
+
+BIND\_SET sets the name for that session to the value passed.
+
+BIND\_INVALIDATE marks the name as invalid and removes the BIND 
+session from the map. The session is not destroyed until all 
+users of that session have closed it. 
+
+BIND\_ISEMPTY succeeds if no name for this session has been 
+defined.  
+
+BIND\_ISVALID succeeds if there is a valid name for this session. 
+
+BIND\_ISINVALID succeeds if a BIND\_INVALIDATE operation has 
+been performed in this session. 
+
+BIND also supports all of the KM control operations. 
+The only two which should ever be used are:
+
+KM\_RESOLVE performs a KM\_RESLOVE on the corresponding 
+KM session. (ie it returns a DES key not a name).  
+
+KM\_SET is identical to BIND\_SET.
+
+
+\subsection*{CONFIGURATION}
+
+BIND must be configured on top of KM and any protocol which uses KM can 
+use BIND. 
+
+\subsection*{KEY FILES}
+
+BIND key files are identical to KM key files.
+
+\medskip
+
+\subsection*{AUTHOR}
+
+\noindent Sean W. O'Malley
+
+

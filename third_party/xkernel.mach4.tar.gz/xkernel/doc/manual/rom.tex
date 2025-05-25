@@ -1,0 +1,63 @@
+% 
+% $RCSfile: rom.tex,v $
+%
+% x-kernel v3.2
+%
+% Copyright (c) 1993,1991,1990  Arizona Board of Regents
+%
+%
+% $Log: rom.tex,v $
+% Revision 1.4  1993/11/30  17:25:42  menze
+% Became a subsection
+% Parsing library stuff moved to 'util' section
+%
+
+
+\subsection{ROM files}
+\label{romfile}
+
+To support run-time options for protocols and various subsystems, the
+\xk{} provides the notion of a ROM file.  When a protocol instance or \xk{}
+subsystem initializes, it typically scans a list of user-provided
+options in the ROM file to see if it should adjust its default
+parameters for that particular instantiation.  ROM options are used
+for a variety of purposes, such as providing initial values for
+databases, specifying numbers of network shepherd threads, and
+providing IP gateway information.
+
+Each ROM file entry consists of a single line.  The first field in
+each line specifies the particular protocol or subsystem that
+should interpret that line.  The rest of the fields are
+specific to that particular protocol or subsystem.  Comments can be added
+following a {\tt \#}.  As an example:
+
+\begin{verbatim}
+
+      #
+      # Example ROM file
+      #
+
+      simeth 	port  1234
+
+      arp 192.12.69.49  192.12.69.1 1234
+      arp 192.12.69.45  192.12.69.1 9876
+
+      prottbl /usr/xkernel/etc/prottbl.nonstd
+
+\end{verbatim}
+
+
+The SIMETH protocol will interpret the first line, the ARP protocol
+will interpret the second and third lines and the protocol table
+subsystem will interpret the last line.  
+
+The exact method for providing ROM files is specific to the individual
+platforms and is documented for each platform in section
+\ref{running}. 
+
+Protocols which provide ROM file configurable options will describe
+the format of these options in their man pages in appendix
+\ref{protman}. 
+
+
+\input genrom.tex

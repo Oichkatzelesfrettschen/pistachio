@@ -1,0 +1,412 @@
+% 
+% $RCSfile: config.tex,v $
+%
+% x-kernel v3.2
+%
+% Copyright (c) 1993,1991,1990  Arizona Board of Regents
+%
+%
+% $Log: config.tex,v $
+% Revision 1.24  1993/11/30  17:08:27  menze
+% Added intelx86 to list of supported architectures
+% Noted change in gnumake version
+%
+%
+
+\section{Configuring a Kernel}
+\label{config}
+
+This section describes how to configure and build an \xk{}.
+
+\subsection{Specifying a Protocol Graph}
+\label{compose}
+
+A new instance of the $x$-kernel is configured by specifying the
+collection of protocols that are to be included in the kernel in a
+file called {\sanss graph.comp}. Example {\sanss graph.comp} files can
+be found in {\sanss xkernel/build/Template}.
+
+The {\sanss graph.comp} file is divided into three sections: device
+drivers, protocols, and miscellaneous configuration parameters.  The
+sections are separated by lines beginning with {\sanss @;} and each
+section may be empty.
+
+The first two sections, device drivers and protocols, describe the
+protocol graph to be configured into your kernel.  The only difference
+between the two sections is that drivers in the first section are
+initialized directly from the \xk{} boot thread, whereas protocols
+in the protocol section are initialized from a distinct protocol
+initialization thread.  For the device drivers and platforms in this
+distribution, this distinction is of no consequence and device drivers
+may be configured in either the first or the second section.
+
+Device drivers and
+protocols are described by the same types of entries, as in the
+example:
+
+\let\tt=\COURIERtt
+\begin{verbatim}
+name=yap files=yap,yap_clnt,yap_srvr dir=yap protocols=ip,eth trace=TR_MAJOR_EVENTS;
+\end{verbatim}
+\let\tt=\CMRtt
+
+\noindent
+The first field gives the protocol's name.  The rest of the fields are
+optional and may occur in any order.  The {\sanss dir} and {\sanss
+files} fields describe the names and locations of the source files
+used to build the protocol.  Files are specified without extensions.
+These two fields should not be used in the common case where one wants
+to link in protocol object code from the public system object area.
+The {\sanss dir} and {\sanss files} fields should only be used when
+one wants to compile and link code from one's private build
+area instead.  If a {\sanss files} entry exists but no {\sanss dir}
+entry is specified, the current directory (i.e., the build directory)
+is assumed.  If a {\sanss dir} entry exists without a {\sanss files}
+entry, the {\sanss files} field defaults to a single {\sanss .c} file
+with the protocol's name.
+
+The {\sanss protocols} field indicates the protocols below the current
+protocol in the graph.  When this field contains multiple protocols, order is
+significant (the lower protocols will be loaded into the upper
+protocol's down vector in the order in which they are listed.)
+A protocol which expects multiple protocols below it will describe the
+expected semantics of the lower protocols in its manual page in
+appendix \ref{protman}.
+
+The {\sanss trace} field defines the debugging level used in trace
+statements depending on the protocol variable {\sanss traceyapp}.  See
+section \ref{kdebug} for the symbolic names associated with trace levels.
+
+Multiple instantiations of protocols are supported by using a ``/''
+character after the protocol name to add an extension.  In the
+following example, two instantiations of ``yap'' are indicated, one
+over ``ip'' and one over ``eth,'' and both are used by the ``prt''
+protocol.  In this example, the instance suffixes for the ``yap''
+protocol are the names of the protocol below the instance, but this is
+just a convention -- they could have any distinct string as an
+instance suffix.
+\let\tt=\COURIERtt
+\begin{verbatim}
+name=yap/ip files=yap,yap_clnt,yap_srvr dir=yap protocols=ip trace=TR_MAJOR_EVENTS;
+name=yap/eth protocols=eth;
+name=prt files=prt dir=prt protocols=yap/ip,yap/eth trace=TR_ERRORS;
+\end{verbatim}
+\let\tt=\CMRtt
+
+\noindent Only the first of multiple instantiations should have {\sanss dir},
+{\sanss files}, or {\sanss trace} fields.
+
+The third section of graph.comp contains the names of files with
+protocol number tables that are to be loaded during initialization.
+It also contains the names of subsystems and their configuration
+parameters.  Currently trace variables are the only parameters that
+can be set here.  The following illustrates a typical use of the third
+section:
+
+\let\tt=\COURIERtt
+\begin{verbatim}
+@;
+#
+# You can also specify protocol tables to be read in at boot time.
+#
+prottbl=/usr/xkernel/etc/prottbl;
+prottbl=./prottbl.local;
+
+#subsystem tracing for messages and protocol operations
+name=msg	trace=TR_GROSS_EVENTS;
+name=protocol	trace=TR_MAJOR_EVENTS;
+\end{verbatim}
+\let\tt=\CMRtt
+
+The graph.comp file is read by an $x$-kernel utility program called
+{\em compose} which generates startup code to build the protocol
+graph and set up the described configuration.  The protocol graph is
+built bottom-up; when a protocol's initialization function is called,
+the lower level-protocols have already been initialized.
+
+\subsection{Build Procedure}
+\label{building}
+
+A given instance of the \xk{} is built in a working directory.  Each
+working directory can support one \xk{} configuration at a time.
+Working directories may be organized within the \xk{} source tree
+(e.g., as subdirectories of {\sanss xkernel/build}) or outside of
+the source tree (e.g., in an \xk{} user's home directory.)  
+
+For the purpose of the following discussion, we assume the user is
+configuring a kernel so as to implement and evaluate protocol YAP 
+(yet another protocol.) A
+user configuring a kernel that contains only existing protocols should
+ignore all references to YAP.  The machine architecture in this
+example is ``sparc'' (used by the sunos platform); other supported 
+architectures are ``mips'' (for the DECstation 5000), and ``intelx86''.
+
+\begin{enumerate}
+
+\item{}
+Put {\sanss xkernel/bin/sparc} and {\sanss xkernel/bin} in
+your search path. These must be before
+{\sanss /bin} and {\sanss /usr/bin}. This will allow use of
+the version of {\sanss make} distributed with the $x$-kernel (GNU make
+v. 3.66) rather than the standard Unix {\sanss make}.
+
+\item{}
+Create a new working directory to hold your kernel.
+
+
+\item{}
+Change to your new working directory.
+
+\item{}
+Copy the Makefile
+from {\sanss xkernel/build/Template/Makefile.sunos} into your
+working directory under the name Makefile:
+
+\begin{quote}
+{\sanss cp xkernel/build/Template/Makefile.sunos Makefile}\\
+\end{quote}
+
+\item{}
+Make the Makefile writable:
+\begin{quote}
+{\sanss chmod u+w Makefile}\\
+\end{quote}
+
+\item{}
+Edit the Makefile.
+Select an appropriate {\sanss HOWTOCOMPILE}. Generally, you want {\sanss
+DEBUG} until you are ready to run serious performance tests, then
+change it to {\sanss OPTIMIZE}. (See Section \ref{kdebug}.)
+
+Check to see that the variable XRT in your Makefile is a path to
+the root of the xkernel source tree.
+
+
+\item{}
+If you are including a new protocol in your kernel, then create (at least)
+a shell for that protocol; e.g., create a shell version of {\sanss yap.c}.
+The protocol shell should define an initialization routine; 
+e.g., {\sanss yap\_init}.  You will also need to put an entry for your
+protocol in one of the protocol tables referenced by your graph.comp
+(see section \ref{protnum}.)
+If you are configuring a kernel that contains only existing protocols, 
+then this step is not necessary.
+
+\item{}
+Create a {\sanss graph.comp} in your build directory, as discussed in
+section \ref{compose}, to specify the protocol graph for your kernel.
+Example graph.comps are located in the {\sanss xkernel/build/Template}
+directory.
+
+\smallskip
+
+In steps \ref{en:make_compose}, \ref{en:make_depend}, and \ref{en:make_system},
+you may see one or more compiler warning messages of the
+form:
+
+\begin{verbatim}
+         make[n]: fopen: [filename]: No such file or directory
+\end{verbatim}
+
+These messages are expected and can be ignored.
+The files referenced by these messages will be created in
+steps \ref{en:make_depend} and \ref{en:make_system}.
+
+The following
+two steps must be redone if {\sanss graph.comp} is later modified:
+\item{}
+\label{en:make_compose}
+{\sanss make compose}
+
+\item{}
+\label{en:make_depend}
+{\sanss make depend} 
+
+\item{}
+\label{en:make_system}
+If you are the first person building a kernel of this configuration at
+your site (i.e., if you are building a kernel as part of the
+installation procedure), you will need to run an initialization
+target for the system areas:
+\begin{quote}
+{\sanss make system}
+\end{quote}
+This will run the targets {\em allCompose}, {\em allDepend}, and {\em
+libs} for the configuration and platform indicated by your Makefile,
+building configuration files, dependency files, and object files for
+most of the \xk{} system.  Again, you will get error messages about
+missing dependency files, but the {\em allDepend} target will generate
+the missing files. 
+This will take a long time to run.  The
+installer of the \xk{} should run this target for all configurations
+(DEBUG,OPTIMIZE) and platforms that will be used at the site.
+
+\item{}
+{\sanss make}
+\\Object files will be placed in a subdirectory whose name reflects your
+configuration and platform (DEBUGsunos, OPTIMIZEmach3, etc.)  This is
+the same way in which object files are stored throughout the \xk{}
+hierarchy.  The final \xk{} executable ({\tt xkernel}) will be placed
+in your build directory. 
+
+\end{enumerate}
+
+\subsection{Debug versus Optimized Mode}
+
+The $x$-kernel uses a trace package to generate debugging information.
+To enable the tracing facility, edit the Makefile to set {\sanss
+HOWTOCOMPILE} to {\sanss DEBUG}; tracing can be disabled by setting {\sanss
+HOWTOCOMPILE} to {\sanss OPTIMIZE}. Then type {\sanss make}.  See also
+section \ref{kdebug}.
+
+If you are interested in accurate performance timings, you should set
+{\sanss HOWTOCOMPILE} to {\sanss OPTIMIZE} in the Makefile.  This
+causes all trace of tracing code to be eliminated from the kernel.
+
+
+
+\subsection{Useful Make Targets}
+
+The previously mentioned make targets ({\em compose}, {\em depend},
+{\em xkernel} (the default)) are the minimal set necessary to build an
+\xk{}.  This section describes some additional useful make targets.
+
+Some of these descriptions refer to ``\xk{} system areas''.  These
+areas contain source and object code shared by all users of the
+\xk{}.  Each platform has four main system areas:
+
+
+\begin{quote}
+	prot:
+\begin{quote}
+		Code for the \xk{} protocols.
+		({\tt /usr/xkernel/protocols})
+\end{quote}
+\smallskip
+	
+	pi:
+\begin{quote}
+		Platform-independent code common to all
+		platforms.  ({\tt /usr/xkernel/pi})
+\end{quote}
+\smallskip
+
+	pxk:
+\begin{quote}
+		Platform-specific code including device
+		drivers and application programmer interfaces (APIs).
+		(e.g., {\tt /usr/xkernel/mach3},
+		{\tt /usr/xkernel/sunos}, etc.)
+\end{quote}
+\smallskip
+
+	user:
+\begin{quote}
+		Platform-specific user libraries that can be linked
+		with user applications to access the \xk{} through
+		one of the \xk{} APIs.  (e.g., {\tt
+		/usr/xkernel/mach3/user})  Not all platforms have such
+		libraries. 
+\end{quote}
+\smallskip
+\end{quote}
+		
+
+% \subsubsection{Make Targets}
+ 
+These targets are all executed from a build directory.
+
+\begin{quote}
+prot, pi, pxk, user, libs:
+\begin{quote}
+	Rebuilds any out-of-date source code in the indicated area.
+	The target {\em libs} rebuilds code in the {\em prot},
+	{\em pi}, and {\em pxk} areas. 
+\smallskip
+\end{quote}
+
+clean:
+\begin{quote}
+	removes object files in the build directory.
+\smallskip
+\end{quote}
+
+protClean, piClean, pxkClean, userClean, allClean:
+\begin{quote}
+	Removes object files, libraries and other generated files from
+	the indicated area.  The {\em allClean} target runs in all areas
+	except the user area.
+\smallskip
+\end{quote}
+
+protCompose, piCompose, pxkCompose, allCompose:
+\begin{quote}
+	Rebuilds ComposeFiles lists for the indicated area.  These
+	files group object files together so the compose program 
+	knows which files to link in for which protocols.
+	These files are generated by the {\em system} make target
+	during system installation, but they
+	are only updated when these targets are run explicitly. 
+	The {\em allCompose} target runs in all areas except the user
+	area. 
+\smallskip
+\end{quote}
+
+protDepend, piDepend, pxkDepend, userDepend, allDepend:
+\begin{quote}
+	Rebuilds the dependency lists in the indicated area.
+	The {\em allDepend} target runs in all areas except the user area. 
+\smallskip
+\end{quote}
+
+
+srcList, hdrList:
+\begin{quote}
+	Builds files in the local build directory listing all of
+	the active \xk{} source files.  These targets will do
+	nothing if the files already exist.  To force the files to be
+	rebuilt, use the targets {\em SrcList} and {\em HdrList}
+	instead. 
+\smallskip
+\end{quote}
+
+grep:
+\begin{quote}
+	greps for the target G in all \xk{} source and header 
+	files produced by the {\em srcList} and {\em hdrList} targets. 
+
+	Example usage:
+
+\begin{quote}
+		{\tt make grep G="xCreate"}
+\smallskip
+\end{quote}
+\end{quote}
+
+tags:
+\begin{quote}
+	Creates an emacs tag file {\tt TAGS} in the local build directory 
+	for all \xk{} source and header
+	files produced by the {\em srcList} and {\em hdrList} targets. 
+\smallskip
+\end{quote}
+
+\end{quote}
+
+
+\subsection{Modifying Code in System Areas}
+
+In order to make the common case as fast as possible, the \xk{}
+build procedure normally doesn't check to see if any source code in
+the system areas needs to be recompiled.  If you make a change to any
+of the system areas, that code will have to be recompiled explicitly
+from the build area using the targets for that area.  For example, if
+you add a protocol to the system protocol area, in addition to
+modifying the protocol Makefile you should run these targets:
+
+\begin{verbatim}
+        make protDepend	
+        make protCompose	
+        make prot
+\end{verbatim}
+

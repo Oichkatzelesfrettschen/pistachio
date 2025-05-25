@@ -1,0 +1,15 @@
+
+his directory includes mach3 kernel source files
+modified for the in-kernel x-kernel
+
+kernel/device/device_init.c -- added call to xkInit
+kernel/conf/files -- add x-kernel source files
+kernel/conf/file/.mips -- use xklance.c ranther than lance.c
+kernel/chips/xklance.c -- x-kernel version of lance driver
+kernel/kern/ipc_kobject.c -- call to x-kernel dispatch routine
+kernel/kern/ipc_mig.c -- enabled kernel-to-user rpc calls
+
+kernel/kern/bootstrap.c -- prevent starting of unix
+
+kernel/mips/parse_args.c -- enables passing command-line arguments to
+			    the x-kernel.

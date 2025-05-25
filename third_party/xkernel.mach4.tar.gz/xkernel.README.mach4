@@ -1,0 +1,26 @@
+Timo Kiravuo
+18.12.1995
+
+
+X-kernel port to Mach4 (Utah Flexmach)
+
+I am building an SNMP controlled soft drink machine as part of my
+master's thesis. The purpose is to study the possibilities of
+SNMP-controlled hardware. 
+
+For the operating system platform my advisor Pekka Nikander
+(pnr@nixu.fi) seleted the Mach microkernel system. Since Mach has
+no network support in the kernel, we decided to use the X-Kernel
+as the UDP/IP stack.
+
+This package contains the University of Arizona X-kernel v3.2 and
+my changes to it, to allow it to run under Mach4 as a Mach task
+(not as an Unix process and not in kernel). 
+
+The changes have been made here and there and not in an
+especially nice way. So it works for me, you can have what I have
+done, If I get time I might try to document it better, but you
+are pretty much on your own.
+
+Timo Kiravuo
+kiravuo@nixu.fi

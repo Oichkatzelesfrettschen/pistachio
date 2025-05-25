@@ -1,0 +1,49 @@
+#
+# $RCSfile: rom.sunos.1,v $
+#
+# x-kernel v3.2
+#
+# Copyright (c) 1993,1991,1990  Arizona Board of Regents
+#
+#
+# $Revision: 1.1 $
+# $Date: 1993/11/18 04:28:45 $
+
+#
+# This is an example rom file for the sunos platform.  When running
+# a test between two simulated hosts, you will need a rom file for each
+# simulated host.  The two sunos rom files in this directory can be used
+# for such a test, though they must be edited for your specific
+# configuration. 
+#
+
+#
+# The SIMETH line identifies the UDP port that this simulated host
+# should use to simulate an ethernet device.
+
+simeth 	9876
+
+#
+# The ARP lines specify the binding between the simulated hosts and
+# the real hosts/real UDP port pairs.  You will need to edit the 
+# "Real IP address" field of each line to reflect the real IP host on
+# which you intend to run your xkernel.  The real IP addresses can be
+# the same host or different hosts -- it is sufficient that the
+# combination of Real-IP-address/Real-UDP-port-number is unique for 
+# each simulated host.
+#
+# One of the real port numbers should correspond to the port number in
+# the preceding SIMETH line.
+#
+#   simulated        Real            Real
+#   IP address       IP address      Port number
+
+arp 192.12.69.49     192.12.69.1     1234
+arp 192.12.69.45     192.12.69.1     9876
+
+
+#
+# This line specifies a path to a protocol table.  Multiple tables can
+# be specified.
+#
+prottbl ../../../etc/prottbl

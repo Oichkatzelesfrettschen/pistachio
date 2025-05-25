@@ -1,0 +1,306 @@
+; 
+; Mach Operating System
+; Copyright (c) 1992 Carnegie Mellon University
+; All Rights Reserved.
+; 
+; Permission to use, copy, modify and distribute this software and its
+; documentation is hereby granted, provided that both the copyright
+; notice and this permission notice appear in all copies of the
+; software, derivative works or modified versions, and any portions
+; thereof, and that both notices appear in supporting documentation.
+; 
+; CARNEGIE MELLON ALLOWS FREE USE OF THIS SOFTWARE IN ITS "AS IS"
+; CONDITION.  CARNEGIE MELLON DISCLAIMS ANY LIABILITY OF ANY KIND FOR
+; ANY DAMAGES WHATSOEVER RESULTING FROM THE USE OF THIS SOFTWARE.
+; 
+; Carnegie Mellon requests users of this software to return to
+; 
+;  Software Distribution Coordinator  or  Software.Distribution@CS.CMU.EDU
+;  School of Computer Science
+;  Carnegie Mellon University
+;  Pittsburgh PA 15213-3890
+; 
+; any improvements or extensions that they make and grant Carnegie Mellon 
+; the rights to redistribute these changes.
+;
+;
+; HISTORY
+; $Log:	syscalls.master,v $
+; Revision 2.2  92/05/25  14:44:20  rwd
+; 		Added 201 sysctrace.
+; 	[92/05/25            rwd]
+; 
+; 		Added duplicate of getdirentries at 164 for compatibility with
+; 		MACH386.
+; 	[92/05/20            rwd]
+; 
+; Revision 2.1  92/04/21  17:12:41  rwd
+; BSDSS
+; 
+;
+;
+;	@(#)syscalls.master	7.26 (Berkeley) 3/25/91
+; System call name/number master file.
+; Processed to creatd init_sysent.c, syscalls.c and syscall.h.
+
+; Columns: number type nargs name altname/comments
+;	number	system call number, must be in order
+;	type	one of STD, OBSOL, UNIMPL, COMPAT
+;	nargs	number of arguments
+;	name	name of syscall routine
+;	altname	name of system call if different
+;		for UNIMPL/OBSOL, name continues with comments
+
+; types:
+;	STD	always included
+;	COMPAT	included on COMPAT #ifdef
+;	LIBCOMPAT included on COMPAT #ifdef, and placed in syscall.h
+;	OBSOL	obsolete, not included in system, only specifies name
+;	UNIMPL	not implemented, placeholder only
+
+; #ifdef's, etc. may be included, and are copied to the output files.
+
+; Reserved/unimplemented system calls in the range 0-150 inclusive
+; are reserved for use in future Berkeley releases.
+; Additional system calls implemented in vendor and other
+; redistributions should be placed in the reserved range at the end
+; of the current calls.
+
+0	UNIMPL	SYSG 0 indir or out-of-range
+1	STD	SYSG 1 rexit exit
+2	STD	SYSR 0 fork
+3	STD	SYSG 3 read
+4	STD	SYSS 3 write
+5	STD	SYSS 3 open
+6	STD	SYSG 1 close
+7	STD	SYSG 4 wait4
+8	COMPAT	SYSS 2 creat
+9	STD	SYSS 2 link
+10	STD	SYSS 1 unlink
+11	OBSOL	SYSR 2 execv
+12	STD	SYSS 1 chdir
+13	STD	SYSG 1 fchdir
+14	STD	SYSS 3 mknod
+15	STD	SYSS 2 chmod
+16	STD	SYSS 3 chown
+17	STD	SYSG 1 obreak break
+18	STD	SYSG 3 getfsstat
+19	STD	SYSG 3 lseek
+20	STD	SYSG 0 getpid
+21	STD	SYSG 4 mount
+22	STD	SYSG 2 unmount
+23	STD	SYSG 1 setuid
+24	STD	SYSG 0 getuid
+25	STD	SYSG 0 geteuid
+26	STD	SYSG 4 ptrace
+27	STD	SYSG 3 recvmsg
+28	STD	SYSG 3 sendmsg
+29	STD	SYSG 6 recvfrom
+30	STD	SYSG 3 accept
+31	STD	SYSG 3 getpeername
+32	STD	SYSG 3 getsockname
+33	STD	SYSS 2 saccess access
+34	STD	SYSG 2 chflags
+35	STD	SYSG 2 fchflags
+36	STD	SYSG 0 sync
+37	STD	SYSG 2 kill
+38	STD	SYSS 2 stat
+39	STD	SYSG 0 getppid
+40	STD	SYSS 2 lstat
+41	STD	SYSG 2 dup
+42	STD	SYSG 0 pipe
+43	STD	SYSG 0 getegid
+44	STD	SYSG 4 profil
+#ifdef KTRACE
+45	STD	SYSG 4 ktrace
+#else
+45	UNIMPL	SYSG 0 ktrace
+#endif
+46	STD	SYSG 3 sigaction
+47	STD	SYSG 0 getgid
+48	STD	SYSG 2 sigprocmask
+49	STD	SYSG 2 getlogin
+50	STD	SYSG 1 setlogin
+51	STD	SYSS 1 sysacct acct
+52	STD	SYSG 0 sigpending
+#ifdef notyet
+53	STD	SYSG 3 sigaltstack
+#else
+53	UNIMPL	SYSG 3 sigaltstack
+#endif
+54	STD	SYSG 3 ioctl
+55	STD	SYSG 1 reboot
+56	STD	SYSG 1 revoke
+57	STD	SYSS 2 symlink
+58	STD	SYSS 3 readlink
+59	STD	SYSR 3 execve
+60	STD	SYSG 1 umask
+61	STD	SYSS 1 chroot
+62	STD	SYSG 2 fstat
+63	STD	SYSG 4 getkerninfo
+64	STD	SYSG 0 getpagesize
+65	STD	SYSG 2 msync
+66	STD	SYSR 0 vfork
+67	OBSOL	SYSG 0 vread
+68	OBSOL	SYSG 0 vwrite
+69	STD	SYSG 1 sbrk
+70	STD	SYSG 1 sstk
+71	STD	SYSG 6 smmap mmap
+72	STD	SYSG 1 ovadvise vadvise
+73	STD	SYSG 2 munmap
+74	STD	SYSG 3 mprotect
+75	STD	SYSG 3 madvise
+76	OBSOL	SYSG 0 vhangup
+77	OBSOL	SYSG 0 vlimit
+78	STD	SYSG 3 mincore
+79	STD	SYSG 2 getgroups
+80	STD	SYSS 2 setgroups
+81	STD	SYSG 1 getpgrp
+82	STD	SYSG 2 setpgid
+83	STD	SYSS 3 setitimer
+84	COMPAT	SYSR 0 wait
+85	STD	SYSG 1 swapon
+86	STD	SYSG 2 getitimer
+87	STD	SYSG 2 gethostname
+88	STD	SYSS 2 sethostname
+89	STD	SYSG 0 getdtablesize
+90	STD	SYSG 2 dup2
+91	UNIMPL	SYSG 2 getdopt
+92	STD	SYSG 3 fcntl
+93	STD	SYSS 5 select
+94	UNIMPL	SYSG 2 setdopt
+95	STD	SYSG 1 fsync
+96	STD	SYSG 3 setpriority
+97	STD	SYSG 3 socket
+98	STD	SYSS 3 connect
+99	COMPAT	SYSS 3 accept
+100	STD	SYSG 2 getpriority
+101	COMPAT	SYSS 4 send
+102	COMPAT	SYSG 4 recv
+103	STD	SYSR 1 sigreturn
+104	STD	SYSS 3 bind
+105	STD	SYSS 5 setsockopt
+106	STD	SYSG 2 listen
+107	OBSOL	SYSG 0 vtimes
+108	COMPAT	SYSS 3 sigvec
+109	COMPAT	SYSG 1 sigblock
+110	COMPAT	SYSG 1 sigsetmask
+111	STD	SYSG 1 sigsuspend
+112	STD	SYSS 2 sigstack
+113	COMPAT	SYSG 3 recvmsg
+114	COMPAT	SYSG 3 sendmsg
+#ifdef TRACE
+115	STD	SYSG 2 vtrace
+#else
+115	OBSOL	SYSG 2 vtrace
+#endif
+116	STD	SYSG 2 gettimeofday
+117	STD	SYSS 2 getrusage
+118	STD	SYSS 5 getsockopt
+#ifdef vax
+119	STD	SYSG 1 resuba
+#else
+119	UNIMPL	SYSG 0 nosys
+#endif
+120	STD	SYSS 3 readv
+121	STD	SYSS 3 writev
+122	STD	SYSS 2 settimeofday
+123	STD	SYSG 3 fchown
+124	STD	SYSG 2 fchmod
+125	COMPAT	SYSS 6 recvfrom
+126	LIBCOMPAT SYSG	2 setreuid
+127	LIBCOMPAT SYSG	2 setregid
+128	STD	SYSS 2 rename
+129	STD	SYSS 2 truncate
+130	STD	SYSG 2 ftruncate
+131	STD	SYSG 2 flock
+132	STD	SYSG 2 mkfifo
+133	STD	SYSS 6 sendto
+134	STD	SYSG 2 shutdown
+135	STD	SYSG 5 socketpair
+136	STD	SYSS 2 mkdir
+137	STD	SYSS 1 rmdir
+138	STD	SYSS 2 utimes
+139	OBSOL	SYSG 0 4.2 sigreturn
+140	STD	SYSS 2 adjtime
+141	COMPAT	SYSS 3 getpeername
+142	STD	SYSG 0 gethostid
+143	STD	SYSG 1 sethostid
+144	STD	SYSG 2 getrlimit
+145	STD	SYSS 2 setrlimit
+146	COMPAT	SYSG 2 killpg
+147	STD	SYSG 0 setsid
+148	STD	SYSG 4 quotactl
+149	COMPAT	SYSG 4 quota
+150	COMPAT	SYSS 3 getsockname
+; Syscalls 151-180 inclusive are reserved for vendor-specific
+; system calls.  (This includes various calls added for compatibity
+; with other Unix variants.)
+; Some of these calls are now supported by BSD...
+151	UNIMPL SYSG	0 nosys
+152	UNIMPL SYSG	0 nosys
+153	UNIMPL SYSG	0 nosys
+154	UNIMPL SYSG	0 nosys
+#ifdef NFS
+155	STD SYSG	5 nfssvc
+#else
+155	UNIMPL SYSG	0 nosys
+#endif
+156	STD SYSG	4 getdirentries
+157	STD SYSG	2 statfs
+158	STD SYSG	2 fstatfs
+159	UNIMPL SYSG	0 nosys
+#ifdef NFS
+160	STD SYSG	0 async_daemon
+161	STD SYSG	2 getfh
+#else
+160	UNIMPL SYSG	0 nosys
+161	UNIMPL SYSG	0 nosys
+#endif
+162	UNIMPL SYSG	0 nosys
+163	UNIMPL SYSG	0 nosys
+; this is for compatibility with mach386
+164	STD SYSG	4 getdirentries
+165	UNIMPL SYSG	0 nosys
+166	UNIMPL SYSG	0 nosys
+167	UNIMPL SYSG	0 nosys
+168	UNIMPL SYSG	0 nosys
+169	UNIMPL SYSG	0 nosys
+170	UNIMPL SYSG	0 nosys
+#ifdef SYSVSHM
+171	STD SYSG	4 shmsys
+#else
+171	UNIMPL SYSG	0 nosys
+#endif
+172	UNIMPL SYSG	0 nosys
+173	UNIMPL SYSG	0 nosys
+174	UNIMPL SYSG	0 nosys
+175	UNIMPL SYSG	0 nosys
+176	UNIMPL SYSG	0 nosys
+177	UNIMPL SYSG	0 nosys
+178	UNIMPL SYSG	0 nosys
+179	UNIMPL SYSG	0 nosys
+180	UNIMPL SYSG	0 nosys
+; Syscalls 180-199 are used by/reserved for BSD
+181	STD SYSG	1 setgid
+182	STD SYSG	1 setegid
+183	STD SYSG	1 seteuid
+184	UNIMPL SYSG	0 nosys
+185	UNIMPL SYSG	0 nosys
+186	UNIMPL SYSG	0 nosys
+187	UNIMPL SYSG	0 nosys
+188	UNIMPL SYSG	0 nosys
+189	UNIMPL SYSG	0 nosys
+190	UNIMPL SYSG	0 nosys
+191	UNIMPL SYSG	0 nosys
+192	UNIMPL SYSG	0 nosys
+193	UNIMPL SYSG	0 nosys
+194	UNIMPL SYSG	0 nosys
+195	UNIMPL SYSG	0 nosys
+196	UNIMPL SYSG	0 nosys
+197	UNIMPL SYSG	0 nosys
+198	UNIMPL SYSG	0 nosys
+199	UNIMPL SYSG	0 nosys
+;
+200	STD SYSS	5 table
+201	STD SYSG	1 sysctrace

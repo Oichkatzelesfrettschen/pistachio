@@ -1,0 +1,21 @@
+#Mach 3.0 graph.comp
+@;
+name=ethdrv/SE0;
+name=eth/lower protocols=ethdrv/SE0;
+name=arp/lower protocols=eth/lower;
+name=vnet/lower protocols=eth/lower,arp/lower;
+name=ip/lower protocols=vnet/lower;
+name=icmp/lower protocols=ip/lower;
+name=udp/lower protocols=ip/lower; 
+name=simsimeth protocols=udp/lower;
+name=eth/upper protocols=simsimeth; 
+name=arp/upper protocols=eth/upper;
+name=vnet/upper protocols=eth/upper,arp/upper;
+name=ip/upper protocols=vnet/upper;
+name=udp/upper protocols=ip/upper;
+name=udptest protocols=udp/upper;
+@;
+
+
+
+

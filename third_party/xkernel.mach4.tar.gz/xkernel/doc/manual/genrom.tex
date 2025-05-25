@@ -1,0 +1,158 @@
+% 
+% $RCSfile: genrom.tex,v $
+%
+% x-kernel v3.2
+%
+% Copyright (c) 1993,1991,1990  Arizona Board of Regents
+%
+%
+% $Log: genrom.tex,v $
+% Revision 1.4  1993/11/30  17:12:45  menze
+% Became a subsubsection
+%
+
+
+\subsubsection{ROM File Generators}
+\label{romgen}
+
+The ``rom'' file used during $x$-kernel initialization has a cryptic
+format that can be difficult specify and maintain manually.  The
+{\em genrom.sh} and {\em genrom2.sh} utility programs can ameliorate
+the problem by using a ``rom'' file template and expanding it into
+one more files for use with testing configurations.  This is especially
+helpful for use with the {\em simeth} (see appendix \ref{driverman})
+and {\em simsimeth}
+(see appendix \ref{protman}) protocols, or in testing configurations where an
+{\em ARP} server is not available.
+
+
+The {\em genrom.sh} utility generates rom files for the $x$-kernel from
+prototype files.  It includes information about the addresses of hosts
+specified by name on the command line.  For example, using the
+prototype rom file ``romgen'' with the three lines:
+
+\begin{verbatim}
+simeth
+arp
+dns
+\end{verbatim}
+
+\noindent
+and the command {\tt genrom.sh romgen umb lei}, two rom files are produced,
+rom.umb.1 and rom.lei.2 with the contents
+
+\begin{verbatim}
+rom.umb.1:
+simeth 4724
+arp 192.12.69.97 192.12.69.97 4724
+arp 192.12.69.116 192.12.69.116 4725
+dns umb 192.12.69.97
+dns lei 192.12.69.116
+
+rom.lei.2:
+simeth 4725
+arp 192.12.69.97 192.12.69.97 4724
+arp 192.12.69.116 192.12.69.116 4725
+dns umb 192.12.69.97
+dns lei 192.12.69.116
+\end{verbatim}
+
+The ``dns'' lines refer to the simulated IP addresses for {\em simeth} and
+{\em simsimeth} files.  See the manual sections on simsimeth
+and simeth for detailed explanations of the simulated address numbers.
+
+The {\em genrom2.sh} utility generates two rom files for the $x$-kernel
+from two prototype rom file files.  This is generally used for
+developing rom files to be used between a machine running simeth and a
+machine running simsimeth.  For example, given two prototype rom
+files, romgen1 and romgen2,
+
+\begin{verbatim}
+romgen1:
+simeth
+arp
+
+romgen2:
+ethdrv/SE0 priority 200 
+arp/lower
+eth/upper mtu 1440
+simsimeth
+arp/upper
+\end{verbatim}
+
+The command {\tt genrom2.sh romgen1 romgen2 umbra moz} produces two rom
+files, rom.umbra.1 and rom.tch.2 with contents:
+
+\begin{verbatim}
+rom.umbra.1:
+simeth 1690
+arp 192.12.69.97 192.12.69.97 1690
+arp 192.12.69.99 192.12.69.99 1691
+
+rom.tch.2:
+ethdrv/SE0 priority 200
+arp/lower 192.12.69.97 192.12.69.97 1690
+arp/lower 192.12.69.99 192.12.69.99 1691
+simsimeth 1691
+eth/upper mtu 1440
+arp/upper 192.12.69.97 c0:0c:45:61:06:9a
+arp/upper 192.12.69.99 c0:0c:45:63:06:9b
+\end{verbatim}
+
+\subsubsection{CAVEATS}
+
+Both genrom.sh and genrom2.sh work by running the Unix command ``arp''
+to get the ethernet addresses of the machines.  The target machines
+must be running in order to get this information.  If they aren't
+running, a bogus ethernet number will be used as a substitute.  There
+is a further complication in that you cannot get the ethernet address
+of the machine you are running on.  To overcome this failure, the
+programs will try to run ``arp'' on another machine using ``rsh''.
+The default machine is ``cheltenham'' (this default should be changed
+for sites other than University of Arizona); if you do not have an
+account on that machine, you will need to set the environment variable
+ROMGEN\_HOST to some other host on your network where you can execute
+the command {\tt /usr/etc/arp} via the ``rsh'' command.  It may be
+necessary to establish a {\tt .rhosts} file on the ROMGEN\_HOST for
+this to work properly.
+
+To get the arp addresses into the routing table, each host is probed
+using ``ping''.  Output from ``ping'' indicating whether the host is
+dead or alive will be printed on stdout.
+
+It is important that the arp lines come after the simeth or simsimeth
+line they are related to.  I.e., in the romgen2 file above, the arp/lower
+line generates arp entries appropriate to a real ethernet because there
+has been no previous mention of a simeth or simsimeth protocol.
+After the ``simsimeth'' line, the next arp line produces entries appropriate
+to the simsimeth protocol.
+
+The port numbers used for encapsulating traffic sent over UDP are
+assigned at random.  You can override this by assigning a base number
+in decimal using the environment variable ROMGEN\_BASE\_PORT.
+
+Normally the simeth arp lines use the same address for the real and
+simulated host address.  If you use the same host twice on the command
+line (e.g. {\tt genrom.sh romgen umb umb}), then the second arp entry will
+use a host address of ``192.12.69.1'', and further redundancies in host
+names will simply result in incrementing the fourth component of the
+network address.  This might cause clashes with other host names.
+You can change the base number used for assigning the fourth component
+using the environment variable ROMGEN\_FAKE\_IP\_BASE.
+
+Another problem occurs when one real host is used to simulate more
+than one test host.  The ``dns'' lines that are generated must use a
+simulated host name.  This is achieved by attaching a number to
+hostname, i.e. {\tt genrom romproto umb umb} will result in dns records
+for ``umb'' and ``umb2''.  Currently, this is only detected when the
+hostname occurs consecutively on the command line, i.e. 
+
+{\tt genrom romproto umb ush umb}
+
+would not be handled correctly; it would be
+necessary to edit the generated rom files to correct the dns lines
+for the second occurrence of ``umb''.
+
+Only the first word on each line is examined in the prototype file;
+if you have ``arp xxx yyyy'' or ``dns name number'' lines, they will
+be interpreted exactly as if they were simply ``arp'' or ``dns''.

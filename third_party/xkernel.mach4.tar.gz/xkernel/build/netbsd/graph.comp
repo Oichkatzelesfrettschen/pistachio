@@ -1,0 +1,70 @@
+#
+# graph.comp.example
+#
+# x-kernel v3.2
+#
+# Copyright (c) 1993,1991,1990  Arizona Board of Regents
+#
+#
+# $Revision: 1.9 $
+# $Date: 1993/11/24 22:10:45 $
+# 
+# This is an example graph.comp file.  It is provided as an
+# illustration of the structure of graph.comp files.  You will not be
+# able to immediately build a kernel from this graph.comp without
+# setting up a specialized build environment.  Simpler example
+# graph.comps that should work "right out of the box" are contained in
+# this directory under the names graph.comp.{mach3,sunos,...}. 
+# 
+#
+# graph.comp is divided into three sections, delimited by the
+# character '@'.  Protocols listed in the first section are 'driver'
+# protocols.   (The first section is empty in this file.)
+#
+
+@;
+
+#
+# Non-driver protocols are declared in the second section
+#
+
+name=simeth;
+name=eth	protocols=simeth;
+name=arp	protocols=eth;
+name=vnet 	protocols=eth,arp;
+name=ip		protocols=vnet;
+name=icmp 	protocols=ip;
+name=udp 	protocols=ip;
+#
+# This entry compiles a copy of udptest in a local 'tst' directory. 
+#
+#name=udptest 	protocols=ip	dir=tst	trace=TR_EVENTS;
+
+#
+# This is an example of multiple instantiation.  In this example,
+# BLAST is instantiated twice.  VMUX has both of these instantiations
+# as its lower protocols.
+#
+
+name=blast/ip 	protocols=ip		trace=TR_SOFT_ERRORS;
+name=blast/vnet	protocols=vnet;
+name=vmux	protocols=blast/vnet, blast/ip;
+name=chan	protocols=vmux;
+
+@;
+
+#
+# The third section allows setting trace variables which are not
+# linked to any protocol
+#
+
+#name=msg	trace=TR_ERRORS;
+#name=protocol	trace=TR_EVENTS;
+
+#
+# You can also specify protocol tables to be read in at boot
+# time.  Protocol tables can also be specified in rom files. 
+#
+#prottbl=../../../etc/prottbl.std;
+#prottbl=./prottbl.local;
+

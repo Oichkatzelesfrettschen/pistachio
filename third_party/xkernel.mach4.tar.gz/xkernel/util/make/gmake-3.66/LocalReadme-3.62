@@ -1,0 +1,51 @@
+# LocalReadme
+# Created: Sun Mar  8 10:41:20 1992
+# Peter A. Bigot (pab@omnia)
+# Last Revised: 
+#
+# Description: 
+# Local modifications for GNU Make version 3.62
+# 
+# Update Information:
+# ----------------------------------------
+# End of updates
+#
+
+* Sun Mar  8 10:41:31 1992
+
+We need this to build the gnu c library.  ftp'd source and doc tar files
+from prep.ai.mit.edu.  Modified Makefile for Sun4, compiled, and stored into
+/usr/local/gnu-2.0 with symlink to it in /usr/local/new, under name
+"gnumake".  Disabled load averaging, so gnumake is not installed setgid
+kmem.
+
+Sat May 23 18:21:26 1992
+Build on Vochelle.  Makefile is in Makefile.mips-irix.  Changes necessary:
++ Many added defines
++ Conditional compile on MIPSIRIX to prototype open in make.h and arscan.c
+  (default conflicted with /usr/include/fcntl.h)
+Installed in /usr/local/new as gnumake.  (Why? -j 4 runs 4 compiles in
+parallel ;-))
+
+Modified texinfo files to handle version 2.49 of texinfo, and installed info
+pages for gnuemacs.
+
+* Wed Dec 30 11:17:55 1992
+
+Installed on Sun4s as gmake, in /usr/local.  Modified man page to gmake.man
+to reflect local name; install by hand.  Remember to strip before
+installation.  Installed on Caslon, and Vochelle.  Vochelle man page in
+/usr/man/local/man1.
+
+* Thu Dec 31 10:32:43 1992
+Known bug on Caslon: The default command for .c.o includes -o $*.o; Dynix's
+cc croaks on this, thinking it will overwrite the output file it wants to
+create ($*.o).  Workaround:  Redefine OUTPUT_OPTION="" on command line.
+
+* Thu Feb 18 17:36:09 1993
+
+Attempt build for Solaris.  Define USG, POSIX, HAVE_DUP2, SOLARIS.  Patched
+main.c circa #347 to use standard setvbuf for SOLARIS, instead of swapping
+second and third arguments.  Installed; manpage in
+/usr/local/man/man1/gmake.1.
+

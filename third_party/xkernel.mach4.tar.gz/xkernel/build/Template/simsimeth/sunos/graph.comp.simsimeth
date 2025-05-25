@@ -1,0 +1,13 @@
+# SunOS graph.comp
+@;
+name=simeth;
+name=eth protocols=simeth;
+name=arp protocols=eth; 
+name=vnet protocols=eth,arp; 
+name=ip protocols=vnet; 
+name=udp protocols=ip;
+name=udptest protocols=udp;
+@;
+
+
+

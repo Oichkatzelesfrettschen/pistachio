@@ -1,0 +1,77 @@
+\subsection*{NAME}
+
+\noindent VTAP (Virtual Wiretap Protocol)
+
+\subsection*{SPECIFICATION}
+
+\noindent 
+VTAP simulates a wiretap by intercepting all messages as they are sent
+or received.  
+
+\subsection*{SYNOPSIS}
+
+\noindent 
+VTAP is a virtual protocol that intercepts messages.  It will print
+the entire message unless the tap has been disabled.  
+
+\subsection*{REALM}
+
+VTAP is in the ASYNC realm.
+
+\subsection*{PARTICIPANTS}
+
+VTAP passes participants to the lower protocols without manipulating
+them. 
+
+\subsection*{CONTROL OPERATIONS}
+
+
+\begin{description}
+
+\item[{\tt VTAP\_ENABLETAP:}]
+Cause the session to print the intercepted message.  
+(session only)
+\begin{description}
+\item[{\rm Input:}] none
+\item[{\rm Output:}] none
+\end{description}
+
+\item[{\tt VTAP\_DISABLETAP:}]
+Cause the session to simply pass along the intercepted message without
+printing it.
+(session only) 
+\begin{description}
+\item[{\rm Input:}] none
+\item[{\rm Output:}] none
+\end{description}
+
+\item[{\tt VTAP\_PRINTHEX:}]
+If the tap is enabled, causes the session to print the hex
+representation of each byte of the message.
+(session only)
+\begin{description}
+\item[{\rm Input:}] none
+\item[{\rm Output:}] none
+\end{description}
+
+\item[{\tt VTAP\_PRINTCHARS:}]
+If the tap is enabled, causes the session to print the character
+representation of each byte of the message.
+(session only) 
+\begin{description}
+\item[{\rm Input:}] none
+\item[{\rm Output:}] none
+\end{description}
+
+\end{description}
+
+\subsection*{CONFIGURATION}
+
+VTAP expects to be configured between two ASYNC protocols.
+
+\subsection*{AUTHOR}
+
+\noindent David C. Schwartz
+
+
+

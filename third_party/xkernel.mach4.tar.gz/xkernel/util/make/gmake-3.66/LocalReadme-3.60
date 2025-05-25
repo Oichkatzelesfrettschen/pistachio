@@ -1,0 +1,52 @@
+# LocalReadme
+# Created: Thu Jul 18 21:21:52 1991
+# Peter A. Bigot (pab@optima)
+# Last Revised: 
+#
+# Description: 
+# Local modifications to Gnu Make 3.60.5.
+# Note: This is a beta release for 3.61.
+# 
+# Update Information:
+# ----------------------------------------
+# End of updates
+#
+
+Thu Jul 18 21:22:19 1991
+* ftp'd from ftp.gnu.ai.mit.edu.  Good old GNU is into documentation that
+eats up trees like nobody's business--the file make.dvi.small is a version
+of the documentation in 10pt with closer spacing, and takes up 70+ pages
+rather than 120+.  A modified texinfo.tex to generate this is in
+opt:~pab/Tex/Macros; you shouldn't need it, though.  BTW, the reason it's
+not other readable is that it doesn't have the GNU license in it--ask me if
+you want it, so I can caution you about the legal ramifications and avoid
+lawsuits :-).
+
+* Sun 4 compilation: Changed instname to gnumake.  Installing in
+/usr/local/new.  Makefile copied to Makefile.Sun4
+
+* Sequent compilation: Changed instname to gnumake.  Installing in
+/usr/local/new.  Makefile copied to Makefile.Sequent.
+
+Fri Jul 19 10:23:42 1991
+* Disabled load average reading in all versions--we'll not install this
+thing setgid kmem.  Commented out the commands for this in the install rule.
+
+* Changed default value for -j flag to match system makes on systems: 3 for
+Caslon (def SEQUENT), 4 for Vochelle (def VOCHELLE).  Set it to 1 for all
+other systems to limit system overload on uniprocessors.
+
+* gnumake installed on optima as /usr/local/new/gnumake
+
+* gnumake installed on caslon as /usr/local/new/gnumake
+
+* Pulled alloca.c from emacs 18.55 source for Vochelle.  Redefined D_NAMLEN
+for Vochelle, which doesn't have a d_namlen field in dirent (glob/glob.c).
+Added cast in line 487 of glob.c for alloca (illegal pointer combination).
+Making libglob.a fails; no ranlib in Irix.  This is a benign error.
+
+* gnumake installed on vochelle as /usr/local/new/gnumake
+
+Sun Mar  8 10:55:44 1992
+* Removed source; this version was never officially installed, and is now
+superseded by version 3.62.

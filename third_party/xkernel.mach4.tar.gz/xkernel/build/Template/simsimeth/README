@@ -1,0 +1,12 @@
+
+This directory contains the graph.comp files, the protocol 
+table files, and the rom files necessary to run udp test 
+between the SunOS machine hedgehog 192.12.69.67 and the 
+Mach 3.0 machine mozart 192.12.69.99. The files for 
+hedgehog can be found in the sunos subdirectory and 
+the files for mozart can be found in the mach subdirectory.
+
+The man page on SIMSIMETH contains information on the exact
+usage.
+
+

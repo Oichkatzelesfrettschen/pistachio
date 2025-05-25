@@ -1,0 +1,30 @@
+# LocalReadme
+# Created: Sat May 22 09:30:03 1993
+# Peter A. Bigot (pab@omnia)
+# Last Revised: Sat May 22 12:57:27 1993
+#
+# Description: 
+#  Local changes to GNU Make, version 3.66
+#
+
+
+Sat May 22 09:30:03 1993  Peter A. Bigot  (pab@omnia)
+
+    * Retrieved source and doc from prep.ai.mit.edu.  Configured and built
+    on Sun 4s.  Installed as gmake.
+
+    * Modified man page into gmake.man to reflect local naming convention.
+    Installed as /usr/man/manl/gmake.l.  Modified make.texinfo to call
+    info pages gmake; build and installed with makeinfo.
+    
+    * Configured, built, and installed on Solaris.
+
+    * (make.h) If _POSIX_VERSION is defined (as it is on Dynix), but it
+    really isn't POSIX (as Dynix isn't), only define POSIX if
+    POSIX_VERSION_LIES is undefined.
+
+    * Add -DPOSIX_VERSION_LIES to CFLAGS in config.status for dynix build.
+
+    * Built and installed on Dynix.
+
+    * Built and installed on Irix.

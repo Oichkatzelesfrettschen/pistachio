@@ -1,0 +1,52 @@
+
+			     x-kernel v3.2
+
+Documentation is in the 'doc' directory.  Information on installing
+the x-kernel is in a section of the xkernel Programmer's manual in
+doc/manual/manual.{dvi,ps} or in doc/manual/install.tex.  
+
+
+			 Directory structure
+
+bin -- Binaries for utility programs used to develop new kernels.
+
+build -- Template makefiles and configuration files for
+building x-kernels.
+
+doc -- Documentation.
+
+etc -- Configuration-related data files and protocol tables. 
+
+mach3 -- Sources and binaries for the Mach3-based x-kernel.
+
+pi -- Sources and binaries for platform independent code: the
+x-kernel's object-oriented infrastructure, protocol table code, and
+the message, participant, and map libraries.
+
+protocols -- Sources and binaries for all protocols supported 
+in this release.
+
+sunos -- Sources and binaries for Unix-based $x$-kernel.
+
+util -- Utility programs for the x-kernel.
+
+
+Each of the platform directories (mach3, sunos) has the following
+substructure: 
+
+PLATFORM/drivers -- device drivers for this platform
+PLATFORM/api -- application programmer interfaces for this platform
+PLATFORM/user -- user libraries for interfacing with the x-kernel APIs
+PLATFORM/pxk -- threads, allocators, and other platform-specific code
+
+
+There are additional subdirectories supporting the mach3 in-kernel
+platform: 
+
+mach3/machkernel -- This hierarchy's structure parallels that of the
+mach kernel source tree and contains modifications made to support the
+x-kernel.  
+
+mach3/inkernel -- Supplements to mach3/pxk for the in-kernel
+version.
+

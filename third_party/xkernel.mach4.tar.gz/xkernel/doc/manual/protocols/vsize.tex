@@ -1,0 +1,73 @@
+%     
+% $RCSfile: vsize.tex,v $
+%
+% x-kernel v3.2
+%
+% Copyright (c) 1993,1991,1990  Arizona Board of Regents
+%
+%
+% $Revision: 1.6 $
+% $Date: 1993/10/29 17:14:13 $
+%
+
+
+\subsection*{NAME}
+
+\noindent VSIZE (Size Virtual-Protocol)
+
+\subsection*{SPECIFICATION}
+
+\noindent 
+S. O'Malley and L. Peterson.  A Dynamic Network Architecture.  {\it
+ACM Transactions on Computer Systems 10}, 2 (May 1992), 110--143.
+
+\subsection*{SYNOPSIS}
+
+\noindent VSIZE is a virtual protocol that multiplexes messages
+through N lower-level protocols based on the size of the message
+being sent.  By default, VSIZE determines the maximum packet size that 
+each lower level protocol can handle by performing a GETOPTPACKET 
+control operation on the first N-1 lower protocols (the last lower 
+protocol is assumed to have an infinite maximum packet size). 
+VSIZE sends each message using the lower level protocol with the
+smallest index
+whose optimum packet size is greater than the length of the 
+message. 
+ 
+\subsection*{REALM}
+
+VSIZE is in the ASYNC realm.
+
+\subsection*{PARTICIPANTS}
+
+VSIZE passes participants to the lower protocols without manipulating
+them. 
+
+\subsection*{CONTROL OPERATIONS}
+
+VSIZE forwards control operations to the ``largest message'' protocol.
+
+\subsection*{CONFIGURATION}
+
+VSIZE's lower
+protocols should be order by decreasing efficiency and increasing 
+packet size. 
+
+\bigskip
+
+\noindent
+VSIZE recognizes the following ROM options:
+
+\smallskip
+
+{\tt vsize/xxx cutoff C1 C2}: Instantiation {\em xxx} of VSIZE 
+should use a cutoff length of C1 bytes for its first down protocol
+and a cutoff value of C2 bytes for its second down protocol. 
+This control operation allows the user of VSIZE to override the 
+GETOPTPACKET.  Note this operation does not check to see if 
+the specified cutoff value is less than the maximum packet size 
+of the lower level protocol.  
+
+\subsection*{AUTHOR}
+
+\noindent Ed Menze

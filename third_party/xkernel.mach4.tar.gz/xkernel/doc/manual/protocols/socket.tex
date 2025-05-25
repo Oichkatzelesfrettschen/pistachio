@@ -1,0 +1,38 @@
+%
+% $RCSfile: socket.tex,v $
+%
+% $Revision: 1.6 $
+% $Date: 1993/11/18 06:05:08 $
+%
+
+\subsection*{NAME}
+
+\noindent XKSOCKET (the \xk{} socket interface)
+
+\subsection*{SPECIFICATION}
+
+\noindent BSD Socket operations as implemented by the Mach3 Unix Single-Server.
+
+\subsection*{SYNOPSIS}
+
+\noindent Sockets are an application interface to UDP and TCP networking
+services.
+
+\subsection*{REALM}
+
+Sockets are in the anchor protocol realm.  This version is specific
+to the Mach3 platform.
+
+\subsection*{PARTICIPANTS}
+
+Sockets use IP addresses.  The addresses are passed in messages generated
+by MiG stubs.
+
+
+\subsection*{CONFIGURATION}
+
+\noindent {\tt name=xksocket protocols=udp,tcp;}
+
+\subsection*{AUTHOR}
+
+\noindent David Mosberger-Tang

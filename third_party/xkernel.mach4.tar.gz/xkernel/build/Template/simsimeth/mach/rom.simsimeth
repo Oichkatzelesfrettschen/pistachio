@@ -1,0 +1,5 @@
+arp/lower     192.12.69.99    08:00:2b:23:6d:ec # mozart 
+simsimeth 1234
+eth/upper mtu 1400
+arp/upper 192.12.69.1 c0:0c:45:43:26:93 # translation:  192.12.69.67 9875 
+arp/upper 192.12.69.2 c0:0c:45:63:04:d2 # translation:  192.12.69.99 1234

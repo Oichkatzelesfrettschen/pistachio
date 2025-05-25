@@ -1,0 +1,106 @@
+#
+# Makefile.lib
+#
+# x-kernel v3.2
+#
+# Copyright (c) 1993,1991,1990  Arizona Board of Regents
+#
+# $Revision: 1.20 $
+# $Date: 1993/11/08 22:00:24 $
+#
+#
+# Libary Makefile -- this is the equivalent of Makefile.common but
+# modified slightly for libraries
+
+MAKEFILE=Makefile
+
+SRC = $(addsuffix .c,$(FILES))
+
+ifeq ($(XK_NO_LIBRARIES),)
+LIBPREFIX = $(LIB)(
+LIBSUFFIX = .o)
+else
+LIBPREFIX = $(HOW)/
+LIBSUFFIX = .o
+endif
+
+OBJ = $(addprefix $(LIBPREFIX), $(addsuffix $(LIBSUFFIX), $(FILES)))
+LIBS :=
+
+
+.PHONY : pxk depend clean
+
+default: 
+	rm -f $(OBJECTFILE) ; \
+	make lib
+
+lib: $(OBJ)
+	@$(MAKE) LOOP TARGET=
+	@if [ -s $(OBJECTFILE) ]; then \
+		echo rebuilding library ; \
+		umask 2 ; \
+		$(AR) ruv $(LIB) `/bin/cat $(OBJECTFILE)` || echo '***Errors'; \
+		rm -f $(OBJECTFILE) ; 				\
+		echo randomizing library || echo '***Errors'; \
+		$(RANLIB) $(LIB) ; \
+	else \
+		true ; \
+	fi ; 
+
+
+#SRCLIST HDRLIST:
+#	rm -f $(OBJECTFILE) ; 
+#	@$(MAKE) LOOP TARGET=$@
+
+
+clean: localclean
+	rm -f $(LIB)
+	@make LOOP TARGET=$@
+
+
+SRCLIST HDRLIST depend dotodirs: %: local%
+ifeq ($(DIRS),)
+	@true
+else
+	@$(MAKE) LOOP TARGET=$@
+endif
+
+
+#
+# Forcing rule to regenerate the Compose files (which group files into
+# protocol-sized modules)
+
+.PHONY: libCompose compose
+libCompose compose: localobjFilesAndLibs
+	@echo generating ComposeFiles
+	$(MAKE) LOOP TARGET=objFilesAndLibs ; \
+	awk -f $(XRT)/bin/genComposeFiles.awk TOP_LEV_DIR=$(TOP_LEV_DIR) \
+		newObjectList > ComposeFiles.$(HOW)
+
+#
+# Non-forcing rule for Compose files
+#
+ComposeFiles.$(HOW):
+	@make libCompose
+
+
+include $(MAKE_INCLUDE)/Makefile.local
+
+
+# generic loop target called by other targets
+LOOP:
+	@for dir in $(DIRS) ; do \
+		echo $$dir ; \
+		cd $$dir ; \
+		$(MAKE) $(TARGET)  XRT:=../$(XRT) LIB:=../$(LIB) \
+			OBJECTFILE:=../$(OBJECTFILE).$$$$ ; \
+		cd .. ; \
+		if [ -s $(OBJECTFILE).$$$$ ]; then \
+			cat -s $(OBJECTFILE).$$$$ | fixRelPaths $$dir >> $(OBJECTFILE) ; \
+			rm -f $(OBJECTFILE).$$$$ ; \
+		fi ; \
+	 done ; \
+	true
+
+
+include Makedep.$(HOW)

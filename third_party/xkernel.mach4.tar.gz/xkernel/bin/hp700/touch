@@ -1,0 +1,16 @@
+#!/bin/csh -f
+#
+# kludgey hack ... touch is broken on the snakes
+#
+
+if ( $#argv < 1 ) then
+	echo "usage:  touch file1 [ file2 ... ]"
+	exit 1
+endif
+if ( -e $1 ) then
+	mv $1 $1.$$
+	cp $1.$$ $1
+	rm -f $1.$$
+else
+	/bin/touch $1
+endif

@@ -1,0 +1,42 @@
+%
+% ssr.tex
+%
+% $Revision: 1.6 $
+% $Date: 1993/11/29 21:24:18 $
+%
+
+\subsection*{NAME}
+
+\noindent SSR (a simple name server protocol for use with MachNetIPC).
+
+\subsection*{SPECIFICATION}
+
+See the file ``ssr.h''.  This contains the request identifier list
+and the data structure defining an SSR message.  This is not MiG generated.
+
+\subsection*{SYNOPSIS}
+
+\noindent SSR is used for bootstrapping ports into MachNetIPC.
+It can register a server port and forward requests to its peers 
+on remote hosts. SSR listens for messages on its main port.
+This port accepts Mach messages containing a service identifier, a request
+identifier, an IP address, and a Mach reply port.  The requests are sent 
+to the remote peer, and the Mach reply port is translated into a MachNetIPC
+port.  The request is forwarded to the server registered on the remote
+host (if any).  There is no reply to SSR.  
+
+\subsection*{REALM}
+
+SSR is in the anchor protocol realm; it is specific to the Mach3 platform.
+SSR communicates with the NNS protocol using a globally defined Mach port; 
+this requires that the two protocols exist in the same Mach task.
+
+\subsection*{CONFIGURATION}
+
+SSR communicates with MachNetIPC as its only lower protocol.
+
+\noindent {\tt name=ssr protocols=machripc;}
+
+\subsection*{AUTHOR}
+
+\noindent Hilarie Orman

@@ -1,0 +1,6 @@
+
+The x-kernel uses gnumake v3.57.  Although we distribute pre-compiled
+binaries in the bin directories, we include the source here should you
+need to modify gnumake for whatever reason.
+
+

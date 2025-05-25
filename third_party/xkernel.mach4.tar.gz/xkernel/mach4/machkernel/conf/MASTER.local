@@ -1,0 +1,90 @@
+#
+# Mach Operating System
+# Copyright (c) 1991,1990,1989,1988,1987,1986 Carnegie Mellon University
+# All Rights Reserved.
+# 
+# Permission to use, copy, modify and distribute this software and its
+# documentation is hereby granted, provided that both the copyright
+# notice and this permission notice appear in all copies of the
+# software, derivative works or modified versions, and any portions
+# thereof, and that both notices appear in supporting documentation.
+# 
+# CARNEGIE MELLON ALLOWS FREE USE OF THIS SOFTWARE IN ITS "AS IS" 
+# CONDITION.  CARNEGIE MELLON DISCLAIMS ANY LIABILITY OF ANY KIND FOR
+# ANY DAMAGES WHATSOEVER RESULTING FROM THE USE OF THIS SOFTWARE.
+# 
+# Carnegie Mellon requests users of this software to return to
+# 
+#  Software Distribution Coordinator  or  Software.Distribution@CS.CMU.EDU
+#  School of Computer Science
+#  Carnegie Mellon University
+#  Pittsburgh PA 15213-3890
+# 
+# any improvements or extensions that they make and grant Carnegie Mellon
+# the rights to redistribute these changes.
+#  
+#
+# HISTORY
+# $Log: MASTER.local,v $
+# Revision 2.5.1.2  1993/11/11  22:08:10  menze
+# Split up XK_INC directories into search and non-search lists
+#
+# Revision 2.5.1.1  1993/09/23  00:35:22  menze
+# Transferred x-kernel modifications to the MK82 version
+#
+# Revision 2.5  91/05/14  15:25:27  mrt
+# 	Correcting copyright
+# 
+# Revision 2.4  91/05/13  06:02:03  af
+# 	Rid of CMUCS conditional
+# 	[91/05/12  15:43:59  af]
+# 
+# Revision 2.3  91/02/05  17:02:20  mrt
+# 	Changed to new copyright
+# 	[91/01/28  14:45:58  mrt]
+# 
+# Revision 2.2  90/06/02  14:45:52  rpd
+# 	Converted to new IPC; cleaned up.
+# 	[90/03/26  21:33:58  rpd]
+# 
+#
+# Condensed history:
+#	Random options come and go.  Nothing interesting.
+#
+#######################################################################
+#
+#	Master machine independent configuration file for a specific site.
+#
+#	This file allows specific sites to easily maintain local
+#	configuration without touching the official Mach Master configuration
+#	files.  All machine independent local options and configurations can
+#	(and should) be placed in this file.
+#
+#	This version of the file is specific to the CMU CS/RI Facilities
+#	and should be replaced at each site.
+#
+#######################################################################
+#
+# Include directives in XK_INC_SEARCH are expanded on the command
+# line, resulting in directives relative to each of 
+# SHADOW/src/mk/kernel/CONFIG and MASTER/src/mk/kernel/CONFIG. 
+#
+makeoptions     XK_INC_SEARCH="-I../xkern/mach3/inkernel/include -I../xkern.local" # # <xk,xko>
+#
+# Include directives in XK_INC_SEARCH are not expanded, resulting in
+# one directive relative to SHADOW/src/mk/kernel/CONFIG. 
+#
+makeoptions     XK_INC="-Ixkern.gen" # # <xk,xko>
+
+options		CMUCS_DISK	# use cmu cs dept. disk partitions # <!std_disk>
+options		XKMACHKERNEL	# include xkernel #   <xk,xko>
+options		XK_PROXY		# include xkernel proxy #   <xk,xko>
+options		XK_DEBUG	# xkernel, no debug # <xk>
+#
+# Comment out the ALLOW_NON_XK_USERS option when running building an
+# in-kernel performance test.
+#
+options		ALLOW_NON_XK_USERS	# # <xk,xko>
+options		XK_PROXY_MSG_HACK	# # <xk,xko>
+options		BIGSTACK		# # <bigstack>
+options		TypeCheck=0		# #<xko>

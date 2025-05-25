@@ -1,0 +1,63 @@
+%
+% $RCSfile: nns.tex,v $
+%
+% x-kernel v3.2
+%
+% Copyright (c) 1993,1991,1990  Arizona Board of Regents
+%
+%
+% $Revision: 1.5 $
+% $Date: 1993/11/29 21:23:17 $
+%
+
+\subsection*{NAME}
+
+\noindent NNS (Network Name Service)
+
+
+\subsection*{SYNOPSIS}
+
+NNS provides an entry point to MachNetIPC using the netname
+interface. A registry mapping service can be 
+accessed using the MIG generated netname interface routines: 
+netname\_check\_in, netname\_check\_out and netname\_look\_up.
+Documentation for the netname interface can be found either in
+/usr/mach/man or in the xkernel distribution in 
+{\sanss mach3/api/netipc/netname\_*.3}
+manpages. NNS will not interfere with a previously executing name
+server. To guarantee that NNS is being used during checkins, 
+lookups and checkouts, do a lookup on the service ``NetworkNameServer''
+and use the associated port as the default name server port. That way
+requests will not mistakenly be directed to another name server instead.
+See mach3/user/netipc/test/nnstest.c for more details.
+
+\subsection*{REALM}
+
+NNS is in the anchor protocol realm; it is specific to the Mach3 platform.
+
+\subsection*{CONFIGURATION}
+
+Broadcast name lookup requests are handled using the UDP protocol.
+NNS depends on the BIDCTL protocol to detect reboots. Additionally the SSR
+protocol must be configured below NNS. See notes below for details of their 
+interface.
+
+\noindent {\tt name=nns protocols=udp, bidctl;}
+
+\subsection*{NOTES}
+
+NNS utilizes the SSR protocol for bootstrapping remote host ports into
+MachNetIPC. NNS and SSR communicate using a globally defined Mach port which 
+requires that they be configured into the same Mach task.
+
+\subsection*{CAVEATS and DISCLAIMERS}
+
+To specify a host in the remote lookup, use the IP address of the host
+and not the host name. Host name resolutions are currently not supported.
+
+Only a single instance of NNS may run at any time.
+
+\subsection*{AUTHOR}
+
+\noindent Hasnain Karampurwala
+
