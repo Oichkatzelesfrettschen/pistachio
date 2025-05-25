@@ -16,28 +16,31 @@ all: build/string.o
 .PHONY: all clean check tests
 
 build/tests:
-        mkdir -p build/tests
+	mkdir -p build/tests
 
 build/tests/posix:
-        mkdir -p build/tests/posix
+	mkdir -p build/tests/posix
 
 build/tests/spinlock_fairness: tests/spinlock_fairness.c | build/tests
-        $(CC) $(CFLAGS) -pthread $< -o $@
+	$(CC) $(CFLAGS) -pthread $< -o $@
 
 build/tests/posix/test_file: tests/posix/test_file.c | build/tests/posix
-        $(CC) $(CFLAGS) $< -o $@
+	$(CC) $(CFLAGS) $< -o $@
 
 build/tests/posix/test_process: tests/posix/test_process.c | build/tests/posix
-        $(CC) $(CFLAGS) $< -o $@
+	$(CC) $(CFLAGS) $< -o $@
+build/tests/posix/test_wrappers: tests/posix/test_wrappers.cc user/lib/posix/posix.cc | build/tests/posix
+	$(CXX) $(CXXFLAGS) -Iuser/lib/posix $^ -o $@
 
-tests: build/tests/spinlock_fairness build/tests/posix/test_file build/tests/posix/test_process
+tests: build/tests/spinlock_fairness build/tests/posix/test_file build/tests/posix/test_process build/tests/posix/test_wrappers
 
 clean:
 	rm -rf build
 	find . -name '*.o' -delete
 
 check: all tests
-        python -m unittest discover -v tests
-        ./build/tests/spinlock_fairness
-        ./build/tests/posix/test_file
-        ./build/tests/posix/test_process
+	python -m unittest discover -v tests
+	./build/tests/spinlock_fairness
+	./build/tests/posix/test_file
+	./build/tests/posix/test_process
+	./build/tests/posix/test_wrappers

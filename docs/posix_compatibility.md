@@ -61,6 +61,25 @@ By layering the POSIX subsystem on top of the exokernel's primitives, the kernel
 remains small while user-level servers provide the rich API expected by
 applications.
 
+## Wrapper API
+
+`libposix` currently implements a few simple wrappers that forward
+directly to the host's C library.  They share the same signatures as
+their POSIX counterparts and provide a starting point for future
+server-backed implementations.
+
+Available calls include:
+
+- `posix_open`, `posix_read`, `posix_write`, `posix_fork`
+- `posix_link`, `posix_unlink`
+- `posix_getcwd`, `posix_chdir`
+- `posix_execve`
+- `posix_wait`, `posix_waitpid`
+- `posix_socket`, `posix_bind`, `posix_listen`, `posix_accept`
+
+Sample programs under `user/apps/posix/` show basic usage of these
+wrappers.
+
 ## Reference Specification
 
 Full copies of the POSIX specification are available under `docs/ben-books`. The `susv4-2018` HTML tree contains the Single UNIX Specification, version 4 (2018). Consult these documents when implementing system calls or verifying behaviour.
