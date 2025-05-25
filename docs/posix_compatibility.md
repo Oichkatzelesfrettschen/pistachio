@@ -60,3 +60,8 @@ control until a reply is received.
 By layering the POSIX subsystem on top of the exokernel's primitives, the kernel
 remains small while user-level servers provide the rich API expected by
 applications.
+
+## Reference Specification
+
+Full copies of the POSIX specification are available under `docs/ben-books`. The `susv4-2018` HTML tree contains the Single UNIX Specification, version 4 (2018). Consult these documents when implementing system calls or verifying behaviour.
+
