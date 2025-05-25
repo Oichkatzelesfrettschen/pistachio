@@ -2,6 +2,7 @@
 
 add_library(useripc STATIC
     ${CMAKE_SOURCE_DIR}/user/lib/ipc/user_ipc.cc
+    ${CMAKE_SOURCE_DIR}/user/lib/exo/exo_ipc.cc
 )
 
 add_library(sched STATIC
@@ -13,6 +14,7 @@ add_library(sched STATIC
 
 target_include_directories(useripc PRIVATE
     ${CMAKE_SOURCE_DIR}/user/include
+    ${CMAKE_SOURCE_DIR}/include
     ${CMAKE_SOURCE_DIR}/user/contrib/elf-loader/include
 )
 
