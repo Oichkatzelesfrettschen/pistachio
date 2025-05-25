@@ -95,8 +95,10 @@ Development workflow
 The repository uses [pre-commit](https://pre-commit.com) to run
 formatters and linters such as **black**, **ruff**, **shellcheck** and
 **golangci-lint**.  The `setup.sh` script installs `pre-commit` via
-`pip` and fetches the hook environments automatically.  After cloning
-the repository you can re-install the hooks manually if desired::
+`pip` and fetches the hook environments automatically.  Ensure the
+script runs while network access is available so required packages can
+be downloaded.  After cloning the repository you can re-install the
+hooks manually if desired::
 
     $ pre-commit install --install-hooks
 

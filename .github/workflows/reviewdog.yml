@@ -35,6 +35,8 @@ jobs:
           pre-commit --version
           compiledb --version
           configuredb --help
+      - name: Run pre-commit
+        run: pre-commit run --show-diff-on-failure --color always --all-files
 
     - name: Install linter runtime deps
       run: |
