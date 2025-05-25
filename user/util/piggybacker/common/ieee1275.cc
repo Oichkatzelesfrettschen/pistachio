@@ -44,7 +44,6 @@ __unused prom_handle_t prom_options = INVALID_PROM_HANDLE;
 __unused prom_handle_t prom_memory = INVALID_PROM_HANDLE;
 __unused prom_handle_t prom_mmu = INVALID_PROM_HANDLE;
 
-#define ToPointer32(x)	(unsigned int)((unsigned long)x & 0xffffffff)
 
 int prom_get_path( prom_handle_t phandle, const char *service, char *path, int pathlen )
 {
@@ -58,11 +57,11 @@ int prom_get_path( prom_handle_t phandle, const char *service, char *path, int p
 		int size;
 	} args;
 
-	args.service = ToPointer32(service);
+	args.service = static_cast<uintptr_t>(service);
 	args.nargs = 3;
 	args.nret = 1;
-	args.phandle = ToPointer32(phandle);
-	args.path = ToPointer32(path);
+	args.phandle = static_cast<uintptr_t>(phandle);
+	args.path = static_cast<uintptr_t>(path);
 	args.pathlen = pathlen;
 	args.size = -1;
 	prom_entry( &args );
@@ -91,11 +90,11 @@ prom_handle_t prom_instance_to_package( prom_handle_t ihandle )
 	int phandle;
     } args;
 
-    args.service = ToPointer32("instance-to-package");
+    args.service = static_cast<uintptr_t>("instance-to-package");
     args.nargs = 1;
     args.nret = 1;
-    args.ihandle = ToPointer32(ihandle);
-    args.phandle = ToPointer32(INVALID_PROM_HANDLE);
+    args.ihandle = static_cast<uintptr_t>(ihandle);
+    args.phandle = static_cast<uintptr_t>(INVALID_PROM_HANDLE);
     prom_entry( &args );
     return (prom_handle_t)(word_t)args.phandle;
 }
@@ -112,12 +111,12 @@ int prom_next_prop( prom_handle_t node, const char *prev_name, char *name )
 		int flag;
 	} args;
 
-	args.service = ToPointer32("nextprop");
+	args.service = static_cast<uintptr_t>("nextprop");
 	args.nargs = 3;
 	args.nret = 1;
-	args.node = ToPointer32(node);
-	args.prev_name = ToPointer32(prev_name);
-	args.name = ToPointer32(name);
+	args.node = static_cast<uintptr_t>(node);
+	args.prev_name = static_cast<uintptr_t>(prev_name);
+	args.name = static_cast<uintptr_t>(name);
 	args.flag = -1;
 	prom_entry( &args );
 	return args.flag;
@@ -135,11 +134,11 @@ int prom_read( prom_handle_t phandle, void *buf, int len )
 		int actual;
 	} args;
 
-	args.service = ToPointer32("read");
+	args.service = static_cast<uintptr_t>("read");
 	args.nargs = 3;
 	args.nret = 1;
-	args.phandle = ToPointer32(phandle);
-	args.buf = ToPointer32(buf);
+	args.phandle = static_cast<uintptr_t>(phandle);
+	args.buf = static_cast<uintptr_t>(buf);
 	args.len = len;
 	args.actual = -1;
 	prom_entry( &args );
@@ -158,11 +157,11 @@ int prom_write( prom_handle_t phandle, const void *buf, int len )
 		int actual;
 	} args;
 
-	args.service = ToPointer32("write");
+	args.service = static_cast<uintptr_t>("write");
 	args.nargs = 3;
 	args.nret = 1;
-	args.phandle = ToPointer32(phandle);
-	args.buf = ToPointer32(buf);
+	args.phandle = static_cast<uintptr_t>(phandle);
+	args.buf = static_cast<uintptr_t>(buf);
 	args.len = len;
 	args.actual = -1;
 	prom_entry( &args );
@@ -204,11 +203,11 @@ prom_handle_t prom_find_device( const char *name )
 		int phandle;
 	} args;
 
-	args.service = ToPointer32("finddevice");
+	args.service = static_cast<uintptr_t>("finddevice");
 	args.nargs = 1;
 	args.nret = 1;
-	args.name = ToPointer32(name);
-	args.phandle = ToPointer32(INVALID_PROM_HANDLE);
+	args.name = static_cast<uintptr_t>(name);
+	args.phandle = static_cast<uintptr_t>(INVALID_PROM_HANDLE);
 	prom_entry( &args );
 	return (prom_handle_t)(word_t)args.phandle;
 }
@@ -226,14 +225,14 @@ int prom_get_prop( prom_handle_t phandle, const char *name, void *buf, int bufle
 		int size;
 	} args;
 
-	args.service = ToPointer32("getprop");
+	args.service = static_cast<uintptr_t>("getprop");
 	args.nargs = 4;
 	args.nret = 1;
-	args.phandle = ToPointer32(phandle);
-	args.name = ToPointer32(name);
+	args.phandle = static_cast<uintptr_t>(phandle);
+	args.name = static_cast<uintptr_t>(name);
 	for (int i=0; i<buflen; i++)
 	    ((char*)buf)[i] = 0;
-	args.buf = ToPointer32(buf);
+	args.buf = static_cast<uintptr_t>(buf);
 	args.buflen = buflen;
 	args.size = -1;
 	prom_entry( &args );
@@ -251,11 +250,11 @@ int prom_get_prop_len( prom_handle_t phandle, const char *name )
 		int size;
 	} args;
 
-	args.service = ToPointer32("getproplen");
+	args.service = static_cast<uintptr_t>("getproplen");
 	args.nargs = 2;
 	args.nret = 1;
-	args.phandle = ToPointer32(phandle);
-	args.name = ToPointer32(name);
+	args.phandle = static_cast<uintptr_t>(phandle);
+	args.name = static_cast<uintptr_t>(name);
 	args.size = -1;
 	prom_entry( &args );
 	return args.size;
@@ -271,14 +270,14 @@ prom_handle_t prom_nav_tree( prom_handle_t node, const char *which )
 		int out;
 	} args;
 
-	args.service = ToPointer32(which);
+	args.service = static_cast<uintptr_t>(which);
 	args.nargs = 1;
 	args.nret = 1;
-	args.node = ToPointer32(node);
-	args.out = ToPointer32(INVALID_PROM_HANDLE);
+	args.node = static_cast<uintptr_t>(node);
+	args.out = static_cast<uintptr_t>(INVALID_PROM_HANDLE);
 	prom_entry( &args );
 	if( args.out == 0 )
-		args.out = ToPointer32(INVALID_PROM_HANDLE);
+		args.out = static_cast<uintptr_t>(INVALID_PROM_HANDLE);
 	return (prom_handle_t)(word_t)args.out;
 }
 
@@ -290,7 +289,7 @@ __noreturn void prom_exit( void )
 		int nret;
 	} args;
 
-	args.service = ToPointer32("exit");
+	args.service = static_cast<uintptr_t>("exit");
 	args.nargs = 0;
 	args.nret = 0;
 	prom_entry( &args );
@@ -318,7 +317,7 @@ void prom_enter( void )
 		int nret;
 	} args;
 
-	args.service = ToPointer32("enter");
+	args.service = static_cast<uintptr_t>("enter");
 	args.nargs = 0;
 	args.nret = 0;
 	prom_entry( &args );
@@ -334,10 +333,10 @@ int prom_interpret( const char *forth )
 		int result;
 	} args;
 
-	args.service = ToPointer32("interpret");
+	args.service = static_cast<uintptr_t>("interpret");
 	args.nargs = 1;
 	args.nret = 1;
-	args.forth = ToPointer32(forth);
+	args.forth = static_cast<uintptr_t>(forth);
 	args.result = -1;
 	prom_entry( &args );
 	return args.result;
@@ -353,11 +352,11 @@ prom_handle_t prom_open( char *device )
 	unsigned int handle;
     } args;
 
-    args.service = ToPointer32("open");
+    args.service = static_cast<uintptr_t>("open");
     args.nargs = 1;
     args.nret = 1;
-    args.name = ToPointer32(device);
-    args.handle = ToPointer32(INVALID_PROM_HANDLE);
+    args.name = static_cast<uintptr_t>(device);
+    args.handle = static_cast<uintptr_t>(INVALID_PROM_HANDLE);
     prom_entry( &args );
     return (prom_handle_t)(word_t)args.handle;
 }
@@ -381,12 +380,12 @@ word_t prom_instantiate_rtas( word_t rtas_base_address )
 	unsigned int rtas_call;
     } args;
 
-    args.service = ToPointer32("call-method");
+    args.service = static_cast<uintptr_t>("call-method");
     args.nargs = 3;
     args.nret = 2;
-    args.method = ToPointer32("instantiate-rtas");
-    args.handle = ToPointer32(prom_rtas);
-    args.rtas_base_address = ToPointer32(rtas_base_address);
+    args.method = static_cast<uintptr_t>("instantiate-rtas");
+    args.handle = static_cast<uintptr_t>(prom_rtas);
+    args.rtas_base_address = static_cast<uintptr_t>(rtas_base_address);
     args.result = -1;
     args.rtas_call = 0;
     prom_entry( &args );
@@ -414,7 +413,7 @@ void prom_quiesce( void )
 		int nret;
 	} args;
 
-	args.service = ToPointer32("quiesce");
+	args.service = static_cast<uintptr_t>("quiesce");
 	args.nargs = args.nret = 0;
 	prom_entry( &args );
 }
@@ -429,10 +428,10 @@ prom_callback_t prom_set_callback( prom_callback_t new_cb )
 		int old_cb;
 	} args;
 
-	args.service = ToPointer32("set-callback");
+	args.service = static_cast<uintptr_t>("set-callback");
 	args.nargs = 1;
 	args.nret = 1;
-	args.new_cb = ToPointer32(new_cb);
+	args.new_cb = static_cast<uintptr_t>(new_cb);
 	args.old_cb = 0;
 	prom_entry( &args );
 	return (prom_callback_t)(word_t)args.old_cb;
@@ -456,7 +455,7 @@ int prom_claim( unsigned long virt, unsigned long size,
 		int retval;
 	} args;
 
-	args.service = ToPointer32("claim");
+	args.service = static_cast<uintptr_t>("claim");
 	args.nargs = 3;
 	args.nret = 1;
 	args.virt = (unsigned int)virt;
@@ -494,15 +493,15 @@ int prom_map( void *phys, void *virt, L4_Word32_t size )
 	    int retval;
 	} args;
 
-	args.service = ToPointer32("call-method");
+	args.service = static_cast<uintptr_t>("call-method");
 	args.nargs = 6;
 	args.nret = 2;
-	args.method = ToPointer32("map");
-	args.handle = ToPointer32(prom_mmu);
+	args.method = static_cast<uintptr_t>("map");
+	args.handle = static_cast<uintptr_t>(prom_mmu);
 	args.mode = -1;
 	args.size = wrap_up( size, 0x1000 );	// XXX PAGE_SIZE
-	args.virt = ToPointer32(virt);
-	args.phys = ToPointer32(phys);
+	args.virt = static_cast<uintptr_t>(virt);
+	args.phys = static_cast<uintptr_t>(phys);
 	args.result = 0;
 	args.retval = 0;
 	prom_entry( &args );
