@@ -19,3 +19,7 @@ add_subdirectory(src-userland/lib)
 
 add_custom_target(default_all ALL DEPENDS string_obj kernel_target userlib_target)
 
+add_executable(spinlock_fairness tests/spinlock_fairness.c)
+target_link_libraries(spinlock_fairness PRIVATE pthread)
+add_custom_target(tests DEPENDS spinlock_fairness)
+

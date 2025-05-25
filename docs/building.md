@@ -103,3 +103,25 @@ typed C++23 interface.  A short usage sample lives in
 `docs/svr4_machdep_cpp23.cpp`.
 
 See the top-level LICENSE file for the project's terms.
+
+## Running tests
+
+The repository provides a small test suite consisting of Python unit tests and
+a C stress test for the ticket-lock implementation.  The Makefile exposes a
+`check` target which builds the `spinlock_fairness` program and runs all tests:
+
+```bash
+$ make check
+```
+
+When using CMake, invoke the `tests` target:
+
+```bash
+$ cmake --build . --target tests
+./spinlock_fairness
+```
+
+The `spinlock_fairness` binary spawns multiple threads, measures how many times
+each thread acquires the lock for a short period and reports the counts.  It
+exits with a non-zero status if the slowest thread obtained less than 80% of the
+acquisitions of the fastest thread.
