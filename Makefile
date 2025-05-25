@@ -8,11 +8,20 @@ build/string.o: user/contrib/elf-loader/platform/amd64-pc99/string.cc
 
 all: build/string.o
 
-.PHONY: all clean check
+.PHONY: all clean check tests
+
+build/tests:
+	mkdir -p build/tests
+
+build/tests/spinlock_fairness: tests/spinlock_fairness.c | build/tests
+	$(CC) $(CFLAGS) -pthread $< -o $@
+
+tests: build/tests/spinlock_fairness
 
 clean:
 	rm -rf build
 	find . -name '*.o' -delete
 
-check: all
+check: all tests
 	python -m unittest discover -v tests
+	./build/tests/spinlock_fairness
