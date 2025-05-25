@@ -5,6 +5,6 @@ top_builddir=@top_builddir@
 include $(top_srcdir)/Mk/l4.base.mk
 
 LIBRARY=posix
-SRCS=posix.cc
+SRCS=posix.cc ipc.c
 
 include $(top_srcdir)/Mk/l4.lib.mk
