@@ -171,7 +171,7 @@ VFLAGS =
 
 # use optimization level of at least 1 - otherwise inlining will fail
 CCFLAGS += -fno-rtti -fno-builtin  -fomit-frame-pointer -fno-exceptions \
-          -Wall -Wno-non-virtual-dtor -Wno-format   \
+          -Wall -Wno-non-virtual-dtor -Wno-format -Werror  \
           $(CFLAGS_$(ARCH)) $(CFLAGS_$(CPU)) $(CFLAGS_$(PLATFORM))
 
 # C++ compiler flags build on C compiler flags and set the C++ standard
