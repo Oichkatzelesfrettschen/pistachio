@@ -1,4 +1,4 @@
-# POSIX Compatibility Layer
+#POSIX Compatibility Layer
 
 Pistachio's exokernel exposes only primitive operations such as threads, IPC and
 address spaces.  Traditional UNIX functionality therefore lives entirely in
@@ -65,3 +65,11 @@ applications.
 
 Full copies of the POSIX specification are available under `docs/ben-books`. The `susv4-2018` HTML tree contains the Single UNIX Specification, version 4 (2018). Consult these documents when implementing system calls or verifying behaviour.
 
+### Memory helpers
+
+`libposix` provides lightweight wrappers for a few memory management calls. The
+`posix_mprotect()` function forwards to the host `mprotect(2)` implementation and
+updates an internal table that records the protection flags of every page it
+operates on. `posix_msync()` simply invokes the host `msync(2)` to flush any
+modified pages. This bookkeeping allows future components to query the current
+permissions without scanning page tables.
