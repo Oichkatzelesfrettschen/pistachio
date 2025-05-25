@@ -64,3 +64,31 @@ The `exo_call`, `exo_send`, `exo_reply` and `exo_receive` helpers return this
 enumeration instead of a raw `L4_MsgTag_t`, making it easier for unit tests and
 applications to check for specific failure modes.
 
+## Wrapper helpers
+
+`exo_ipc.h` provides small wrapper functions that directly correspond to the
+kernel IPC primitives. Each helper simply invokes the matching `L4_*` call and
+converts the resulting message tag and error code into an `exo_ipc_status`
+value:
+
+| Helper | Kernel call | Notes |
+|--------|-------------|-------|
+| `exo_call(to)` | `L4_Call(to)` | Send a message and wait for a reply. |
+| `exo_send(to)` | `L4_Send(to)` | Asynchronous send operation. |
+| `exo_reply(to)` | `L4_Reply(to)` | Reply to a waiting partner. |
+| `exo_receive(from)` | `L4_Receive(from)` | Block until a message arrives. |
+
+The standalone C API declared in `include/exo_ipc.h` exposes similar wrappers
+(`exo_send` and `exo_recv`) for plain C code. These functions return the same
+status codes and make it easy to write portable tests without dealing with the
+architecture specific error values.
+
+## Capability-based IPC objects
+
+Higher level facilities such as message queues, semaphores and shared memory are
+designed around capabilities. Each object is represented by an opaque capability
+value which is passed to the relevant server over IPC. The server validates the
+capability and performs the requested operation on behalf of the caller. This
+keeps the kernel interface minimal while still allowing multiple user-space
+implementations of these abstractions.
+
