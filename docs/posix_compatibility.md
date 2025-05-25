@@ -65,3 +65,16 @@ applications.
 
 Full copies of the POSIX specification are available under `docs/ben-books`. The `susv4-2018` HTML tree contains the Single UNIX Specification, version 4 (2018). Consult these documents when implementing system calls or verifying behaviour.
 
+## Timers and Sleeping
+
+The library implements a simple `nanosleep()` wrapper that records active
+timers within the process.  Each call registers a timer entry with the expected
+expiration time, invokes the host `nanosleep(2)` system call and removes the
+entry once the sleep completes.  The helper `posix_timer_count()` exposes the
+current number of active timers.
+
+```c
+struct timespec req = { .tv_sec = 0, .tv_nsec = 50000000 };
+posix_nanosleep(&req, NULL);
+```
+

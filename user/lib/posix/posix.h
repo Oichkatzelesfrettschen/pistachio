@@ -13,6 +13,18 @@ ssize_t posix_read(int fd, void *buf, size_t count);
 ssize_t posix_write(int fd, const void *buf, size_t count);
 pid_t posix_fork(void);
 
+struct timespec;
+
+typedef struct posix_timer {
+    struct timespec expiry;
+} posix_timer;
+
+void _posix_timer_register(posix_timer *t);
+void _posix_timer_unregister(posix_timer *t);
+size_t posix_timer_count(void);
+
+int posix_nanosleep(const struct timespec *req, struct timespec *rem);
+
 #ifdef __cplusplus
 }
 #endif
