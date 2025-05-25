@@ -113,3 +113,11 @@ database path::
 
     $ clang-tidy -p user path/to/file.cc
 
+
+Model checking
+--------------
+A collection of TLA+ specifications lives in the `tla/` directory. The
+`TicketLock.tla` model can be explored locally with TLC once Java and
+the TLA+ tools are installed::
+
+    $ java -cp /path/to/tla/lib/* tlc2.TLC -deadlock tla/TicketLock.tla
