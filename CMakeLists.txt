@@ -44,11 +44,5 @@ add_subdirectory(tools/memserver)
 
 add_custom_target(default_all ALL DEPENDS string_obj kernel_target userlib_target memserver_tool)
 
-add_executable(spinlock_fairness tests/spinlock_fairness.c)
-target_link_libraries(spinlock_fairness PRIVATE pthread)
-
-add_executable(posix_test_file tests/posix/test_file.c)
-add_executable(posix_test_process tests/posix/test_process.c)
-
-add_custom_target(tests DEPENDS spinlock_fairness posix_test_file posix_test_process)
+add_subdirectory(tests)
 

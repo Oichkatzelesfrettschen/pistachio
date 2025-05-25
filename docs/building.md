@@ -229,6 +229,7 @@ $ cmake --build . --target tests
 ./spinlock_fairness
 ./posix_test_file
 ./posix_test_process
+./posix_test_timer
 ```
 
 The `spinlock_fairness` binary spawns multiple threads, measures how many times
