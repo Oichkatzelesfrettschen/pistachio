@@ -9,6 +9,7 @@ class CompilerAttributeTest(unittest.TestCase):
         code = textwrap.dedent(
             """
             #include <l4/compiler.h>
+            #include <l4/memory.h>
 
             void L4_CDECL cdecl_fn(int) {}
             void L4_FASTCALL fast_fn(int, int) {}
@@ -20,6 +21,8 @@ class CompilerAttributeTest(unittest.TestCase):
                 p1 a = cdecl_fn;
                 p2 b = fast_fn;
                 (void)a; (void)b;
+                L4_ThreadId_t ms = memory_server();
+                (void)memory_alloc(ms, 256);
                 return 0;
             }
             """

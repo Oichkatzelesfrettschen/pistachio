@@ -7,9 +7,13 @@ ROOT = Path(__file__).resolve().parents[1]
 CODE = r"""
 #include <l4/exo_ipc.h>
 #include <l4/ipc.h>
+#include <l4/memory.h>
+
 int main() {
     exo_ipc_status st = exo_call(L4_nilthread);
     (void)st;
+    L4_ThreadId_t ms = memory_server();
+    (void)memory_alloc(ms, 4096);
     return 0;
 }
 """

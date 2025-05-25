@@ -6,9 +6,12 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 CODE = r"""
 #include "../../user/lib/mlp/mlp.h"
+#include <l4/memory.h>
 int main() {
     float f[1] = {0};
     mlp_init(nullptr);
+    L4_ThreadId_t ms = memory_server();
+    (void)memory_alloc(ms, 1024);
     return mlp_predict(f);
 }
 """

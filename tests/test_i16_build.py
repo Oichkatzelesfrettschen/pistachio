@@ -6,7 +6,13 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 CODE = r"""
 #include <l4/types.h>
+#include <l4/memory.h>
 static_assert(sizeof(L4_Word_t) > 0);
+int main() {
+    L4_ThreadId_t ms = memory_server();
+    (void)memory_alloc(ms, 64);
+    return 0;
+}
 """
 
 class I16CompilationTest(unittest.TestCase):

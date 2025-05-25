@@ -6,10 +6,16 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 CODE = r"""
 #include <l4/types.h>
+#include <l4/memory.h>
 static_assert(sizeof(L4_Fpage_t) == sizeof(L4_Word_t));
 static_assert(sizeof(L4_ThreadId_t) == sizeof(L4_Word_t));
 static_assert(sizeof(L4_Clock_t) == sizeof(L4_Word64_t));
 static_assert(sizeof(L4_Time_t) == sizeof(L4_Word_t));
+int main() {
+    L4_ThreadId_t ms = memory_server();
+    (void)memory_alloc(ms, 128);
+    return 0;
+}
 """
 
 class TypeSizeCompilationTest(unittest.TestCase):
