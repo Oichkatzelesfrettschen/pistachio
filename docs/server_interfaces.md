@@ -12,14 +12,14 @@ structure:
 
 ```c
 struct mem_request {
-    mem_opcode op;    /* MEM_ALLOC or MEM_FREE */
+    mem_opcode op;    /* mem_opcode::Alloc or mem_opcode::Free */
     L4_Word_t  size;  /* bytes to allocate or free */
     L4_Word_t  addr;  /* address when freeing */
 };
 ```
 
-For a `MEM_ALLOC` request the server returns the allocated address in
-`MR1`.  `MEM_FREE` requests return `0`.
+For a `mem_opcode::Alloc` request the server returns the allocated address in
+`MR1`.  `mem_opcode::Free` requests return `0`.
 
 ## Scheduler Server
 

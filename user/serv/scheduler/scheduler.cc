@@ -4,7 +4,7 @@
 #include <deque>
 #include "../../lib/sched/sched_client.h"
 
-static const L4_Word_t SCHED_LABEL = 0x1234;
+enum class SchedLabel : L4_Word_t { Request = 0x1234 };
 
 int main()
 {
@@ -18,7 +18,7 @@ int main()
         SchedRequest req;
         L4_ThreadId_t from;
         L4_MsgTag_t tag = sched_wait_request(&req, &from);
-        if (L4_Label(tag) != SCHED_LABEL)
+        if (L4_Label(tag) != static_cast<L4_Word_t>(SchedLabel::Request))
             continue;
 
         /* enqueue requesting thread */
