@@ -36,7 +36,7 @@ top_builddir=	@top_builddir@
 include $(top_srcdir)/Mk/l4.base.mk
 
 
-SUBDIRS=	 l4 io memory ipc sched mlp
+SUBDIRS=      l4 io memory ipc sched mlp posix
 
 post-clean:
 	rm -f *.a

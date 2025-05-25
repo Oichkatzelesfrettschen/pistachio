@@ -36,7 +36,7 @@ top_builddir=	@top_builddir@
 include $(top_srcdir)/Mk/l4.base.mk
 
 
-SUBDIRS=	sigma0 memory
+SUBDIRS=     sigma0 memory scheduler vfs process
 
 
 include $(top_srcdir)/Mk/l4.subdir.mk
