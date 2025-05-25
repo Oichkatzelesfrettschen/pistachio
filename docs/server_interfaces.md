@@ -21,6 +21,21 @@ struct mem_request {
 For a `mem_opcode::Alloc` request the server returns the allocated address in
 `MR1`.  `mem_opcode::Free` requests return `0`.
 
+### Debugging messages
+
+`tools/memserver/memparse` prints the decoded fields of a raw four word
+message.  Pass the values of `MR0`--`MR3` on the command line:
+
+```bash
+$ memparse 0 0 4096 0
+label: 0x0
+  op: Alloc
+  size: 4096
+  addr: 0x0
+```
+Compile the tool with `-DENABLE_CAPNP=ON` to link against `libcapnp` when
+available.
+
 ## Scheduler Server
 
 Scheduler messages use label `0x1234`.  Five untyped words encode the

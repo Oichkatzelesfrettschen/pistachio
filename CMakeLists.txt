@@ -37,8 +37,9 @@ target_include_directories(string_obj PRIVATE
 
 add_subdirectory(kernel)
 add_subdirectory(src-userland/lib)
+add_subdirectory(tools/memserver)
 
-add_custom_target(default_all ALL DEPENDS string_obj kernel_target userlib_target)
+add_custom_target(default_all ALL DEPENDS string_obj kernel_target userlib_target memserver_tool)
 
 add_executable(spinlock_fairness tests/spinlock_fairness.c)
 target_link_libraries(spinlock_fairness PRIVATE pthread)
