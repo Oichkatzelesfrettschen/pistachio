@@ -159,6 +159,33 @@ ARM builds are similar.  For 64‑bit ARM:
 
 These examples mirror the toolchains installed by `setup.sh`.
 
+### CPU tuning flags
+
+Both the CMake and Makefile builds use `-march=native` by default.  The
+target CPU can be overridden with the `TUNE_CPU` option when invoking
+CMake or by setting `CPU_CFLAGS` for the Makefile.
+
+**x86 example**
+
+```bash
+$ cmake -DTUNE_CPU=skylake ..
+$ make CPU_CFLAGS="-march=skylake"
+```
+
+**ARM example**
+
+```bash
+$ cmake -DTUNE_CPU=cortex-a53 ..
+$ make CPU_CFLAGS="-march=armv8-a"
+```
+
+**PowerPC example**
+
+```bash
+$ cmake -DTUNE_CPU=power9 ..
+$ make CPU_CFLAGS="-march=power9"
+```
+
 The `contrib/include` directory also provides `svr4_machdep.hpp`, a
 header that translates the historic SVR4 machine dependencies into a
 typed C++23 interface.  A short usage sample lives in
