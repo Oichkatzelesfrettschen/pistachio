@@ -21,8 +21,15 @@ target_include_directories(sched PRIVATE
     ${CMAKE_SOURCE_DIR}/user/contrib/elf-loader/include
 )
 
+set(USERLIB_TARGET_DEPS useripc sched)
+
+if(WITH_CAPNP)
+    add_subdirectory(libcapnp)
+    list(APPEND USERLIB_TARGET_DEPS capnp)
+endif()
+
 add_custom_target(userlib_target ALL
-    DEPENDS useripc sched
+    DEPENDS ${USERLIB_TARGET_DEPS}
 )
 
 add_custom_target(userlib_clean

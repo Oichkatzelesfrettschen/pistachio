@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.16)
 project(pistachio C CXX)
 
+option(WITH_CAPNP "Build Cap'n Proto userland support" OFF)
+
 # Allow passing cross build settings through CMake
 set(TOOLPREFIX "" CACHE STRING "Prefix for cross compilation tools")
 set(SUBARCH "" CACHE STRING "Kernel sub-architecture")
@@ -37,5 +39,8 @@ add_custom_target(default_all ALL DEPENDS string_obj kernel_target userlib_targe
 
 add_executable(spinlock_fairness tests/spinlock_fairness.c)
 target_link_libraries(spinlock_fairness PRIVATE pthread)
+if(WITH_CAPNP)
+    target_link_libraries(spinlock_fairness PRIVATE capnp)
+endif()
 add_custom_target(tests DEPENDS spinlock_fairness)
 
