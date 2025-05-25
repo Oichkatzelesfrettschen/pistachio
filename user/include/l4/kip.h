@@ -34,6 +34,8 @@
 
 #include <l4/types.h>
 #include __L4_INC_ARCH(syscalls.h)
+#include <array>
+#include <cstddef>
 
 
 #if defined(L4_64BIT)
@@ -99,9 +101,9 @@ typedef struct {
     L4_Word_t		KernelVerPtr;
 
     /* 0x10 */
-    L4_Word_t		__padding10[17];
+    alignas(L4_Word_t) std::array<std::byte, 17 * sizeof(L4_Word_t)> __padding10{};
     L4_MemoryInfo_t	MemoryInfo;
-    L4_Word_t		__padding58[2];
+    alignas(L4_Word_t) std::array<std::byte, 2 * sizeof(L4_Word_t)> __padding58{};
 
     /* 0x60 */
     struct {
@@ -147,7 +149,7 @@ typedef struct {
     } KipAreaInfo;
 
     /* 0xB0 */
-    L4_Word_t		__paddingB0[2];
+    alignas(L4_Word_t) std::array<std::byte, 2 * sizeof(L4_Word_t)> __paddingB0{};
     L4_Word_t		BootInfo;
     L4_Word_t		ProcDescPtr;
 
@@ -213,10 +215,10 @@ typedef struct {
     L4_Word_t	SystemClock;
     L4_Word_t	ThreadSwitch;
     L4_Word_t	Schedule;
-    L4_Word_t	__paddingF0;
+    alignas(L4_Word_t) std::array<std::byte, sizeof(L4_Word_t)> __paddingF0{};
 
     /* 0x100 */
-    L4_Word_t	__padding100[4];
+    alignas(L4_Word_t) std::array<std::byte, 4 * sizeof(L4_Word_t)> __padding100{};
 
     /* 0x110 */
     L4_Word_t	ArchSyscall0;
@@ -231,7 +233,7 @@ typedef union {
     struct {
 	L4_Word_t	ExternalFreq;
 	L4_Word_t	InternalFreq;
-	L4_Word_t	__padding[2];
+	alignas(L4_Word_t) std::array<std::byte, 2 * sizeof(L4_Word_t)> __padding{};
     } X;
 } L4_ProcDesc_t;
 
