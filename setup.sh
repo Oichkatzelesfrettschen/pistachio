@@ -15,6 +15,9 @@ FAIL_LOG="/tmp/setup_failures.log"
 echo "Recording install failures to $FAIL_LOG"
 : > "$FAIL_LOG"
 
+# Ensure repository submodules are present
+git submodule update --init --recursive || echo "submodule init failed" | tee -a "$FAIL_LOG"
+
 #- helper to pin to the repo's exact version if it exists
 apt_pin_install(){
   pkg="$1"
@@ -41,6 +44,14 @@ apt_pin_install(){
     fi
   fi
   return 0
+}
+
+#- helper for global npm packages
+npm_global_install(){
+  pkg="$1"
+  if ! npm install -g "$pkg" >/dev/null 2>&1; then
+    echo "NPM install failed for $pkg" | tee -a "$FAIL_LOG"
+  fi
 }
 
 #- enable foreign architectures for cross-compilation
@@ -146,6 +157,14 @@ for pkg in \
   apt_pin_install "$pkg"
 done
 
+# Install useful global npm packages
+for npm_pkg in \
+  npm@latest \
+  prettier \
+  eslint; do
+  npm_global_install "$npm_pkg"
+done
+
 #- GUI & desktop-dev frameworks
 for pkg in \
   libqt5-dev qtcreator libqt6-dev \
@@ -171,7 +190,9 @@ done
 #- theorem provers and modeling tools
 for pkg in \
   coq coqide coq-theories libcoq-ocaml-dev \
-  ocaml ocaml-findlib; do
+  ocaml ocaml-findlib \
+  agda agda-stdlib agda-mode \
+  isabelle; do
   apt_pin_install "$pkg"
 done
 
