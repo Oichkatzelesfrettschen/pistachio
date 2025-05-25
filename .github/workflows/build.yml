@@ -11,6 +11,35 @@ permissions:
   contents: read
 
 jobs:
+  cmake-clang:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install LLVM toolchain
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y clang lld llvm cmake ninja-build
+      - name: Install Python tools
+        run: |
+          python3 -m pip install --user pre-commit compiledb configuredb
+          pre-commit --version
+          compiledb --version
+          configuredb --help
+      - name: Configure
+        run: |
+          cmake -S . -B build -G Ninja \
+            -DCMAKE_C_COMPILER=clang \
+            -DCMAKE_CXX_COMPILER=clang++ \
+            -DCMAKE_LINKER=lld \
+            -DCMAKE_BUILD_TYPE=Release
+      - name: Build
+        run: cmake --build build -j$(nproc)
+      - name: Run pre-commit
+        run: pre-commit run --show-diff-on-failure --color always --all-files
+      - name: Run tests
+        run: |
+          cd build
+          ctest --output-on-failure
   build-userland:
     runs-on: ubuntu-latest
     strategy:

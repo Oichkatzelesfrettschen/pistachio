@@ -50,10 +50,11 @@ Adjust the values for your toolchain and desired target.
 =======
 # Building Pistachio
 
-This guide summarises how to build the kernel and user land with modern
-C23 and C++23 compilers.  GCC 14 and Clang 17 are known to work.  When
-building from a repository checkout run `pre-commit install --install-hooks`
-so that formatting and linting tools run automatically.
+This guide summarises how to build the kernel and user land using the
+LLVM toolchain.  A recent Clang (version 17 or newer) is required and
+`ld.lld` is used for linking.  When building from a repository checkout
+run `pre-commit install --install-hooks` so that formatting and linting
+tools run automatically.
 
 ## Kernel
 

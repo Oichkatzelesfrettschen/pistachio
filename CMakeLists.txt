@@ -1,5 +1,25 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.20)
+
+# Require clang/LLVM toolchain
+if(NOT CMAKE_C_COMPILER MATCHES "clang$" AND NOT CMAKE_C_COMPILER_ID STREQUAL "Clang")
+    message(FATAL_ERROR "Clang is required to build Pistachio")
+endif()
+if(NOT CMAKE_CXX_COMPILER MATCHES "clang\+\+$" AND NOT CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    message(FATAL_ERROR "Clang++ is required to build Pistachio")
+endif()
+
 project(pistachio C CXX)
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+foreach(lang C CXX)
+    set(CMAKE_${lang}_STANDARD 23)
+    set(CMAKE_${lang}_STANDARD_REQUIRED ON)
+endforeach()
+
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fuse-ld=lld")
+set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -fuse-ld=lld")
+set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -fuse-ld=lld")
 
 # Add Eigen headers if present
 include_directories(${CMAKE_SOURCE_DIR}/third_party/eigen)
@@ -9,8 +29,6 @@ set(TOOLPREFIX "" CACHE STRING "Prefix for cross compilation tools")
 set(SUBARCH "" CACHE STRING "Kernel sub-architecture")
 set(ARCH "" CACHE STRING "Kernel architecture")
 
-set(CMAKE_C_STANDARD 23)
-set(CMAKE_CXX_STANDARD 23)
 
 add_compile_options(-Werror)
 
