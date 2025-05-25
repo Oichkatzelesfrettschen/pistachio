@@ -1,5 +1,8 @@
 CFLAGS ?= -std=c2x
 CXXFLAGS ?= -std=c++23
+CPU_CFLAGS ?= -march=native
+CFLAGS += $(CPU_CFLAGS)
+CXXFLAGS += $(CPU_CFLAGS)
 
 build/string.o: user/contrib/elf-loader/platform/amd64-pc99/string.cc
 	echo Building string.o

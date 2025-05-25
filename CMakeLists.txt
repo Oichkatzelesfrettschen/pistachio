@@ -9,6 +9,17 @@ set(ARCH "" CACHE STRING "Kernel architecture")
 set(CMAKE_C_STANDARD 23)
 set(CMAKE_CXX_STANDARD 23)
 
+# CPU tuning flags. Default to -march=native but allow overrides via
+# -DTUNE_CPU=<cpu> or explicit -DCMAKE_C_FLAGS_RELEASE.
+set(TUNE_CPU "native" CACHE STRING "CPU microarchitecture for -march")
+set(CPU_CFLAGS "-march=${TUNE_CPU}")
+if("${CMAKE_C_FLAGS_RELEASE}" STREQUAL "")
+    set(CMAKE_C_FLAGS_RELEASE "${CPU_CFLAGS}")
+endif()
+if("${CMAKE_CXX_FLAGS_RELEASE}" STREQUAL "")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CPU_CFLAGS}")
+endif()
+
 # Build the string.o example from the legacy Makefile
 add_library(string_obj OBJECT
     user/contrib/elf-loader/platform/amd64-pc99/string.cc
