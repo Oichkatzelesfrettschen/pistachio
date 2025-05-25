@@ -30,7 +30,8 @@ The build system expects C23 and C++23 capable compilers. The
 LLVM toolchain with Clang 17 or newer is required. Autoconf 2.69 or
 later is needed only when regenerating the legacy `configure` script.
 Detailed instructions, including cross‑compilation tips, are available in the
-[`docs/building.md`](docs/building.md#cross-compilation) guide.
+[`docs/building.md`](docs/building.md#cross-compilation) guide. Legacy design
+notes have been moved under `docs/legacy/`.
 
 Only C++23 and platform‑agnostic assembly sources are permitted in the tree.
 Other languages must be transpiled or otherwise converted before inclusion.
