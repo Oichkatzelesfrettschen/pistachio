@@ -698,6 +698,7 @@ extern "C" void SECTION(SEC_INIT) startup_system ( word_t r3, word_t r4, word_t 
 
     /* Initialize the idle tcb, and push notify frames for starting
      * the idle thread. */
+    sched_lock.init();
     get_current_scheduler()->init( true );
 
     /* Push a notify frame for the second stage of initialization, which

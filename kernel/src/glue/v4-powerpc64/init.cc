@@ -352,6 +352,7 @@ extern "C" SECTION(".init") void virtmode_call(void)
 
     /* Initialize the idle tcb, and push notify frames for starting
      * the idle thread. */
+    sched_lock.init();
     get_current_scheduler()->init();
 
     /* Push a notify frame for the second stage of initialization, which

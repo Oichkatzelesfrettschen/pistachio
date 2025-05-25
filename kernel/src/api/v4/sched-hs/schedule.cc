@@ -257,9 +257,12 @@ static void do_xcpu_domain_stride(cpu_mb_entry_t * entry)
     scheduler_t *scheduler = get_current_scheduler();
 
     ASSERT(domain_tcb->sched_state.flags.is_set(sched_ktcb_t::is_schedule_domain));
-    scheduler->dequeue_ready( domain_tcb );
-    domain_tcb->sched_state.set_stride( stride );
-    scheduler->enqueue_ready( domain_tcb );
+    {
+        scoped_spinlock guard(sched_lock);
+        scheduler->dequeue_ready( domain_tcb );
+        domain_tcb->sched_state.set_stride( stride );
+        scheduler->enqueue_ready( domain_tcb );
+    }
 }
 
 #endif
@@ -353,9 +356,12 @@ void hs_scheduler_t::hs_extended_schedule(schedule_req_t *req)
             TRACE_SCHEDULE_DETAILS( "restride queue %p domain tcb %t domain cpu tcb %t, stride %u, cpu %d\n", 
                                     domain_queue, req->time_control.raw, cpu_domain_tcb, req->prio_control.stride, get_current_cpu() );
 	    
-            dequeue_ready( cpu_domain_tcb );
-            cpu_domain_tcb->sched_state.set_stride(req->prio_control.stride);
-            enqueue_ready( cpu_domain_tcb );
+            {
+                scoped_spinlock guard(sched_lock);
+                dequeue_ready( cpu_domain_tcb );
+                cpu_domain_tcb->sched_state.set_stride(req->prio_control.stride);
+                enqueue_ready( cpu_domain_tcb );
+            }
 	    
             
 #if defined(CONFIG_SMP)
@@ -397,6 +403,7 @@ void hs_scheduler_t::total_quantum_expired(tcb_t * tcb)
 
 tcb_t * hs_scheduler_t::parse_wakeup_queues(tcb_t * current)
 {
+    scoped_spinlock guard(sched_lock);
     if (!wakeup_list)
         return current;
 
@@ -463,8 +470,11 @@ tcb_t * hs_scheduler_t::parse_wakeup_queues(tcb_t * current)
             }
 	    
             /* set it running and enqueue into ready-queue */
-            tcb->set_state(thread_state_t::running);
-            enqueue_ready(tcb);
+            {
+                scoped_spinlock guard(sched_lock);
+                tcb->set_state(thread_state_t::running);
+                enqueue_ready(tcb);
+            }
 
             /* was preempted -- give him a fresh timeslice */
             //tcb->current_timeslice = tcb->timeslice_length;
@@ -484,9 +494,11 @@ tcb_t * hs_scheduler_t::parse_wakeup_queues(tcb_t * current)
 void hs_scheduler_t::end_of_timeslice (tcb_t * tcb)
 {
     spin(74, get_current_cpu());
-    ASSERT(tcb);  
+    ASSERT(tcb);
     ASSERT(scheduled_tcb);
     ASSERT(tcb != get_idle_tcb()); // the idler never yields
+
+    scoped_spinlock guard(sched_lock);
 
     enqueue_ready (tcb, true);
 
@@ -528,7 +540,10 @@ void hs_scheduler_t::smp_requeue(bool holdlock)
             {
                 tcb->sched_state.cancel_timeout ();
                 if (tcb->get_state().is_runnable())
+                {
+                    scoped_spinlock sched_guard(sched_lock);
                     enqueue_ready( tcb );
+                }
             }
         }
 
@@ -758,7 +773,10 @@ void scheduler_t::handle_timer_interrupt()
     }
 
     /* schedule the next thread */
-    enqueue_ready(current);
+    {
+        scoped_spinlock guard(sched_lock);
+        enqueue_ready(current);
+    }
     schedule();
 }
 

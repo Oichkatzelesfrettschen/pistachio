@@ -43,6 +43,8 @@
 
 #include <kdb/tracepoints.h>
 
+DEFINE_SPINLOCK(sched_lock);
+
 /* global idle thread, we allocate a utcb to make accessing MRs etc easier */
 whole_tcb_t __whole_idle_tcb UNIT("cpulocal") __attribute__((aligned(sizeof(whole_tcb_t))));
 utcb_t	    __idle_utcb UNIT("cpulocal") __attribute__((aligned(sizeof(utcb_t))));

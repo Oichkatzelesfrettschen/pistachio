@@ -36,6 +36,9 @@
 #include INC_API(tcb.h)
 #include INC_GLUE(schedule.h)
 #include <kdb/tracepoints.h>
+#include <sync.h>
+
+DECLARE_SPINLOCK(sched_lock);
 
 EXTERN_TRACEPOINT(SCHEDULE_DETAILS);
 
