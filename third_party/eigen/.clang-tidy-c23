@@ -1,0 +1,4 @@
+Checks: '-*,clang-diagnostic-*,bugprone-*,modernize-*'
+WarningsAsErrors: ''
+Language: C
+Standard: c23

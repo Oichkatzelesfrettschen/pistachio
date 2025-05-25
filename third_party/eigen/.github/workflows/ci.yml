@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Run setup script
+        run: sudo bash ./setup.sh
+
+      - name: Run tests
+        run: |
+          set -euo pipefail
+          ./porter/build_all.sh 2>&1 | tee run_all.log
+
+      - name: Upload test logs
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-logs
+          path: |
+            run_all.log
+            /tmp/porter_build_failures.log
+            /tmp/c_out_host.txt
+            /tmp/c_out_ppc.txt
+            /tmp/cpp_out.txt
+            /tmp/c_out.txt
+          if-no-files: ignore

@@ -1,0 +1,14 @@
+#ifndef EIGEN_CXX23_SPINLOCK_MODULE
+#define EIGEN_CXX23_SPINLOCK_MODULE
+
+/** \defgroup CXX23_SpinLock_Module C++23 SpinLock Module
+  *\code
+  * #include <unsupported/Eigen/CXX23/SpinLock>
+  *\endcode
+  */
+
+#if __cplusplus >= 202002L
+#include "src/SpinLock.h"
+#endif
+
+#endif // EIGEN_CXX23_SPINLOCK_MODULE
