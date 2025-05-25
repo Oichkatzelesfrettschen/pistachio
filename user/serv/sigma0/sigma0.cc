@@ -34,6 +34,7 @@
 #include <l4/misc.h>
 #include <l4/kdebug.h>
 #include <l4io.h>
+#include <cstring>
 
 #include "sigma0.h"
 #include "region.h"
@@ -63,13 +64,7 @@ L4_ThreadId_t rootserver_id;
 extern "C" __attribute__ ((weak)) void *
 memcpy (void * dst, const void * src, unsigned int len)
 {
-    unsigned char *d = (unsigned char *) dst;
-    unsigned char *s = (unsigned char *) src;
-
-    while (len-- > 0)
-	*d++ = *s++;
-
-    return dst;
+    return std::memcpy(dst, src, len);
 }
 
 

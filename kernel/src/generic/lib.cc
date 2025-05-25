@@ -30,6 +30,7 @@
  *                
  ********************************************************************/
 #include <debug.h>
+#include <cstring>
 
 /*
  * Declare as weak to allow overloading by optimized processor
@@ -38,22 +39,11 @@
 
 extern "C" WEAK void * memcpy (void * dst, const void * src, unsigned int len)
 {
-    u8_t *d = (u8_t *) dst;
-    u8_t *s = (u8_t *) src;
-
-    while (len-- > 0)
-	*d++ = *s++;
-
-    return dst;
+    return std::memcpy(dst, src, len);
 }
 
 extern "C" WEAK void * memset (void * dst, unsigned int c, unsigned int len)
 {
-    u8_t *s = (u8_t *) dst;
-
-    while (len-- > 0)
-	*s++ = c;
-
-    return dst;
+    return std::memset(dst, c, len);
 }
 

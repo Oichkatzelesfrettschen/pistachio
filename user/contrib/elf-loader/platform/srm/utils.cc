@@ -32,6 +32,7 @@
 #include "alpha/hwrpb.h"
 
 #include <l4/types.h>
+#include <cstring>
 
 
 extern "C" int printf(const char *s, ...);
@@ -42,20 +43,13 @@ extern "C" void halt(void);
 
 extern "C" void memset (char * p, char c, int size)
 {
-    for (;size--;)
-	*(p++)=c;
+    std::memset(p, c, size);
 }
 
 extern "C" __attribute__ ((weak)) void *
 memcpy (void * dst, const void * src, unsigned int len)
 {
-    unsigned char *d = (unsigned char *) dst;
-    unsigned char *s = (unsigned char *) src;
-
-    while (len-- > 0)
-	*d++ = *s++;
-
-    return dst;
+    return std::memcpy(dst, src, len);
 }
 
 

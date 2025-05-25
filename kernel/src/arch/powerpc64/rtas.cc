@@ -37,6 +37,7 @@
 #include INC_GLUE(hwspace.h)
 #include <stdarg.h>
 #include <debug.h>
+#include <cstdint>
 
 /* The RTAS structure */
 rtas_t rtas;
@@ -101,7 +102,10 @@ void SECTION(".init") rtas_t::init_arch( void )
 
 	this->size = rtas_size;
 
-	rtas_alloc_size = (word_t)addr_align_up ((addr_t)(word_t)rtas_size, POWERPC64_PAGE_SIZE);
+        rtas_alloc_size = static_cast<word_t>(
+            addr_align_up(
+                reinterpret_cast<addr_t>(static_cast<std::uintptr_t>(rtas_size)),
+                POWERPC64_PAGE_SIZE));
 	
 	total_mem = (word_t)kip_get_phys_mem(kip);
 

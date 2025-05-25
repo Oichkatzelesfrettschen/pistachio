@@ -38,6 +38,7 @@
 #include <openfirmware/console.h>
 #include <openfirmware/device_tree.h>
 #include <openfirmware/openfirmware.h>
+#include <cstring>
 
 #warning awiggins (14-08-03): This needs to be fixed up to make KIP_ADDR phys!
 void * kip_paddr = (void *)(KIP_ADDR - 0xFFFFF80000000000);
@@ -93,12 +94,6 @@ main(void)
 extern "C" __attribute__ ((weak)) void *
 memcpy (void * dst, const void * src, unsigned int len)
 {
-    unsigned char *d = (unsigned char *) dst;
-    unsigned char *s = (unsigned char *) src;
-
-    while (len-- > 0)      
-	*d++ = *s++;
-
-    return dst;
+    return std::memcpy(dst, src, len);
 
 } // memcpy()

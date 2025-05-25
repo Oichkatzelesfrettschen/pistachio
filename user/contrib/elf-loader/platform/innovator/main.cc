@@ -33,6 +33,7 @@
 
 #include <l4io.h>
 #include <elf-loader.h>
+#include <cstring>
 #include "io.h"
 
 #define PHYS_OFFSET 0x00000000
@@ -50,20 +51,13 @@ extern "C" void putc(int c)
 
 extern "C" void memset (char * p, char c, int size)
 {
-    for (;size--;)
-        *(p++)=c;
+    std::memset(p, c, size);
 }
 
 extern "C" __attribute__ ((weak)) void *
 memcpy (void * dst, const void * src, unsigned int len)
 {
-    unsigned char *d = (unsigned char *) dst;
-    unsigned char *s = (unsigned char *) src;
-
-    while (len-- > 0)                    
-        *d++ = *s++;
-
-    return dst;                          
+    return std::memcpy(dst, src, len);
 }
 
 void start_kernel(L4_Word_t bootaddr)

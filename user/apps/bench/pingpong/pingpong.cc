@@ -37,6 +37,7 @@
 #include <l4/kdebug.h>
 #include <l4io.h>
 #include <l4/arch.h>
+#include <cstring>
 
 #if defined(L4_ARCH_POWERPC64)
 extern long _start_pager;
@@ -82,8 +83,7 @@ static L4_Word_t page_bits;
 
 extern "C" void memset (char * p, char c, int size)
 {
-    for (;size--;)
-	*(p++)=c;
+    std::memset(p, c, size);
 }
 
 

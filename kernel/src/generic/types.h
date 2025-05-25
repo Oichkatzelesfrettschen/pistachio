@@ -36,6 +36,7 @@
 #if !defined(ASSEMBLY)
 
 #include INC_ARCH(types.h)
+#include <cstdint>
 /* At this point we should have word_t defined */
 
 #if defined(CONFIG_IS_32BIT)
@@ -71,7 +72,9 @@ typedef word_t		addr_word_t;
  */
 INLINE addr_t addr_offset(addr_t addr, addr_t off)
 {
-    return (addr_t)((word_t)addr + (word_t)off);
+    return reinterpret_cast<addr_t>(
+        reinterpret_cast<std::uintptr_t>(addr) +
+        reinterpret_cast<std::uintptr_t>(off));
 }
 #endif
 
@@ -83,7 +86,8 @@ INLINE addr_t addr_offset(addr_t addr, addr_t off)
  */
 INLINE addr_t addr_offset(addr_t addr, word_t off)
 {
-    return (addr_t)((word_t)addr + off);
+    return reinterpret_cast<addr_t>(
+        reinterpret_cast<std::uintptr_t>(addr) + off);
 }
 
 /**
@@ -94,7 +98,8 @@ INLINE addr_t addr_offset(addr_t addr, word_t off)
  */
 INLINE addr_t addr_mask (addr_t addr, word_t mask)
 {
-    return (addr_t) ((word_t) addr & mask);
+    return reinterpret_cast<addr_t>(
+        reinterpret_cast<std::uintptr_t>(addr) & mask);
 }
 
 /**

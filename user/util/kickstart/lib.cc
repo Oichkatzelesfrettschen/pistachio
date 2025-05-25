@@ -30,6 +30,7 @@
  *                
  ********************************************************************/
 #include "lib.h"
+#include <cstring>
 
 extern "C" unsigned strlen( const char *src )
 {
@@ -66,11 +67,9 @@ extern "C" void strcpy( char *dst, const char *src )
  */
 extern "C" void memcopy(L4_Word_t dst, L4_Word_t src, L4_Word_t len)
 {
-    L4_Word8_t* s = (L4_Word8_t*) src;
-    L4_Word8_t* d = (L4_Word8_t*) dst;
-    
-    while (len--)
-        *d++ = *s++;
+    std::memcpy(reinterpret_cast<void*>(dst),
+                reinterpret_cast<void*>(src),
+                len);
 }
 
 
@@ -86,10 +85,7 @@ extern "C" void memcopy(L4_Word_t dst, L4_Word_t src, L4_Word_t len)
  */
 extern "C" void memset(L4_Word_t dst, L4_Word8_t val, L4_Word_t len)
 {
-    L4_Word8_t* d = (L4_Word8_t*) dst;
-
-    while (len--)
-        *d++ = val;
+    std::memset(reinterpret_cast<void*>(dst), val, len);
 }
 
 

@@ -256,11 +256,14 @@ public:
 	acpi_thead_t *head = nullptr;
 	for (word_t i = 0; i < ((header.len-sizeof(header))/sizeof(ptrs[0])) && !head; i++)
 	{
-	    acpi_thead_t* t= (acpi_thead_t*)(acpi_remap((addr_t)(word_t)ptrs[i]));
+            acpi_thead_t* t= reinterpret_cast<acpi_thead_t*>(
+                acpi_remap(reinterpret_cast<addr_t>(
+                    static_cast<std::uintptr_t>(ptrs[i]))));
 
 	    if (t->sig[0] == sig[0] && t->sig[1] == sig[1] && 
 		t->sig[2] == sig[2] && t->sig[3] == sig[3])
-		head = (acpi_thead_t*)(addr_t)(word_t)ptrs[i];
+                head = reinterpret_cast<acpi_thead_t*>(
+                    static_cast<std::uintptr_t>(ptrs[i]));
 	    acpi_remap(myself_phys);
 	}
 	return head;
@@ -269,7 +272,9 @@ public:
     void list(addr_t myself_phys) {
 	for (word_t i = 0; i < ((header.len-sizeof(header))/sizeof(ptrs[0])); i++)
 	{
-	    UNUSED acpi_thead_t* t= (acpi_thead_t*)(acpi_remap((addr_t)ptrs[i]));
+            UNUSED acpi_thead_t* t= reinterpret_cast<acpi_thead_t*>(
+                acpi_remap(reinterpret_cast<addr_t>(
+                    static_cast<std::uintptr_t>(ptrs[i]))));
 	    TRACE_INIT("\t%c%c%c%c is at %p\n",
 		       t->sig[0], t->sig[1], t->sig[2], t->sig[3], ptrs[i]);
 	    acpi_remap(myself_phys);
@@ -305,7 +310,8 @@ public:
 	    csum += ((char*)this)[i];
 	if (csum != 0)
 	    return nullptr;
-	return (acpi_rsdt_t*) (word_t)rsdt_ptr;
+        return reinterpret_cast<acpi_rsdt_t*>(
+            static_cast<std::uintptr_t>(rsdt_ptr));
     };
     acpi_xsdt_t* xsdt() {
 	/* check version - only ACPI 2.0 knows about an XSDT */
@@ -318,7 +324,8 @@ public:
 	    csum += ((char*)this)[i];
 	if (csum != 0)
 	    return nullptr;
-	return (acpi_xsdt_t*) (word_t)xsdt_ptr;
+        return reinterpret_cast<acpi_xsdt_t*>(
+            static_cast<std::uintptr_t>(xsdt_ptr));
     };
 
     friend class kdb_t;
