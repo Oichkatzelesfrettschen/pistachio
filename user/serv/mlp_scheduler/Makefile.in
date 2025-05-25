@@ -1,0 +1,6 @@
+SRCS = mlp_scheduler.cc
+LIBS += -ll4 -lio -lsched -lmlp
+LDFLAGS += -Ttext=$(ROOTTASK_LINKBASE)
+
+include \
+    $(top_srcdir)/Mk/l4.prog.mk

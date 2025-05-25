@@ -52,7 +52,7 @@ CFLAGS=		-std=c2x
 CXXFLAGS=       $(CXXSTD) -fno-exceptions
 CXXSTD=	-std=c++23
 LDFLAGS=	
-CPPFLAGS=	
+CPPFLAGS= -I$(top_srcdir)/../third_party/eigen
 LGCC=		-lgcc
 
 TOOLPREFIX=	
