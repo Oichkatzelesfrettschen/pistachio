@@ -105,7 +105,8 @@ for pkg in \
   libopenblas-dev liblapack-dev libeigen3-dev \
   strace ltrace linux-perf systemtap systemtap-sdt-dev crash \
   valgrind kcachegrind trace-cmd kernelshark \
-  libasan6 libubsan1 likwid hwloc; do
+  libasan6 libubsan1 likwid hwloc \
+  shellcheck graphviz doxygen python3-sphinx llvm-17-tools capnproto; do
   apt_pin_install "$pkg"
 done
 
