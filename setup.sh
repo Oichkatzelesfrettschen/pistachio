@@ -15,6 +15,20 @@ log(){
   echo "$(date +'%Y-%m-%d %H:%M:%S') $*" | tee -a "$LOG_FILE"
 }
 
+# Attempt apt-get update and dist-upgrade with retries
+apt_update_upgrade(){
+  local attempt=1
+  while [ $attempt -le "$APT_RETRIES" ]; do
+    if apt-get update -y && apt-get dist-upgrade -y; then
+      return 0
+    fi
+    log "APT update attempt $attempt failed"
+    attempt=$((attempt+1))
+    sleep 2
+  done
+  return 1
+}
+
 # Disable potentially stale proxy settings that can break networking
 unset http_proxy https_proxy HTTP_PROXY HTTPS_PROXY ftp_proxy FTP_PROXY || true
 
@@ -22,6 +36,8 @@ unset http_proxy https_proxy HTTP_PROXY HTTPS_PROXY ftp_proxy FTP_PROXY || true
 OFFLINE=0
 # Enable verbose tracing with DEBUG=1 or --debug
 DEBUG="${DEBUG:-0}"
+# Number of attempts for APT operations when network flakiness occurs
+APT_RETRIES=3
 for arg in "$@"; do
   case "$arg" in
     --offline)
@@ -99,7 +115,7 @@ PIP_FLAGS="--no-cache-dir"
 
 APT_OK=1
 if [ "$OFFLINE" -eq 0 ]; then
-  if apt-get update -y && apt-get dist-upgrade -y; then
+  if apt_update_upgrade; then
     APT_OK=1
   else
     echo "apt-get update/dist-upgrade failed. Check network or proxy settings." | tee -a "$FAIL_LOG"
@@ -336,6 +352,15 @@ command -v gmake >/dev/null 2>&1 || ln -s "$(command -v make)" /usr/local/bin/gm
 #- clean up
 apt-get clean
 rm -rf /var/lib/apt/lists/*
+
+analyze_failures(){
+  if [ -s "$FAIL_LOG" ]; then
+    log "Troubleshoot issues logged to $FAIL_LOG"
+    grep -v '^$' "$FAIL_LOG" | sort -u > "$FAIL_LOG.analyzed"
+  fi
+}
+
+analyze_failures
 
 if [ -s "$FAIL_LOG" ]; then
   echo "=== Setup completed with issues ==="
