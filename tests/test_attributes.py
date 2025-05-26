@@ -34,7 +34,7 @@ class CompilerAttributeTest(unittest.TestCase):
                 '-std=c++23',
                 '-Werror',
                 '-Wno-attributes',
-                '-Iuser/include',
+                '-Iengine/include',
                 '-c',
                 name,
             ], check=True)

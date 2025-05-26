@@ -25,7 +25,7 @@ class TypeSizeCompilationTest(unittest.TestCase):
                 "-std=c++23",
                 "-Werror",
                 "-I",
-                str(ROOT / "user/include"),
+                str(ROOT / "engine/include"),
                 "-c",
                 str(src),
             ]
