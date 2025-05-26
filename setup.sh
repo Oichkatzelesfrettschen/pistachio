@@ -7,6 +7,9 @@
 set -euo pipefail
 export DEBIAN_FRONTEND=noninteractive
 
+# Disable potentially stale proxy settings that can break networking
+unset http_proxy https_proxy HTTP_PROXY HTTPS_PROXY ftp_proxy FTP_PROXY || true
+
 # Optional offline mode installs packages from offline_packages/*.deb
 OFFLINE=0
 # Enable verbose tracing with DEBUG=1 or --debug
@@ -30,6 +33,11 @@ fi
 FAIL_LOG="/tmp/setup_failures.log"
 echo "Recording install failures to $FAIL_LOG"
 : > "$FAIL_LOG"
+
+# Basic network connectivity check
+if ! curl -fsSL http://archive.ubuntu.com/ >/dev/null 2>&1; then
+  echo "Network connectivity to archive.ubuntu.com failed or proxy misconfigured" | tee -a "$FAIL_LOG"
+fi
 
 # Ensure repository submodules are present
 git submodule update --init --recursive || echo "submodule init failed" | tee -a "$FAIL_LOG"
@@ -82,7 +90,7 @@ if [ "$OFFLINE" -eq 0 ]; then
   if apt-get update -y && apt-get dist-upgrade -y; then
     APT_OK=1
   else
-    echo "apt-get update/dist-upgrade failed" | tee -a "$FAIL_LOG"
+    echo "apt-get update/dist-upgrade failed. Check network or proxy settings." | tee -a "$FAIL_LOG"
     APT_OK=0
     # When we cannot update packages assume offline and avoid network access in pip
     PIP_FLAGS="--no-index"
