@@ -1,0 +1,243 @@
+# 
+# Mach Operating System
+# Copyright (c) 1992 Carnegie Mellon University
+# All Rights Reserved.
+# 
+# Permission to use, copy, modify and distribute this software and its
+# documentation is hereby granted, provided that both the copyright
+# notice and this permission notice appear in all copies of the
+# software, derivative works or modified versions, and any portions
+# thereof, and that both notices appear in supporting documentation.
+# 
+# CARNEGIE MELLON ALLOWS FREE USE OF THIS SOFTWARE IN ITS "AS IS"
+# CONDITION.  CARNEGIE MELLON DISCLAIMS ANY LIABILITY OF ANY KIND FOR
+# ANY DAMAGES WHATSOEVER RESULTING FROM THE USE OF THIS SOFTWARE.
+# 
+# Carnegie Mellon requests users of this software to return to
+# 
+#  Software Distribution Coordinator  or  Software.Distribution@CS.CMU.EDU
+#  School of Computer Science
+#  Carnegie Mellon University
+#  Pittsburgh PA 15213-3890
+# 
+# any improvements or extensions that they make and grant Carnegie Mellon 
+# the rights to redistribute these changes.
+#
+#
+# HISTORY
+# $Log:	MASTER,v $
+# Revision 2.3  92/07/08  16:16:47  mrt
+# 	Removed second_server option from STD so it would build under a
+# 	BNR system. Added isofs option
+# 	[92/07/06            mrt]
+# 
+# Revision 2.2  92/04/22  14:00:59  rwd
+# 	"mach" is no longer a option.  Nothing depends on it now.
+# 	[92/04/22            rwd]
+# 
+# Revision 2.1  92/04/21  17:11:43  rwd
+# BSDSS
+# 
+#
+#
+
+#######################################################################
+#
+#	Master machine independent configuration file.
+#
+#	Specific configuration files are created based on this and
+#	the machine specific master file using the doconf script.
+#
+#	Any changes to the master configuration files will affect all
+#	other configuration files based upon it.
+#
+#######################################################################
+#
+#	To build a configuration, execute "doconf <configuration>."
+#	Configurations are specified in the "Configurations:" section
+#	of the MASTER and MASTER.* files as follows:
+#
+#	<configuration> = [ <attribute0> <attribute1> ... <attributeN> ]
+#
+#	Lines in the MASTER and MASTER.* files are selected based on
+#	the attribute selector list, found in a comment at the end of
+#	the line.  This is a list of attributes separated by commas.
+#	The "!" operator selects the line if none of the attributes are
+#	specified.
+#
+#	For example:
+#
+#	<foo,bar>	selects a line if "foo" or "bar" are specified.
+#	<!foo,bar>	selects a line if neither "foo" nor "bar" is
+#			specified.
+#
+#	Lines with no attributes specified are selected for all
+#	configurations.
+#
+#######################################################################
+#
+#  STANDARD CONFIGURATION OPTIONS (select any combination)
+#
+#	debug   = extra kernel level debugging support
+#	mach    = Mach support 
+#	unix    = a UNIX perspective on the world
+#
+#  EXPERIMENTAL CONFIGURATION OPTIONS (select any combination, carefully)
+#
+#	nbc     = no buffer cache support
+#
+#  PSEUDO-DEVICES (select any combination)
+#
+#	sl   = Serial line IP support
+#
+#  MULTI-PROCESSOR CONFIGURATION (select at most one)
+#
+#	multi16 = enable 16 multi-processors
+#	multi32 = enable 32 multi-processors
+#	multi64 = enable 64 multi-processors
+#
+#  SYSTEM SIZE CONFIGURATION (select no more than one)
+#
+#	xlarge = extra large scale system configuration
+#	large  = large scale system configuration
+#	medium = medium scale system configuration
+#	small  = small scale system configuration
+#	xsmall = extra small scale system configuration
+#	bsmall = special extra small scale system configuration for
+#		 (e.g. for boot floppies)
+#
+#######################################################################
+#
+#  DEPRECATED CONFIGURATION OPTIONS (select any combination, reluctantly)
+#
+#	oldfs   = 4.1 file system support
+#	oldipc  = old CMU IPC support
+#
+#  DEPRECATED PSEUDO-DEVICES (select any combination, reluctantly)
+#
+#	fe   = CMU CS Front End terminal support
+#	ild  = INGRES lock device support
+#
+#######################################################################
+#  
+#
+#  Standard Configuration Components:
+#  -------- ------------- ----------
+#
+#  STD       = [      mach unix small MSTD tcp_compat_42 inet mtime syscalltrace debug]
+#
+#  BS	     = [bsmall]
+#  XS        = [xsmall]
+#  S         = [ small]
+#  M         = [medium]
+#  L         = [ large]
+#  XL        = [xlarge]
+#
+#  (Optional for multi-processor configurations)
+#
+#  64        = [multi64]
+#  32        = [multi32]
+#  16        = [multi16]
+#
+#  Options which are almost always turned on when mach is turned on,
+#  but can still be individually selected (eg, "MACH-ipc_tcache"):
+#
+#  MSTD      = [ atsys ]
+#
+#  Some old Mach configuration shorthands... to construct a configuration
+#  for an old name like "MACHRTEMUL" use "MACH+mach_emulation":
+#
+#  MACH          = [ STD ]
+#  MACHXPE       = [ MACH me ]
+#
+#  MACHSUN3      = [ STD ANY ]
+#  MACHRT        = [ STD ANY ]
+#  MACHMM        = [ debug unix MSTD ANY multi64 xlarge timing simple ]
+#  MACHSQT       = [ debug unix MSTD ANY multi32 xlarge db ]
+#
+#  DIR           = [ vmtp np ]
+#
+#  To protect the innocent:
+#
+#  mach_emulation = [ me ]
+#
+#######################################################################
+#
+ident		CMU
+
+options		DEBUG		# <debug>
+options		SECOND_SERVER	# <second_server>
+options		COMPAT_42	# <compat_42>
+options		GENERIC		# <!bsmall>
+options		INET		# <inet>
+options		TRACE		# <trace>
+options		KTRACE		# <ktrace>
+options		KMEMSTATS	# <kmemstats>
+options		GPROF		# <gprof>
+options		ISO		# <iso>
+options		NS		# <ns>
+options		NSIP		# <nsip>
+options		EON		# <eon>
+options		CCITT		# <ccitt>
+options		RMP		# <rmp>
+options		TPIP		# <tpip>
+options		DIAGNOSTIC	# <diagnostic>
+options		GATEWAY		# <gateway>
+options		SYSVSHM		# <sysvshm>
+options		FIFO		# <fifo>
+options		MFS		# <mfs>
+options		BPFILTER	# <bpfilter>
+options		TCP_COMPAT_42   # <tcp_compat_42>
+options		MACH		# Standard Mach features
+options		NFS		# Network File System		# <nfs>
+options		ISOFS		# ISO9660 file system		# <isofs>
+options		MAP_ETHER	# Use mapped ethernet		# <map_ether>
+options		MAP_TIME	# Use mapped time from kernel	# <mtime>
+options		QUOTA		# <quota>
+options		SYSCALLTRACE	# <syscalltrace>
+
+#maxusers	64		# <xlarge>
+#maxusers	50		# <large>
+#maxusers	32		# <medium>
+#maxusers	16		# <small>
+#maxusers	8		# <xsmall>
+#maxusers	2		# <bsmall>
+
+#
+#  Multi-processor selection
+#
+pseudo-device	cpus		64	# <multi64>
+pseudo-device	cpus		32	# <multi32>
+pseudo-device	cpus		16	# <multi16>
+pseudo-device	cpus		2	# <!multi64,multi32,multi16>
+#
+#  CMU pseudo terminal service
+#
+#  Ethernet (ARP)
+#
+pseudo-device	ether
+#
+#   SL-IP
+#
+pseudo-device	sl			# <sl>
+#
+#  Network loopback device
+#
+pseudo-device	loop
+#
+# Number of communication ttys:
+#
+pseudo-device	com	2
+#
+#  UCB pseudo terminal service
+#
+pseudo-device	pty	80			# <!bsmall>
+pseudo-device	netthreads	2
+pseudo-device	mbclusters	256
+
+pseudo-device	vnodepager	1
+
+pseudo-device	imp		0
+
+pseudo-device	log
+pseudo-device	hy		0

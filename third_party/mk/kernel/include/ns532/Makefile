@@ -1,0 +1,44 @@
+#
+# Mach Operating System
+# Copyright (c) 1993-1989 Carnegie Mellon University
+# All Rights Reserved.
+# 
+# Permission to use, copy, modify and distribute this software and its
+# documentation is hereby granted, provided that both the copyright
+# notice and this permission notice appear in all copies of the
+# software, derivative works or modified versions, and any portions
+# thereof, and that both notices appear in supporting documentation.
+# 
+# CARNEGIE MELLON ALLOWS FREE USE OF THIS SOFTWARE IN ITS "AS IS"
+# CONDITION.  CARNEGIE MELLON DISCLAIMS ANY LIABILITY OF ANY KIND FOR
+# ANY DAMAGES WHATSOEVER RESULTING FROM THE USE OF THIS SOFTWARE.
+# 
+# Carnegie Mellon requests users of this software to return to
+# 
+#  Software Distribution Coordinator  or  Software.Distribution@CS.CMU.EDU
+#  School of Computer Science
+#  Carnegie Mellon University
+#  Pittsburgh PA 15213-3890
+# 
+# any improvements or extensions that they make and grant Carnegie Mellon
+# the rights to redistribute these changes.
+#
+#
+# HISTORY
+# $Log:	Makefile,v $
+# Revision 2.2  93/02/04  13:46:10  mrt
+# 	Created for ODE make
+# 	[92/12/17            mrt]
+# 
+
+
+VPATH			= ../../ns532
+
+INCLUDES		= asm.h inst.h mmu.h psl.h trap.h \
+                          ast.h ipl.h pdma.h setjmp.h vm_tuning.h \
+                          db_machdep.h mach_param.h pic.h thread.h xpr.h \
+                          fp_reg.h machparam.h pmap.h time_stamp.h
+
+EXPDIR			= /kernel/ns532/
+
+.include <${RULES_MK}>

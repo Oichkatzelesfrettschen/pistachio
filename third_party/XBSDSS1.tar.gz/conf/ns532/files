@@ -1,0 +1,46 @@
+# 
+# Mach Operating System
+# Copyright (c) 1992 Carnegie Mellon University
+# All Rights Reserved.
+# 
+# Permission to use, copy, modify and distribute this software and its
+# documentation is hereby granted, provided that both the copyright
+# notice and this permission notice appear in all copies of the
+# software, derivative works or modified versions, and any portions
+# thereof, and that both notices appear in supporting documentation.
+# 
+# CARNEGIE MELLON ALLOWS FREE USE OF THIS SOFTWARE IN ITS "AS IS"
+# CONDITION.  CARNEGIE MELLON DISCLAIMS ANY LIABILITY OF ANY KIND FOR
+# ANY DAMAGES WHATSOEVER RESULTING FROM THE USE OF THIS SOFTWARE.
+# 
+# Carnegie Mellon requests users of this software to return to
+# 
+#  Software Distribution Coordinator  or  Software.Distribution@CS.CMU.EDU
+#  School of Computer Science
+#  Carnegie Mellon University
+#  Pittsburgh PA 15213-3890
+# 
+# any improvements or extensions that they make and grant Carnegie Mellon 
+# the rights to redistribute these changes.
+#
+#
+# HISTORY
+# $Log:	files,v $
+#
+#
+
+OPTIONS/syscalltrace		optional syscalltrace
+OPTIONS/mach_rdb		optional mach_rdb
+OPTIONS/stack_limit_check	optional stack_limit_check
+OPTIONS/itrace			optional itrace
+OPTIONS/idebug			optional idebug
+
+ns532/machdep.c			standard
+ns532/conf.c			standard
+ns532/ns532_exception.c		optional mach
+ns532/in_cksum.c		optional inet
+ns532/misc_asm.s		standard
+ns532/ntoh.s			standard
+ns532/queue.c			standard
+# Added by us to allow a second server to run under another BSD server:
+ns532/second_syscalls.s		optional second_server

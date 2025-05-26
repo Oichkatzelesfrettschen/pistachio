@@ -1,0 +1,601 @@
+    
+    
+    
+==========================================================================
+   ***** BSDSS Version BSDSS1  (rwd) *****
+    
+    
+New features:
+--- --------
+
+This is the first version.  It works only on i386 and only
+as a second server.  The tty code does not echo and does
+not deal with ^M correctly for standalone.  NFS is off.
+Jolitz binaries are used for environment.  CMU binaries
+will load and run if they don't use signals and non BSD
+syscalls.
+
+This is an internal release only.  This will be made public
+in the near future.  PLEASE do not send mail to me or anyone
+else regarding this at this time.
+
+******** CUT HERE ******** summary of log messages ******** CUT HERE ********
+[ ./conf/version.edit ]
+1
+[ ./emulator/allocator.c ]
+Fix mach.h include.
+[92/04/22            rwd]
+[ ./emulator/emul_generic.c ]
+Fix mach.h include.
+[92/04/22            rwd]
+[ ./emulator/emul_init.c ]
+Fix mach.h include.
+[92/04/22            rwd]
+[ ./emulator/emul_stack_alloc.c ]
+Fix mach.h include.
+[92/04/22            rwd]
+[ ./emulator/i386/emul_machdep.c ]
+Fix mach.h include.
+[92/04/22            rwd]
+[ ./server/conf/MASTER ]
+"mach" is no longer a option.  Nothing depends on it now.
+[92/04/22            rwd]
+[ ./server/conf/Makefile.i386 ]
+LIBS and -L of MKLIB is not machine specific.
+[92/04/22            rwd]
+[ ./server/conf/Makefile.template ]
+Remove default_pager_object references.
+[92/04/22            rwd]
+[ ./server/conf/files ]
+Remove OPTIONS/mach line.  No longer needed and conflicts
+with MK include mach.h.
+[92/04/22            rwd]
+[ ./server/uxkern/import_mach.h ]
+Undef DEBUG here since cthreads.h uses DEBUG.  This should go
+away when cthreads.h is fixed.
+[92/04/22            rwd]
+[ ./server/uxkern/misc.c ]
+Remove some obsolete code.  Fix includes.
+[92/04/22            rwd]
+[ ./server/vm/vm_unix.c ]
+Fix call to round_page.
+[92/04/22            rwd]
+[ ./emulator/Makefile ]
+Must link crt0.o explicitly
+[92/04/22            rwd]
+[ ./NOTES ]
+NOTES
+    
+    
+    
+==========================================================================
+   ***** BSDSS Version BSDSS2  (rwd) *****
+    
+    
+New features:
+--- --------
+
+Other than bugfixes...
+
+Added some support for ptrace.  386BSD gdb sort of works.  It
+stops a couple of times in emulator e_exec_call, but that can
+just be continued past.
+
+Added sysctrace() at #201.  It takes one argument, a pid.  This
+will turn on syscall tracing for that pid.  Messages go to console
+and syslogd.  Tail -f /var/log/messages w/o access to console and
+up multiuser.
+
+Bug fixes:
+--- -----
+
+Yes.
+
+Special notes:
+------- -----
+
+This will become the first publically suppable version.  Stay tuned...
+
+******** CUT HERE ******** summary of log messages ******** CUT HERE ********
+[ ./conf/version.edit ]
+2
+[ ./server/kern/kern_synch.c ]
+Fix p->p_lock releasing in resume case.
+[92/05/19            rwd]
+[ ./server/conf/version.minor ]
+Don't call this 4.4, yet.
+[ ./server/conf/version.patch ]
+BNR2
+[ ./server/i386/conf.c ]
+Added scsi disk "sd".
+[92/05/21            rwd]
+[ ./server/i386/machdep.c ]
+Added ptrace support from UX and additional to support
+     386BSD gdb.
+[92/05/21            rwd]
+[ ./server/i386/npx.h ]
+Added for compatibilty for ptrace.
+[92/05/23            rwd]
+[ ./server/i386/pcb.h ]
+Added for comptability for ptrace.
+[92/05/23            rwd]
+[ ./server/i386/reg.h ]
+Define NIPCREG always, nuke ipcreg.
+[92/05/22            rwd]
+[ ./server/i386/tss.h ]
+Added for compatibilty for ptrace.
+[92/05/23            rwd]
+[ ./server/kern/kern_exec.c ]
+Fix string overflow in strcpy of command name.
+[92/05/24            rwd]
+[ ./server/kern/kern_exit.c ]
+Clean up so exit can be called on behalf of a proc
+by another like in ptrace.
+[92/05/25            rwd]
+[ ./server/kern/kern_fork.c ]
+Include ptrace code.
+[92/05/20            rwd]
+[ ./server/kern/kern_proc.c ]
+Fix includes
+[92/05/18            rwd]
+[ ./server/kern/kern_sig.c ]
+Fix this and that.
+[92/05/21            rwd]
+[ ./server/kern/kern_synch.c ]
+Only set p_stat to SSLEEP if it was SRUN.  May be SSTOP for example
+in which case we don't want to reset it.
+[92/05/23            rwd]
+[ ./server/kern/makesyscalls.sh ]
+Fix includes.
+[92/05/18            rwd]
+[ ./server/kern/subr_rmap.c ]
+Panic so we can find refereneces.
+[92/04/24            rwd]
+[ ./server/kern/sys_process.c ]
+Picked up version from net and mangled it.
+[92/05/20            rwd]
+[ ./server/kern/syscalls.master ]
+	Added 201 sysctrace.
+[92/05/25            rwd]
+
+	Added duplicate of getdirentries at 164 for compatibility with
+	MACH386.
+[92/05/20            rwd]
+[ ./server/kern/uipc_syscalls.c ]
+Bug fix from Karl.Kleinpaste@cs.cmu.edu
+[92/05/11            rwd]
+[ ./server/net/if.h ]
+Fix includes.
+[92/05/18            rwd]
+[ ./server/nfs/nfs_subs.c ]
+asiz bugfix from net.
+[92/04/24            rwd]
+[ ./server/nfs/nfs_vnops.c ]
+Clean up unused code.
+[92/05/04  15:02:19  rwd]
+[ ./server/sys/proc.h ]
+Move modified fields to end so the structure is the same
+as original 386BSD.  This allows ptrace code to run w/o
+recompiling.
+[ ./server/sys/ptrace.h ]
+Picked up ptrace code from net.
+[92/05/20            rwd]
+[ ./server/sys/time.h ]
+Move struct tm under else.  From mrt.
+[92/05/18            rwd]
+[ ./server/sys/user.h ]
+Added syscall tracing fields.
+[92/05/21            rwd]
+[ ./server/ufs/ufs_subr.c ]
+Fix includes.
+[92/05/18            rwd]
+[ ./server/uxkern/misc.c ]
+Added syscalltrace().
+[92/05/25            rwd]
+[ ./server/uxkern/syscall_subr.c ]
+Add SSTRC code.
+[92/05/21            rwd]
+
+Allow multithreaded programs by condition_waiting for other
+thread to finish.
+[92/04/22            rwd]
+[ ./server/uxkern/tty_io.c ]
+Set termios defaults here.
+[92/05/04            rwd]
+[ ./server/uxkern/ux_syscall.c ]
+Add SSTRC code.
+[92/05/21            rwd]
+
+Clean up master_lock panic.  Fix race condition with exiting
+     proc getting reused.
+[92/05/19            rwd]
+    
+    
+    
+==========================================================================
+   ***** BSDSS Version BSDSS3  (rwd) *****
+    
+    
+New features:
+--- --------
+
+None.
+
+Bug fixes:
+--- -----
+
+Couple of problems that came up when moving to new machine.
+
+Special notes:
+------- -----
+
+This system was internally supped to a second machine and brought up.
+The external release should be this Monday.
+
+******** CUT HERE ******** summary of log messages ******** CUT HERE ********
+[ ./conf/version.edit ]
+3
+[ ./NOTES ]
+Update.
+[ ./server/i386/conf.c ]
+Fix bdevsw "sd" inconsistancy.
+[92/05/28            rwd]
+[ ./server/kern/tty.c ]
+Call ttsetwater at open time to get values in hiwat and lowat.
+[92/05/28            rwd]
+    
+    
+    
+==========================================================================
+   ***** BSDSS Version BSDSS4  (mrt) *****
+    
+    
+New features:
+--- --------
+ISO-file system from Adam Richter
+
+Slip support from Adam Richter
+
+Bug fixes:
+--- -----
+Fixes in signal handling that solve the ^c ^z problems in the csh.
+^z out of emacs is still fatal.
+
+FTP of long files now works.
+
+The passing of baud rates from the server to kernel have been
+fixed, courtesy of Adam Richter.
+
+User stack size now at 80K
+
+Organizational changes:
+-------------- -------
+This tree now builds with the OSF/ODE tools. The sources for these tools
+are available in the mach3.user sup collection which will be added to
+the BNR release as a source collection. You must get and build these
+tools before you can build this version of BSDSS. There is documentation
+on how to build and use these tools in the file /usr/mach/public/doc/mach3/
+ODE_build.{ps,doc} on our FTP machine, mach.cs.cmu.edu. 
+
+Special notes:
+------- -----
+We are now running STD+WS+nfs kernels which support NFS. There is still
+some chance of a deadlock in this version, but if you really want NFS
+it may be worth running. NOTE the STD+WS configuration does not support
+NFS.
+
+******** CUT HERE ******** summary of log messages ******** CUT HERE ********
+[ ./conf/version.edit ]
+4
+[ ./server/Makeconf ]
+Deleted
+[ ./emulator/Makeconf ]
+Deleted
+[ ./server/src/config/config.l ]
+renamed to parse.l
+[ ./server/src/config/config.y ]
+renamed to gram.y
+[ ./server/src/config/mkglue.c ]
+Code moved to <machine>/machinedep.c
+[ ./server/conf/Makefile.template ]
+renamed to template.mk
+[ ./server/conf/Makefile.i386 ]
+moved to i386/template.mk
+[ ./server/conf/MASTER.i386 ]
+moved to i386/MASTER
+[ ./server/conf/MASTER.i386.local ]
+moved to i386/MASTER.local
+[ ./server/conf/make.template ]
+Deleted
+[ ./server/conf/files.i386 ]
+Moved to i386/files
+[ ./Makeconf ]
+Created for ODE make
+[92/06/19            mrt]
+[ ./Makefile ]
+Created for ODE make
+[92/06/16  16:18:31  mrt]
+[ ./emulator/Makefile ]
+Modified for ODE make
+[92/06/16            mrt]
+[ ./emulator/i386/emul_machdep.c ]
+Changed emul_high_entry to 201.
+[92/06/15            rwd]
+
+Still had 63 as nosysent in one error case.  Change to 179.
+[92/06/15            rwd]
+[ ./server/kern/init_main.c ]
+Change stack size to 80 pages until I get a chance to fix
+make the grow code work.
+[92/06/15            rwd]
+[ ./server/kern/uipc_mbuf.c ]
+Preallocate mbufs in a chunk.
+[92/06/24            rwd]
+[ ./server/kern/vfs_bio.c ]
+Clear b_resid on release.  No one cares once released.
+[92/06/25            rwd]
+Set b_rcred before VOP_STRATEGY calls. [from Jolitz]
+[ ./server/sys/mbuf.h ]
+Return dtom back to masking.  Allocation routines will now
+correctly allign mbufs.
+[92/06/23            rwd]
+[ ./server/Makefile ]
+Created for ODE make
+[92/06/16            mrt]
+[ ./server/conf/Makefile ]
+New for ODE make.
+[92/06/16            mrt]
+
+$EndLog$
+[ ./server/conf/i386/MASTER ]
+Renamed and moved conf/MASTER.i386 to conf/i386/MASTER
+[92/06/16            mrt]
+[ ./server/conf/i386/MASTER.local ]
+Renamed and moved conf/MASTER.i386.local to
+conf/i386/MASTER.local
+[92/06/16            mrt]
+[ ./server/conf/i386/files ]
+Renamed and moved conf/files.i386 to conf/i386/files
+[92/06/16            mrt]
+[ ./server/conf/i386/template.mk ]
+Derived from conf/Makefile.i386, changed for ODE make.
+[92/06/16            mrt]
+[ ./server/conf/template.mk ]
+New Server makefile template for new Reno style make.
+This file used to be named Makefile.template. Much
+of the reformating was done by Glenn Marcy of the
+Open Software Foundation.
+[92/04/28            mrt]
+
+$EndLog$
+[ ./server/include/Makefile ]
+Created for ODE make
+[92/06/16  15:09:11  mrt]
+[ ./server/include/i386/Makefile ]
+Added new .h files
+[92/06/16            mrt]
+Created for ODE make
+
+$EndLog$
+[92/06/16  15:09:30  mrt]
+[ ./server/kern/makesyscalls.sh ]
+Corrected include of param.h
+[92/06/17            mrt]
+[ ./server/kern/subr_prf.c ]
+Fixed #ifdef SECOND_SERVER to #if SECOND_SERVER. Fix from
+Mike Dickson of Compuserve.
+[92/06/17            mrt]
+[ ./server/src/Makefile ]
+Created for ODE make.
+[92/06/16            mrt]
+[ ./server/src/config/I386/machinedep.c ]
+Moved machine dependent code from mkioconf and mkglue to here
+[92/06/17  13:44:50  mrt]
+[ ./server/src/config/I860/machinedep.c ]
+Moved machine dependent code from mkioconf and mkglue to here
+[92/06/17  13:45:01  mrt]
+[ ./server/src/config/Makefile ]
+Created for ODE Make
+[92/06/18            mrt]
+[ ./server/src/config/PMAX/machinedep.c ]
+Moved machine dependent code from mkioconf and mkglue to here
+[92/06/17  13:45:13  mrt]
+[ ./server/src/config/SUN3/machinedep.c ]
+Moved machine dependent code from mkioconf and mkglue to here
+[92/06/17  13:45:23  mrt]
+[ ./server/src/config/VAX/machinedep.c ]
+Moved machine dependent code from mkioconf and mkglue to here
+[92/06/17  13:45:34  mrt]
+[ ./server/src/config/config.h ]
+Modified for ODE make
+[92/06/17  13:37:22  mrt]
+[ ./server/src/config/gram.y ]
+Renamed from config.y
+[92/06/17  13:40:28  mrt]
+[ ./server/src/config/main.c ]
+Changes from OSF- Added -I flags in order to eliminate knowledge
+of how make is keeping its searchpath. Also eliminates use of
+fopenp which is a CMUism. Removed acient history from log.
+[92/04/27            mrt]
+[ ./server/src/config/mkheaders.c ]
+Removed old Sun specific code to only use max unit number rather than
+count to dimension the devices. This will give dimension for more 
+devices than necessary in the case of sd0 on sc and sd0 on si. 
+But is is machine independent.
+[91/06/03            mrt]
+[ ./server/src/config/mkioconf.c ]
+Modified for ODE make
+[92/06/17  13:41:21  mrt]
+[ ./server/src/config/mkmakefile.c ]
+Changes from OSF - Find machine dependent file in subdirectories.
+Removed %RULES macro, now the rules all come from the .mk files.
+[92/04/27            mrt]
+
+Output the makevariable options from MASTER before at start
+of Makefile like was done originally so that they can be used
+to trigger conditonal rules. 
+[91/05/24            mrt]
+
+Changed MACHINE variable in do_swapspec to KERN_MACHINE_DIR} to
+be sure we get swapconfig.c from the kernel directory for the 
+target machine.
+[91/05/22            mrt]
+[ ./server/src/config/mkswapconf.c ]
+Modified for ODE make
+[92/06/17  13:41:45  mrt]
+[ ./server/src/config/parse.l ]
+Renamed from config.l
+[92/06/17  13:39:41  mrt]
+[ ./server/uxkern/user_copy.c ]
+Removed the rcsci.
+[92/06/25            mrt]
+[ ./conf/copyright ]
+Removed HISTORY and $Log:	MERGE_HISTORY,v $
+NONERevision 2.5  92/07/09  16:10:55  mrt
+NONE	BSDSS Version BSDSS4
+NONE marker so that the file would stay
+a clean copyright to be inserted in the vers.o file.
+
+[ ./server/sys/param.h ]
+Up MAXCOMLEN and MAXINTERP
+[92/07/07            rwd]
+[ ./server/kern/kern_synch.c ]
+Initialize p_timedout and timed_out.
+[92/07/07            rwd]
+Only set p_stat to SRUN if it was SSLEEP.  Could have been stopped
+while asleep.
+[92/07/06            rwd]
+[ ./server/kern/init_main.c ]
+Recast arguements in vm_allocate calls to eliminate warnings.
+[92/07/06            mrt]
+[ ./server/kern/kern_exec.c ]
+Choose name of mach_servers directory based on whether we are
+run as a second server or not.
+[92/07/06            mrt]
+[ ./server/conf/Makefile.version ]
+No longer used
+[ ./server/conf/touch.c ]
+Not used
+[ ./Directories/ALL ]
+Added isofs and server/include
+[92/06/25            rwd]
+[ ./Directories/MI ]
+Added isofs and include.
+[92/06/25            rwd]
+[ ./Directories/i386 ]
+Added server/conf/i386 and server/include/i386
+[92/07/08            mrt]
+[ ./emulator/Makefile ]
+Used ASCPP for preprocessing .s files as vanilla gcc does not
+understand the -ES switch.
+[92/07/06            mrt]
+[ ./emulator/allocator.c ]
+Renamed local version of vm_map to em_vm_map so it wouldn't get
+confused with the prototype of the kernel's vm_map which has
+different arguments.
+[92/07/06            mrt]
+[ ./emulator/emul_stack_alloc.c ]
+Renamed local version of vm_map to em_vm_map so it wouldn't get
+confused with the prototype of the kernel's vm_map which has
+different arguments.
+[92/07/06            mrt]
+[ ./emulator/i386/emul_machdep.c ]
+Added recasts to remove gcc warnings.
+[ ./server/conf/MASTER ]
+Removed second_server option from STD so it would build under a
+BNR system. Added isofs option
+[92/07/06            mrt]
+[ ./server/conf/files ]
+Added isofs files.
+[92/06/25            rwd]
+[ ./server/conf/template.mk ]
+Dropped the -MD from MIGFLAGS. If it is appropriate, it will be
+defined in osf.mach3.mk
+[92/07/06            mrt]
+
+Changed the SOBJS rule to use all the CCFLAGS except the
+optimization level as gcc-cpp won't accept them.
+[92/07/02            mrt]
+[ ./server/i386/conf.c ]
+Remove incorrect declaration of seltrue. It is declared
+in sys/systm.h
+[92/07/02            mrt]
+[ ./server/isofs/iso.h ]
+BSDSS
+[92/06/25  18:06:34  rwd]
+[ ./server/isofs/isofs_bmap.c ]
+BSDSS
+[92/06/25  18:06:38  rwd]
+[ ./server/isofs/isofs_lookup.c ]
+BSDSS
+[92/06/25  18:06:44  rwd]
+[ ./server/isofs/isofs_node.c ]
+BSDSS
+[92/06/25  18:06:51  rwd]
+[ ./server/isofs/isofs_node.h ]
+BSDSS
+[92/06/25  18:06:55  rwd]
+[ ./server/isofs/isofs_util.c ]
+BSDSS
+[92/06/25  18:07:03  rwd]
+[ ./server/isofs/isofs_vfsops.c ]
+BSDSS
+[92/06/25  18:07:08  rwd]
+[ ./server/isofs/isofs_vnops.c ]
+BSDSS
+[92/06/25  18:07:27  rwd]
+[ ./server/kern/kern_sig.c ]
+  SA_OLDMASK is in ps->ps_flags NOT p->p_flags.
+  [92/07/04            rwd]
+  Added debugging code.  Fixed ^Z problems.
+  [92/07/02            rwd]
+[ ./server/kern/sys_generic.c ]
+Added the process pointer argument to the call to fo_select
+and added the process pointer parameter to seltrue to match the
+prototype declaration in sys/systm.h. Added new style parameter
+declatation for seltrue so it would compile with an ANSI compiler
+[92/06/26            mrt]
+[ ./server/kern/tty_conf.c ]
+Fixed initialization of l_select.  From A.Richter.
+[92/07/06            rwd]
+[ ./server/kern/vfs_bio.c ]
+Added fourth arg, TRUE, to vm_allocate call in getnewbuf.
+[92/07/02            mrt]
+[ ./server/kern/vfs_conf.c ]
+Added isofs.
+[92/06/25            rwd]
+[ ./server/net/if_sl.c ]
+Fixed for bnr2ss by A.Richter
+[92/07/06            rwd]
+[ ./server/net/slcompress.c ]
+Fixed for bnr2ss by A.Richter.
+[92/07/06            rwd]
+[ ./server/src/config/config.h ]
+Removed the declartions of standard routines ifdef __STDC__ since
+they are wrong.
+[92/07/01            mrt]
+[ ./server/src/config/gram.y ]
+emoved  declartion of malloc, since it is done in config.h.
+[92/07/01            mrt]
+[ ./server/sys/mount.h ]
+Additions for isofs.
+[92/06/25            rwd]
+[ ./server/sys/signalvar.h ]
+Corrected declaration of sendsig to have 6 parameters.
+[92/06/26            mrt]
+[ ./server/ufs/ufs_vfsops.c ]
+Remove panic in bad magic case.
+[92/06/25            rwd]
+[ ./server/uxkern/user_copy.c ]
+Changed routines to match the prototypes in systm.h
+[ ./server/sys/systm.h ]
+Added ... to panic prototype, so extra args can be placed
+on the stack for debugging.
+[92/06/26            mrt]
+[ ./server/conf/mkconfig.csh ]
+Redid script into separate sed call so it would work with the
+CMU-BSD 4.3 sed and the gnu-sed.
+[92/07/08            mrt]
+[ ./NOTES ]
+updated for BSDSS4
+

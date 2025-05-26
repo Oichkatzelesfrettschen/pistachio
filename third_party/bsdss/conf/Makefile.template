@@ -1,0 +1,467 @@
+# 
+# Mach Operating System
+# Copyright (c) 1992 Carnegie Mellon University
+# All Rights Reserved.
+# 
+# Permission to use, copy, modify and distribute this software and its
+# documentation is hereby granted, provided that both the copyright
+# notice and this permission notice appear in all copies of the
+# software, derivative works or modified versions, and any portions
+# thereof, and that both notices appear in supporting documentation.
+# 
+# CARNEGIE MELLON ALLOWS FREE USE OF THIS SOFTWARE IN ITS "AS IS"
+# CONDITION.  CARNEGIE MELLON DISCLAIMS ANY LIABILITY OF ANY KIND FOR
+# ANY DAMAGES WHATSOEVER RESULTING FROM THE USE OF THIS SOFTWARE.
+# 
+# Carnegie Mellon requests users of this software to return to
+# 
+#  Software Distribution Coordinator  or  Software.Distribution@CS.CMU.EDU
+#  School of Computer Science
+#  Carnegie Mellon University
+#  Pittsburgh PA 15213-3890
+# 
+# any improvements or extensions that they make and grant Carnegie Mellon 
+# the rights to redistribute these changes.
+#
+#
+# HISTORY
+# $Log:	Makefile.template,v $
+# Revision 2.2  92/04/22  14:01:05  rwd
+# 	Remove default_pager_object references.
+# 	[92/04/22            rwd]
+# 
+# Revision 2.1  92/04/21  17:12:02  rwd
+# BSDSS
+# 
+#
+#
+
+#
+#  This must be here before any rules are possibly defined by the
+#  machine dependent makefile fragment so that a plain "make" command
+#  always works.  The config program will emit an appropriate rule to
+#  cause "all" to depend on every kernel configuration it generates.
+#
+
+default: all
+
+#
+#  In order to move the link commands out of config and back into the
+#  template makefile, config has been changed to emit a dendency rule
+#  of the form *vmunix.sys: *vmunix.swap for each configuration so that
+#  the common commands for building each configuration can be placed
+#  directly in the template in the default rule for the .sys.swap
+#  dependency.
+#
+.SUFFIXES: .swap .sys
+
+#
+#  Make sure we don't remove this by accident if interrupted at the wrong
+#  time.
+#
+.PRECIOUS: Makefile
+
+
+#
+#  Compilation components
+#
+CC=	cc
+CPP=	${CC} -ES
+C2=	/lib/c2
+LD=	ld
+MD=	/usr/mach/bin/md
+ENCODE=	uuencode
+DECODE=	uudecode
+CRT0= ${MKLIB}/crt0.o
+LIBS= -L${MKLIB} -lthreads -lmach_sa
+KCC=	${CC}
+KCPP=	${KCC} -ES
+
+#
+#  This changed in the 4.3 CPP from .n to .d
+#
+MD_SUFFIX=d
+
+#
+#  Pre-processor environment
+#
+DEPENDS=  -MD
+INCLUDES=
+DEFINES= -DCOMPAT_43 -DBSD=44 -DMACH_IPC_COMPAT=0 $(VOLATILE)
+ALLOPTS= ${INCLUDES} ${IDENT} -DKERNEL ${DEFINES}
+LINTOPTS=${ALLOPTS}
+
+#
+#  Common C-compilation flags
+#
+COPTS_P=${DEPENDS} ${ALLOPTS}
+COPTS=	${COPTS_P}
+OPTIMIZE= -g
+CFLAGS=	${OPTIMIZE} ${COPTS}
+
+#
+#  Common assembly flags
+#
+SFLAGS=	${DEPENDS} ${ALLOPTS} -DASSEMBLER
+
+
+#
+#  Path name of the version identification file.
+#
+FEATURES=$(SOURCE_DIR)/machine/FEATURES.h
+VERSION_FILES= \
+	$(SOURCE_DIR)/conf/version.major \
+	$(SOURCE_DIR)/conf/version.minor \
+	$(SOURCE_DIR)/conf/version.variant \
+	$(SOURCE_DIR)/conf/version.edit \
+	$(SOURCE_DIR)/conf/version.patch
+
+#
+#  LDOBJS is the set of object files which comprise the kernel.
+#  It is used both in the dependency list for each *vmunix.swap
+#  rule emitted by config and also in the .sys.swap rule
+#  below which links the kernel from these objects.
+#  
+#  LDOBJS_PREFIX and LDOBJS_SUFFIX are defined in the machine
+#  dependent Makefile (if necessary).
+#
+LDOBJS=${LDOBJS_PREFIX} ${OBJS} ${LDOBJS_SUFFIX}
+
+#
+#  LDDEPS is the set of extra dependencies associated with each
+#  *vmunix.swap rule (in addition to $LDOBJS and the swap*.o file).
+#
+#  LDDEPS_PREFIX is defined in the machine dependent Makefile
+#  (if necessary).
+#
+LDDEPS=${LDDEPS_PREFIX} ${VERSION_FILES} \
+	$(SOURCE_DIR)/conf/newvers.sh $(SOURCE_DIR)/conf/copyright symbols.sort
+
+#
+#  PRELDDEPS is another set of extra dependencies associated with each
+#  *vmunix.swap rule (in addition to $LDOBJS and the swap*.o file).
+#  It is defined in the machine dependent Makefile (if necessary).
+#
+#  The generated rule looks like
+#	vmunix.sys : ${PRELDDEPS} ${LDOBJS} ${LDDEPS}
+#
+
+#
+#  SWAPDEPS is the set of extra dependencies associated with each
+#  swap*.o rule emitted by config (in addition to the
+#  ../machine/swap*.c file).
+#
+#  SWAPDEPS_PREFIX is defined in the machine dependent Makefile
+#  (if necessary).
+#
+SWAPDEPS=${SWAPDEPS_PREFIX} 
+
+#
+#  SYSDEPS is the set of extra dependencies associated with each
+#  *vmunix rule (in addition to *vmunix.sys).
+#
+#  SYSDEPS_PREFIX is defined in the machine dependent Makefile
+#  (if necessary).
+#
+SYSDEPS=${SYSDEPS_PREFIX}
+
+
+
+#
+#  Compilation rules to generate *vmunix from *vmunix.sys
+#
+SYS_RULE_1=@eval `awk 'NR==1{S=$$1;next;}\
+END {\
+  C = "ln $@.sys $@";\
+  if (S != "") {\
+    C = C "; ln $@ $@" S; \
+    printf "rm -f $@%s; ", S; \
+  }\
+  printf "echo \"%s\"; %s\n", C, C; \
+}' vers.suffix`
+SYS_RULE_2=
+SYS_RULE_3=
+SYS_RULE_4=
+
+#
+#  Things to be done just before exiting
+#
+EXIT_RULE=${MD} -u Makedep -f -d `ls *.${MD_SUFFIX}`
+
+#
+# Compilation rules to generate .o from .b
+#
+B_RULE_1A=rm -f $*.o; ${DECODE} 
+B_RULE_1B=$*.b
+
+#
+# Compilation rules to generate .o from .o
+#
+O_RULE_1A=rm -f $*.o; cp 
+O_RULE_1B=$*.o .
+
+#
+# Compilation rules to generate .o from .s
+#
+S_RULE_1A=${KCPP} ${SFLAGS} 
+S_RULE_1B=$*.s >$*.i 
+S_RULE_2=${AS} -o $*.o $*.i
+S_RULE_3=rm -f $*.i
+
+#
+# Compilation rules to generate .o from .c for normal files
+#
+C_RULE_1A=${KCC} -c ${OPTIMIZE} ${COPTS} 
+C_RULE_1B=$*.c
+C_RULE_2=
+C_RULE_3=
+C_RULE_4=
+
+C_RULE_1A_DBG=${KCC} -c -g ${COPTS} 
+
+#
+# Compilation rules to generate .o from .c for driver files
+#
+C_RULE_1A_D=${C_RULE_1A}
+C_RULE_1B_D=${C_RULE_1B}
+C_RULE_2_D=${C_RULE_2}
+C_RULE_3_D=${C_RULE_3}
+C_RULE_4_D=${C_RULE_4}
+
+#
+# Compilation rules to generate .o from .c for profiling routine files
+#
+C_RULE_1A_P=${KCC} -c -S ${COPTS_P} 
+C_RULE_1B_P=${C_RULE_1B}
+C_RULE_2_P=ex - $*.s < ${GPROF.EX}
+C_RULE_3_P=${AS} -o $*.o $*.s
+C_RULE_4_P=rm -f $*.s
+
+
+
+gprof: kgmon_on all kgmon_off
+
+kgmon_on:
+	kgmon -r -b
+
+kgmon_off:
+	kgmon -h -p
+	gprof /mach >GPROF
+
+
+#
+#  These macros are filled in by the config program depending on the
+#  current configuration.  The MACHDEP macro is replaced by the
+#  contents of the machine dependent makefile template and the others
+#  are replaced by the corresponding symbol definitions for the
+#  configuration.
+#
+
+%OBJS
+
+%CFILES
+
+%SFILES
+
+%BFILES
+
+%ORDERED
+
+%MACHDEP
+
+
+#
+#  Default rule used to build a *vmunix.sys configuration from the
+#  object list and a particular *vmunix.swap module.  The *vmunix.swap
+#  module is a normal object file compiled from the appropriate swap*.c
+#  file and then copied to the *vmunix.swap name to trigger the full
+#  kernel link using this default rule.
+#
+
+.swap.sys:
+	@/bin/sh $(SOURCE_DIR)/conf/newvers.sh \
+			$(CONFIG) \
+			 $(SOURCE_DIR)/conf/copyright \
+			`cat ${VERSION_FILES}`
+	@${CC} -c vers.c
+	@rm -f $* $*.sys
+	@echo link-editing $*.sys
+	@${LD} ${LDFLAGS} ${LDOBJS} vers.o $*.swap ${CRT0} ${LIBS}
+	@echo stripping $*.sys
+	@-xstrip a.out
+	@size a.out
+	@chmod 755 a.out
+	@mv a.out $*.sys
+
+
+
+#
+#  OBJSDEPS is the set of files (defined in the machine dependent
+#  template if necessary) which all objects depend on (such as an
+#  in-line assembler expansion filter
+#
+
+${OBJS}: ${OBJSDEPS}
+
+
+
+#
+#  This macro is replaced by three rules per configuration, plus a
+#  final definition for the LOAD symbol consisting of all configuration
+#  names and a dependency of "all" on this symbol (so that the
+#  "default" rule above will build everything).  The three rules in
+#  each configuration are:
+#
+#  - a *vmunix from *vmunix.sys dependency using the SYS_RULE_* rules,
+#  - a *vmunix.swap from LDDEPS, swap*.o, and LDDEPS dependency that
+#    simply copies the swap file to the target name, and
+#  - a swap*.o from swap*.c and SWAPDEPS dependency using the C_RULE_* rules.
+#
+
+%LOAD
+
+
+
+#
+#  Rules for components which are not part of the kernel proper or that
+#  need to be built in a special manner.
+#
+
+genassym.o: $(SOURCE_DIR)/machine/genassym.c
+	${KCC} -c ${COPTS_P} $(SOURCE_DIR)/machine/genassym.c
+
+assym.s: genassym.o
+	${KCC} genassym.o
+	./a.out > assym.s; rm -f a.out
+
+locore.o: assym.s ${LOCORE_HEADS}
+
+#
+#  Mach IPC-based interfaces
+#
+
+#  Explicit dependencies on generated files,
+#  to ensure that Mig has been run by the time
+#  these files are compiled.
+
+bsd_server.o: uxkern/bsd_1_server.c uxkern/bsd_types_gen.h
+
+bsd_server_side.o: uxkern/bsd_types_gen.h
+
+inode_pager.o: mach/memory_object_server.c
+
+#  The Mig-generated files go into subdirectories.
+#  These macros create the subdirectories as they are needed.
+
+MAKE_MACH = [ -d mach ] || mkdir mach
+MAKE_UXKERN = [ -d uxkern ] || mkdir uxkern
+
+MIG = mig
+MIGFLAGS = ${IDENT} ${DEFINES}
+
+BSD_1_FILES = uxkern/bsd_1_server.c
+
+$(BSD_1_FILES): uxkern/bsd_types_gen.h $(SOURCE_DIR)/uxkern/bsd_1.defs
+	-$(MAKE_UXKERN)
+	$(MIG) -MD $(MIGFLAGS) -header /dev/null -user /dev/null -server uxkern/bsd_1_server.c $(SOURCE_DIR)/uxkern/bsd_1.defs
+
+uxkern/bsd_types_gen.h : bsd_types_gen
+	-$(MAKE_UXKERN)
+	./bsd_types_gen > uxkern/bsd_types_gen.h
+
+bsd_types_gen : bsd_types_gen.o
+	${KCC} -o bsd_types_gen bsd_types_gen.o
+
+bsd_types_gen.o : $(SOURCE_DIR)/uxkern/bsd_types_gen.c
+	${KCC} -c ${CFLAGS} $(SOURCE_DIR)/uxkern/bsd_types_gen.c
+
+MEMOBJ_FILES = mach/memory_object_server.c
+
+$(MEMOBJ_FILES): $(MKINC)/mach/memory_object.defs
+	-$(MAKE_MACH)
+	$(MIG) -MD $(MIGFLAGS) -header /dev/null -user /dev/null -server mach/memory_object_server.c $(MKINC)/mach/memory_object.defs
+
+MEMOBJ_DEFAULT_FILES = mach/memory_object_default_server.c
+
+$(MEMOBJ_DEFAULT_FILES): $(MKINC)/mach/memory_object_default.defs
+	-$(MAKE_MACH)
+	$(MIG) -MD $(MIGFLAGS) -header /dev/null -user /dev/null -server mach/memory_object_default_server.c $(MKINC)/mach/memory_object_default.defs
+
+#  N.B.  There is always an empty artificial dependency file M.d
+#  (created by config) which will never be integrated and simply
+#  prevents the wild-card expansion below from failing.
+#
+#  The default exit rule now brings Makedep up to date, so it
+#  shouldn't be necessary to execute this rule manually.
+#
+
+Makedep: *.${MD_SUFFIX}
+	${EXIT_RULE}
+
+.EXIT:	Makedep
+
+depend: 
+	@echo you don\'t make depend any more.
+
+
+kern/init_sysent.c kern/syscalls.c sys/syscall.h: $(SOURCE_DIR)/kern/makesyscalls.sh $(SOURCE_DIR)/kern/syscalls.master
+	-rm -rf kern sys
+	-mkdir sys kern
+	-cp -p $> kern/
+	cd kern;/bin/sh makesyscalls.sh syscalls.master
+
+#
+#  Permit manually forced checkout of modules when the dependency
+#  information is not current.
+#
+
+checkout:	${USE}
+
+
+
+#
+#  Clean up the current build directory.
+#
+
+clean:
+	@for f in ${LOAD}; do echo rm -f $$f $$f.* && rm -f $$f $$f.*; done
+	rm -f eddep tags *.[chos] locore.i \
+		migfiles \
+		errs linterrs makelinks *.log *LOG* ${CLEAN_EXTRA}
+
+
+#
+#  Run "lint" on the current build directory.  This will often be done
+#  with a special configuration that defines the union of all options
+#  used in all configurations so that all combinations are checked.
+#  The LINTFILES variable allows lint to be easily run on an optional
+#  sub-set of files specified on the make command line when this is
+#  desired.
+#
+
+LINTFILES=$(SOURCE_DIR)/machine/Locore.c ${CFILES} $(SOURCE_DIR)/machine/swapgeneric.c ioconf.c
+
+lint:	ALWAYS assym.s
+	@lint -n -hbxn -DGENERIC ${LINTOPTS} ${LINTFILES} | \
+	    egrep -v 'struct/union .* never defined' | \
+	    egrep -v 'possible pointer alignment problem'
+
+ALWAYS:
+
+MACHINEDIR=$(SOURCE_DIR)/machine
+
+symbols.sort: ${MACHINEDIR}/symbols.raw
+	-grep -v '^#' ${MACHINEDIR}/symbols.raw \
+	    | sed 's/^	//' | sort -u > symbols.tmp
+	-mv -f symbols.tmp symbols.sort
+
+#
+#  This macro is replaced by the set of rules which build everything in
+#  OBJS.  The extra dependencies for each object file are inserted
+#  following this by md which uses the keys on the sentinel line
+#  below.
+#
+
+%RULES
+
+-include Makedep

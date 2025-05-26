@@ -1,0 +1,20 @@
+sysv_shm.c
+vnode_pager.c
+linesw l_select
+setrlimit: R_STACK.
+sprintf
+
+We are building and running STD+WS+nfs kernels, but there is
+still a chance of a deadlock with this kernel which can occur
+even if you are not using the NFS code.
+
+^Z from emacs still not right, but the rest of the signal problems
+appear to be solved.
+
+Baud rates from kernel to server have been fixed.
+
+There are still a few problems in building the server under the BNR
+environment. The mksyscalls script fails, the as of emulator/i386/emul_vector.s
+fails and we need to be able to load the BSD format executables as well
+as the Mach ones.
+

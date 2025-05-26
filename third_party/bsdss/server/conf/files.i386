@@ -1,0 +1,50 @@
+# 
+# Mach Operating System
+# Copyright (c) 1992 Carnegie Mellon University
+# All Rights Reserved.
+# 
+# Permission to use, copy, modify and distribute this software and its
+# documentation is hereby granted, provided that both the copyright
+# notice and this permission notice appear in all copies of the
+# software, derivative works or modified versions, and any portions
+# thereof, and that both notices appear in supporting documentation.
+# 
+# CARNEGIE MELLON ALLOWS FREE USE OF THIS SOFTWARE IN ITS "AS IS"
+# CONDITION.  CARNEGIE MELLON DISCLAIMS ANY LIABILITY OF ANY KIND FOR
+# ANY DAMAGES WHATSOEVER RESULTING FROM THE USE OF THIS SOFTWARE.
+# 
+# Carnegie Mellon requests users of this software to return to
+# 
+#  Software Distribution Coordinator  or  Software.Distribution@CS.CMU.EDU
+#  School of Computer Science
+#  Carnegie Mellon University
+#  Pittsburgh PA 15213-3890
+# 
+# any improvements or extensions that they make and grant Carnegie Mellon 
+# the rights to redistribute these changes.
+#
+#
+# HISTORY
+# $Log:	files.i386,v $
+# Revision 2.1  92/04/21  17:11:52  rwd
+# BSDSS
+# 
+#
+#
+
+OPTIONS/syscalltrace		optional syscalltrace
+OPTIONS/mach_rdb		optional mach_rdb
+OPTIONS/stack_limit_check	optional stack_limit_check
+OPTIONS/itrace			optional itrace
+OPTIONS/idebug			optional idebug
+
+#netns/ns_cksum.c		optional ns
+i386/in_cksum.c			optional inet
+i386/machdep.c			standard
+i386/conf.c			standard
+i386/i386_exception.c		optional mach
+i386/misc_asm.s			standard
+i386/ntoh.s			standard
+i386/queue.c			standard
+# Added by us to allow a second server to run under another BSD server:
+i386/second_syscalls.s		optional second_server
