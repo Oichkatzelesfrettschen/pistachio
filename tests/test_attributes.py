@@ -3,6 +3,9 @@ import subprocess
 import tempfile
 import textwrap
 import unittest
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
 
 class CompilerAttributeTest(unittest.TestCase):
     def test_function_pointer_attributes(self) -> None:
@@ -34,7 +37,8 @@ class CompilerAttributeTest(unittest.TestCase):
                 '-std=c++23',
                 '-Werror',
                 '-Wno-attributes',
-                '-Iengine/include',
+                '-I',
+                str(ROOT / 'user/include'),
                 '-c',
                 name,
             ], check=True)
