@@ -1,0 +1,143 @@
+% $RCSfile: test.tex,v $
+%
+% $Revision: 1.3 $
+% $Date: 1993/11/17 19:01:39 $
+%
+
+\subsection*{NAME}
+
+\noindent TEST (instantiated as 'chantest', 'udptest', etc.)
+
+\subsection*{SPECIFICATION}
+
+The test protocol runs a ``ping-pong'' test of the protocol below it
+for various message lengths and numbers of iterations. 
+
+\subsection*{SYNOPSIS}
+
+Transport test protocols run in one of two roles, either as ``client''
+or as ``server.''  The client will send a message to the server and
+wait for a reply before sending the next message.  There are no
+provisions for retransmission -- if the protocol below the test
+protocol drops a message, the test will fail.
+
+
+\subsection*{CONFIGURATION}
+
+When the test protocol instantiates, it can determine which role it
+should assume in several ways.  Command line parameters can be used to
+cause the same kernel to run as the server on one machine and as the
+client on another.  The server should be started up with a ``-s''
+flag:
+
+\begin{quote}
+\begin{tt}
+xkernel -s
+\end{tt}
+\end{quote}
+
+The client side must be told the host address of the server peer (note
+that on the sunos platform, this should be the address of the
+simulated IP host.)  This can be done with the ``-c'' command line
+option, e.g.:
+
+\begin{quote}
+\begin{tt}
+xkernel -c192.12.69.54
+\end{tt}
+\end{quote}
+
+If you will be running several tests between the same hosts you may
+find it convenient to copy the test protocol to your build directory
+and edit the declaration of ServerAddr and ClientAddr in your local
+copy to name these hosts directly.  
+This will eliminate the need for client and server flags.  Note
+that most test protocols include other files from the {\sanss
+protocols/test} directory, so you will either have to copy those files
+as well or add {\sanss \$(XRT)/protocols/test} to the 
+{\sanss TMP\_INCLUDES} variable in your Makefile.
+
+If a test protocol is configured with an instance name of 'client' or
+'server', it will come up in the appropriate role.  This can be used
+to run both a client and server in the same kernel for loopback
+testing as in this graph.comp excerpt:
+
+\begin{verbatim}
+
+...
+name=udp protocols=ip;
+name=udptest/server protocols=udp;
+name=udptest/client protocols=udp;
+
+\end{verbatim}
+
+If you have configured several standard test protocols into the
+kernel, you can run any subset of them by putting the test names onto
+the command line, e.g.:
+
+\begin{quote}
+\begin{tt}
+xkernel -testip -testudp
+\end{tt}
+\end{quote}
+
+\noindent
+With no command line test selections, all of the configured test protocols
+will run.
+
+The number of round trips for each packet size can be set with the
+``trips'' flag:
+
+\begin{quote}
+\begin{tt}
+xkernel -trips=10000
+\end{tt}
+\end{quote}
+
+
+If you use ``dns'' lines (see \ref{dns}) in your rom file to map host
+names to IP addresses, then you can use the name in place of the IP
+address when starting the client, i.e.,
+
+Rom file entry:
+\begin{quote}
+\begin{tt}
+dns mars 192.12.69.54
+\end{tt}
+\end{quote}
+
+Sample command lines for starting client:
+\begin{quote}
+\begin{tt}
+xkernel -c mars
+xkernel -cmars
+\end{tt}
+\end{quote}
+
+\noindent
+Note that the name on the command line must be an exact match (not a
+substring) of the rom file entry.
+
+The test protocols all use the common trace variable {\tt prottest}
+which can be set in the third section of graph.comp:
+
+\begin{quote}
+\begin{verbatim}
+@;
+...
+name=udptest	protocols=udp;
+@;
+name=prottest	trace=TR_EVENTS;
+\end{verbatim}
+\end{quote}
+
+
+\noindent
+If you set a
+trace level when you declare the test protocol in the second section
+of graph.comp, it will be ignored. 
+
+
+\subsection*{CAVEATS}
+Remember that if you are using {\em simeth} you must use the name of
+the {\em simulated} host when you invoke the client, not the real host.

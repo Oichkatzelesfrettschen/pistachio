@@ -1,0 +1,15 @@
+PCDOTOS = 
+PCDOTCS = 
+PCDOTSS = 
+
+COMPOSE_INCLUDES = -I. 
+
+./$(HOW)/%.o : ./%.c
+	$(DEFAULTRULE)
+
+COMPOSE_LIB_PROTS := +simeth++eth++arp++vnet++ip++icmp++udp++blast++vmux++chan+
+
+COMPOSE_LIB_OBJ =  $(simeth_FILES) $(eth_FILES) $(arp_FILES) $(vnet_FILES) $(ip_FILES) $(icmp_FILES) $(udp_FILES) $(blast_FILES) $(vmux_FILES) $(chan_FILES)
+
+COMPOSE_EXT_LIBS =  $(simeth_LIBS) $(eth_LIBS) $(arp_LIBS) $(vnet_LIBS) $(ip_LIBS) $(icmp_LIBS) $(udp_LIBS) $(blast_LIBS) $(vmux_LIBS) $(chan_LIBS)
+

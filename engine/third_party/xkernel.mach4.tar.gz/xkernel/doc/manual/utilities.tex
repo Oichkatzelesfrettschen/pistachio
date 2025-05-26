@@ -1,0 +1,321 @@
+% 
+% $RCSfile: utilities.tex,v $
+%
+% x-kernel v3.2
+%
+% Copyright (c) 1993,1991,1990  Arizona Board of Regents
+%
+%
+% $Log: utilities.tex,v $
+% Revision 1.6  1993/11/30  17:29:03  menze
+% Added sections on "Host Name Service" and "ROM file parsing utilities"
+%
+
+
+\section{Utility Routines}
+
+\subsection{Storage: xMalloc and xFree}
+
+These are just like Unix malloc and free functions.  The {\em xMalloc}
+function will cause an $x$-kernel abort if no storage is available;
+therefore, it has no error return value.
+\medskip
+
+{\sem char} {\bold *xMalloc}({\sem int} {\caps size})\\
+\medskip
+
+{\sem int} {\bold xFree}({\sem char} *{\caps buf})
+
+\subsection{Time}
+
+The \xk{} uses the same time structure as Unix:
+
+\begin{tabbing}
+xxxx \= xxxxxxxx \= xxxxxxxxxxx \= \kill
+\>{\sem typedef struct} \{\\
+\>\>  {\sem long}  sec;\\
+\>\>  {\sem long}  usec;\\
+\>\} {\bold XTime} ;\\
+\end{tabbing}
+
+
+\subsubsection{xGetTime}
+
+Sets {\em *t} to the current time of day:
+\medskip
+
+{\sem void} {\bold xGetTime} ({\sem XTime} *{\caps t})
+
+
+\subsubsection{xAddTime}
+
+Sets the {\em res} to the sum of {\em t1} and {\em t2.}
+Assumes {\em t1} and {\em t2} are in standard time format (i.e., does not
+check for integer overflow of the usec value.)
+\medskip
+
+{\sem void} {\bold xAddTime} 
+({\sem XTime} *{\caps res}, {\sem XTime} {\caps t1}, {\sem XTime} {\caps t2})
+
+
+\subsubsection{xSubTime}
+
+Sets the {\em res} to the difference of {\em t1} and {\em t2.}
+The resulting value may be negative.
+\medskip
+
+{\sem void} {\bold xSubTime} 
+({\sem XTime} *{\caps res}, {\sem XTime} {\caps t1}, {\sem XTime} {\caps t2})
+\medskip
+
+
+
+
+\subsection{Byte Order: ntohs, ntohl, htons, and htonl}
+
+The byte order functions are the same as the Unix functions.
+\medskip
+
+\begin{tabbing}
+xxxx \= xxxxxxxx \= xxxxxxxxxxx \= \kill
+\>{\sem u\_short} {\bold ntohs}({\sem u\_short} {\caps n})\\
+\>{\sem u\_long} {\bold ntohl}({\sem u\_long} {\caps n})\\
+\>{\sem u\_short} {\bold htons}({\sem u\_short} {\caps n})\\
+\>{\sem u\_long} {\bold htonl}({\sem u\_long} {\caps n})\\
+\end{tabbing}
+
+\subsection{Checksum}
+
+\subsubsection{inCkSum}
+
+Calculates a 16-bit 1's complement checksum over the buffer
+{\em *buf} (of length {\em len}) and the msg {\em *m}, returning the bit
+complement of the sum.  {\em len} should be even and the buffer must be
+aligned on a 16-bit boundary.  {\em len} may be zero.
+\medskip
+
+{\sem u\_short} {\bold inCkSum} ({\sem Msg} *{\caps m}, {\sem u\_short} *{\caps buf}, {\sem int} {\caps len});
+
+\subsubsection{ocsum}
+
+Returns the 1's complement sum of the {\em count} 16-bit words pointed
+to by {\em hdr}, which must be aligned on a 16-bit boundary.
+\medskip
+
+{\sem u\_short} {\bold ocsum} ( {\sem u\_short} *{\caps hdr}, {\sem int} {\caps count});
+
+
+\subsection{Strings to Hosts}
+
+Utility routines exist for converting from string representations of
+IP and Ethernet addresses to their structural counterparts and
+vice-versa.  
+
+\subsubsection{ipHostStr}
+
+Returns a string with a ``dotted-decimal'' representation of IP host 
+{\em h} (e.g., ``192.12.69.1'')  
+This string is in a static buffer, so it must be copied if
+its value is to be preserved.
+\medskip
+
+{\sem char *} {\bold ipHostStr} ( {\sem IPhost} *{\caps h} )
+
+
+\subsubsection{str2ipHost}
+
+Interprets {\em str} as a ``dotted-decimal'' 
+representation of an IP host and assigns the fields of 
+{\em h} accordingly.  The operation fails if {\em str} does not seem
+to be in dotted-decimal form.
+\medskip
+
+{\sem xkern\_return\_t} {\bold str2ipHost} 
+( {\sem IPhost} *{\caps h}, {\sem char } *{\caps str} )
+
+
+\subsubsection{ethHostStr}
+
+Returns a string with a representation of Ethernet host 
+{\em h} (e.g., ``8:0:2b:ef:23:11'')  
+This string is in a static buffer, so it must be copied if
+its value is to be preserved.
+\medskip
+
+{\sem char *} {\bold ethHostStr} ( {\sem ETHhost} *{\caps h} )
+
+
+\subsubsection{str2ethHost}
+
+Interprets {\em str} as a six-hex-digit-colon-separated 
+representation of an Ethernet host and assigns the fields of 
+{\em h} accordingly.  The operation fails if {\em str} does not seem
+to be in the correct format.
+\medskip
+
+{\sem xkern\_return\_t} {\bold str2ethHost} 
+( {\sem ETHhost} *{\caps h}, {\sem char } *{\caps str} )
+
+
+\subsection{Host Name Service}
+\label{dns}
+A simple way of mapping host name strings to host IP addresses is
+provided via rom file entries (see section \ref{romfile}) and the interface
+function {\em xk\_gethostbyname}.
+
+During $x$-kernel startup, rom file lines beginning with
+the string ``dns'' are parsed into name and address components
+and added to the host name table.  E.g., 
+
+\begin{verbatim}
+dns umbra 192.12.69.97
+\end{verbatim}
+
+The host name must be less than 64 characters in length.
+
+\subsubsection{xk\_gethostbyname}
+
+This function will look up a hostname and return its IP address in
+storage provided with the call.
+The name must be an exact match to a rom file entry, NB no substrings
+are allowed.  If the name is not found, the return code indicates
+failure.
+\medskip
+
+{\sem xkern\_return\_t} {\bold xk\_gethostbyname} ({\sem char} *{\caps name}, 
+{\sem IPhost} *{\caps addr} );
+
+
+
+\subsection{ROM file parsing utilities}
+
+When writing a protocol that provides user-configurable ROM file
+options, one can make use of the ROM file parsing utilities to process
+the ROM file entries.  To use these utilities:
+
+\begin{enumerate}
+
+\item{}
+Write separate routines to handle each ROM option your
+protocol will support.  These routines should be of the following
+type: 
+
+\begin{tabbing}
+xxx \= xxxxxxxxxx \=   \kill
+\>{\sem typedef xkern\_return\_t} ({\bold *XObjRomOptFunc} ) \\
+\>\>(
+{\sem XObj} {\caps protl}, 
+{\sem char} **{\caps fields}, 
+{\sem int} {\caps numFields}, 
+{\sem int} {\caps lineNumber}, 
+{\sem void} *{\caps arg} 
+)
+\end{tabbing}
+
+The ROM file parsing code will call this handler when it finds an
+appropriate line in the ROM file.  The number of fields on that line
+and the fields themselves will be placed in {\caps numFields} and
+{\caps fields}, respectively.  The line number is
+provided to allow the handler to produce error messages if desired.
+
+If the handler returns XK\_FAILURE, the parsing code will print a
+generic ``ROM file format error'' message, specifying the name of the
+protocol and the line number.  
+
+
+\item{}
+Create an array of XObjRomOpt structures which bind 
+option names to their handling functions.  There is one XObjRomOpt
+structure for each ROM option.
+
+\begin{tabbing}
+xxx \= xxxxxx \= xxxxxxxxxxxxxxxxx \= xxxxxxxxx \=  \kill
+\>{\sem typedef struct} \{\\
+\>\>{\sem char} \>*name; 
+        \>{\smallfont /* name of the option as specified in ROM file */}\\
+\>\>{\sem int}	 \>minFields;  
+        \>{\smallfont /* Minimum number of fields for this option */}\\
+\>\>{\sem XObjRomOptFunc}	\>func;       
+        \>{\smallfont /* Handler function */}\\
+\>\} {\bold XObjRomOpt};
+
+\end{tabbing}
+
+
+\item{}
+Somewhere in your protocol's initialization code, call findXObjRomOpts.
+
+\hfil{\sem xkern\_return\_t}
+{\bold findXObjRomOpts}(
+{\sem XObj}, {\sem XObjRomOpt} *, {\sem int} {\caps numOpts}, 
+{\sem void } *{\caps arg}
+);
+
+This routine scans through the ROM file, looking for lines where the
+first field matches either the protocol name or the
+full instance name of the XObject (e.g., if the protocol instance is
+{\tt ethdrv/SE0}, ROM file entries with either {\tt ethdrv/SE0} or 
+{\tt ethdrv}
+would match.)  When such a match is found, the array of XObjRomOpts is
+scanned.  If the second field of the line matches the name field of
+one of the XObjRomOpts, or if the name field of one of the XObjRomOpts is
+the empty string, the XObjRomOptFunc for that option is called with
+the object, all ROM fields on that line, the number of fields on that
+line, the line number and the user-supplied argument.
+
+If the first field of a ROM line appears to match the XObject but none
+of the supplied RomOpts matches the second field, an error message
+will be printed and XK\_FAILURE will be returned.  The rest of the ROM
+entries will not be scanned.  This same behavior results from the
+XObjRomOptFunc returning XK\_FAILURE and from a ROM line with too few
+fields for its associated handler.
+
+\end{enumerate}
+
+
+As an example, consider a protocol which supports two ROM options, a
+{\em port} option and an {\em mtu} option, both of which take single integer
+parameters.  This example shows how this protocol
+would interface with the romopt parsing utilities:
+
+\break
+
+\begin{verbatim}
+
+static xkern_return_t	readMtu( XObj, char **, int, int, void * );
+static xkern_return_t	readPort( XObj, char **, int, int, void * );
+
+
+static XObjRomOpt opts[] = {
+    { "mtu", 3, readMtu },
+    { "port", 3, readPort }
+};
+
+
+static xkern_return_t 
+readMtu( XObj self, char **arr, int nFields, int line, void *arg )
+{
+    PState	*ps = (PState *)self->state;
+
+    return sscanf (arr[2], "%d", &ps->mtu) < 1  ? XK_FAILURE : XK_SUCCESS;
+}
+
+static xkern_return_t 
+readPort( XObj self, char **arr, int nFields, int line, void *arg )
+{
+    PState	*ps = (PState *)self->state;
+
+    return sscanf (arr[2], "%d", &ps->port) < 1  ? XK_FAILURE : XK_SUCCESS;
+}
+
+
+
+foo_init( XObj self ) 
+{
+    ...
+    findXObjRomOpts(self, opts, sizeof(opts)/sizeof(XObjRomOpt), 0);
+    ...
+}
+
+
+\end{verbatim}

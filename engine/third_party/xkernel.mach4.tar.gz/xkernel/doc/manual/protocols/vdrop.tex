@@ -1,0 +1,76 @@
+%     
+% $RCSfile: vdrop.tex,v $
+%
+% x-kernel v3.2
+%
+% Copyright (c) 1993,1991,1990  Arizona Board of Regents
+%
+%
+% $Revision: 1.1 $
+% $Date: 1993/10/29 17:07:46 $
+%
+
+\subsection*{NAME}
+
+\noindent VDROP (Virtual Drop Protocol)
+
+\subsection*{SPECIFICATION}
+
+\noindent 
+Throws away occasional incoming packets.  Used to exercise the
+recovery mechanisms of other protocols.
+
+\subsection*{SYNOPSIS}
+
+\noindent 
+VDROP sessions throw away incoming packets at regular intervals.  This
+interval is set in a somewhat random fashion at session creation time,
+though it can be set explicitly on a per-session basis via a control
+operation. 
+
+VDROP has no effect on outgoing packets.
+
+VDROP should allow its interval to be set via a ROM option and should
+allow sessions to have more interesting distributions of drop
+intervals.
+
+ 
+\subsection*{REALM}
+
+VDROP is in the ASYNC realm.
+
+\subsection*{PARTICIPANTS}
+
+VDROP passes participants to the lower protocols without manipulating
+them. 
+
+\subsection*{CONTROL OPERATIONS}
+
+\begin{description}
+
+\item[{\tt VDROP\_SETINTERVAL:}]
+Sets the drop interval for this session.  An interval of 1 drops every
+packet, an interval of 2 drops every other packet, etc.  An interval
+of zero indicates that VDROP is disabled for that session.  (session only)
+\begin{description}
+\item[{\rm Input:}] {\tt int interval}
+\item[{\rm Output:}] none
+\end{description}
+
+
+\item[{\tt VDROP\_GETINTERVAL:}]
+Returns the current drop interval for this session.
+(session only)
+\begin{description}
+\item[{\rm Input:}] none
+\item[{\rm Output:}] {\tt int interval}
+\end{description}
+
+
+\end{description}
+
+
+
+\subsection*{AUTHOR}
+
+\noindent Ed Menze

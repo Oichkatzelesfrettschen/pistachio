@@ -1,3157 +1,0 @@
-
-./conf/param.c,0
-
-./emulator/i386/emul_machdep.c,285
-e_execv(364,7758
-e_execve(381,8101
-e_fork(703,14407
-e_osigcleanup(585,12155
-e_sigreturn(528,10941
-e_wait(678,13821
-emul_setup(127,3182
-emul_syscall(174,4112
-i386_osigvec(596,12284
-i386_sigaction(648,13237
-i386_signal(623,12784
-set_arg_addr(759,15590
-take_signals(445,9211
-
-./emulator/allocator.c,40
-em_vm_map(75,2090
-vm_allocate(59,1727
-
-./emulator/bsd_user_side.c,1230
-#define	EPRINT(73,1890
-#define	EPRINT(75,1946
-copy_args(102,2367
-copystr(84,2114
-e_accept(1127,25419
-e_chdir(1784,38566
-e_chmod(1905,40610
-e_chown(1918,40821
-e_chroot(1795,38747
-e_creat(1824,39217
-e_emulator_error(1713,37401
-e_exec_call(149,3361
-e_getpeername(1243,27295
-e_getrusage(299,6768
-e_getsockname(1215,26845
-e_getsockopt(1181,26284
-e_htg_syscall(762,16904
-e_link(1855,39715
-e_lstat(517,11151
-e_mkdir(1972,41748
-e_mknod(1840,39480
-e_mount(2012,42396
-e_olstat(575,13060
-e_open(1806,38930
-e_ostat(564,12830
-e_pioctl(1654,36217
-e_pioctl(1698,37116
-e_readlink(660,15025
-e_readv(1471,32102
-e_recvfrom(434,9624
-e_rename(1959,41490
-e_rmdir(1985,41959
-e_saccess(1892,40396
-e_select(707,15775
-e_send(380,8665
-e_sendto(405,9115
-int e_setitimer(1104,24979
-e_setsockopt(1162,25992
-e_settimeofday(1088,24663
-e_sigaction(925,20633
-e_signal(885,19782
-e_sigstack(1050,23873
-e_sigvec(770,16995
-e_stat(502,10820
-e_stat_call(588,13332
-e_stat_call(596,13536
-e_symlink(1868,39961
-e_sysacct(684,15424
-e_table(1273,27772
-e_truncate(1946,41270
-e_umount(2027,42654
-e_unlink(1881,40213
-e_utimes(1933,41050
-e_write(330,7510
-e_writev(1321,28650
-e_xutimes(1997,42155
-#define putchar(1711,37325
-
-./emulator/emul_cache.c,84
-#define ROUTINE(42,1233
-ROUTINE(72,1886
-ROUTINE(74,1929
-emul_cache_init(67,1809
-
-./emulator/emul_generic.c,22
-emul_generic(71,1956
-
-./emulator/emul_init.c,75
-child_init(122,2570
-emul_init(52,1459
-emul_panic(144,2946
-main(83,1872
-
-./emulator/emul_mapped.c,883
-#define	EPRINT(65,1789
-#define	EPRINT(67,1845
-#define E_DECLARE(124,3210
-E_DECLARE(147,3629
-E_DECLARE(190,4580
-E_DECLARE(208,4883
-E_DECLARE(279,6572
-E_DECLARE(317,7274
-E_DECLARE(413,9425
-E_END(166,4190
-E_END(176,4375
-E_END(184,4511
-E_END(186,4545
-E_END(194,4678
-E_END(202,4814
-E_END(204,4848
-E_END(222,5265
-E_END(230,5448
-E_END(237,5565
-E_END(246,5789
-E_END(252,5919
-E_END(275,6538
-E_END(313,7240
-E_END(337,7761
-E_END(349,7987
-E_END(436,10009
-e_checksignals(389,8925
-	if (!e_maprw(321,7326
-e_maprw(476,10885
-e_readwrite(439,10030
-e_shared_sigreturn(372,8454
-emul_mapped_init(76,1956
-	for 213,4976
-	for 219,5179
-get_it(555,12927
-	if 158,3952
-	if 218,5143
-	if 228,5359
-	if 282,6628
-	if 287,6777
-	if 417,9492
-	if 420,9570
-	if 425,9730
-	if 428,9813
-rel_it(570,13254
-	old = round_page(156,3864
-share_unlock(363,8258
-        switch 260,6139
-
-./emulator/emul_stack.h,53
-typedef	struct emul_stack_top	*emul_stack_t;45,1319
-
-./emulator/emul_stack_alloc.c,132
-emul_stack_alloc(98,2642
-emul_stack_init(80,2267
-mig_dealloc_reply_port(186,5336
-mig_get_reply_port(158,4357
-mig_init(193,5433
-
-./emulator/emulator_base.c,14
-main(38,1183
-
-./emulator/syscall_table.h,0
-
-./emulator/ns532/emul_machdep.c,288
-e_execv(366,7762
-e_execve(383,8105
-e_fork(705,14419
-e_osigcleanup(587,12158
-e_sigreturn(530,10946
-e_wait(680,13821
-emul_setup(129,3199
-emul_syscall(176,4132
-ns532_osigvec(598,12287
-ns532_sigaction(650,13238
-ns532_signal(625,12786
-set_arg_addr(757,15438
-take_signals(447,9196
-
-./server/conf/param.c,0
-
-./server/i386/ansi.h,0
-
-./server/i386/asm.h,792
-#define	ASENTRY(154,3807
-#define	ASENTRY(164,4209
-#define	ASENTRY(175,4513
-#define	ASENTRY(183,4735
-#define	DATA(189,4866
-#define Divide(102,2703
-#define Divide(131,3243
-#define	ENTRY(149,3558
-#define	ENTRY(160,4015
-#define	ENTRY(172,4374
-#define	ENTRY(180,4596
-#define	ENTRY2(151,3667
-#define	ENTRY2(162,4124
-#define	ENTRY2(173,4428
-#define	ENTRY2(181,4650
-#define EXT(89,2476
-#define EXT(115,2904
-#define EXT(121,3018
-#define	Entry(188,4812
-#define LB(93,2535
-#define LB(113,2870
-#define LBb(94,2558
-#define LBb(118,2955
-#define LBb(123,3068
-#define LBf(95,2582
-#define LBf(119,2979
-#define LBf(124,3092
-#define LCL(91,2512
-#define	LCL(111,2852
-#define LEXT(90,2493
-#define LEXT(116,2926
-#define LEXT(122,3040
-#define Times(101,2677
-#define Times(130,3218
-
-./server/i386/conf.c,106
-check_dev(177,5334
-isa_disk_ioctl(192,5525
-int	nblkdev = sizeof(87,2456
-int	nchrdev = sizeof(167,5140
-
-./server/i386/eflags.h,0
-
-./server/i386/endian.h,284
-#define	HTONL(102,3796
-#define	HTONL(109,3927
-#define	HTONS(103,3817
-#define	HTONS(110,3967
-#define	NTOHL(100,3754
-#define	NTOHL(107,3846
-#define	NTOHS(101,3775
-#define	NTOHS(108,3886
-#define	htonl(97,3711
-#define	htons(98,3732
-#define	ntohl(95,3669
-#define	ntohs(96,3690
-
-./server/i386/i386_exception.c,37
-boolean_t machine_exception(46,1456
-
-./server/i386/in_cksum.c,44
-#define ADDCARRY(86,3388
-in_cksum(92,3499
-
-./server/i386/limits.h,0
-
-./server/i386/machdep.c,433
-emul_init_process(134,3315
-machine_core(148,3517
-osigcleanup(572,12982
-ptrace_get_regs(400,8977
-int ptrace_get_u_word(283,6385
-ptrace_set_regs(421,9449
-ptrace_set_trace(371,8375
-int ptrace_set_u_word(328,7424
-#define	reg_off(259,5952
-#define regs(260,6000
-sendsig(453,10293
-set_arg_addr(64,1708
-set_emulator_state(98,2377
-set_entry_address(85,2071
-sigreturn(568,12926
-#define	state_off(258,5888
-thread_dup(581,13125
-
-./server/i386/npx.h,0
-
-./server/i386/param.h,209
-#define	btoc(120,2948
-#define	btodb(122,3001
-#define	ctob(117,2894
-#define	ctod(112,2749
-#define	ctos(108,2662
-#define	dbtob(124,3099
-#define	dtob(114,2837
-#define	dtoc(113,2793
-#define	stoc(109,2682
-
-./server/i386/pcb.h,0
-
-./server/i386/proc.h,0
-
-./server/i386/psl.h,0
-
-./server/i386/queue.c,186
-_insque(116,2457
-_remque(125,2625
-queue_entry_t dequeue_head(70,1674
-queue_entry_t dequeue_tail(87,1950
-void enqueue_head(44,1240
-void enqueue_tail(57,1452
-void remqueue(108,2323
-
-./server/i386/reg.h,0
-
-./server/i386/second_SYS.h,193
-#define	CALL(81,2921
-	.globl	LCL(83,2957
-#define	PSEUDO(69,2550
-#define	PSEUDO(77,2829
-#define	RSYSCALL(67,2453
-#define	RSYSCALL(75,2732
-#define	SYSCALL(65,2362
-#define	SYSCALL(73,2641
-
-./server/i386/stdarg.h,129
-#define	va_arg(73,3031
-#define	va_arg(76,3100
-#define	va_end(81,3219
-typedef char *va_list;70,2993
-#define	va_start(86,3335
-
-./server/i386/swapgeneric.c,0
-
-./server/i386/trap.h,0
-
-./server/i386/tss.h,0
-
-./server/i386/types.h,39
-} label_t;79,3124
-} *physadr;75,3073
-
-./server/isofs/iso.h,174
-#define ISODCL(36,1154
-#define VFSTOISOFS(121,4040
-#define iso_blkoff(123,4101
-#define iso_blksize(125,4214
-#define iso_lblkno(124,4157
-#define iso_lblktosize(126,4266
-
-./server/isofs/isofs_bmap.c,18
-iso_bmap(46,1351
-
-./server/isofs/isofs_lookup.c,47
-iso_blkatoff(397,13107
-isofs_lookup(118,4941
-
-./server/isofs/isofs_node.c,200
-#define	INOHASH(86,3328
-#define	INOHASH(88,3386
-iso_iget(123,4231
-iso_ilock(286,7835
-iso_iput(220,6558
-iso_iunlock(306,8289
-isofs_inactive(234,6812
-isofs_init(101,3662
-isofs_reclaim(257,7293
-
-./server/isofs/isofs_node.h,100
-#define ISO_ILOCK(74,2278
-#define ISO_IUNLOCK(75,2314
-#define ITOV(72,2244
-#define VTOI(71,2193
-
-./server/isofs/isofs_util.c,161
-isonum_711 37,1165
-isonum_712 44,1219
-isonum_721 56,1327
-isonum_722 63,1408
-isonum_723 70,1489
-isonum_731 83,1666
-isonum_732 93,1801
-isonum_733 103,1936
-
-./server/isofs/isofs_vfsops.c,254
-iso_mountedon(392,9473
-iso_mountfs(217,5265
-isofs_fhtovp(482,11437
-isofs_mount(129,3141
-isofs_mountroot(76,1917
-isofs_root(414,9894
-isofs_start(346,8584
-isofs_statfs(439,10363
-isofs_sync(466,11091
-isofs_unmount(358,8707
-isofs_vptofh(532,12389
-
-./server/isofs/isofs_vnops.c,360
-isofs_abortop(416,8918
-isofs_access(92,2193
-isofs_close(78,1886
-isofs_getattr(102,2335
-isofs_ioctl(236,5522
-isofs_islocked(454,9449
-isofs_lock(428,9094
-isofs_mmap(267,5966
-isofs_open(63,1669
-isofs_print(496,10252
-isofs_read(177,4030
-isofs_readdir(295,6319
-isofs_seek(283,6169
-isofs_select(248,5697
-isofs_strategy(468,9669
-isofs_unlock(440,9232
-
-./server/kern/cmu_syscalls.c,16
-table(101,3346
-
-./server/kern/dead_vnops.c,298
-chkvnlock(440,10219
-dead_badop(420,10001
-dead_bmap(385,9571
-dead_ebadf(411,9929
-dead_ioctl(327,8661
-dead_lock(373,9413
-dead_lookup(261,7728
-dead_nullop(430,10104
-dead_open(276,7947
-dead_print(401,9813
-dead_read(290,8110
-dead_select(342,8918
-dead_strategy(358,9166
-dead_write(311,8428
-
-./server/kern/fifo_vnops.c,324
-fifo_advlock(436,10335
-fifo_badop(450,10500
-fifo_bmap(333,8816
-fifo_close(370,9225
-fifo_ebadf(426,10242
-fifo_ioctl(293,7998
-fifo_lock(351,9058
-fifo_lookup(136,4570
-fifo_open(152,4834
-fifo_print(402,9877
-fifo_printinfo(414,10031
-fifo_read(230,6681
-fifo_select(314,8410
-fifo_unlock(359,9125
-fifo_write(266,7462
-
-./server/kern/init_main.c,153
-alloc_tables(495,11369
-get_config_info(598,14152
-main(168,5438
-msgbuf_init(751,17651
-void system_proc(763,17882
-cthread_fn_t system_setup(270,7033
-
-./server/kern/kern_acct.c,53
-acct(153,5256
-acctwatch(124,4524
-sysacct(106,4282
-
-./server/kern/kern_clock.c,219
-callout_init(124,4215
-typedef struct callout	*callout_t;91,3458
-hzto(377,9879
-softclock(395,10167
-time_to_hz(346,9075
-timeout(161,5228
-int timeout_special(172,5398
-untimeout(298,8048
-untimeout_special(267,7414
-
-./server/kern/kern_descrip.c,306
-close(340,8923
-closef(648,15920
-dup(113,3819
-dup2(147,4510
-dupfdopen(790,19526
-falloc(501,12612
-fcntl(192,5513
-fdalloc(411,10342
-fdavail(479,12091
-fdcloseexec(689,16964
-fdcopy(570,13925
-fdfree(623,15428
-fdopen(769,18906
-ffree(548,13595
-flock(720,17620
-fstat(371,9609
-getdtablesize(99,3619
-
-./server/kern/kern_exec.c,118
-copy_out_args_and_stack(478,12282
-execve(107,3165
-execve_prim(119,3376
-getxfile(316,8328
-load_emulator(595,15255
-
-./server/kern/kern_exit.c,145
-bsd_init_process(498,12154
-exit(126,4180
-kern_return_t	init_process(467,11628
-owait(305,8175
-rexit(107,3790
-wait1(359,9177
-wait4(335,8738
-
-./server/kern/kern_fork.c,93
-fork(97,3553
-fork1(118,3858
-newproc(227,6396
-void proc_allocate(207,5879
-vfork(107,3695
-
-./server/kern/kern_kinfo.c,110
-fill_eproc(246,6534
-getkerninfo(87,3394
-kinfo_doproc(161,4785
-kinfo_file(282,7391
-#define snderr(82,3228
-
-./server/kern/kern_ktrace.c,217
-ktrace(210,5907
-ktrcanset(432,10517
-ktrgenio(150,4704
-ktrgetheader(83,3242
-ktrnamei(137,4503
-ktrops(309,7805
-ktrpsig(186,5487
-ktrsetchildren(344,8461
-ktrsyscall(97,3559
-ktrsysret(119,4128
-ktrwrite(378,9109
-
-./server/kern/kern_malloc.c,116
-bsd_free(99,3551
-bsd_free(222,6227
-bsd_malloc(91,3441
-bsd_malloc(110,3642
-kmeminit(106,3615
-kmeminit(288,7796
-
-./server/kern/kern_physio.c,71
-minphys(115,3998
-physio(93,3569
-rawread(128,4121
-rawwrite(139,4328
-
-./server/kern/kern_proc.c,219
-bsd_pid_by_task(473,12109
-bsd_task_by_pid(381,9929
-enterpgrp(143,4343
-fixjobc(286,7753
-inferior(98,3587
-leavepgrp(234,6378
-orphanpg(326,8790
-pfind(114,3840
-pgdelete(254,6714
-pgfind(129,4071
-pgrpdump(344,9070
-
-./server/kern/kern_prot.c,457
-crcopy(550,12667
-crdup(568,12905
-crfree(533,12418
-crget(519,12171
-getegid(165,4500
-geteuid(135,3981
-getgid(146,4113
-getgroups(175,4623
-getlogin(583,13087
-getpgrp(110,3664
-getpid(85,3302
-getppid(99,3478
-getuid(121,3794
-groupmember(483,11528
-osetregid(409,9712
-osetreuid(365,8656
-setegid(343,8229
-seteuid(296,7295
-setgid(321,7804
-setgroups(451,10788
-setlogin(602,13471
-setpgid(236,5950
-setsid(207,5342
-setuid(269,6777
-suser(503,11957
-
-./server/kern/kern_resource.c,178
-bsd_getrusage(339,8502
-donice(197,5162
-getpriority(83,3245
-getrlimit(310,8009
-getrusage(326,8311
-limcopy(398,9732
-ruadd(377,9205
-setpriority(140,4198
-setrlimit(237,6217
-
-./server/kern/kern_sig.c,742
-#define CANSIGNAL(128,4453
-#define SD(120,4286
-#define SD(122,4342
-bsd_sigreturn(1369,31348
-bsd_take_signal(1234,28731
-check_proc_signals(1160,27088
-coredump(1491,34240
-coredump(1573,36546
-execsigs(252,7506
-gsignal(577,14220
-issig(818,20324
-kill(470,12061
-killpg1(527,13243
-nosys(1564,36435
-okillpg(508,12927
-osigblock(385,10229
-osigsetmask(400,10453
-osigvec(341,9155
-pgsignal(592,14479
-void psig(961,23545
-psig(1403,32026
-psignal(617,15308
-send_signal(1170,27268
-setsigvec(181,5854
-sig_default(985,23992
-sigaction(137,4810
-sigexit(1470,33873
-siginit(238,7281
-sigpending(325,8900
-sigprocmask(289,8337
-sigstack(448,11549
-sigsuspend(422,10871
-stop(950,23363
-thread_psignal(1037,25059
-thread_signal(1076,25777
-
-./server/kern/kern_synch.c,279
-#define	SLEEP_HASH(110,4149
-    interrupt_enter(441,11014
-    interrupt_exit(462,11527
-rqinit(120,4391
-sleep(284,7863
-spl_init(357,9343
-spl_n(368,9538
-thread_wakeup(128,4497
-tsleep(252,7172
-tsleep_enter(145,4852
-tsleep_main(178,5554
-unsleep(326,8681
-wakeup(292,7983
-
-./server/kern/kern_time.c,234
-adjtime(150,4883
-getitimer(210,6852
-gettimeofday(87,3499
-itimerdecr(341,10387
-itimerfix(319,9700
-realitexpire(292,8996
-setitimer(246,7728
-settimeofday(111,3932
-timevaladd(380,11321
-timevalfix(398,11569
-timevalsub(389,11445
-
-./server/kern/kern_xxx.c,116
-gethostid(77,3138
-gethostname(104,3490
-oquota(156,4390
-reboot(140,4169
-sethostid(88,3261
-sethostname(119,3760
-
-./server/kern/spec_vnops.c,329
-spec_advlock(526,12577
-spec_badop(549,12830
-spec_bmap(419,10536
-spec_close(456,10945
-spec_ebadf(540,12755
-spec_ioctl(354,9460
-spec_lock(437,10778
-spec_lookup(136,4604
-spec_open(153,4958
-spec_print(514,12393
-spec_read(190,5639
-spec_select(386,10017
-spec_strategy(408,10360
-spec_unlock(445,10845
-spec_write(272,7573
-
-./server/kern/subr_log.c,113
-logclose(124,4131
-logioctl(222,5811
-logopen(96,3535
-logread(133,4243
-logselect(178,5122
-logwakeup(199,5375
-
-./server/kern/subr_mcount.c,36
-kmstartup(93,3420
-mcount(151,5127
-
-./server/kern/subr_prf.c,403
-addlog(323,8109
-addlog(325,8144
-kprintf(403,9734
-ksprintn(634,14562
-log(283,7500
-log(285,7543
-logpri(309,7878
-panic(141,4903
-printf(348,8456
-printf(350,8491
-putchar(522,12281
-sprintf(558,13103
-sprintf(560,13151
-tablefull(173,5402
-tprintf(230,6401
-tprintf(232,6448
-tprintf_close(216,6202
-tprintf_open(204,6012
-ttyprintf(260,7058
-ttyprintf(262,7112
-uprintf(187,5699
-uprintf(189,5735
-
-./server/kern/subr_rmap.c,51
-rmalloc(107,3724
-rmfree(119,3848
-rminit(92,3547
-
-./server/kern/subr_xxx.c,288
-bcmp(226,4798
-enodev(80,3241
-enoioctl(108,3527
-enosys(119,3710
-enxio(99,3458
-eopnotsupp(129,3832
-ffs(212,4642
-imax(156,4142
-imin(149,4089
-lmax(188,4407
-lmin(180,4348
-max(172,4282
-min(164,4208
-nulldev(90,3366
-nullop(138,3931
-strlen(239,4983
-ulmax(204,4553
-ulmin(196,4475
-
-./server/kern/sys_generic.c,216
-ioctl(390,10282
-read(99,3744
-readv(154,4953
-select(539,13568
-selenter(756,17999
-selscan(685,16777
-seltrue(740,17704
-seltrue(742,17770
-selwakeup(808,19077
-unselect(781,18520
-write(241,6956
-writev(299,8211
-
-./server/kern/sys_process.c,34
-profil(394,9943
-ptrace(117,4097
-
-./server/kern/sys_socket.c,117
-soo_close(218,5879
-soo_ioctl(109,3820
-soo_read(88,3395
-soo_select(167,5061
-soo_stat(206,5631
-soo_write(99,3621
-
-./server/kern/sysv_shm.c,220
-ipcaccess(526,14147
-shmat(319,9152
-shmctl(251,7555
-shmdt(401,11093
-shmexit(444,12090
-shmfork(422,11542
-shmfree(494,13230
-shmget(157,4842
-shminit(123,4205
-shmsys(141,4574
-shmufree(475,12764
-shmvalid(458,12390
-
-./server/kern/tty.c,852
-#define	CCLASS(119,4402
-#define	ISALPHA(117,4325
-#define	PARITY(116,4288
-#define TESTAB(1819,40690
-#define	flushq(230,7572
-#define isrun(1818,40624
-nullmodem(758,17761
-proc_compare(1825,40795
-tputchar(1880,41962
-#define ttbreakc(186,6779
-ttioctl(319,9231
-ttnread(617,15085
-ttread(1188,26406
-ttrstrt(299,8873
-ttselect(630,15283
-ttsetwater(1730,38209
-ttspeedtab(1713,37897
-ttstart(291,8776
-ttwakeup(1699,37583
-ttwrite(1349,29961
-ttyblock(267,8215
-ttychars(189,6903
-ttycheckoutq(1320,29352
-ttyclose(700,16525
-ttyecho(1660,36895
-ttyflush(240,7748
-ttyinfo(1747,38560
-ttyinput(799,18492
-ttylclose(684,16227
-ttymodem(718,16876
-ttyopen(665,15927
-ttyoutput(1105,24889
-ttyoutstr(1686,37409
-ttypend(780,18145
-ttyretype(1632,36249
-ttyrub(1529,34352
-ttyrubo(1619,36067
-ttysleep(1904,42502
-ttywait(212,7195
-ttywflush(199,7037
-
-./server/kern/tty_compat.c,101
-ttcompat(115,3712
-ttcompatgetflags(259,7070
-ttcompatsetflags(312,8177
-ttcompatsetlflags(383,9589
-
-./server/kern/tty_conf.c,50
-nullioctl(138,4579
-int	nldisp = sizeof 131,4430
-
-./server/kern/tty_pty.c,265
-ptcclose(294,7966
-ptcopen(268,7458
-ptcopen(270,7522
-ptcread(306,8182
-ptcselect(398,10340
-ptcwakeup(251,7140
-ptcwrite(453,11406
-ptsclose(157,5027
-ptsopen(118,4028
-ptsread(170,5248
-ptsstart(237,6877
-ptsstop(375,9888
-ptswrite(221,6557
-ptyioctl(540,13386
-
-./server/kern/tty_subr.c,316
-b_to_q(292,6913
-catq(378,8579
-#define cbdealloc(80,3232
-cinit(101,3692
-clcheck(111,3850
-#define clpbytestoread(88,3394
-#define clpbytestowrite(94,3579
-#define dtocbp(78,3173
-getc(127,4179
-int incclp(241,6005
-ndflush(213,5571
-ndqb(183,5133
-nextc(327,7604
-putc(272,6641
-q_to_b(150,4506
-unputc(345,7918
-
-./server/kern/tty_tb.c,194
-gtcodecode(234,7133
-poldecode(327,9116
-tbclose(161,5400
-tbdecode(257,7636
-tbhresdecode(303,8639
-tbinput(206,6458
-tbioctl(345,9665
-tblresdecode(282,8189
-tbopen(135,4875
-tbread(182,5847
-
-./server/kern/tty_tty.c,122
-cttyioctl(137,4270
-cttyopen(85,3321
-cttyread(105,3712
-cttyselect(159,4636
-#define cttyvp(82,3236
-cttywrite(121,3990
-
-./server/kern/uipc_domain.c,153
-#define	ADDDOMAIN(85,3280
-domaininit(91,3428
-pfctlinput(181,5125
-pffasttimo(206,5696
-pffindproto(156,4532
-pffindtype(138,4161
-pfslowtimo(194,5420
-
-./server/kern/uipc_mbuf.c,347
-m_adj(458,9911
-m_cat(438,9490
-m_clalloc(133,4187
-m_copydata(403,8849
-m_copym(333,7499
-m_free(271,6498
-m_freem(280,6584
-m_get(238,6055
-m_getclr(258,6311
-m_gethdr(248,6180
-m_prepend(302,6873
-m_pullup(541,11762
-m_reclaim(218,5666
-m_retry(170,4935
-m_retryhdr(206,5500
-mbinit(92,3478
-void mcl_free_routine(623,13460
-mclgetx(603,13022
-
-./server/kern/uipc_proto.c,0
-
-./server/kern/uipc_socket.c,337
-soabort(236,6534
-soaccept(245,6687
-sobind(129,4405
-soclose(186,5455
-soconnect(261,7016
-soconnect2(288,7682
-socreate(93,3579
-sodisconnect(301,7936
-sofree(165,5033
-sogetopt(931,23078
-sohasoutofband(1014,24734
-solisten(143,4623
-soreceive(505,13346
-sorflush(800,20549
-sosend(339,9020
-sosetopt(821,21002
-soshutdown(785,20249
-
-./server/kern/uipc_socket2.c,575
-sb_lock(325,9596
-sbappend(480,14649
-sbappendaddr(606,17106
-sbappendcontrol(648,18015
-sbappendrecord(528,15539
-sbcheck(502,15010
-sbcompress(684,18806
-sbdrop(747,20015
-sbdroprecord(790,20721
-sbflush(732,19764
-sbinsertoob(562,16164
-sbrelease(441,13065
-sbreserve(424,12745
-sbselqueue(301,9150
-sbwait(311,9306
-socantrcvmore(286,8956
-socantsendmore(278,8861
-soisconnected(131,5076
-soisconnecting(123,4933
-soisdisconnected(160,5701
-soisdisconnecting(149,5474
-sonewconn1(183,6468
-soqinsque(219,7553
-soqremque(240,7926
-soreserve(397,12117
-sowakeup(346,10039
-
-./server/kern/uipc_syscalls.c,615
-accept(167,4822
-accept1(201,5274
-bind(127,4110
-connect(285,7127
-getpeername(1135,25497
-getpeername1(1170,25990
-getsock(1252,27811
-getsockname(1053,23974
-getsockname1(1088,24467
-getsockopt(967,22176
-listen(150,4533
-oaccept(182,5021
-ogetpeername(1150,25704
-ogetsockname(1068,24181
-orecv(672,15309
-orecvfrom(621,14393
-orecvmsg(701,15933
-osend(420,9946
-osendmsg(445,10386
-pipe(1005,23030
-recvfrom(639,14634
-recvit(785,18010
-recvmsg(742,16970
-sendit(519,12078
-sendmsg(481,11221
-sendto(390,9436
-setsockopt(932,21519
-shutdown(915,21236
-sockargs(1214,27028
-socket(97,3558
-socketpair(331,8131
-
-./server/kern/uipc_usrreq.c,399
-uipc_usrreq(97,3604
-unp_abort(576,13763
-unp_attach(349,9005
-unp_bind(400,9996
-unp_connect(449,11139
-unp_connect2(508,12506
-unp_detach(379,9587
-unp_discard(794,18225
-unp_disconnect(539,13054
-unp_dispose(746,17375
-unp_drain(611,14293
-unp_drop(594,14018
-unp_externalize(617,14318
-unp_gc(685,15879
-unp_internalize(648,15000
-unp_mark(784,18108
-unp_scan(755,17469
-unp_shutdown(584,13829
-
-./server/kern/vfs_bio.c,271
-allocbuf(536,13465
-bawrite(281,7793
-void bdwrite(257,7327
-biodone(621,15710
-biowait(588,14996
-bread(148,4941
-breada(177,5522
-brelse(304,8235
-bufinit(102,3798
-bwrite(221,6508
-getblk(469,12073
-geteblk(510,12848
-getnewbuf(357,9506
-struct buf *incore(438,11366
-
-./server/kern/vfs_cache.c,110
-cache_enter(225,7343
-cache_lookup(128,5026
-cache_purge(300,9176
-cache_purgevfs(327,9876
-nchinit(276,8560
-
-./server/kern/vfs_conf.c,0
-
-./server/kern/vfs_lookup.c,33
-lookup(270,9023
-namei(109,3943
-
-./server/kern/vfs_subr.c,724
-bdevvp(591,13566
-bgetvp(499,11658
-brelvp(527,12189
-checkalias(625,14350
-getnewvnode(248,6500
-getvfs(180,5066
-holdrele(781,17279
-insmntque(295,7393
-kinfo_vnode(1167,25756
-mntflushbuf(329,8081
-mntinvalbuf(428,10310
-printlockedvnodes(1143,25298
-reassignbuf(555,12757
-void vattr_null(199,5388
-void vclean(859,18950
-vcount(1076,23852
-vfinddev(1057,23503
-vflush(800,17757
-vflushbuf(353,8524
-vfs_busy(145,4427
-vfs_lock(111,3830
-vfs_remove(95,3475
-vfs_unbusy(163,4741
-vfs_unlock(128,4094
-vfsinit(226,6154
-vget(684,15753
-void vgone(973,21734
-void vgoneall(930,20812
-vhold(771,17163
-vinvalbuf(452,10793
-vprint(1106,24463
-void vput(721,16295
-void vref(711,16195
-void vrele(732,16469
-vwakeup(402,9554
-
-./server/kern/vfs_syscalls.c,764
-chdir(523,12024
-chdirec(579,13106
-chflags(1169,24473
-chmod(1239,25755
-chown(1309,27040
-chroot(550,12528
-dounmount(284,7257
-fchdir(490,11443
-fchflags(1206,25176
-fchmod(1276,26462
-fchown(1348,27765
-fstatfs(413,9776
-fsync(1501,30641
-ftruncate(1464,29998
-getdirentries(1709,34728
-getfsstat(439,10320
-getvnode(1815,36918
-link(812,17613
-lseek(960,20414
-lstat(1091,22946
-mkdir(1614,33024
-mkfifo(770,16817
-mknod(705,15643
-mount(92,3394
-ocreat(680,15242
-open(604,13548
-quotactl(350,8529
-readlink(1122,23555
-rename(1528,31183
-revoke(1776,36104
-rmdir(1657,33819
-saccess(1008,21255
-stat(1059,22321
-statfs(380,9084
-symlink(868,18652
-sync(320,8011
-truncate(1424,29213
-umask(1757,35786
-unlink(913,19571
-unmount(242,6529
-utimes(1383,28383
-
-./server/kern/vfs_vnops.c,216
-vn_close(203,5894
-vn_closefile(435,10331
-vn_fhtovp(450,10684
-vn_ioctl(380,9339
-vn_open(90,3479
-vn_rdwr(221,6200
-vn_read(265,7068
-vn_select(422,10124
-vn_stat(313,8098
-vn_write(286,7498
-vn_writechk(175,5309
-
-./server/net/af.c,0
-
-./server/net/af.h,0
-
-./server/net/bpf.c,552
-#define D_ISFREE(278,7473
-#define D_MARKFREE(279,7515
-#define D_MARKUSED(280,7558
-#define ROTATE_BUFFERS(356,9009
-bpf_attachd(217,6205
-bpf_detachd(235,6502
-bpf_ifname(822,18090
-bpf_initd(1043,23187
-bpf_mcopy(915,20201
-bpf_movein(135,4565
-bpf_mtap(939,20639
-bpf_setf(709,15658
-bpf_setif(757,16638
-bpf_tap(888,19499
-bpf_wakeup(449,11076
-bpfattach(1066,23696
-bpfclose(327,8408
-bpfioctl(530,12760
-bpfopen(290,7744
-bpfread(366,9239
-bpfselect(845,18594
-bpfwrite(461,11262
-catchpacket(969,21466
-ifpromisc(1114,25020
-reset_d(499,11975
-
-./server/net/bpf.h,274
-#define BPF_CLASS(175,6277
-#define BPF_JUMP(241,7673
-#define BPF_MISCOP(223,7370
-#define BPF_MODE(190,6622
-#define BPF_OP(199,6821
-#define BPF_RVAL(219,7298
-#define BPF_SIZE(186,6520
-#define BPF_SRC(214,7178
-#define BPF_STMT(240,7618
-#define BPF_WORDALIGN(81,3449
-
-./server/net/bpf_filter.c,228
-#define EXTRACT_LONG(92,3615
-#define EXTRACT_LONG(98,3761
-#define EXTRACT_SHORT(91,3567
-#define EXTRACT_SHORT(94,3668
-#define MINDEX(107,3939
-bpf_filter(206,5543
-bpf_validate(544,11078
-m_xhalf(166,4890
-m_xword(121,4126
-
-./server/net/bpfdesc.h,0
-
-./server/net/if.c,347
-if_attach(130,4041
-if_down(369,10560
-if_qflush(383,10824
-if_slowtimo(403,11204
-ifa_ifwithaddr(204,6323
-ifa_ifwithaf(288,8528
-ifa_ifwithdstaddr(229,7026
-ifa_ifwithnet(251,7552
-ifaof_ifpforaddr(306,8928
-ifconf(595,14904
-ifinit(97,3485
-ifioctl(466,12441
-ifubareset(111,3723
-ifunit(423,11584
-link_rtrequest(346,9969
-sprint_d(660,16684
-
-./server/net/if.h,140
-#define	IF_DEQUEUE(197,8024
-#define	IF_DROP(180,7609
-#define	IF_ENQUEUE(181,7652
-#define	IF_PREPEND(190,7851
-#define	IF_QFULL(179,7548
-
-./server/net/if_arp.h,0
-
-./server/net/if_dl.h,25
-#define LLADDR(103,4359
-
-./server/net/if_ethersubr.c,70
-ether_input(321,9205
-ether_output(121,4119
-ether_sprintf(449,12003
-
-./server/net/if_llc.h,0
-
-./server/net/if_loop.c,78
-loattach(114,3703
-loioctl(202,5197
-looutput(129,3972
-lortrequest(190,5036
-
-./server/net/if_sl.c,218
-#define INTERACTIVE(213,8285
-sl_btom(575,16158
-slattach(229,8705
-slclose(308,10337
-slinit(249,9140
-slinput(617,17179
-slioctl(753,20185
-slopen(275,9652
-sloutput(368,11356
-slstart(443,13135
-sltioctl(335,10828
-
-./server/net/if_slvar.h,0
-
-./server/net/if_types.h,0
-
-./server/net/netisr.c,24
-void dosoftnet(50,1366
-
-./server/net/netisr.h,87
-#define	schednetisr(95,3895
-#define	schednetisr(103,4147
-#define	setsoftnet(79,3342
-
-./server/net/radix.c,212
-#define Bcmp(84,3360
-rn_addmask(327,9527
-rn_addroute(371,10482
-rn_delete(509,13955
-rn_inithead(634,17010
-rn_insert(264,8152
-rn_match(153,5586
-rn_newpair(246,7674
-rn_search(116,4988
-rn_search_m(132,5233
-
-./server/net/radix.h,267
-#define Bcmp(142,4991
-#define Bcmp(147,5204
-#define Bcopy(148,5278
-#define Bzero(143,5053
-#define Bzero(149,5354
-#define Free(145,5165
-#define Free(151,5499
-#define MKFree(131,4733
-#define MKGet(124,4566
-#define R_Malloc(144,5103
-#define R_Malloc(150,5410
-
-./server/net/raw_cb.c,86
-raw_attach(100,3664
-raw_bind(160,4758
-raw_detach(127,4237
-raw_disconnect(146,4545
-
-./server/net/raw_cb.h,27
-#define	sotorawcb(83,3417
-
-./server/net/raw_usrreq.c,100
-raw_ctlinput(162,5021
-raw_init(86,3309
-raw_input(102,3595
-raw_usrreq(173,5157
-rawintr(340,8166
-
-./server/net/route.c,252
-#define ROUNDUP(382,10700
-#define	SA(96,3473
-ifa_ifwithroute(337,9623
-rt_maskedcopy(478,13215
-rtalloc(119,4031
-rtalloc1(128,4227
-rtfree(161,5150
-rtinit(500,13775
-rtinitheads(106,3831
-rtioctl(269,7964
-rtredirect(185,5697
-rtrequest(384,10782
-
-./server/net/route.h,109
-#define	RTFREE(239,9305
-#define RTHASHMOD(251,9506
-#define RTHASHMOD(253,9557
-#define	RTTTOPRHZ(111,4302
-
-./server/net/rtsock.c,233
-#define ADVANCE(139,4624
-#define ROUNDUP(137,4536
-kinfo_rtable(611,16708
-m_copyback(422,12124
-route_output(142,4688
-route_usrreq(89,3427
-rt_dumpentry(544,14857
-rt_missmsg(474,13095
-rt_setmetrics(401,11549
-rt_walk(654,17608
-
-./server/net/slcompress.c,302
-#define BCMP(100,3663
-#define BCOPY(101,3730
-#define DECODEL(150,4719
-#define DECODES(159,4888
-#define DECODEU(168,5057
-#define ENCODE(129,4386
-#define ENCODEZ(139,4541
-#define INCR(95,3588
-#define INCR(97,3633
-sl_compress_init(106,3828
-sl_compress_tcp(179,5210
-sl_uncompress_tcp(431,12712
-
-./server/net/slcompress.h,0
-
-./server/netinet/hy.c,0
-
-./server/netinet/icmp_var.h,0
-
-./server/netinet/if_ether.c,221
-#define	ARPTAB_HASH(116,4152
-#define	ARPTAB_LOOK(119,4205
-arpinput(307,9670
-arpioctl(561,16365
-arpresolve(211,7093
-arptfree(506,15213
-arptimer(139,4719
-arptnew(528,15738
-arpwhohas(160,5177
-in_arpinput(351,10783
-
-./server/netinet/if_ether.h,0
-
-./server/netinet/imp.c,0
-
-./server/netinet/in.c,242
-in_broadcast(611,16055
-in_canforward(256,7064
-in_control(280,7540
-in_iaonnetof(597,15795
-in_ifinit(521,13677
-in_ifscrub(503,13276
-in_lnaof(194,5541
-in_localaddr(233,6518
-in_makeaddr(91,3387
-in_netof(117,3907
-in_sockmaskof(146,4486
-
-./server/netinet/in.h,207
-#define	IN_BADCLASS(136,4913
-#define	IN_CLASSA(115,4214
-#define	IN_CLASSB(121,4393
-#define	IN_CLASSC(127,4583
-#define	IN_CLASSD(132,4743
-#define	IN_EXPERIMENTAL(135,4845
-#define	IN_MULTICAST(133,4806
-
-./server/netinet/in_cksum.c,46
-#define ADDCARRY(80,3252
-in_cksum_c(83,3384
-
-./server/netinet/in_pcb.c,258
-in_losing(393,11598
-in_pcballoc(90,3402
-in_pcbbind(108,3728
-in_pcbconnect(171,5469
-in_pcbdetach(281,8620
-in_pcbdisconnect(271,8448
-in_pcblookup(433,12476
-in_pcbnotify(337,10034
-in_rtchange(419,12233
-in_setpeeraddr(311,9234
-in_setsockaddr(296,8889
-
-./server/netinet/in_pcb.h,59
-#define	sotoinpcb(120,4928
-#define	sotorawinpcb(121,4981
-
-./server/netinet/in_proto.c,0
-
-./server/netinet/in_systm.h,95
-typedef u_long	n_long;84,3427
-typedef u_short n_short;83,3364
-typedef	u_long	n_time;86,3489
-
-./server/netinet/in_var.h,25
-#define	IA_SIN(104,4323
-
-./server/netinet/ip.h,92
-#define	IPOPT_CLASS(129,4630
-#define	IPOPT_COPIED(128,4594
-#define	IPOPT_NUMBER(130,4665
-
-./server/netinet/ip_icmp.c,124
-icmp_error(105,3750
-icmp_input(194,6175
-icmp_reflect(405,11477
-icmp_send(521,14392
-ifptoia(506,14120
-iptime(545,14929
-
-./server/netinet/ip_icmp.h,62
-#define	ICMP_ADVLEN(129,4713
-#define	ICMP_INFOTYPE(163,6183
-
-./server/netinet/ip_input.c,291
-ip_deq(563,14585
-ip_dooptions(619,15525
-ip_drain(600,15120
-ip_enq(550,14378
-ip_forward(964,24302
-ip_freef(532,14048
-ip_init(142,4877
-ip_reass(393,10889
-ip_rtaddr(801,20178
-ip_slowtimo(576,14798
-ip_srcroute(852,21407
-ip_stripoptions(922,23097
-ipintr(179,5904
-save_rte(828,20833
-
-./server/netinet/ip_output.c,137
-ip_ctloutput(408,11103
-ip_insertoptions(331,9163
-ip_optcopy(375,10394
-ip_output(105,3770
-ip_pcbopts(543,13555
-ip_pcbopts(546,13606
-
-./server/netinet/ip_var.h,0
-
-./server/netinet/raw_ip.c,112
-rip_ctloutput(159,5219
-rip_input(101,3715
-rip_output(121,4210
-rip_usrreq(227,6437
-#define	satosin(120,4161
-
-./server/netinet/tcp.h,32
-typedef	u_long	tcp_seq;70,2989
-
-./server/netinet/tcp_debug.c,20
-tcp_trace(108,3745
-
-./server/netinet/tcp_debug.h,0
-
-./server/netinet/tcp_fsm.h,68
-#define	TCPS_HAVERCVDFIN(93,3969
-#define	TCPS_HAVERCVDSYN(92,3914
-
-./server/netinet/tcp_input.c,171
-#define	TCP_REASS(116,4406
-tcp_dooptions(1244,35217
-tcp_input(240,7491
-tcp_mss(1405,39861
-tcp_pulloutofband(1291,36087
-tcp_reass(133,4901
-tcp_xmit_timer(1321,36662
-
-./server/netinet/tcp_output.c,47
-tcp_output(110,3851
-tcp_setpersist(525,15321
-
-./server/netinet/tcp_seq.h,163
-#define	SEQ_GEQ(78,3268
-#define	SEQ_GT(77,3227
-#define	SEQ_LEQ(76,3184
-#define	SEQ_LT(75,3143
-#define	tcp_rcvseqinit(85,3439
-#define	tcp_sendseqinit(88,3516
-
-./server/netinet/tcp_subr.c,215
-tcp_close(299,8742
-tcp_ctlinput(418,12228
-tcp_drain(397,11814
-tcp_drop(274,8211
-tcp_init(107,3820
-tcp_newtcpcb(236,7189
-tcp_notify(407,11998
-tcp_quench(444,12932
-tcp_respond(171,5616
-tcp_template(125,4319
-
-./server/netinet/tcp_timer.c,94
-tcp_canceltimers(174,5214
-tcp_fasttimo(103,3755
-tcp_slowtimo(127,4294
-tcp_timers(190,5478
-
-./server/netinet/tcp_timer.h,32
-#define	TCPT_RANGESET(149,6451
-
-./server/netinet/tcp_usrreq.c,118
-tcp_attach(440,11194
-tcp_ctloutput(374,9935
-tcp_disconnect(478,12118
-tcp_usrclosed(508,13059
-tcp_usrreq(109,3981
-
-./server/netinet/tcp_var.h,116
-#define REASS_MBUF(188,7689
-#define	TCP_REXMTVAL(177,7220
-#define	intotcpcb(147,5785
-#define	sototcpcb(148,5840
-
-./server/netinet/tcpip.h,0
-
-./server/netinet/udp.h,0
-
-./server/netinet/udp_usrreq.c,223
-u_long	udp_recvspace = 40 * (1024 + sizeof(402,10641
-udp_ctlinput(300,8232
-udp_detach(542,13042
-udp_init(99,3600
-udp_input(114,3811
-udp_notify(291,8080
-udp_output(319,8712
-udp_saveopt(267,7551
-udp_usrreq(406,10747
-
-./server/netinet/udp_var.h,0
-
-./server/nfs/nfs.h,58
-#define	NFSIGNORE_SOERROR(111,4847
-#define	NMOD(94,4193
-
-./server/nfs/nfs_bio.c,41
-nfs_bioread(95,3554
-nfs_write(220,6838
-
-./server/nfs/nfs_node.c,262
-#define	NFSNOHASH(93,3531
-#define	NFSNOHASH(95,3585
-nfs_abortop(351,8676
-nfs_hash(126,4163
-nfs_inactive(198,5686
-nfs_islocked(322,8179
-nfs_lock(283,7434
-nfs_nget(146,4548
-nfs_nhinit(107,3817
-nfs_nput(336,8408
-nfs_reclaim(254,6897
-nfs_unlock(306,7934
-
-./server/nfs/nfs_serv.c,430
-nfsrv_access(1491,34999
-nfsrv_create(586,15004
-nfsrv_getattr(119,4442
-nfsrv_link(904,21906
-nfsrv_lookup(231,7303
-nfsrv_mkdir(1046,24785
-nfsrv_noop(1463,34120
-nfsrv_null(1441,33759
-nfsrv_read(364,10087
-nfsrv_readdir(1209,28778
-nfsrv_readlink(281,8382
-nfsrv_remove(728,18221
-nfsrv_rename(786,19314
-nfsrv_rmdir(1122,26376
-nfsrv_setattr(156,5188
-nfsrv_statfs(1398,32736
-nfsrv_symlink(966,23102
-nfsrv_write(473,12466
-
-./server/nfs/nfs_socket.c,455
-#define NFS_RTO(1254,32143
-nfs_backofftimer(1304,33454
-nfs_badnam(1434,36468
-nfs_connect(182,5053
-nfs_disconnect(326,8863
-nfs_getreq(936,23810
-nfs_msg(1349,34618
-nfs_netaddr_match(1401,35677
-nfs_receive(398,10669
-nfs_reconnect(289,8048
-nfs_rephead(1060,26603
-nfs_reply(620,16432
-nfs_request(740,19116
-nfs_send(344,9260
-nfs_sigintr(1339,34444
-nfs_solock(1369,35064
-nfs_sounlock(1383,35306
-nfs_timer(1127,28098
-nfs_updatetimer(1256,32208
-
-./server/nfs/nfs_srvcache.c,133
-#define	NFSRCHASH(97,3698
-#define	NFSRCHASH(99,3763
-nfsrv_getcache(201,5533
-nfsrv_initcache(162,4588
-nfsrv_updatecache(284,7626
-
-./server/nfs/nfs_subs.c,379
-nfs_adv(454,11874
-nfs_compress(995,24974
-nfs_getattrcache(760,19492
-nfs_init(545,13465
-nfs_loadattrcache(639,15990
-nfs_namei(787,20121
-nfs_uncompress(1099,26793
-static char *nfs_unixauth(580,14468
-nfsm_adj(894,22372
-nfsm_disct(386,10474
-nfsm_mbuftouio(227,6907
-struct mbuf *nfsm_reqh(146,5220
-nfsm_strtmbuf(480,12257
-nfsm_uiotombuf(301,8458
-nfsrv_fhtovp(959,23814
-
-./server/nfs/nfs_syscalls.c,56
-async_daemon(345,9250
-getfh(137,4279
-nfssvc(178,5149
-
-./server/nfs/nfs_vfsops.c,237
-mountnfs(349,10443
-nfs_fhtovp(586,16548
-nfs_mount(310,9438
-nfs_mountroot(184,5909
-nfs_quotactl(623,17024
-nfs_root(544,15876
-nfs_start(611,16871
-nfs_statfs(124,4027
-nfs_sync(569,16265
-nfs_unmount(482,14474
-nfs_vptofh(599,16737
-
-./server/nfs/nfs_vnops.c,772
-nfs_access(259,7440
-nfs_advlock(1733,44327
-nfs_bmap(1508,39077
-nfs_close(325,8684
-nfs_create(832,20531
-nfs_dogetattr(360,9335
-nfs_doio(1585,40996
-nfs_fsync(1710,43868
-nfs_getattr(351,9168
-nfs_link(1033,26070
-nfs_lookitup(1468,37850
-nfs_lookup(448,11548
-nfs_mkdir(1117,28320
-nfs_mknod(781,19145
-nfs_mmap(1694,43585
-nfs_null(239,7057
-nfs_open(305,8346
-nfs_print(1747,44510
-nfs_read(640,16038
-nfs_readdir(1224,31382
-nfs_readdirrpc(1266,32320
-nfs_readlink(654,16275
-nfs_readlinkrpc(668,16535
-nfs_readrpc(696,17121
-nfs_remove(879,22027
-nfs_removeit(927,23276
-nfs_rename(953,23886
-nfs_renameit(1001,25188
-nfs_rmdir(1180,30238
-nfs_setattr(389,9948
-nfs_sillyrename(1414,36476
-nfs_strategy(1526,39427
-nfs_symlink(1073,27015
-nfs_writerpc(739,18106
-
-./server/nfs/nfscompress.h,75
-#define	NFSCRLE(78,3209
-#define nfscget(96,3562
-#define	nfscput(80,3250
-
-./server/nfs/nfsdiskless.h,0
-
-./server/nfs/nfsiom.h,0
-
-./server/nfs/nfsm_subs.h,733
-#define	M_HASCL(84,3405
-#define	NFSMADV(94,3692
-#define	NFSMGETHDR(85,3447
-#define	NFSMINOFF(89,3573
-#define	NFSMSIZ(95,3733
-#define	nfsm_adv(286,8337
-#define	nfsm_build(112,4395
-#define	nfsm_build(127,4729
-#define	nfsm_disect(141,5015
-#define	nfsm_disecton(153,5294
-#define nfsm_fhtom(165,5576
-#define	nfsm_loadattr(184,6061
-#define nfsm_mtofh(173,5786
-#define nfsm_mtouio(207,6610
-#define	nfsm_reply(258,7786
-#define	nfsm_reply(271,8052
-#define	nfsm_reqhead(220,6878
-#define	nfsm_request(231,7129
-#define nfsm_rndup(229,7089
-#define nfsm_srvfhtom(169,5687
-#define nfsm_srvmtofh(295,8540
-#define	nfsm_srvstrsiz(200,6428
-#define	nfsm_strsiz(192,6242
-#define	nfsm_strtom(236,7281
-#define nfsm_uiotom(214,6754
-
-./server/nfs/nfsmount.h,27
-#define VFSTONFS(108,4385
-
-./server/nfs/nfsnode.h,50
-#define NFSTOV(106,4381
-#define VTONFS(105,4329
-
-./server/nfs/nfsrvcache.h,30
-#define	put_at_head(101,3847
-
-./server/nfs/nfsv2.h,208
-#define	nfstov_mode(148,4994
-#define	nfstov_type(150,5113
-typedef enum { NFNON=0, NFREG=1, NFDIR=2, NFBLK=3, NFCHR=4, NFLNK=5 } nfstype;153,5195
-#define	vtonfs_mode(145,4884
-#define	vtonfs_type(149,5053
-
-./server/nfs/rpcv2.h,0
-
-./server/nfs/xdr_subs.h,116
-#define	fxdr_time(80,3387
-#define fxdr_unsigned(79,3337
-#define	txdr_time(87,3651
-#define	txdr_unsigned(86,3607
-
-./server/src/config/I386/machinedep.c,129
-check_nexus(455,12111
-check_slot(466,12313
-dev_param(235,6471
-find_proto(222,6263
-machinedep(484,12728
-sqt_ioconf(270,7275
-
-./server/src/config/I860/machinedep.c,84
-check_nexus(120,3955
-check_slot(131,4157
-dev_param(138,4272
-machinedep(145,4362
-
-./server/src/config/PMAX/machinedep.c,187
-check_nexus(407,10826
-check_slot(421,11171
-concat3(364,10109
-declare(376,10304
-dev_param(428,11286
-intv2(352,9933
-is_declared(390,10531
-machinedep(435,11376
-mips_ioconf(123,3945
-
-./server/src/config/SUN3/machinedep.c,239
-bus_encode(436,12658
-check_nexus(378,11123
-check_slot(404,11805
-check_vector(132,4150
-dev_param(478,13903
-dump_mb_handler(494,14137
-glue(518,14583
-machinedep(544,15134
-mbglue(503,14332
-pseudo_inits(346,10357
-sun_ioconf(144,4463
-
-./server/src/config/VAX/machinedep.c,215
-check_nexus(376,11145
-check_slot(390,11488
-dev_param(397,11603
-dump_ctrs(578,15539
-dump_intname(552,15107
-dump_std(518,14395
-dump_ubavec(471,13059
-machinedep(595,15966
-ubglue(407,11749
-vax_ioconf(124,3964
-
-./server/src/config/config.h,21
-#define eq(300,8409
-
-./server/src/config/main.c,67
-get_rest(214,5287
-get_word(177,4701
-main(91,3087
-path(237,5592
-
-./server/src/config/mkheaders.c,122
-do_count(120,3892
-do_header(181,5304
-file_needed(169,5106
-headers(107,3625
-toheader(260,6905
-char *tomacro(273,7082
-
-./server/src/config/mkioconf.c,34
-char *intv(121,3872
-qu(133,4070
-
-./server/src/config/mkmakefile.c,395
-VPATHopen(869,18262
-build_platforms(705,15178
-do_build(722,15574
-do_cflags(779,16423
-do_files(650,14285
-do_load(817,17308
-do_machdep(680,14833
-do_objs(561,12559
-do_ordered(620,13765
-do_swapspec(841,17784
-fl_lookup(130,4210
-fltail_lookup(146,4459
-makefile(185,5067
-new_fent(162,4711
-#define next_word(115,3971
-opteq(544,12314
-raise(855,18103
-read_files(275,6937
-tail(765,16230
-
-./server/src/config/mkswapconf.c,99
-devtoname(226,6158
-do_swap(103,3102
-initdevtable(244,6537
-nametodev(180,5059
-swapconf(87,2879
-
-./server/src/config/PC532/machinedep.c,84
-check_nexus(129,4223
-check_slot(140,4425
-dev_param(147,4546
-machinedep(154,4636
-
-./server/sys/acct.h,32
-typedef u_short comp_t;75,3157
-
-./server/sys/buf.h,220
-#define	BUFHASH(153,6347
-#define	BUFHASH(156,6457
-#define	binshash(213,8752
-#define	binsheadfree(227,9056
-#define	binstailfree(233,9209
-#define	bremfree(223,8943
-#define	bremhash(209,8645
-#define	clrbuf(246,9454
-
-./server/sys/callout.h,0
-
-./server/sys/cdefs.h,146
-#define	__CONCAT(90,3638
-#define	__CONCAT(95,3787
-#define	__P(89,3586
-#define	__P(94,3730
-#define	__STRING(91,3667
-#define	__STRING(96,3816
-
-./server/sys/clist.h,0
-
-./server/sys/conf.h,54
-#define	C_BLOCK(83,3203
-#define	C_BLOCK_GET(86,3322
-
-./server/sys/dir.h,24
-#define DIRSIZ(92,3565
-
-./server/sys/disklabel.h,0
-
-./server/sys/dkbad.h,0
-
-./server/sys/dkstat.h,0
-
-./server/sys/dmap.h,0
-
-./server/sys/domain.h,0
-
-./server/sys/errno.h,0
-
-./server/sys/exec.h,0
-
-./server/sys/fcntl.h,50
-#define	FFLAGS(126,4926
-#define	OFLAGS(127,4964
-
-./server/sys/fifo.h,0
-
-./server/sys/file.h,0
-
-./server/sys/filedesc.h,0
-
-./server/sys/gprof.h,54
-#define ROUNDDOWN(147,4902
-#define ROUNDUP(148,4941
-
-./server/sys/ioctl.h,228
-#define	IOCBASECMD(103,3982
-#define	IOCGROUP(104,4026
-#define	IOCPARM_LEN(102,3930
-#define		UIOCCMD(176,7724
-#define	_IO(115,4481
-#define _IOC(113,4380
-#define	_IOR(116,4526
-#define	_IOW(117,4581
-#define	_IOWR(119,4689
-
-./server/sys/ioctl_compat.h,0
-
-./server/sys/ipc.h,28
-typedef	long	key_t;81,3257
-
-./server/sys/kernel.h,26
-#define get_time(86,3296
-
-./server/sys/kinfo.h,71
-#define ki_af(91,3589
-#define ki_op(73,3017
-#define ki_type(74,3052
-
-./server/sys/kinfo_proc.h,0
-
-./server/sys/ktrace.h,49
-#define	KTROP(76,3198
-#define KTRPOINT(97,3675
-
-./server/sys/macro_help.h,0
-
-./server/sys/malloc.h,156
-#define BUCKETINDX(215,7968
-#define FREE(260,9377
-#define	MALLOC(258,9271
-#define btokmemx(252,9074
-#define btokup(253,9135
-#define kmemxtob(251,9022
-
-./server/sys/map.h,0
-
-./server/sys/mapmem.h,51
-#define MMALLOC(140,5884
-#define MMFREE(144,5997
-
-./server/sys/mbuf.h,484
-#define MCHTYPE(351,11455
-#define	MCLALLOC(241,8440
-#define	MCLFREE(263,8975
-#define	MCLGET(253,8705
-#define	MFREE(278,9335
-#define	MGET(199,7331
-#define	MGETHDR(215,7692
-#define	MH_ALIGN(313,10292
-#define	M_ALIGN(307,10110
-#define	M_COPY_PKTHDR(297,9791
-#define	M_LEADINGSPACE(320,10475
-#define	M_PREPEND(340,11172
-#define	M_TRAILINGSPACE(329,10753
-#define	cltom(106,4349
-#define	dtom(104,4232
-#define  m_copy(361,11656
-#define	mtocl(105,4290
-#define mtod(103,4195
-
-./server/sys/mman.h,0
-
-./server/sys/mount.h,372
-#define VFS_FHTOVP(216,7912
-#define VFS_MOUNT(208,7377
-#define VFS_QUOTACTL(213,7688
-#define VFS_ROOT(212,7625
-#define VFS_START(210,7473
-#define VFS_STATFS(214,7768
-#define VFS_SYNC(215,7841
-#define VFS_UNMOUNT(211,7548
-#define	VFS_VPTOFH(217,7989
-typedef struct fhandle	fhandle_t;238,8449
-typedef quad fsid_t;74,3091
-typedef union nfsv2fh nfsv2fh_t;265,9023
-
-./server/sys/msgbuf.h,0
-
-./server/sys/mtio.h,0
-
-./server/sys/namei.h,0
-
-./server/sys/parallel.h,147
-#define master_lock(41,1219
-#define master_unlock(43,1268
-#define	unix_master(45,1321
-#define	unix_release(50,1409
-#define	unix_reset(55,1500
-
-./server/sys/param.h,489
-#define	MAX(230,8094
-#define	MIN(229,8057
-#define	bdbtofsb(202,7016
-#define	btodb(191,6626
-#define	claligned(158,5550
-#define	clbase(163,5673
-#define	clbase(167,5777
-#define	clrbit(218,7694
-#define	clrnd(164,5695
-#define	clrnd(169,5869
-#define	dbtob(193,6724
-#define	howmany(224,7920
-#define imin(233,8191
-#define	isclr(220,7803
-#define	isset(219,7750
-#define max(232,8161
-#define min(231,8131
-#define powerof2(227,8017
-#define	roundup(226,7969
-#define	setbit(217,7641
-
-./server/sys/proc.h,114
-#define	PIDHASH(281,10576
-#define	SESSHOLD(284,10677
-#define	SESSRELE(285,10714
-#define SESS_LEADER(283,10620
-
-./server/sys/protosw.h,34
-#define	PRC_IS_REDIRECT(203,8760
-
-./server/sys/ptrace.h,0
-
-./server/sys/queue.h,815
-#define	Queueempty(281,6997
-#define	deQueue(279,6863
-#define	dequeue(78,2291
-#define	enQueue(278,6790
-#define enqueue(77,2239
-#define	initQueue(277,6742
-#define	queue_assign(182,4600
-typedef	struct queue_entry	queue_chain_t;68,1986
-#define	queue_empty(123,3117
-#define	queue_end(121,3077
-#define queue_enter(134,3369
-#define queue_enter_first(210,5235
-typedef	struct queue_entry	*queue_entry_t;69,2028
-#define	queue_field(159,4043
-#define	queue_first(104,2805
-typedef	struct queue_entry	queue_head_t;67,1945
-#define	queue_init(94,2599
-#define	queue_last(237,5904
-#define	queue_next(112,2931
-#define	queue_prev(245,6029
-#define	queue_remove(168,4270
-#define	queue_remove_first(189,4777
-#define	queue_remove_last(195,4903
-typedef struct queue_entry	*queue_t;66,1908
-#define	remQueue(280,6927
-
-./server/sys/reboot.h,169
-#define	B_ADAPTOR(103,4303
-#define	B_CONTROLLER(106,4429
-#define	B_PARTITION(112,4667
-#define	B_TYPE(115,4788
-#define	B_UNIT(109,4551
-#define MAKEBOOTDEV(120,4930
-
-./server/sys/resource.h,0
-
-./server/sys/resourcevar.h,0
-
-./server/sys/seg.h,0
-
-./server/sys/shm.h,0
-
-./server/sys/signal.h,332
-139,5300
-#define 140,5301
-#define 141,5341
-#define 142,5395
-#define 143,5460
-#define 144,5528
-129,5050
-typedef unsigned int 130,5051
-int	134,5135
-int	135,5173
-int	136,5208
-int	137,5242
-	int	152,5770
-133,5097
-typedef	void (*sig_t)127,5009
-#define sigmask(219,7654
-	sigset_t 151,5723
-struct	149,5660
-	void	150,5679
-
-./server/sys/signalvar.h,135
-#define	CLRSIG(135,4921
-#define	CURSIG(119,4547
-#define	EXITING(131,4823
-#define	HAVE_SIGNALS(124,4684
-#define SIGACTION(112,4297
-
-./server/sys/socket.h,90
-#define	CMSG_DATA(235,8263
-#define	CMSG_FIRSTHDR(244,8643
-#define	CMSG_NXTHDR(238,8386
-
-./server/sys/socketvar.h,306
-#define	sballoc(181,7423
-#define	sbfree(189,7635
-#define sblock(201,7977
-#define	sbspace(158,6650
-#define	sbunlock(205,8108
-#define	sonewconn(219,8476
-#define	soreadable(167,6933
-#define	sorwakeup(213,8277
-#define	sosendallatonce(163,6822
-#define	sowriteable(173,7123
-#define	sowwakeup(214,8329
-
-./server/sys/specdev.h,53
-#define	SPECHASH(99,3626
-#define	SPECHASH(101,3688
-
-./server/sys/stat.h,184
-#define	S_ISBLK(139,5357
-#define	S_ISCHR(138,5292
-#define	S_ISDIR(137,5230
-#define	S_ISFIFO(141,5488
-#define	S_ISLNK(143,5568
-#define	S_ISREG(140,5423
-#define	S_ISSOCK(144,5634
-
-./server/sys/synch.h,244
-#define	spl0(56,1480
-#define	splbio(59,1588
-#define	splhigh(62,1687
-#define	splimp(61,1654
-#define	splnet(58,1555
-#define splsched(64,1750
-#define	splsoftclock(57,1510
-#define	spltty(60,1621
-#define splvm(65,1786
-#define	splx(63,1722
-
-./server/sys/syslimits.h,0
-
-./server/sys/syslog.h,151
-} CODE;102,4189
-#define	LOG_FAC(147,5849
-#define	LOG_MAKEPRI(93,3924
-#define	LOG_MASK(183,6588
-#define	LOG_PRI(92,3885
-#define	LOG_UPTO(184,6652
-
-./server/sys/systm.h,50
-#define	insque(111,4344
-#define	remque(112,4395
-
-./server/sys/table.h,0
-
-./server/sys/tablet.h,0
-
-./server/sys/termios.h,119
-#define CCEQ(120,4059
-typedef unsigned char	212,7744
-typedef unsigned long	211,7712
-typedef long		speed_t;213,7772
-
-./server/sys/time.h,85
-#define	timerclear(107,4027
-#define	timercmp(104,3883
-#define	timerisset(103,3824
-
-./server/sys/timeb.h,0
-
-./server/sys/times.h,35
-typedef	_CLOCK_T_	clock_t;73,3035
-
-./server/sys/tprintf.h,39
-typedef struct session *tpr_t;70,2995
-
-./server/sys/trace.h,47
-#define	pack(143,5303
-#define	trace(144,5370
-
-./server/sys/tty.h,108
-#define TTHIWAT(219,7507
-#define TTLOWAT(220,7541
-#define isbackground(204,7180
-#define isctty(199,7060
-
-./server/sys/ttychars.h,0
-
-./server/sys/ttydefaults.h,22
-#define CTRL(88,3458
-
-./server/sys/ttydev.h,0
-
-./server/sys/types.h,1051
-#define	FD_CLR(148,5153
-#define	FD_ISSET(149,5230
-#define	FD_SET(147,5077
-#define	FD_ZERO(150,5307
-typedef	char *	caddr_t;79,3220
-typedef	unsigned char	73,3041
-typedef	_CLOCK_T_	clock_t;109,4302
-typedef	long	daddr_t;80,3264
-typedef	short	dev_t;81,3306
-typedef long	fd_mask;136,4843
-} fd_set;145,5066
-typedef u_long	fixpt_t;91,3740
-typedef	u_short	gid_t;88,3616
-#define	howmany(140,4943
-typedef	u_long	ino_t;82,3349
-typedef	unsigned int	75,3103
-typedef	unsigned long	76,3131
-#define	major(98,3973
-#define	makedev(100,4096
-#define	minor(99,4041
-typedef	u_short	mode_t;90,3696
-typedef	u_short	nlink_t;84,3451
-typedef	long	off_t;83,3392
-typedef	short	pid_t;89,3656
-typedef	long *	qaddr_t;96,3908
-typedef	struct	_quad	{   long val[2]; } quad;95,3862
-typedef	long	segsz_t;86,3535
-typedef	unsigned short	74,3071
-typedef	unsigned short	77,3161
-typedef	_SIZE_T_	size_t;114,4370
-typedef	long	swblk_t;85,3494
-typedef	_TIME_T_	time_t;119,4435
-typedef	struct	_uquad	{ u_long val[2]; } u_quad;94,3813
-typedef	u_short	uid_t;87,3577
-
-./server/sys/ucred.h,24
-#define	crhold(86,3312
-
-./server/sys/uio.h,0
-
-./server/sys/un.h,25
-#define SUN_LEN(84,3276
-
-./server/sys/unistd.h,0
-
-./server/sys/unpcb.h,28
-#define	sotounpcb(107,4570
-
-./server/sys/user.h,0
-
-./server/sys/ux_exception.h,0
-
-./server/sys/vadvise.h,0
-
-./server/sys/vcmd.h,0
-
-./server/sys/vlimit.h,0
-
-./server/sys/vmmeter.h,0
-
-./server/sys/vmspace.h,0
-
-./server/sys/vnode.h,1196
-#define	HOLDRELE(350,14801
-#define	HOLDRELE(355,15016
-#define	VATTR_NULL(351,14871
-#define	VATTR_NULL(356,15050
-#define	VHOLD(349,14734
-#define	VHOLD(354,14988
-#define	VOP_ABORTOP(272,11436
-#define	VOP_ACCESS(254,10266
-#define	VOP_ADVLOCK(282,11981
-#define	VOP_BMAP(277,11716
-#define	VOP_CLOSE(253,10204
-#define	VOP_CREATE(250,10006
-#define	VOP_FSYNC(262,10779
-#define	VOP_GETATTR(255,10330
-#define	VOP_INACTIVE(273,11499
-#define	VOP_IOCTL(259,10584
-#define	VOP_ISLOCKED(280,11890
-#define	VOP_LINK(265,10970
-#define	VOP_LOCK(275,11614
-#define	VOP_LOOKUP(249,9946
-#define	VOP_MKDIR(267,11103
-#define	VOP_MKNOD(251,10074
-#define	VOP_MMAP(261,10722
-#define	VOP_OPEN(252,10144
-#define	VOP_PRINT(279,11839
-#define	VOP_READ(257,10462
-#define	VOP_READDIR(270,11306
-#define	VOP_READLINK(271,11372
-#define	VOP_RECLAIM(274,11559
-#define	VOP_REMOVE(264,10905
-#define	VOP_RENAME(266,11035
-#define	VOP_RMDIR(268,11169
-#define	VOP_SEEK(263,10845
-#define	VOP_SELECT(260,10654
-#define	VOP_SETATTR(256,10396
-#define	VOP_STRATEGY(278,11776
-#define	VOP_SYMLINK(269,11232
-#define	VOP_UNLOCK(276,11663
-#define	VOP_WRITE(258,10522
-#define	VREF(348,14673
-#define	VREF(353,14962
-
-./server/sys/vsio.h,137
-}vsStats;160,6315
-}vsCursor;165,6373
-}vsEvent;137,5615
-}vsBox;172,6464
-} vsIoAddr;186,6789
-typedef vsIoAddr *vsIoAddrAddr;187,6801
-
-./server/sys/vtimes.h,0
-
-./server/sys/wait.h,322
-#define WCOREDUMP(95,3774
-#define WEXITSTATUS(93,3712
-#define WIFEXITED(92,3672
-#define WIFSIGNALED(90,3568
-#define WIFSTOPPED(88,3482
-#define WSTOPSIG(89,3531
-#define WTERMSIG(91,3638
-#define	W_EXITCODE(97,3820
-#define	W_STOPCODE(98,3870
-#define	_WSTATUS(86,3382
-#define	_W_INT(80,3258
-#define	_W_INT(82,3286
-
-./server/sys/zalloc.h,152
-#define ADD_TO_ZONE(74,2245
-#define REMOVE_FROM_ZONE(81,2450
-#define	ZALLOC(99,2877
-#define ZFREE(90,2696
-#define	ZGET(110,3133
-} *zone_t;64,2108
-
-./server/ufs/dinode.h,0
-
-./server/ufs/dir.h,25
-#define DIRSIZ(114,4992
-
-./server/ufs/fs.h,1168
-#define	INOPB(468,19233
-#define	INOPF(469,19268
-#define	NINDIR(474,19394
-#define	NSPB(462,19074
-#define	NSPF(463,19129
-#define blkmap(402,16587
-#define blknum(436,18198
-#define blkoff(416,17176
-#define blkroundup(426,17643
-#define blksize(450,18629
-#define blkstofrags(432,18001
-#define cbtocylno(404,16699
-#define cbtorpos(406,16766
-#define cg_blks(320,13465
-#define cg_blksfree(328,13819
-#define cg_blktot(316,13309
-#define cg_chkmagic(332,13979
-#define cg_inosused(324,13659
-#define	cgbase(371,15432
-#define	cgdmin(377,15796
-#define	cgimin(376,15723
-#define	cgsblock(374,15577
-#define cgstart(372,15486
-#define	cgtod(375,15652
-#define dblksize(454,18808
-#define	dbtofsb(365,15243
-#define	dtog(395,16383
-#define	dtogd(396,16424
-#define fragnum(434,18103
-#define fragoff(418,17268
-#define fragroundup(428,17769
-#define fragstoblks(430,17896
-#define freespace(443,18394
-#define fs_cs(284,12058
-#define fs_postbl(270,11560
-#define fs_rotbl(274,11755
-#define fsbtodb(364,15194
-#define	itod(387,16138
-#define	itog(386,16097
-#define	itoo(385,16059
-#define lblkno(422,17456
-#define lblktosize(420,17360
-#define numfrags(424,17549
-
-./server/ufs/inode.h,274
-#define IFTOVT(145,5733
-#define	ILOCK(158,6034
-#define ILOCK(174,6345
-#define	ITIMES(183,6537
-#define ITOV(138,5585
-#define	IUNLOCK(166,6195
-#define IUNLOCK(175,6373
-#define	IUPDAT(178,6413
-#define MAKEIMODE(148,5838
-#define VTOI(137,5537
-#define VTTOIF(146,5790
-
-./server/ufs/lockf.h,0
-
-./server/ufs/mfs_vfsops.c,61
-mfs_mount(120,3779
-mfs_start(186,5590
-mfs_statfs(220,6433
-
-./server/ufs/mfs_vnops.c,221
-mfs_badop(381,9725
-mfs_bmap(293,8035
-mfs_close(311,8268
-mfs_doio(200,5817
-mfs_doio(275,7643
-mfs_inactive(356,9287
-mfs_init(391,9841
-mfs_ioctl(156,4879
-mfs_open(138,4633
-mfs_print(369,9501
-mfs_strategy(171,5096
-
-./server/ufs/mfsiom.h,0
-
-./server/ufs/mfsnode.h,48
-#define MFSTOV(88,3513
-#define VTOMFS(87,3461
-
-./server/ufs/quota.h,71
-#define	DQREF(202,7707
-#define	DQREF(204,7746
-#define	QCMD(119,4607
-
-./server/ufs/ufs_alloc.c,273
-alloc(113,4347
-alloccg(635,18952
-alloccgblk(733,21438
-blkfree(924,26087
-blkpref(436,14094
-dirpref(392,12174
-fragextend(561,17231
-fserr(1157,31942
-hashalloc(508,16150
-ialloc(328,10664
-ialloccg(841,24205
-ifree(1031,28945
-mapsearch(1093,30283
-realloccg(175,6012
-
-./server/ufs/ufs_bmap.c,31
-balloc(164,4789
-bmap(89,3463
-
-./server/ufs/ufs_disksubr.c,203
-diskerr(353,10695
-disksort(95,3880
-dkcksum(326,9755
-#define dkminor(275,8558
-#define dkpart(274,8519
-#define dkunit(273,8480
-readdisklabel(187,6297
-setdisklabel(236,7510
-writedisklabel(280,8674
-
-./server/ufs/ufs_inode.c,238
-#define	INOHASH(91,3417
-#define	INOHASH(93,3475
-iget(131,4330
-ilock(719,18243
-indirtrunc(629,16190
-iput(282,7688
-itrunc(439,11278
-iunlock(739,18690
-iupdat(388,10046
-ufs_inactive(296,7927
-ufs_init(106,3736
-ufs_reclaim(345,8969
-
-./server/ufs/ufs_lockf.c,225
-lf_addblock(566,14809
-lf_clearlock(326,9303
-lf_findoverlap(458,12252
-lf_getblock(429,11562
-lf_getlock(394,10835
-lf_print(664,17020
-lf_printlist(688,17668
-lf_setlock(104,3706
-lf_split(594,15359
-lf_wakelock(640,16445
-
-./server/ufs/ufs_lookup.c,186
-blkatoff(816,25903
-checkpath(899,27860
-dirbad(576,18640
-dirbadentry(596,19156
-dirempty(849,26581
-direnter(620,19990
-dirremove(756,24528
-dirrewrite(794,25404
-ufs_lookup(125,5004
-
-./server/ufs/ufs_quota.c,333
-chkdq(132,4511
-chkdqchg(191,5791
-chkdquot(357,10077
-chkiq(243,7238
-chkiqchg(302,8519
-dqflush(944,23936
-dqget(725,18985
-dqinit(704,18404
-dqref(855,22151
-dqrele(865,22243
-dqsync(894,22704
-getinoquota(100,3773
-getquota(513,13721
-qsync(635,16997
-quotaoff(461,12455
-quotaon(382,10593
-setquota(532,14083
-setuse(590,15765
-
-./server/ufs/ufs_subr.c,120
-clrblock(148,4469
-fragacct(85,3299
-isblock(120,3978
-locc(232,5843
-scanc(206,5388
-setblock(175,4851
-skpc(220,5662
-
-./server/ufs/ufs_tables.c,0
-
-./server/ufs/ufs_vfsops.c,297
-bufstats(719,18153
-mountedon(449,12375
-mountfs(260,7331
-sbupdate(678,17040
-ufs_fhtovp(753,19043
-ufs_mount(172,5142
-ufs_mountroot(122,3958
-ufs_quotactl(494,13178
-ufs_root(471,12792
-ufs_start(385,11026
-ufs_statfs(564,14307
-ufs_sync(604,15456
-ufs_unmount(397,11147
-ufs_vptofh(799,19887
-
-./server/ufs/ufs_vnops.c,865
-chmod1(360,9304
-chown1(390,10007
-maknode(1658,38046
-ufs_abortop(1395,33248
-ufs_access(193,5292
-ufs_advlock(1739,39791
-ufs_bmap(1445,33888
-ufs_close(172,4811
-ufs_create(100,3585
-ufs_fsync(701,16897
-ufs_getattr(244,6309
-ufs_ioctl(655,16287
-ufs_islocked(1433,33757
-ufs_link(763,17887
-ufs_lock(1407,33422
-ufs_mkdir(1146,27722
-ufs_mknod(118,3875
-ufs_mmap(687,16728
-ufs_open(156,4621
-ufs_print(1523,35622
-ufs_read(496,12484
-ufs_readdir(1354,32354
-ufs_readlink(1381,32943
-ufs_remove(738,17539
-ufs_rename(825,19496
-ufs_rmdir(1268,30488
-ufs_seek(724,17332
-ufs_select(668,16461
-ufs_setattr(297,7544
-ufs_strategy(1466,34258
-ufs_symlink(1332,31914
-ufs_unlock(1419,33551
-ufs_write(556,13948
-ufsfifo_close(1638,37670
-ufsfifo_read(1602,37093
-ufsfifo_write(1619,37343
-ufsspec_close(1582,36724
-ufsspec_read(1546,36129
-ufsspec_write(1563,36388
-
-./server/ufs/ufsmount.h,26
-#define VFSTOUFS(94,3849
-
-./server/uxkern/block_io.c,273
-bdev_close(102,2377
-bdev_dump(119,2747
-bdev_ioctl(129,2875
-bdev_open(69,1851
-bdev_size(124,2811
-#define	bio_port_enter(54,1478
-#define	bio_port_lookup(58,1644
-#define	bio_port_remove(56,1571
-bio_read_reply(182,3996
-bio_strategy(141,3069
-bio_write_reply(225,5186
-
-./server/uxkern/bsd_msg.h,0
-
-./server/uxkern/bsd_server.c,0
-
-./server/uxkern/bsd_server_side.c,1459
-bsd_access(451,9635
-bsd_acct(776,16106
-bsd_adjtime(940,19174
-bsd_bind(994,20194
-bsd_chdir(304,6730
-bsd_chmod(529,11367
-bsd_chown(547,11712
-bsd_chroot(320,7014
-bsd_connect(1037,20942
-bsd_emulator_error(1226,24298
-bsd_execve(1341,26867
-bsd_fork(656,13798
-bsd_getsockopt(1079,21661
-bsd_link(397,8496
-int bsd_maprw_release_it(1306,26039
-int bsd_maprw_remap(1322,26427
-int bsd_maprw_request_it(1289,25639
-bsd_mkdir(622,13166
-bsd_mknod(377,8129
-bsd_mount(721,15149
-bsd_oaccept(1014,20509
-bsd_ocreat(358,7729
-bsd_ogetpeername(1126,22516
-bsd_ogetsockname(1105,22133
-bsd_open(336,7302
-bsd_osigvec(830,17067
-bsd_readlink(508,10915
-bsd_readwrite(1235,24495
-bsd_recvfrom_long(252,5716
-bsd_recvfrom_short(225,5135
-bsd_rename(603,12794
-bsd_rmdir(640,13505
-bsd_select(95,2388
-bsd_send_long(149,3558
-bsd_send_short(127,3115
-bsd_sendto_long(198,4571
-bsd_sendto_short(172,4049
-bsd_setgroups(795,16445
-bsd_sethostname(977,19894
-bsd_setitimer(957,19489
-bsd_setrlimit(812,16759
-bsd_setsockopt(1056,21252
-bsd_settimeofday(921,18775
-bsd_share_wakeup(1265,25104
-bsd_signal(857,17559
-bsd_sigstack(903,18416
-bsd_stat(469,9985
-bsd_symlink(416,8908
-bsd_table_get(1174,23364
-bsd_table_set(1148,22916
-bsd_truncate(585,12443
-bsd_umount(753,15735
-bsd_unlink(435,9332
-bsd_utimes(567,12087
-bsd_vfork(673,14199
-bsd_write_long(76,1957
-bsd_write_short(57,1551
-bsd_xutimes(695,14634
-	if 291,6561
-	if 1215,24155
-osf1_sigaction(877,17926
-
-./server/uxkern/bsd_types.h,942
-typedef	char		cfname_t[86,2233
-typedef	char		*char_array;50,1385
-typedef	int		entry_array[77,1914
-typedef	int		gidset_t[78,1944
-typedef	char		hostname_t[85,2191
-	int	58,1640
-	int	59,1652
-	int	60,1664
-	int	61,1677
-	int	62,1691
-	int	63,1703
-	int	64,1715
-	int	65,1728
-	int	66,1741
-	int	67,1755
-	int	68,1769
-	int	69,1783
-	int	70,1799
-	int	71,1814
-	int	72,1828
-typedef	struct itimerval itimerval_t;84,2153
-typedef	char		path_name_t[52,1463
-typedef	struct rlimit	rlimit_t[79,1976
-typedef	struct rusage	rusage_t;75,1852
-typedef struct sigaction sigaction_t;81,2043
-typedef	struct sigstack	sigstack_t;82,2081
-typedef	struct sigvec	sigvec_t;80,2011
-typedef char		small_char_array[51,1412
-typedef	char		sockarg_t[76,1884
-} statb_t;73,1840
-57,1623
-typedef	struct timeval	timeval_2_t[54,1537
-typedef	struct timeval	timeval_3_t[55,1576
-typedef struct timeval	timeval_t;53,1503
-typedef struct timezone	timezone_t;83,2117
-
-./server/uxkern/bsd_types_gen.c,14
-main(43,1320
-
-./server/uxkern/cons.c,168
-cnflush(165,3355
-cnputc(143,3071
-cons_initialization(66,1721
-cons_ioctl(123,2786
-cons_open(71,1789
-cons_port(133,2927
-cons_write(115,2650
-console_init(185,3630
-
-./server/uxkern/device.h,0
-
-./server/uxkern/device_misc.c,577
-bdev_name_string(693,14804
-cdev_name_string(644,13869
-char_close(157,4097
-#define	char_hash_enter(79,2274
-#define	char_hash_lookup(83,2436
-#define	char_hash_remove(81,2363
-char_ioctl(254,6077
-char_open(93,2722
-mach_port_t char_port(186,4763
-char_read(192,4855
-char_select(366,8445
-char_select_read_reply(446,10118
-char_select_write_reply(460,10431
-char_write(247,5962
-device_pager_create(479,10733
-device_pager_release(505,11341
-itoa(718,15271
-mmca(598,12864
-mmopen(521,11675
-mmread(534,11827
-mmrw(548,12006
-mmwrite(541,11915
-parse_root_device(746,15645
-
-./server/uxkern/device_reply_hdlr.c,429
-#define	REPLY_HASH(58,1611
-device_open_reply(236,5379
-device_read_reply(275,6196
-device_read_reply_inband(291,6545
-void device_reply_hdlr(166,4012
-device_reply_loop(189,4545
-device_write_reply(245,5549
-device_write_reply_inband(260,5869
-typedef enum dev_reply_select	dr_select_t;88,2143
-typedef struct reply_entry *reply_entry_t;74,1922
-reply_hash_enter(91,2192
-reply_hash_lookup(115,2765
-reply_hash_remove(142,3411
-
-./server/uxkern/device_reply_hdlr.h,89
-extern 45,1315
-extern 46,1391
-extern 48,1443
-typedef kern_return_t	(*kr_fn_t)43,1278
-
-./server/uxkern/device_utils.c,410
-	char 63,1643
-#define	51,1392
-#define	52,1411
-	xdev_t	64,1675
-dev_error_to_errno(166,3771
-void dev_number_hash_enter(90,2187
-dev_number_hash_lookup(139,3221
-void dev_number_hash_remove(111,2634
-} dev_number_hash_table[59,1566
-void dev_utils_init(69,1717
-	int 58,1554
-		((major(53,1442
-	queue_chain_t	62,1621
-	queue_head_t 57,1533
-struct 55,1488
-	struct 56,1513
-struct 61,1602
-	xdev_t	64,1675
-
-./server/uxkern/device_utils.h,83
-#define	XDEV_BLOCK(85,2270
-#define	XDEV_CHAR(86,2320
-typedef	int	xdev_t;84,2220
-
-./server/uxkern/disk_io.c,222
-disk_close(82,2052
-disk_ioctl(210,4651
-disk_open(55,1616
-disk_port(246,5371
-#define	disk_port_enter(47,1356
-#define	disk_port_lookup(51,1522
-#define	disk_port_remove(49,1449
-disk_read(100,2421
-disk_write(154,3454
-
-./server/uxkern/ether_io.c,207
-ether_error(387,8477
-ether_ioctl(336,7489
-ether_start(104,2765
-ether_write_reply(326,7329
-iface_find(399,8784
-net_input_dispose(318,7218
-net_input_thread(179,4305
-netisr_init(560,12347
-xxx(307,7083
-
-./server/uxkern/import_mach.h,0
-
-./server/uxkern/inittodr.c,100
-cvttime(100,2418
-fmttime(163,3747
-inittodr(213,5003
-#define	isleap(88,2142
-print_time(183,4262
-
-./server/uxkern/misc.c,378
-Debugger(138,3280
-boot(156,3521
-get_time(107,2809
-init_mapped_time(76,1952
-init_mapped_time(105,2787
-microtime(98,2696
-microtime(117,2983
-set_thread_priority(241,5046
-set_time(125,3058
-void share_lock(270,5628
-int share_lock_solid(304,6342
-boolean_t share_try_lock(257,5357
-void share_unlock(283,5934
-swapon(65,1834
-sysctrace(335,7152
-thread_read_times(217,4594
-
-./server/uxkern/port_hash.c,123
-boolean_t port_hash_enter(80,2010
-port_hash_init(63,1732
-port_hash_lookup(107,2612
-boolean_t port_hash_remove(125,2995
-
-./server/uxkern/port_hash.h,145
-#define	PORT_HASH(78,2121
-typedef struct port_hash_entry *port_hash_entry_t;70,1932
-typedef struct port_hash_table *port_hash_table_t;76,2069
-
-./server/uxkern/proc_to_task.c,172
-#define	TASKHASH(51,1424
-#define	TASKHASH(53,1486
-task_to_proc_enter(79,1971
-void task_to_proc_init(66,1737
-task_to_proc_lookup(121,3005
-task_to_proc_remove(146,3485
-
-./server/uxkern/proc_to_task.h,37
-#define port_to_proc_lookup(42,1355
-
-./server/uxkern/second_cons.c,307
-#define TTY_LOCK(70,1885
-second_cnputc(269,5913
-second_cons_intr(217,4882
-second_cons_open(77,1977
-second_cons_port(104,2576
-second_tty_open(118,2716
-second_tty_start(239,5274
-second_tty_stop(110,2643
-#define	tty_hash_enter(55,1544
-#define	tty_hash_lookup(59,1704
-#define	tty_hash_remove(57,1632
-
-./server/uxkern/syscall_subr.c,116
-end_server_op(178,4228
-server_thread_deregister(92,2244
-server_thread_register(74,1840
-start_server_op(107,2542
-
-./server/uxkern/syscall_subr.h,66
-#define	END_SERVER_DEALLOC(67,1898
-#define	START_SERVER(47,1399
-
-./server/uxkern/syscalltrace.h,23
-#define	TRACE(43,1232
-
-./server/uxkern/tty_io.c,408
-baudrate_to_speed(109,2909
-nulltty(713,15825
-speed_to_baudrate(118,3089
-tty_close(305,7275
-tty_find_tty(90,2464
-#define	tty_hash_enter(73,1970
-#define	tty_hash_lookup(77,2130
-#define	tty_hash_remove(75,2058
-tty_ioctl(379,8671
-tty_open(125,3214
-tty_read(346,8120
-tty_read_reply(613,13669
-tty_select(368,8492
-tty_start(671,14854
-tty_stop(588,13248
-tty_write(357,8305
-tty_write_reply(640,14296
-
-./server/uxkern/user_copy.c,207
-int copyin(264,6827
-copyinstr(337,8030
-copyout(195,5568
-copystr(426,9651
-int fubyte(327,7896
-int fuword(317,7775
-subyte(216,5959
-uiomove(90,3470
-ureadc(160,4851
-useracc(452,10116
-uwritec(228,6148
-
-./server/uxkern/user_reply_msg.c,131
-extend_current_output(231,5612
-extend_reply_msg(156,3870
-finish_data_desc(118,2970
-finish_reply_msg(245,5942
-moveout(264,6331
-
-./server/uxkern/ux_exception.c,97
-catch_exception_raise(89,2156
-void ux_exception(142,3302
-mach_port_t	ux_handler_setup(56,1493
-
-./server/uxkern/ux_server_loop.c,305
-ux_create_server_thread(118,2806
-ux_create_thread(106,2591
-ux_server_add_port(77,2097
-ux_server_init(63,1852
-ux_server_loop(158,3626
-ux_server_remove_port(85,2235
-ux_server_thread_active(140,3247
-ux_server_thread_busy(124,2877
-#define	ux_server_thread_check(150,3488
-ux_thread_bootstrap(92,2364
-
-./server/uxkern/ux_syscall.c,78
-nosys(349,8924
-rpcont(339,8820
-rpsleep(301,7896
-ux_generic_server(69,1830
-
-./server/uxkern/zalloc.c,255
-#define	lock_zone(45,1332
-#define	lock_zone_init(49,1435
-#define	unlock_zone(47,1382
-vm_offset_t zalloc(138,3490
-void zchange(225,5094
-void zcram(115,3048
-void zfree(215,4959
-vm_offset_t zget(200,4725
-zone_t zinit(77,2163
-void zone_init(54,1531
-
-./server/vm/vm_glue.c,224
-iprintf(429,12224
-kernacc(114,4485
-sched(275,8883
-swapout_threads(367,11054
-#define	swappable(356,10563
-useracc(140,5354
-vm_exit(227,7688
-vm_fork(184,6500
-vm_init_limits(239,7925
-vslock(152,5624
-vsunlock(160,5773
-
-./server/vm/vm_mmap.c,282
-getpagesize(102,3674
-madvise(427,10734
-mincore(442,10923
-mprotect(378,9790
-msync(250,6871
-munmap(326,8738
-munmapfd(361,9481
-sbrk(113,3805
-smmap(138,4106
-sstk(126,3963
-vm_allocate_with_pager(797,19889
-vm_map_is_allocated(847,21126
-vm_mmap(464,11275
-vm_region(722,18164
-
-./server/vm/vm_unix.c,50
-grow(133,4484
-obreak(92,3540
-ovadvise(161,5071
-
-./server/vm/vnode_pager.c,424
-vnode_pager_alloc(133,4284
-vnode_pager_dealloc(217,6366
-vnode_pager_getpage(242,6950
-vnode_pager_haspage(278,7687
-void vnode_pager_init(85,3414
-vnode_pager_init(119,4052
-vnode_pager_io(449,11943
-vnode_pager_putpage(256,7222
-void vnode_pager_setsize(83,3357
-vnode_pager_setsize(334,9186
-void vnode_pager_umount(84,3386
-vnode_pager_umount(385,10373
-void vnode_pager_uncache(82,3328
-vnode_pager_uncache(412,11137
-
-./server/vm/vnode_pager.h,44
-typedef struct vnpager	*vn_pager_t;86,3417
-
-./server/ns532/ansi.h,0
-
-./server/ns532/types.h,39
-} label_t;83,3159
-} *physadr;78,3100
-
-./server/ns532/conf.c,81
-check_dev(172,5064
-int	nblkdev = sizeof(87,2380
-int	nchrdev = sizeof(162,4870
-
-./server/ns532/machdep.c,352
-emul_init_process(130,3334
-machine_core(144,3536
-osigcleanup(326,7369
-ptrace_get_regs(182,4138
-int ptrace_get_u_word(157,3779
-ptrace_set_regs(189,4227
-ptrace_set_trace(174,4030
-int ptrace_set_u_word(165,3902
-sendsig(205,4622
-set_arg_addr(58,1701
-set_emulator_state(92,2370
-set_entry_address(79,2064
-sigreturn(322,7313
-thread_dup(335,7512
-
-./server/ns532/endian.h,284
-#define	HTONL(102,3796
-#define	HTONL(109,3927
-#define	HTONS(103,3817
-#define	HTONS(110,3967
-#define	NTOHL(100,3754
-#define	NTOHL(107,3846
-#define	NTOHS(101,3775
-#define	NTOHS(108,3886
-#define	htonl(97,3711
-#define	htons(98,3732
-#define	ntohl(95,3669
-#define	ntohs(96,3690
-
-./server/ns532/second_syscall.h,0
-
-./server/ns532/in_cksum.c,44
-#define ADDCARRY(86,3388
-in_cksum(92,3499
-
-./server/ns532/limits.h,0
-
-./server/ns532/param.h,209
-#define	btoc(123,3001
-#define	btodb(125,3054
-#define	ctob(120,2947
-#define	ctod(115,2802
-#define	ctos(111,2715
-#define	dbtob(127,3152
-#define	dtob(117,2890
-#define	dtoc(116,2846
-#define	stoc(112,2735
-
-./server/ns532/reg.h,0
-
-./server/ns532/proc.h,0
-
-./server/ns532/queue.c,186
-_insque(116,2457
-_remque(125,2625
-queue_entry_t dequeue_head(70,1674
-queue_entry_t dequeue_tail(87,1950
-void enqueue_head(44,1240
-void enqueue_tail(57,1452
-void remqueue(108,2323
-
-./server/ns532/second_SYS.h,75
-#define PSEUDO(61,2405
-#define RSYSCALL(60,2315
-#define SYSCALL(59,2233
-
-./server/ns532/trap.h,0
-
-./server/ns532/stdarg.h,129
-#define	va_arg(73,3031
-#define	va_arg(76,3100
-#define	va_end(81,3219
-typedef char *va_list;70,2993
-#define	va_start(86,3335
-
-./server/ns532/swapgeneric.c,0
-
-./server/ns532/ns532_exception.c,37
-boolean_t machine_exception(46,1456
-
-./server/ns532/pcb.h,0
-
-./server/ns532/PASKAA/eflags.h,0
-
-./server/ns532/PASKAA/asm.h,449
-#define	ASENTRY(103,2395
-#define	ASENTRY(108,2578
-#define	DATA(112,2692
-#define Divide(63,1619
-#define Divide(85,1988
-#define	ENTRY(101,2286
-#define	ENTRY(107,2524
-#define EXT(51,1411
-#define EXT(73,1770
-#define	Entry(111,2638
-#define LB(54,1451
-#define LB(76,1810
-#define LBb(55,1474
-#define LBb(77,1828
-#define LBf(56,1498
-#define LBf(78,1852
-#define LCL(52,1428
-#define	LCL(74,1792
-#define Times(62,1593
-#define Times(84,1963
-
-./server/ns532/PASKAA/psl.h,0
-
-./server/ns532/PASKAA/npx.h,0
-
-./server/ns532/PASKAA/tss.h,0

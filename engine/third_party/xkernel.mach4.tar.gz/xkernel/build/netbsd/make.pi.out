@@ -1,0 +1,12 @@
+cd ../../pi; make
+rm -f newObjectList ; \
+make lib
+gcc -c -g -DXK_DEBUG -DX_NETBSD -I. -I../include -I../include/prot -I../etc -I../netbsd/include/ -I../netbsd/include -I../pi/include -I../lib/include -fwritable-strings -o DEBUGnetbsd-intelx86/ocsum.o ocsum.c
+In file included from ../netbsd/include//platform.h:30,
+                 from ../include/xk_debug.h:16,
+                 from ocsum.c:13:
+../netbsd/include//process.h:90: parse error before `master_monitor'
+../netbsd/include//process.h:90: warning: data definition has no type or storage class
+make[2]: *** [DEBUGnetbsd-intelx86/ocsum.o] Error 1
+make[1]: *** [default] Error 2
+make: *** [pi] Error 2

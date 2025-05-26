@@ -1,0 +1,108 @@
+% 
+% $RCSfile: install.tex,v $
+%
+% x-kernel v3.2
+%
+% Copyright (c) 1993,1991,1990  Arizona Board of Regents
+%
+%
+% $Log: install.tex,v $
+% Revision 1.14  1993/11/30  17:14:10  menze
+% Added note about two different protocol tables
+%
+
+\section{System Installation}
+\label{install}
+
+This section describes how to install Version 3.2 of the $x$-kernel.
+By installing the $x$-kernel we mean setting up the $x$-kernel
+environment so that programmers can begin writing protocols and
+configuring new kernels.
+
+The $x$-kernel is commonly used for both research and instruction.  A
+typical scenario is for a researcher (instructor) to install the
+$x$-kernel for use by various network projects (students). Individual
+projects (students) then build and test kernels in private working
+directories. This section
+describes the work the researcher (instructor) needs to do to set up
+the $x$-kernel directory.  
+
+\subsection{Unpacking the {\it tar} file}
+
+If you haven't done so already, create a new directory for installing
+the $x$-kernel.  For the purpose of this report, we refer to this
+directory as {\tt /usr/xkernel}.  You may chose another name, however.
+{\tt cd} to this directory and type
+
+\begin{quote}
+{\tt tar xf} {\it file}
+\end{quote}
+
+\noindent where {\it file} is the disk or tape file of the $x$-kernel
+distribution. This will create several subdirectories in {\tt
+/usr/xkernel}.  A description of the \xk{} directory hierarchy can be
+found in the README file at the top level of the \xk{} hierarchy.
+
+
+\subsection{About Compilers}
+
+Version 3.2 of the $x$-kernel uses either the Gnu C compiler ({\tt
+gcc}) or the standard Unix compiler ({\tt cc}).  If you do not
+currently have Gnu C at your site, you can get a copy by doing
+anonymous FTP to {\tt prep.ai.mit.edu}, and retrieving {\tt
+pub/gnu/gcc.xtar}.
+
+We recommend building the sunos version of the \xk{} with a gcc
+earlier than 2.0, if possible.
+
+
+\subsection{Building the Utility programs}
+
+The \xk{} requires a few utility programs.  We distribute
+binary versions of these programs, so you probably don't need to
+rebuild these programs and can skip to the next section.
+
+If you decide to rebuild the utility programs, 
+you will need to define the environment variable {\tt ARCH} to
+correspond to the type of binaries you want created: {\tt sparc}, {\tt
+mips}, or {\tt intelx86}.
+
+The \xk{} depends on gnumake, so you must first have gnumake built and
+installed.  A copy of the source code and build instructions for
+gnumake version 3.66 can be found in util/make.  After you have built
+gnumake, place the binary in the appropriate /usr/xkernel/bin/ARCH
+directory, where ARCH is as described above.
+
+Next, put {\tt /usr/xkernel/bin/ARCH} and {\tt /usr/xkernel/bin}
+in your search path.
+They should appear before {\tt /bin} and {\tt /usr/bin} in
+order to pick up gnumake before the standard Unix {\tt make}. Finally,
+{\tt cd~/usr/xkernel/util} and type {\tt make~setup} followed by 
+{\tt make~install}.  This will install a handful of programs used to
+develop new kernels.  ({\tt make~setup} may produce a warning of the
+form:  {\tt make[1]: fopen: Makedep.ARCH: No such file or directory}.
+These missing files will be created during this step and the warning can
+be ignored.)
+
+
+\subsection{Building and testing the system}
+
+As the first person installing the \xk{} at your site, you should look
+over the makefiles in /usr/xkernel/build/Template.  They have many
+site-specific parameters referring to compilers, libraries and the
+like which should be set to reflect the environment at your site.
+
+The \xk{} is distributed with two versions of the protocol number
+table in {\sanss /usr/xkernel/etc}, {\sanss prottbl.std} and {\sanss
+prottbl.nonstd}.  Since several example graph.comp and rom files refer
+to a file named {\sanss prottbl} in that directory, you should
+probably copy or link the version most appropriate for your site to
+this name.  See section~\ref{protnum} for a description of the
+difference between the two.
+
+To install the system, build a kernel as described in section
+\ref{config}, paying attention to the notes for system installers. 
+You will want to configure a kernel that includes one or more of the
+test protocols (e.g., {\tt udptest}).  You should then be able to run
+your test kernel as described in section \ref{running}.
+

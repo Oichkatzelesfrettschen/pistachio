@@ -1,0 +1,168 @@
+#
+# $RCSfile: Makefile.mach3-mips,v $
+#
+# x-kernel v3.2
+#
+# Copyright (c) 1993,1991,1990  Arizona Board of Regents
+#
+# $Revision: 1.44.1.3 $
+# $Date: 1993/11/30 19:34:50 $
+#
+#
+# Build-directory Makefile for the mach3/mips (DEC5000) platform.
+#
+# There are many variables defined here that may vary from site to
+# site.  If you are the first person at your site to build  an
+# x-kernel, look over the definitions carefully and determine what the
+# appropriate values should be for your site. 
+
+
+XPLATFORM = mach3
+MACHINE = mips
+
+#
+# HOWTOCOMPILE controls optimization flags and tracing routines.  
+# It should be set to either DEBUG or OPTIMIZE
+#
+HOWTOCOMPILE = DEBUG
+
+#
+# If XK_BYPASS_RCS is defined (to anything), RCS consistency checks
+# will be disabled.  This can make a build run significantly faster.
+#
+XK_BYPASS_RCS = blurp	
+
+#
+# Compiler-related flags.  If you decide to change compilers, some of
+# these flags may also have to change.
+#
+CC = gcc
+CCLIBS = /usr/local/lib/gcc-lib/mips-dec-mach/2.1/libgcc.a
+DEBUGWARNINGS = 
+OPTIMIZEWARNINGS =  
+WARNINGS = $($(HOWTOCOMPILE)WARNINGS)
+CC_SPECIFIC_FLAGS = -fwritable-strings -fsigned-char
+OPTIMIZECFLAGS = -O
+DEBUGCFLAGS = -g
+#
+# GCC warnings we aren't using yet:
+#
+# -Wconversion -- nails us on conversion of enumerated types in a most
+# 		  annoying fashion
+#
+# -Wformat -- Gripes about using an uncast pointer as a '%x' arg to
+# 	      printf which we do all the time
+# -Wparentheses -- this is lame
+
+
+#
+# Libraries.  Some of these libraries are labeled 'optional',
+# indicating that they are only used by some protocols.  Names and
+# locations of libraries may be site-specific.
+#
+LIBPATH = -L/usr/mach/lib -L/usr/mach/lib/$(MACHINE)
+mach3_LIBS = -lthreads -lmach	# required
+LIB_NETNAME = -lnetname		# optional
+LIB_CMUCS = -lcmucs		# optional
+LIB_SERVICE = -lservice		# optional
+
+
+SED = sed
+MAKE = make
+RANLIB = ranlib
+AR = ar
+MIG = mig
+LD = ld
+
+#
+# XRT names a path to the top of the x-kernel source tree
+#
+XRT = ../..
+
+HOW = $(HOWTOCOMPILE)$(XPLATFORM)-$(MACHINE)
+
+#
+# TMP_CPPFLAGS and TMP_CFLAGS apply to the build directory only, and
+# won't be propagated to compilation in other x-kernel directories. 
+#
+# TMP_CPPFLAGS = 
+# TMP_CFLAGS = 
+
+#
+# When compiling private versions of x-kernel utilities in your build
+# area, you may need to add include paths.  Add these to the
+# TMP_INCLUDES variable.
+#
+TMP_INCLUDES = $(COMPOSE_INCLUDES)
+
+#
+# We rebuild some source code from the user library so we need a path
+# to some kernel include directories.
+#
+MACH_KERNEL_INCLUDES = -I/usr/mach3.82/src/mk/user/threads
+SYS_INCLUDES = -I/usr/mach/include -I/usr/include \
+		$(MACH_KERNEL_INCLUDES)
+
+
+MAKEFILE=Makefile
+MAKEFLAGS += --no-print-directory
+
+OPTIMIZECPPFLAGS = 
+DEBUGCPPFLAGS = -DXK_DEBUG
+BUILD_CPPFLAGS =  $($(HOWTOCOMPILE)CPPFLAGS) -DMACH -Dpmax -DMACH_MKREV=82
+BUILD_CFLAGS = $($(HOWTOCOMPILE)CFLAGS) 
+LDFLAGS = -n $(LIBPATH)
+#
+# Invoking gcc in the final load grabs the wrong crt0.o, so we
+# explicitly invoke ld and name the correct crt0.o
+#
+CRT0 = /usr/mach/lib/crt0.o
+
+all:	xkernel
+
+
+#
+# The COMPOSE_MAKEFILE is generated from graph.comp when 'make compose'
+# is run. 
+#
+COMPOSE_MAKEFILE = Makefile.local
+COMPOSEFLAGS = -f -m $(COMPOSE_MAKEFILE)
+include $(COMPOSE_MAKEFILE)
+
+$(COMPOSE_MAKEFILE):
+	@touch $(COMPOSE_MAKEFILE)
+
+#
+# If you compile source code in your build area which isn't associated
+# with a particular protocol, add the source names to PRIVSRC and the
+# object names (e.g., ./$(HOW)/foo.o) to PRIVOBJ. 
+#
+# PRIVSRC = \
+#
+# PRIVOBJ = \
+
+include $(XRT)/build/Template/Makefile.common
+
+#
+# Include Makefile.nolibs to compile without libraries
+#
+include $(XRT)/build/Template/Makefile.nolibs
+
+
+ifeq (,$(XLIBS))
+LDLIBS := $(XLIBS) $($(XPLATFORM)_LIBS)
+else
+LDLIBS := $(XLIBS) $($(XPLATFORM)_LIBS) $(XLIBS) $($(XPLATFORM)_LIBS)
+endif
+
+
+xkernel:	$(OBJ) $(XLIBS)
+	@echo linking xkernel ...
+	@$(LD) -o xkernel $(LDFLAGS) \
+		$(CRT0) $(OBJ) \
+		$(LDLIBS) $(COMPOSE_LIBS) \
+		$(CCLIBS) \
+		-lc
+
+
+include Makedep.$(HOW)

@@ -1,0 +1,36 @@
+% 
+% $RCSfile: dns.tex,v $
+%
+% $Revision: 1.2 $
+% $Date: 1993/11/15 16:10:42 $
+%
+
+\section{Host Name Service}
+\label{dns}
+A simple way of mapping host name strings to host IP addresses is
+provided via rom file entries (see section \ref{romfile}) and the interface
+function {\em xk\_gethostbyname}.
+
+During $x$-kernel startup, rom file lines beginning with
+the string ``dns'' are parsed into name and address components
+and added to the host name table.  E.g., 
+
+\begin{verbatim}
+dns umbra 192.12.69.97
+\end{verbatim}
+
+The host name must be less than 64 characters in length.
+
+\subsection{Operations}
+\subsubsection{xk\_gethostbyname}
+
+This function will look up a hostname and return its IP address in
+storage provided with the call.
+The name must be an exact match to a rom file entry, NB no substrings
+are allowed.  If the name is not found, the return code indicates
+failure.
+\medskip
+
+{\sem xkern\_return\_t} {\bold xk\_gethostbyname} ({\sem char} *{\caps name}, 
+{\sem IPhost} *{\caps addr} );
+

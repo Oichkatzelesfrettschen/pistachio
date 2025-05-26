@@ -1,0 +1,187 @@
+% $RCSfile: crypt.tex,v $
+%
+% $Revision: 1.9 $
+% $Date: 1993/11/09 00:18:11 $
+%
+
+\subsection*{NAME}
+\label{CRYPT}
+
+\noindent CRYPT and TCRYPT (DES Encryption Protocols)
+
+\input cryptDist
+
+\subsection*{SPECIFICATION}
+
+\noindent
+CRYPT encrypts all bytes of all packets sent using the DES encryption 
+algorithm in cipher-block-chaining mode.
+CRYPT uses the key manager protocol (KM, page~\pageref{KM}) to map from the 
+source address passed in at open time to a DES key. Each message is 
+encrypted independently. CRYPT is designed to be composed over any
+datagram protocol, and it accepts arbitrary address types at 
+open time.  CRYPT lengthens each packet by 1 to 8 bytes, to the
+next larger multiple of 8 bytes.
+
+TCRYPT is the same as CRYPT, except that packet lengths are usually unchanged.
+However, TCRYPT alters packets in the size range 1 to 7 bytes.  All of
+the information below for CRYPT also applies to TCRYPT, except for
+packet sizes.
+
+\subsection*{SYNOPSIS}
+
+\noindent 
+When a CRYPT session is opened, it opens the protocol configured below 
+it with the addresses passed to it during open. It then performs a 
+GETPARTICPANTS operation on the newly opened session 
+to acquire the fully resolved addresses of the participants. The
+set of participants is then used as the argument to open a key manager (KM)
+session. 
+
+When a message is pushed to a CRYPT session a KM\_RESOLVE operation is
+done on the opened key manger session to get the current local key.
+Because DES operates on blocks of 8 bytes, the message is zero-padded to
+the next larger multiple of 8 bytes; the last byte is set to the
+number of pad bytes added.  Total padding is at least 1 and at most 8
+bytes.  The receiver uses KM\_RRESOLVE to ask his key manager for the
+remote key.  He decrypts the message and removes the padding. If the
+pad bytes are not 0, or the last byte has an out-of-range value for
+the amount of padding, the message is dropped.  Assuming the incoming
+length is a multiple of 8 bytes, the probability that a message
+decrypted with a bad key will pass the length and pad checks is about
+1/255.
+
+TCRYPT preserves packet lengths, except those in range of 1-7 bytes.
+For this reason, TCRYPT is not expected to be used below protocols
+that produce very short messages.  The first part of the packet
+encryption algorithm is the same as for CRYPT: as much of the packet
+as possible is encrypted in blocks of eight bytes.  If there are
+leftover bytes at the end of the packet, enough (already encrypted)
+adjacent bytes from the packet are used to make up a complete block of
+eight bytes, which is encrypted.  Decryption is straightforward.
+Because the map is length preserving, there is no possibility of
+decryption failing (although it might produce garbage).  CRYPT and
+TCRYPT have each been tested on both big-endian and little-endian
+machines, and between machines of different endianness.
+
+CRYPT discards the attributes attached to any outgoing message.
+This is done to minimize out-of-band information transmittal.
+CRYPT does not touch any attributes attached to incoming 
+messages, and forwards them along with the decrypted data up to the next 
+protocol.
+
+On outgoing messages, if the key manager should return a key of all 0s,
+indicating it does not have the real key, the message is dropped.
+For incoming messages, a key of all 0s is allowed.
+
+\subsection*{REALM}
+
+CRYPT is in the ASYNC realm.
+
+
+\subsection*{PARTICIPANTS}
+
+CRYPT passes participants to the lower protocols without manipulating
+them.  It uses the participants to lookup the keys for encryption and
+decryption.
+
+\subsection*{CONTROL OPERATIONS}
+
+CRYPT supports 16 control operations. 8 of these operations are 
+passed to the incomming key manager and 8 are passed to the 
+out going key manager. Every KM control operation as two 
+CRYPT control operation. CRYPT\_IN\_SET sets the key on the 
+incoming key manager by performing a KM\_SET operation on 
+it. Likewise CRYPT\_IN\_SET peforms a KM\_SET on the outgoing 
+key manager. The CRYPT control operations are listed below:  
+
+\begin{verbatim}
+CRYPT_IN_RESOLVE       
+CRYPT_IN_SET          
+CRYPT_IN_INVALIDATE   
+CRYPT_IN_ISEMPTY      
+CRYPT_IN_ISVALID      
+CRYPT_IN_ISINVALID    
+CRYPT_IN_KEYSIZE      
+CRYPT_IN_HOSTSIZE     
+CRYPT_OUT_RESOLVE       
+CRYPT_OUT_SET          
+CRYPT_OUT_INVALIDATE   
+CRYPT_OUT_ISEMPTY      
+CRYPT_OUT_ISVALID      
+CRYPT_OUT_ISINVALID    
+CRYPT_OUT_KEYSIZE      
+CRYPT_OUT_HOSTSIZE     
+\end{verbatim}
+
+
+CRYPT diminishes the results of GETOPTPACKET 
+and GETMAXPACKET to the next lower size congruent to 7 (mod 8);
+this will reduce the size by at least 1 and at most 8 bytes.
+TCRYPT does not change the packet sizes, except that values less than 8
+are set to 0. 
+
+CRYPT forwards all other control operations to the transport protocol 
+configured below it. Due to security concerns CRYPT zero's out the 
+buffer of any control it passes down the graph.  
+
+\subsection*{CONFIGURATION}
+
+CRYPT/TCRYPT expect to be configured on top of a transport protocol and a
+key manager. The transport protocol must preserve packet boundaries
+(i.e. CRYPT/TCRYPT will not work on top of TCP).
+Because it changes packet lengths, CRYPT will only work between
+IP and (UDP or TCP) if checksumming is disabled; TCRYPT is acceptable here.
+Any protocol configured above TCRYPT should not generate
+packets of length between 1 and 7 inclusive, because the length will
+not be preserved.
+
+Example of a graph.comp file:
+\begin{verbatim}
+---------------------------------
+@;
+name=simeth/0;
+name=eth protocols=simeth/0;
+name=arp protocols=eth;
+name=vnet protocols=eth,arp;
+name=ip protocols=vnet;
+name=km trace=TR_ERRORS;
+name=crypt protocols=ip,km trace=TR_ERRORS;
+name=udp protocols=crypt;
+name=udpcrypttest protocols=udp;
+@;
+prottbl = DEFAULT;
+---------------------------------
+\end{verbatim}
+
+\subsection*{SHORTCOMINGS, THINGS TO BE DONE}
+
+This version of CRYPT/TCRYPT is experimental, and some software
+engineering and cryptographic changes have yet to be implemented.  The
+protocol does not zero out message plaintext after encryption, or
+ciphertext after decryption.  Keys are not zeroed out when the
+sessions are closed.  There is a small storage leak when a session is
+closed because the key memory is not returned.  The
+cipher-block-chaining algorithm is always reinitialized, for every
+message, with a starting vector of 0s, rather than random salt.  There
+is no inter-message cryptographic chaining.  Our current system of one
+key per host is suitable for testing, but would not be appropriate for
+a real application.
+
+The information passed during opening of a session includes
+arbitrary participants; this provides an outbound information
+channel for Trojan Horse client programs.  The lengths of outgoing
+packets are another channel.  The presence or absence of communication
+is a third channel.  A Trojan Horse client can also originate known
+plaintext to help out a remote attacker.
+
+The source and destination IP addresses appear in clear for every
+packet on the net, so traffic analysis is trivial for a properly
+located eavesdropper.  Message length is also available to the
+eavesdropper.  Many protocols have standard length messages they send
+(acknowledgements, routing updates, etc.), often with fixed, known, or
+easily guessable contents.  These are also available to an opponent.
+
+\subsection*{AUTHORS}
+
+\noindent Richard Schroeppel, David C. Schwartz, and  Sean O'Malley

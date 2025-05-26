@@ -1,0 +1,183 @@
+% 
+% $RCSfile: protNums.tex,v $
+%
+% x-kernel v3.2
+%
+% Copyright (c) 1993,1991,1990  Arizona Board of Regents
+%
+%
+% $Log: protNums.tex,v $
+% Revision 1.6  1993/11/30  17:24:35  menze
+% Became a subsection
+%
+% Wordsmithing by Larry
+%
+% Described the two distributed protocol tables
+%
+
+\subsection{Protocol Tables}
+\label{protnum}
+
+The \xk{} runtime environment always includes a protocol table.
+For each protocol, this table defines a numbering space for
+identifying other protocols.  The \xk{} builds a table of protocol
+numbers by reading configuration files at boot time, and provides an
+operation for protocols to query this table (see section
+\ref{relprotnum}).  This frees protocols from embedding explicit
+protocol numbers in the protocol code itself.
+
+If you have not configured any non-standard protocols in your graph,
+you can safely use one of the default protocol tables in {\sanss
+/usr/xkernel/etc} and may skip to section \ref{protTblRomOpt}.
+
+The following is an example configuration
+file defining a protocol table:
+
+\begin{verbatim}
+#
+# prottbl
+#
+# This file describes absolute protocol id's 
+# and gives relative protocol numbers for those
+# protocols which use them
+#
+# x-kernel v3.2
+
+eth         1    
+{
+        ip         x0800
+        arp        x0806
+        rarp       x8035
+        #
+        # ethernet types x3*** are not reserved
+        #
+        blast      x3001
+}
+ip          2
+{
+        icmp       1
+        tcp        6
+        udp        17
+        #
+        # IP protocol numbers n, 91 < n < 255, are unassigned
+        #
+        blast      101
+}
+arp         3
+rarp        4
+udp         5
+tcp         6
+icmp        7
+blast       8
+sunrpc      9
+
+\end{verbatim}
+
+\noindent Each protocol has an entry of the form:
+
+\medskip
+
+\begin{quote}
+{\tt name   idNumber    [ \{  hlp1  relNum1  hlp2 relNum2  ... \} ] }
+\end{quote}
+
+\medskip
+
+\noindent where the idNumber uniquely identifies each protocol.
+
+There are two ways for a protocol to define its protocol
+number space.  
+The first technique uses an {\em explicit numbering} scheme; the
+protocol explicitly indicates which protocols may be configured above
+it and the relative number that should be used for each higher-level
+protocol.  
+Use of this numbering scheme
+is indicated by the presence of the optional hlp list after the
+protocol's idNumber.
+
+The second technique uses an {\em implicit numbering} scheme; the
+protocol does not explicitly name its allowed upper protocols, but
+will implicitly use each protocol's unique idNumber as its relative protocol
+number.  BLAST, for example, employs this technique and would use
+SUNRPC's idNumber 9 as its protocol number relative to BLAST.
+Protocol ID numbers are 4-byte quantities in the \xk{}, so protocols 
+using implicit numbering have a 4-byte field in their headers for the
+upper protocol number.
+
+Implicit numbering clearly allows more flexibility in how protocols
+may be composed.  As flexible composability is one of the goals of the
+\xk{}, all new protocols written in the \xk{} should use this implicit
+numbering scheme.
+
+The \xk{} is distributed with two useful configuration files for
+building protocol tables, located in {\sanss /usr/xkernel/etc}: 
+{\sanss prottbl.std} and {\sanss
+prottbl.nonstd}.  The first of these two files, {\sanss
+prottbl.std} contains the standard protocol numbers; e.g., TCP is
+known as protocol ``6'' relative to IP, IP is known as protocol ``x0800''
+relative to the ethernet, and so on. This file should be used when
+there is no danger of interfering with the standard protocol suite on
+the platform you are using. The second file, {\sanss prottbl.nonstd},
+uses non-standard protocol numbers. You will want to use this file
+when there is a danger of interfering with the platform's native
+protocol stack; e.g., both the \xk{} and the native stack are running
+and getting packets diverted their way by a packet filter.
+
+
+All \xk{}s must load at least one protocol table, and 
+all protocols configured in a kernel must have an entry in the
+protocol table.   
+If you are
+writing a new protocol, you will probably want to define an auxiliary
+protocol table which assigns a temporary idNumber to your new protocol
+and then configure your kernel to read in both the system table and
+your auxiliary table (see section \ref{compose} for configuration
+examples.)  If you need to configure your new protocol above an
+existing protocol which uses explicit numbering, you can augment the
+table for the existing protocol as in this example:
+
+\begin{verbatim}
+#
+# Auxiliary protocol table 
+#
+
+yap	1000
+
+ip	2 	{
+        yap	200
+}
+\end{verbatim}
+
+Here, we define our new protocol YAP and indicate that it has protocol
+number 200 relative to IP.  Note that when augmenting the tables of
+other protocols, the idNumber of the other protocol must match its
+number in the system file.
+
+The \xk{} runs consistency checks on the protocol tables and will give
+error messages and abort in the presence of inconsistencies.
+
+
+
+\subsubsection{ROM options}
+\label{protTblRomOpt}
+
+Protocol table configuration files can be specified in either
+graph.comp (see section
+\ref{config}) or in a ROM file (see section \ref{romfile}).  The ROM
+file format is:
+
+\begin{quote}
+\begin{tt}
+prottbl FILENAME1\\
+prottbl FILENAME2\\
+...
+\end{tt}
+\end{quote}
+
+\noindent
+In both cases, the named protocol tables are loaded at run-time.
+Platforms for which loading protocol tables at run-time is impractical
+(e.g., inside the Mach kernel) provide platform-specific mechanisms
+to support protocol tables (see, for example, section
+\ref{installingmachk}). 
+

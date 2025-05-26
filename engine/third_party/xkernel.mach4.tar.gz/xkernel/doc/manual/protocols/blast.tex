@@ -1,0 +1,136 @@
+%
+% $RCSfile: blast.tex,v $
+%
+% $Revision: 1.11 $
+% $Date: 1993/11/18 06:04:58 $
+%
+
+\subsection*{NAME}
+
+\noindent BLAST (RPC Blast Micro-Protocol)
+
+\subsection*{SPECIFICATION}
+
+\noindent 
+S. O'Malley and L. Peterson.  A Dynamic Network Architecture.  {\it
+ACM Transactions on Computer Systems 10}, 2 (May 1992), 110--143.
+
+\medskip
+\noindent  B. Welch. {\it The Sprite remote procedure call}. 
+University of California at Berkeley, Tech Report UCB/CSD 86/302,
+June 1986.
+
+\subsection*{SYNOPSIS}
+
+\noindent 
+BLAST is a micro-protocol version of Sprite RPC's
+fragmentation algorithm. The algorithm was extracted from Sprite and
+made into a stand-alone protocol. BLAST takes a large message,
+fragments it into smaller packets, and sends them. 
+The maximum packet size accepted by BLAST (as returned by the GETMAXPACKET
+control op) is the product of the maximum number of fragments handled
+by BLAST (16 by default) and the optimal packet size of BLAST's lower
+protocol. Blast is tuned for the local area networks and should 
+not be used across the Internet. 
+
+The receiver gathers all of the packets and sends a NACK if it has
+reason to believe (through time-outs or other considerations) that
+a packet has been dropped.
+BLAST can handle any
+number on outstanding messages between two hosts (buffer space
+permitting, of course). The protocol is bidirectional; i.e., it
+supports blasts in both directions over the same session. Small
+messages take a short cut through the protocol and do not require the
+allocation of any resources.  
+
+The sender keeps a copy of the message
+around until a time-out occurs or the higher level protocol that sent
+the message notifies BLAST that it can free the message (through a
+FREERESOURCES control op.) Users of blast are strongly encouraged 
+to free messages as soon as possible. The sender knows which 
+BLAST (BLAST can be instantiated more than once) and which message
+to free because when a push was performed blast writes into a message
+attribute attached by CHAN (or some other high level protocol)  a pointer 
+to itself and a 32 bit integer ticket which uniquely identifies the message. 
+
+Because the sending BLAST may time-out and release a message before all
+fragments have been received, BLAST is not reliable. 
+It is, however, very persistent.
+
+BLAST performance is critically dependant upon the time-out 
+strategy used and the initial values of those timers. As mentioned 
+earlier the sender uses a timer to free resources after a set 
+interval has occurred. Tuning this timer for use with higher 
+level protocols which do not explicitly free resources is very 
+difficult. For applications which do free resources this time-out 
+interval has no effect on performance unless it is set to too small a 
+value. The receiver sets a timer whenever a fragment from a 
+new packet arrives. The only purpose of this timer is to detect 
+the drop of the last fragment. This timer is set to some constant
+times the number of fragments in the message. If this timer 
+expires to early this is detected by the code and the constant 
+is increased by a factor of two. After a NACK is set to the 
+round trip time plus some constant times the number of 
+fragments. The purpose of this time is to generate a new NACK
+if the original NACK or retransmitted segments are lost. 
+
+
+\subsection*{REALM}
+
+BLAST is in the ASYNC realm.
+
+\subsection*{PARTICIPANTS}
+
+BLAST neither removes nor adds anything to the participant stacks.
+
+\subsection*{CONTROL OPERATIONS}
+
+\begin{description}
+
+\item[{\tt FREERESOURCES:}]
+Free the storage associted with the message handle passed as 
+argument. The handle should be a value returned by xPush. 
+(protocol and session).
+\begin{description}
+\item[{\rm Input:}] {\tt xmsg\_handle\_t} 
+\item[{\rm Output:}] none
+\end{description}
+
+\item[{\tt CHAN\_RETRANSMIT:}]
+This is CHAN's way of asking BLAST if it should go ahead and retransmit
+the message. BLAST returns true (1)  if and only it has received no 
+NACK's for this message since the message was sent or the last time 
+CHAN\_RETRANSMIT was called. The idea being that CHAN should not 
+retransmit while BLAST is in the process of sending the message.
+\begin{description}
+\item[{\rm Input:}] none
+\item[{\rm Output:}] {\tt 0 or 1} 
+\end{description}
+
+\item[{\tt BLAST\_SETOUTSTANDINGMSGS:}]
+Set the number of outstanding messages allowed (protocol only).
+\begin{description}
+\item[{\rm Input:}] {\tt int} 
+\item[{\rm Output:}] none
+\end{description}
+
+\item[{\tt BLAST\_GETOUTSTANDINGMSGS:}]
+Get the number of outstanding messages allowed (protocol only).
+\begin{description}
+\item[{\rm Input:}]  none
+\item[{\rm Output:}] {\tt int} 
+\end{description}
+
+\end{description}
+
+\subsection*{CONFIGURATION}
+
+BLAST requires only its lower transport protocol.  Since BLAST doesn't
+use host addresses, it can sit on top of protocols using different
+address types without modification.
+
+\subsection*{AUTHORS}
+
+\noindent Sean O'Malley and Ed Menze
+
+

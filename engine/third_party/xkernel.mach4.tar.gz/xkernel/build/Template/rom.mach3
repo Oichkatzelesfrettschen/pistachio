@@ -1,0 +1,45 @@
+#
+# $RCSfile: rom.mach3,v $
+#
+# x-kernel v3.2
+#
+# Copyright (c) 1993,1991,1990  Arizona Board of Regents
+#
+# $Revision: 1.7 $
+# $Date: 1993/10/01 20:29:48 $
+#
+#
+# DECstations:
+arp     192.12.69.54    08:00:2b:1c:19:cd       # handel
+arp     192.12.69.137   08:00:2b:1b:c4:bb       # berlioz
+arp     192.12.69.98    08:00:2b:1c:18:e8       # tchaikovsky
+arp     192.12.69.99    08:00:2b:23:6d:ec       # mozart
+arp     192.12.69.41    8:0:2b:33:ea:e2         # haydn
+arp     192.12.69.38    8:0:2b:33:ea:19         # liszt
+arp 	192.12.69.33 	8:0:2b:32:bb:f1		# vivaldi
+# HP Snakes:
+arp     192.12.69.10    08:00:09:27:b4:2d       # cage
+arp     192.12.69.24    08:00:09:27:b4:a6       # britten
+arp     192.12.69.26    08:00:09:27:c4:49       # ives
+arp     192.12.69.25    08:00:09:27:f4:7f       # ravel
+arp     192.12.69.14    08:00:09:27:c4:47       # sibelius
+# PC's
+arp	192.12.69.15	02:60:8c:af:06:f7	# sullivan
+arp	192.12.69.153	02:60:8c:af:15:de	# porter
+arp	192.12.69.47	02:60:8c:af:00:f0	# pdqbach
+#
+dns	han	192.12.69.54
+dns	ber	192.12.69.137
+dns	tch	192.12.69.98
+dns	moz	192.12.69.99
+dns	hay	192.12.69.41
+dns	lis	192.12.69.38
+dns	viv	192.12.69.33
+dns	cag	192.12.69.10
+dns	bri	192.12.69.24
+dns	ive	192.12.69.26
+dns	rav	192.12.69.25
+dns	sib	192.12.69.14
+dns     por     192.12.69.153
+dns	sul	192.12.69.15
+dns	pdq	192.12.69.47

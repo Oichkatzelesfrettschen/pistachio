@@ -1,0 +1,117 @@
+%     
+% $RCSfile: vdisorder.tex,v $
+%
+% x-kernel v3.2
+%
+% Copyright (c) 1993,1991,1990  Arizona Board of Regents
+%
+%
+% $Revision: 1.1 $
+% $Date: 1993/10/29 17:07:11 $
+%
+
+\subsection*{NAME}
+
+\noindent VDISORDER (Virtual Disorder Protocol)
+
+\subsection*{SPECIFICATION}
+
+\noindent 
+Shuffles the order of incoming packets.  Used to exercise the
+recovery mechanisms of other protocols.
+
+\subsection*{SYNOPSIS}
+
+\noindent 
+VDISORDER sessions deliver packets in a somewhat different order than
+they receive them.  The characteristics of the reordering are 
+controlled by per-session parameters which can be set by
+control operations.  VDISORDER will eventually deliver all packets it
+receives.  
+
+VDISORDER has no effect on outgoing packets.
+
+ 
+\subsection*{REALM}
+
+VDISORDER is in the ASYNC realm.
+
+\subsection*{PARTICIPANTS}
+
+VDISORDER passes participants to the lower protocols without manipulating
+them. 
+
+\subsection*{CONTROL OPERATIONS}
+
+\begin{description}
+
+\item[{\tt VDISORDER\_SET\_ARRIVAL\_INTERVAL:}]
+Sets the arrival interval for this session.  This is the number of
+packets that are delivered in-order before the session goes into a
+disordering state.  
+(session only)
+\begin{description}
+\item[{\rm Input:}] {\tt int interval}
+\item[{\rm Output:}] none
+\end{description}
+
+
+\item[{\tt VDISORDER\_GET\_ARRIVAL\_INTERVAL:}]
+Returns the arrival interval for this session.  
+(session only)
+\begin{description}
+\item[{\rm Input:}] none
+\item[{\rm Output:}] {\tt int interval}
+\end{description}
+
+
+\item[{\tt VDISORDER\_SET\_DISORDER\_INTERVAL:}]
+Sets the disorder interval for this session.  This is the number of
+packets that are held while a session is in a disordering state before 
+the set is delivered in a random order to the upper protocol (and the
+session leaves the disordering state.)  This
+parameter controls how far out-of-order a packet might arrive.
+(session only)
+\begin{description}
+\item[{\rm Input:}] {\tt int interval}
+\item[{\rm Output:}] none
+\end{description}
+
+
+\item[{\tt VDISORDER\_GET\_DISORDER\_INTERVAL:}]
+Returns the disorder interval for this session.  
+(session only)
+\begin{description}
+\item[{\rm Input:}] none
+\item[{\rm Output:}] {\tt int interval}
+\end{description}
+
+
+\item[{\tt VDISORDER\_SET\_TIMEOUT\_INTERVAL:}]
+Sets the timeout interval for this session.  When a session enters a
+disordering state, it starts a timeout event for this many
+milliseconds.  If this event fires before the session has received sufficient
+packets to satisfy the disorder interval, it disorders the packets and
+delivers them to the upper protocol anyway.  
+(session only)
+\begin{description}
+\item[{\rm Input:}] {\tt int interval}
+\item[{\rm Output:}] none
+\end{description}
+
+\item[{\tt VDISORDER\_GET\_TIMEOUT\_INTERVAL:}]
+Returns the timeout interval for this session.  
+(session only)
+\begin{description}
+\item[{\rm Input:}] none
+\item[{\rm Output:}] {\tt int interval}
+\end{description}
+
+
+\end{description}
+
+
+
+\subsection*{AUTHOR}
+
+\noindent Erich Nahum

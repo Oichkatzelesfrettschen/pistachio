@@ -1,0 +1,126 @@
+%
+% installing_mach_kernel.tex
+%
+% $Revision: 1.7 $
+% $Date: 1993/11/15 21:50:22 $
+%
+
+\section{Installing within a Mach3 Kernel}
+\label{installingmachk}
+
+The \xk{} can be compiled as an integral part of the Mach3 kernel.
+This facility is provided for researchers developing highly efficient
+protocols and for obtaining timing results that are exclusive of
+Mach IPC and Unix server overhead.  At the present time, there is no
+user interface for accessing the \xk{} services -- the Mach3 kernel
+can boot, run an \xk{} timing test and print the results.  A more
+usable interface will be provided in the future.
+
+These are instructions for building a version of the \xk{} that resides
+in the Mach3 kernel.  You should be familiar with the build instructions
+for the ``out of kernel'' version before starting.  You should also be
+familiar with the procedure for building the Mach kernel and have a
+working environment set up.
+
+The files distributed (and these directions) have been used with the
+MK82 Mach kernel for a DecStation 5000 and an Intel 486 PC.
+
+
+Set your path to include the /usr/xkernel/bin and /usr/xkernel/bin/ARCH
+directories.
+
+
+\begin{enumerate}
+
+\item Place the \xk{} source tree in the mach source tree.
+In the src/mk/kernel directory, in either a shadow area or the primary
+source area, create a link named 'xkern' to the head of the \xk{}
+source tree.  
+
+
+\item Patch some mach kernel source files.
+The tree rooted at xkernel/mach3/machkernel is a parallel of the mach
+kernel source tree, containing modifications to support the \xk{}.
+These modifications are all conditional on \xk{} compilation flags, so
+you can use these modified files to build non-\xk{} Mach kernels if
+you desire.  You can either go through these files one at a time and
+make the appropriate file-by-file substitutions, or you can set up a
+mach shadow directory and link/copy the directories in
+xkernel/mach3/machkernel to the shadow area.  The latter should be the
+easier approach (and less intrusive to your original mach source
+tree.)
+
+Note that one can not transparently shadow the mk/kernel/conf
+directory.  Since the directory\\ xkernel/mach3/machkernel/conf 
+only includes files
+that we have modified, it should be overlayed on top of a copy of an
+original mk/kernel/conf directory.
+
+\item Compose an \xk{} graph.
+Create a directory xkern.local under src/mk/kernel. This directory will
+contain the files created by composing the graph.comp. 
+Change to the new xkern.local directory. Copy or create your
+graph.comp here. To compose this graph.comp run:
+
+\begin{quote}
+\begin{tt}
+   	compose -f < graph.comp
+\end{tt}
+\end{quote}
+
+This must be explicitly done each time the graph.comp changes. The files
+traceLevels.c, protocols.c, protocols.h and protTbl.c will be created.
+The files that were created here are referenced by the `conf/files' file for
+inclusion in the mach kernel.
+
+
+\item 
+In your xkern.local directory, build a compilable version of the
+protocol table by running the \xk{} utility program ptbldump:
+ 
+\begin{quote}
+\begin{tt}
+  	ptbldump /usr/xkernel/etc/prottbl > ptblData.c
+\end{tt}
+\end{quote}
+
+This file will be automatically included by an \xk{} source file.
+
+
+\item 
+In your xkern.local directory, create a compilable rom file by running
+the genrom.awk script:
+
+\begin{quote}
+\begin{tt}
+   	awk -f /usr/x32/merge/bin/genrom.awk < rom > initRom.c
+\end{tt}
+\end{quote}
+
+This file will be automatically included by an \xk{} source file.
+
+
+\item Build a configuration including the \xk{}.  If your
+configuration includes the string {\tt +xk}, the \xk{} will be built
+in DEBUG configuration (with tracing enabled.)  If the configuration
+includes the string {\tt +xko}, the \xk{} will be built in OPTIMIZE
+configuration (with no tracing.)  
+
+
+\item If you have problems with kernels crashing because of storage exhaustion,
+   you might want to adjust the zone block table in the Mach kernel file
+   kalloc.c.  See the \xk{} file xkernel/pi/msg\_internal.h for the
+   size of a message block; these account for most of the \xk{} storage use.
+
+
+\item The machkernel will come up by default with both the Unix server
+and the \xk{} receiving and sending network packets (incoming
+packets are copied to both the \xk{} and the Unix server.)  For
+accurate kernel-kernel timings of \xk{} protocols, boot the
+mach\_kernel image (which doesn't start the user task) instead of the
+mach.boot image and configure the in-kernel driver (xklance) to not
+deliver incoming packets to the user task as described in Appendix
+\ref{protman}. 
+
+
+\end{enumerate}

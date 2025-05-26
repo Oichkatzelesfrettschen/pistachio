@@ -1,0 +1,118 @@
+% 
+% $RCSfile: api.tex,v $
+%
+% $Log: api.tex,v $
+% Revision 1.11  1993/11/29  21:25:55  hkaram
+% Minor spelling fix
+%
+% Revision 1.10  1993/11/23  23:39:37  hkaram
+% Changes to nnstest docs.
+%
+% Revision 1.9  1993/11/23  23:04:34  menze
+% Spelling corrections
+%
+%
+
+\section{Application Programmer Interfaces}
+\label{api}
+
+This appendix describes the installation and use of \xk{} application
+programmer interfaces.  APIs in the \xk{} are platform-specific.
+
+
+\subsection{ Mach 3 }
+
+\subsubsection{Sockets}
+
+The Mach 3 out-of-kernel platform provides a user socket library.
+At this time, the library can only be compiled with a DECstation 5000. 
+The library can be used to communicate with the XSI protocol
+running in an out-of-kernel \xk{} in a separate task.
+The combination of the library and the XSI protocol 
+provides Berkeley socket semantics.  The mach 3 user-level build
+will create a socket library in the {\tt xkernel/mach3/user/socket}
+directory which can be linked with any application making Berkeley
+socket calls.  These calls will then be routed through the \xk{}
+socket implementation rather than the sockets in the BSD server.
+
+The user-level build (see below) will also create some test programs 
+that exercise the socket library
+and the XSI protocol in {\tt xkernel/mach3/user/socket/tst}.  
+Two versions of each test program are created,
+one linked against the \xk{} socket library and one linked against the
+standard Mach libraries.  An \xk{} configured with the XSI protocol
+must be running for the \xk{} versions of the test programs to run, or
+a message of the form:
+\begin{quote}
+\begin{tt}
+xsi\_user\_init: netname\_lookup(): (ipc/mig) server died
+\end{tt}
+\end{quote}
+will be displayed.  The test programs have a number of flags
+controlling their behavior.  Invoking them with {\tt -h} will give a
+list of these parameters.
+
+
+\subsubsection{MachNetIPC}
+
+The user-level build (see below) will create a test program, nnstest,
+which exercises the \xk{}'s
+out-of-kernel implementation of MachNetIPC in
+{\tt xkernel/mach3/user/netipc/test}.
+
+NNS test communicates with the \xk{} protocols NNS which is the top
+layer of MachNetIPC.
+There must be an \xk{} task with MachNetIPC running on the host.
+
+NNS test takes command line arguments. Before performing checkins, checkouts,
+and lookups the test program first looks up the service ``NetworkNameServer''
+and uses the associated port as the default name server port. This is to
+avoid conflicts with a previously running simple name server. Following are
+some example runs.
+
+\bigskip
+
+\noindent
+To checkin a service on the local host do:
+
+\begin{quote}
+{\tt nnstest -i service\_name \& };
+\end{quote}
+
+\noindent
+Note that to perform remote host lookups, you have to specify the 
+IP address of the host and not the host name. To look up a service 
+on a remote machine with IP address 192.12.69.88 do:
+
+\begin{quote}
+{\tt nnstest -h192.12.69.88 -l service\_name };
+\end{quote}
+
+\noindent
+To checkin, lookup and checkout a service on the remote machine do:
+
+\begin{quote}
+{\tt nnstest -h192.12.69.88 -ilo service\_name };
+\end{quote}
+
+\subsubsection{Building}
+
+The Mach 3 APIs can be built from a normal out-of-kernel \xk{} build
+directory.  Running 
+
+\begin{verbatim}
+      make userDepend
+\end{verbatim}
+
+\noindent
+will build the dependency files for the APIs and 
+
+\begin{verbatim}
+      make user
+\end{verbatim}
+
+\noindent
+will build the user libraries and the test programs.  Building the
+APIs should only be attempted {\em after} a successful build of the
+rest of the \xk{} system.
+

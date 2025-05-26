@@ -1,0 +1,73 @@
+%
+% $RCSfile: ns8390.tex,v $
+%
+% $Revision: 1.3 $
+% $Date: 1993/11/18 06:05:15 $
+%
+
+\subsection*{NAME}
+
+\noindent NS8390 (Mach3 in-kernel ns8390 ethernet driver)
+
+\subsection*{SPECIFICATION}
+
+\noindent
+
+NS8390 is a Mach in-kernel ethernet driver, presenting both a
+mach kernel interface and an \xk{} interface.
+
+
+\subsection*{SYNOPSIS}
+
+\noindent 
+
+Each instantiation of NS8390 is associated with a single ethernet
+device.  NS8390 can be configured to either copy incoming packets
+to both the \xk{} and the standard Mach networking interface (thus
+both the in-kernel \xk{} and the Unix server will see packets) or to
+bypass the Mach interface and not allow the Unix server to see any
+packets. 
+
+If compiled with ALLOW\_NON\_XK\_USERS defined, NS8390 will 
+allow non-\xk{} users to send and receive network packets through the
+standard Mach interfaces.
+
+
+\subsection*{REALM}
+
+NS8390 is in the ASYNC realm, supporting the ethernet driver interface
+described in the ETH appendix.
+
+
+\subsection*{PARTICIPANTS}
+
+NS8390 supports the ethernet driver interface rather than a standard
+xkernel UPI interface and thus makes no use of participant stacks.
+
+
+\subsection*{EXTERNAL INTERFACE}
+
+NS8390 supports the ethernet driver interface
+described in the ETH appendix.
+
+
+\subsection*{CONFIGURATION}
+
+NS8390 requires no lower protocol.  The last digit of the instance
+name must correspond to the unit device number for the particular
+instantiation.  E.g., 
+
+\medskip
+
+{\tt name=ns8390/el0;}
+
+\medskip
+
+\noindent for device 0.
+
+
+\subsection*{AUTHOR}
+
+\noindent Hasnain Karampurwala (modifications to Mach
+kernel source distribution)
+

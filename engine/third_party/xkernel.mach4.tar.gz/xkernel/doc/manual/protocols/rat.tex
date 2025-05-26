@@ -1,0 +1,90 @@
+
+% rat.tex
+%
+% $Revision: 1.2 $
+% $Date: 1993/07/20 21:11:03 $
+%
+
+\subsection*{NAME}
+\label{RAT}
+
+\noindent RAT ( Record Accessed TCP )
+
+\subsection*{SPECIFICATION}
+
+\noindent
+RAT uses TCP to ship very large packets to remote hosts. 
+
+\subsection*{SYNOPSIS}
+RAT is a protocol uses TCP to send very large packets to remote hosts. The 
+current implementation of RAT manages a single TCP connection between 
+each host pair. Messages pushed to RAT are in turn pushed to TCP. Unlike 
+TCP RAT preserves packet boundaries. One the receiving end RAT 
+reconstructs the original packet from an arbitrary list of buffers handed 
+to it by TCP. RAT should be able to accept packets as large as the message 
+tool implementation supports. 
+
+Note that RAT is totally responsible for the management of the TCP 
+connection. In the current implementation this connection is not opened 
+until a message is pushed to RAT. In the future more than one TCP 
+connections between any two hosts could be supported without affecting 
+the protocols which use RAT. 
+
+Currently  a compiled constant in RAT determines the TCP send and 
+receive buffer sizes. 
+
+RAT will almost always perform worse than BLAST on packets that are 
+small enough for BLAST to deliver. 
+
+RAT uses any message attribute attached to the outgoing message 
+to communicate the fact that it is reliable to some higher level protocol
+(in this case CHAN). 
+
+\noindent 
+\subsection*{REALM}
+
+RAT is in the ASYNC realm.
+
+\subsection*{PARTICIPANTS}
+
+The interface to RAT is intended to look as much like IP, VNET, and BLAST 
+as possible. RAT assumes that the first participant passed to it at open 
+time contains the IP address of the remote host. RAT openEnable takes 
+participant which is ignored. OpenEables are based upon the protocol ID of 
+the higher level protocol.
+
+\subsection*{CONTROL OPERATIONS}
+
+RAT passes all control operations to IP the second protocol configured. 
+
+\subsection*{CONFIGURATION}
+
+RAT is not freely composable. It must be configured as follows:
+
+name=rat protocols=tcp, ip
+
+RAT has been designed to work under VSIZE with either BLAST, VNET, or IP as the short message protocol. 
+\
+bigskip
+
+\noindent
+RAT recognizes the following ROM options:
+
+\smallskip
+
+{\tt rat/xxx sourcePort N}: Instantiation {\em xxx} of RAT 
+will use port N as its TCP source port. If N is equal to zero
+TCP will chose a port at random.
+
+{\tt rat/xxx destPort N}: Instantiation {\em xxx} of RAT 
+will use port N as its TCP destination port. Each instance of 
+RAT must have its own destination port. 
+
+\medskip
+
+\subsection*{AUTHORS}
+
+\noindent David C. Schwartz and Sean W. O'Malley
+
+
+

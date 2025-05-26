@@ -1,0 +1,41 @@
+%
+% nnstest.tex
+%
+% $Revision: 1.1 $
+% $Date: 1993/11/15 22:01:51 $
+%
+
+\subsection*{NAME}
+
+\noindent NNS test (tests remote and local port checkin, checkout and lookup)
+
+\subsection*{SYNOPSIS}
+
+\noindent 
+
+\subsection*{REALM}
+
+NNS test is not a protocol; it is specific to the Mach3 platform.
+
+\subsection*{CONFIGURATION}
+
+NNS test communicates with the NNS layer in MachNetIPC.  There must be 
+an \xk{} task with MachNetIPC running on the host. 
+
+NNS test takes command line arguments. Following are some example runs.
+
+To checkin a service on the local host do:
+
+\noindent {\tt nnstest -i service_name \& };
+
+To look up a service on a remote machine do:
+
+\noindent {\tt nnstest -hmachine -l service_name };
+
+To checkin, lookup and checkout a service on a remote machine do:
+
+\noindent {\tt nnstest -hmachine -ilo service_name };
+
+\subsection*{AUTHORS}
+
+\noindent Hasnain Karampurwala

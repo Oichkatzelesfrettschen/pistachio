@@ -1,0 +1,199 @@
+% $RCSfile: km.tex,v $
+%
+% $Revision: 1.16 $
+% $Date: 1993/11/09 00:18:11 $
+%
+
+\subsection*{NAME}
+\label{KM}
+
+\noindent KM ( An Encryption Key Manager )
+
+\input cryptDist
+
+\subsection*{SPECIFICATION}
+
+\noindent
+KM provides a key that matches a participant list. 
+
+\subsection*{SYNOPSIS}
+KM maps addresses to keys. Both keys and addresses are 
+uninterpreted byte strings to KM. KM reads a key file at start 
+up.  The first line of the key file contains the length of the 
+addresses in bytes, the length of the keys in bytes and the size 
+to pass when creating the key map. The remaining lines of the 
+key file contain address key pairs.  
+
+When a protocol such as CRYPT needs to look up a key, it opens 
+a session to KM. The entire participant list is converted into a 
+byte string and used to lookup a session in the key map. Note if 
+you wish to associate a key with a single participant in a 
+participant list you must create a new participant list with 
+that participant as its only member. (Not an easy thing to do 
+with the current participant structure.) The control operation 
+KM\_RESOLVE is used to lookup the actual keys. The control 
+operation KM\_SET is used to change the value of a key. The 
+control operation KM\_INVALIDATE is used to invalidate a key. 
+The state of the KM session can be determined by calling the 
+control operations KM\_ISEMPTY, KM\_ISVALID, 
+KM\_ISINVALID. If the state is empty no key value has ever 
+been set for this address. If the state is valid there is a valid 
+key for this address if the state is invalid an invalidate 
+operation has been performed on this session. If a higher level 
+protocol is no longer interested in a specific key it should 
+perform a close operation on the KM session.  No messages are 
+pushed or popped to KM.
+
+The keys file name is formed by concatenating the string
+``keys'' with the instance name of the protocol (which may be 
+null).
+
+\noindent 
+\subsection*{REALM}
+
+KM is in the ASYNC realm.
+
+\subsection*{PARTICIPANTS}
+
+KM accepts participants in order to do a table lookup to find 
+the key. The entire participant list is converted into a byte 
+string which is then used to lookup the key. 
+
+\subsection*{CONTROL OPERATIONS}
+KM\_RESOLVE returns a copy of the key stored in that session. 
+This key is the key which is associated with the participant 
+list passed at open time. KM\_RESOLVE can fail if no key has
+been set or that key has been invalidated.
+
+KM\_SET sets the key for that session to the value passed.
+
+KM\_INVALIDATE marks the key as invalid and removes the KM 
+session from the map. The session is not destroyed until all 
+users of that session have closed it. 
+
+KM\_ISEMPTY succeeds if no key for this session has been 
+defined.  
+
+KM\_ISVALID succeeds if there is a valid key for this session. 
+
+KM\_ISINVALID succeeds if a KM\_INVALIDATE operation has 
+been performed in this session. 
+
+\subsection*{CONFIGURATION}
+
+KM is configured with cryptographic protocols such as CRYPT. 
+
+\subsection*{CRYPTOGRAPHIC SHORTCOMINGS}
+The system of one key per host is not cryptographically strong. 
+The operating system file protections must be used to protect 
+the keys file from unauthorized snooping.
+
+\subsection*{EXAMPLE KEY FILES}
+Here are four examples of key files.
+
+The first example shows a key file which maps 4 byte IP 
+addresses to 8 byte DES keys. The 57 is the number passed to 
+mapCreate as the size of the key map. The IP address is 
+followed by a DES key, of 16 hex digits. Hex letters may be
+in upper or lower case. A trailing comment is optional, but it
+helps to keep track of the machine name. This keying method is 
+appropriate if the CRYPT module is configured above IP.
+Note that for historical reasons the id field begins with 
+0x while the key field does not.
+
+\begin{verbatim}
+---------------------------------
+4 8 57
+0xc00c4582 0807060504030201  
+0xc00c4587 080706050403d213
+0xc00c456e 0103040506070802
+0xc00c4589 abbadabbad0add15   Berlioz  192.12.69.137
+0xc00c4518 141421356abcdefa   Britten  192.12.69.24
+0xc00c4554 2718281828459045   Cottonwood 192.12.69.84
+0xc00c4574 3141592653589793   Leibniz  192.12.69.116
+0xc00c4562 98cba765fed43210   Tchaikovsky 192.12.69.98
+0xc00c4536 010304050ad53812
+0xc00c4563 7766554433221100
+0xc00c4561 0103040706070a02
+---------------------------------
+\end{verbatim}
+
+The second example shows keying based on Ethernet address, 
+which is 6 bytes long. This keying is appropriate when the 
+CRYPT module is placed above ETH.
+\begin{verbatim}
+---------------------------------
+6 8 57
+0xc00c456e0ca2 0807060504030201  
+0xc00c45432694 0103040506070802
+---------------------------------
+\end{verbatim}
+
+The third example shows keying based on the combination of 
+UDP port number and IP address.  The lookup data is 8 bytes 
+long: 4 bytes of UDP port number and 4 bytes of IP address.  
+This keying is appropriate when the CRYPT module is 
+configured above UDP.
+\begin{verbatim}
+---------------------------------
+8 8 57
+0x000007d1c00c456e 0807060504030201  
+0x00000100c00c4582 0103040506070802
+0x000007d1c00c4587 010304a50607080f
+---------------------------------
+\end{verbatim}
+
+The fourth example shows some additional features of the key
+file parser.  Addresses and keys may be character strings instead
+of hex byte strings; the strings are demarcated with double-quotes.
+For long keys, the backslash character may be used to hide line
+breaks, to include octal-coded characters, and to quote backslash
+and doublequote characters.  A comment may be placed after backslash-space.
+Following a hidden newline, initial whitespace is discarded,
+but another backslash turns off hiding.
+
+Variable length keys are permitted.
+To use this option, the first line of the file should have a range
+of lengths instead of a single number.
+
+The 0x in front of the address is optional for addresses, prohibited 
+for keys.
+Individual hex bytes may be separated with one space or punctuation
+character.  A hex byte string is terminated with tab, newline,
+double space, double punctuation, or the double-quote character.
+Single space is allowed as a terminator when the byte string is
+maximum permitted length, and no internal spaces have been used in 
+the string.  Single hex digits are ok, but odd length blocks of
+hex digits are not.  In AA-B-CCC-DDDD, the B is ok but the CCC isn't.
+
+Comment lines begin with \#.  Also, any text following a key is treated as
+a comment line, even without a \#.
+\begin{verbatim}
+---------------------------------
+6-10  0-2000 100
+"Alabama"  99 11 33 66  a four byte key
+"Arkansas"      "An example of a very long \
+                 key, that shows some of the \
+                 uses of backslash, such as \
+                 for breaking long lines, for \
+                 including \000 oddball characters, \
+                 for quoting \\ and \", \   freebie comment!
+                 \  and for resuming scanning \
+                 after a hidden line, \
+
+
+                 and even hiding multiple blank lines!"
+"Alaska"  ""  null key is not a good idea, but permitted
+001122334455  "an address or key may be expressed either \
+               as a character string, or as hex bytes" if you want
+0X C0 C 45 74 fF Ff   3141-59:2653;58,97  punctuation run riot
+#and finally, an ordinary comment
+---------------------------------
+\end{verbatim}
+
+\medskip
+
+\subsection*{AUTHORS}
+
+\noindent David C. Schwartz, Sean W. O'Malley, and Rich Schroeppel.
+

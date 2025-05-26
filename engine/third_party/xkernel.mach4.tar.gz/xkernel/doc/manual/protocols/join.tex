@@ -1,0 +1,148 @@
+
+% JOIN.tex
+%
+% $Revision: 1.2 $
+% $Date: 1993/06/25 23:15:00 $
+%
+
+\subsection*{NAME}
+\label{JOIN}
+
+\noindent JOIN 
+
+\subsection*{SPECIFICATION}
+
+\subsection*{SYNOPSIS}
+\noindent
+
+JOIN merges up to N outgoing messages pushed to N different 
+sessions into a single outgoing message. When this message 
+arrives it its broken up into its original configuration and demuxed 
+to N potentially different protocols. JOIN is bidirectional and 
+will perform the same action on the reply. N can be any number 
+between 1 and 16. The default value for N is four and other 
+values may be set using ROM file options. 
+
+The number of xOpen's and xOpenenable's that should be performed 
+on JOIN  and the number of xOpenDone's JOIN will perform on 
+higher level protocols should be equal to N + 1. The first open 
+will return, and the first open done will produce, a control 
+session which is not used to transmit data. To transmit a message 
+to user of JOIN would push a single message to one or more of 
+the remaining N sessions and the perform and JOINDONE done on 
+the control session. When JOINDONE is called on JOIN the protocol 
+gathers all of the packets pushed and joins them into a single 
+packet and transmits them. 
+
+When the packet arrives at the receiver it is broken up into its 
+original configuration and demuxed to the appropriate higher 
+level protocols.  If no packet has been pushed to a specific JOIN 
+session no packet will be demuxed at the corresponding join 
+session at the receiver. When this is finished JOIN will perform 
+an upward JOINDONE control operation on the session or protocol 
+passed to JOIN by the receiving protocol using the JOINSETCONTROL 
+operation.  This allows the user to detect if any of the incoming 
+message fragments has been lost or never sent. NOTE some protocol 
+must know that it is using JOIN and must perform JOINSETCONTROL 
+immediately after the first openDone performed by JOIN on the 
+SESSION passed up by the openDone.
+
+The order in which JOIN will demux the messages to the higher 
+level protocol(s) can be set in the ROM file.
+
+\noindent 
+\subsection*{REALM}
+
+JOIN is in the ASYNC realm.
+
+\subsection*{PARTICIPANTS}
+
+JOIN takes arbitrary participants. The only restriction is that 
+JOIN must be opened N+1 times with each open having exactly 
+the same participant list. The best way to achieve these duplicate 
+opens is for the higher level protocol to perform one open which 
+eventually trickles down to JOIN and then do a get participants 
+on the resulting session. This participant list should be used to 
+perform the remaining opens. JOIN will create one and only one 
+set of JOIN session for each unique address. Attempts to open 
+another set of JOIN sessions with the same address will fail. 
+Note there is a huge potential race condition if the higher level 
+protocol which knows about join is in a different scheduling 
+domain from JOIN. 
+
+\subsection*{CONTROL OPERATIONS}
+
+JOINGETNUMSEG: Returns N. 
+
+JOINGETORDER: Returns an array of 16 integer which gives the 
+order in which JOIN will demux the messages fragments.  While 
+all 16 ints are returned only the first N of them should be 
+considered valid. If N=4 then 0 1 2 3 4 is a valid order and 4 3 2 
+1 is also a valid order. 
+
+JOINDONE: When called on the JOIN control session it cause join 
+to collect all fragments currently available and send a composite 
+message. JOIN invokes JOINDONE on the higher level protocol or 
+session passed to it by JOINSETCONTROL when it is finished 
+demultiplexing message fragments. JOINDONE takes no arguments.
+
+JOINSETCONTROL: Takes a protocol or session as argument. Some 
+higher level protocol must invoke this operation on the JOIN 
+control session before any packets are delivered. The protocol 
+implementor must implement a JOINDONE control operation in 
+the control procedure. 
+
+subsection*{CONFIGURATION}
+
+The composability of JOIN is rather complex and not particularly 
+well understood. There must be some higher level protocol that 
+knows it is being compose on top of JOIN. This protocol will be 
+configured on top of N+1 protocols. The first protocol must be 
+JOIN. Between this protocol JOIN any number of other protocols 
+may be composed on each of the remaining   N paths. For example 
+the following is a valid join protocol graph.
+
+\begin{verbatim}
+name=auth protocols= join, join,join,crypt/one,join,crypt/two;
+name=crypt/one protocols=join;
+name=crypt/two protocols=join;
+name=join ....
+\end{verbatim}
+
+Note that the participant lists that propagate to join through 
+each of these paths must be identical. Therefore if one path to 
+JOIN modifies the participant list all other paths must also 
+perform identical modifications. For situations where the 
+incoming and outgoing paths differ it may be possible to use 
+standard asymmetric protocol graph techniques to allow the 
+incoming and outgoing message to pass through different protocol 
+graphs. Note that any protocol composed between AUTH and JOIN 
+must xPush zero or one message down for each xPush done to it. 
+Protocols which fragment messages should not be composed 
+between AUTH and JOIN. 
+
+\subsection*{ROM File}
+
+The ROM file is used to set N and the order in which the  message 
+parts should be demuxed to higher level protocols. The following 
+is an example ROM file:
+
+\begin{verbatim}
+join segments 4
+join order 3 2 1 0
+\end{verbatim}
+
+After the user has set the number of segments to be joined he 
+should set the order at which he would like the message segments 
+to be demuxed. In this case JOIN will demux the messages in 
+reverse order. Note the default N is 4 and the default order is (0 
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15). However the user should 
+always set N and the order.
+
+\medskip
+
+\subsection*{AUTHOR}
+
+\noindent Sean W. O'Malley
+
+
