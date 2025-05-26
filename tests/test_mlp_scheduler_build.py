@@ -27,7 +27,7 @@ class MlpSchedulerBuildTest(unittest.TestCase):
                 compiler,
                 "-std=c++23",
                 "-I",
-                str(ROOT / "engine/include"),
+                str(ROOT / "user/include"),
                 "-I",
                 str(ROOT / "third_party/eigen"),
                 "-c",
