@@ -55,8 +55,8 @@ Once the exokernel and user land are built you can start resource
 managers using the `kickstart` utility.  For example, to build and
 launch the `sigma0` memory manager run::
 
-    $ make -C user/serv/sigma0
-    $ user/util/kickstart/kickstart -roottask=user/serv/sigma0/sigma0
+    $ make -C engine/serv/sigma0
+    $ engine/util/kickstart/kickstart -roottask=engine/serv/sigma0/sigma0
 
 `kickstart` loads the kernel and the specified user tasks and then
 transfers control to the resource manager.  Additional managers can be
@@ -65,22 +65,22 @@ specified on the command line in the order they should be started.
 To boot with the example memory and scheduler servers first build
 them::
 
-    $ make -C user/serv/memory
-    $ make -C user/serv/scheduler
+    $ make -C engine/serv/memory
+    $ make -C engine/serv/scheduler
 
 Then launch them together with the kernel using `kickstart`::
 
-    $ user/util/kickstart/kickstart \
-          -roottask=user/serv/memory/memory \
-          user/serv/scheduler/scheduler
+    $ engine/util/kickstart/kickstart \
+          -roottask=engine/serv/memory/memory \
+          engine/serv/scheduler/scheduler
 
 Additional servers can be started in the same manner.  For example,
 to also launch a device service pass its binary as another argument::
 
-    $ user/util/kickstart/kickstart \
-          -roottask=user/serv/memory/memory \
-          user/serv/scheduler/scheduler \
-          user/serv/device/device
+    $ engine/util/kickstart/kickstart \
+          -roottask=engine/serv/memory/memory \
+          engine/serv/scheduler/scheduler \
+          engine/serv/device/device
 
 
 Migration from the microkernel API
@@ -118,10 +118,10 @@ Running clang-tidy
 The tree includes a `.clang-tidy` configuration enabling the modernize
 and readability checks. The pre-commit hook runs the tool on modified
 C/C++ sources.  A `compile_commands.json` database is generated under
-`user/` to provide build flags.  Invoke the tool manually with the
+`engine/` to provide build flags.  Invoke the tool manually with the
 database path::
 
-    $ clang-tidy -p user path/to/file.cc
+    $ clang-tidy -p engine path/to/file.cc
 
 
 Model checking
