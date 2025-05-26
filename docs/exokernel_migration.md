@@ -39,34 +39,34 @@ By delegating these services the system gains flexibility: different application
 The memory server replaces the kernel's built‑in pager.  It receives
 allocation and deallocation requests from applications and returns raw
 memory frames.  All higher level allocators build on top of this
-service.  The implementation in `user/serv/memory` is intentionally
+service.  The implementation in `engine/serv/memory` is intentionally
 minimal to demonstrate how a user program can manage physical
 resources using only the kernel's IPC primitives.
 
 Build the server with::
 
-    $ make -C user/serv/memory
+    $ make -C engine/serv/memory
 
 Once compiled it can be started with `kickstart` together with the
 kernel image::
 
-    $ user/util/kickstart/kickstart -roottask=user/serv/memory/memory
+    $ engine/util/kickstart/kickstart -roottask=engine/serv/memory/memory
 
 ## Scheduler Server
 
 Scheduling policies are likewise moved out of the kernel.  The
-`user/serv/scheduler` example provides a rudimentary round‑robin
+`engine/serv/scheduler` example provides a rudimentary round‑robin
 scheduler that repeatedly calls `L4_ThreadSwitch` to hand the CPU to
 other threads.  More advanced policies can be implemented in the same
 way without enlarging the kernel.
 
 Compile the scheduler server via::
 
-    $ make -C user/serv/scheduler
+    $ make -C engine/serv/scheduler
 
 It may then be launched as an additional task using `kickstart`::
 
-    $ user/util/kickstart/kickstart \
-          -roottask=user/serv/memory/memory \
-          user/serv/scheduler/scheduler
+    $ engine/util/kickstart/kickstart \
+          -roottask=engine/serv/memory/memory \
+          engine/serv/scheduler/scheduler
 

@@ -3,7 +3,7 @@
 This document synthesises the long term plan for implementing a full POSIX
 compatibility layer on top of Pistachio's exokernel.  The design draws from the
 existing exokernel migration notes and the partial servers found under
-`user/serv/`.  Each phase expands the current stubs into a feature complete
+`engine/serv/`.  Each phase expands the current stubs into a feature complete
 user-space subsystem while keeping the kernel minimal.
 
 ## Phase I – Build and Documentation Foundations
@@ -19,17 +19,17 @@ user-space subsystem while keeping the kernel minimal.
 ## Phase II – Memory Management Subsystem
 
 1. **Virtual memory manager** – extend the example `memory` server
-   (`user/serv/memory`) with page protection tracking and capability checks.
+   (`engine/serv/memory`) with page protection tracking and capability checks.
 2. **POSIX wrappers** – implement `px_mprotect`, `px_msync` and `px_mmap` in
-   `user/lib/posix` using IPC messages to the memory server.
+   `engine/lib/posix` using IPC messages to the memory server.
 3. **Testing** – create unit tests under `tests/` that exercise protection and
    mapping behaviour.
 
 ## Phase III – Process Management & Scheduling
 
-1. **Run queue structures** – flesh out `user/serv/scheduler` with a proper run
+1. **Run queue structures** – flesh out `engine/serv/scheduler` with a proper run
    queue and capability-aware state management.
-2. **Process server** – build on `user/serv/process` to provide `px_waitpid`,
+2. **Process server** – build on `engine/serv/process` to provide `px_waitpid`,
    `px_execve` and `px_spawn` interfaces.
 3. **Scheduling integration** – coordinate with the scheduler server to enforce
    preemptive multitasking and resource accounting.
@@ -88,7 +88,7 @@ user-space subsystem while keeping the kernel minimal.
 
 ## Phase X – Deployment and Examples
 
-1. **Example applications** – add small demo programs under `user/apps` showing
+1. **Example applications** – add small demo programs under `engine/apps` showing
    how to interact with the new APIs.
 2. **Deployment tooling** – script the launch of servers and demos with
    `kickstart` so that newcomers can reproduce a minimal POSIX environment.

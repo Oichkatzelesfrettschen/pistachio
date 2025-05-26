@@ -33,11 +33,11 @@ For an allocation request the server returns the allocated address in `MR1`.
 
 ### Scheduler server
 
-Scheduler messages use label `0x1234`. Five untyped words encode the `SchedRequest` structure from `user/lib/sched/sched_client.h`. Threads send a request with `L4_Call` and block until the server replies or performs a `L4_ThreadSwitch` to schedule the next thread.
+Scheduler messages use label `0x1234`. Five untyped words encode the `SchedRequest` structure from `engine/lib/sched/sched_client.h`. Threads send a request with `L4_Call` and block until the server replies or performs a `L4_ThreadSwitch` to schedule the next thread.
 
 ## Defining additional services
 
-New servers should pick a unique label and define packed request/reply structures. Client libraries can use `L4_MsgPut` or direct `L4_LoadMR` calls to copy these structures into `MR1` and beyond. Replies typically mirror the same layout. The examples under `user/serv/` provide small reference implementations.
+New servers should pick a unique label and define packed request/reply structures. Client libraries can use `L4_MsgPut` or direct `L4_LoadMR` calls to copy these structures into `MR1` and beyond. Replies typically mirror the same layout. The examples under `engine/serv/` provide small reference implementations.
 
 ## Cap'n Proto integration
 

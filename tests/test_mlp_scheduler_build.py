@@ -6,7 +6,7 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
 CODE = r"""
-#include "../../user/lib/mlp/mlp.h"
+#include "../../engine/lib/mlp/mlp.h"
 int main() {
     float f[1] = {0};
     mlp_init(nullptr);
@@ -27,7 +27,7 @@ class MlpSchedulerBuildTest(unittest.TestCase):
                 compiler,
                 "-std=c++23",
                 "-I",
-                str(ROOT / "user/include"),
+                str(ROOT / "engine/include"),
                 "-I",
                 str(ROOT / "third_party/eigen"),
                 "-c",
