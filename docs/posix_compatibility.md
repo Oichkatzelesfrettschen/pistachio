@@ -43,7 +43,7 @@ the kernel only for low level IPC and context switching.
   [`docs/server_interfaces.md`](server_interfaces.md).
 - **POSIX syscall library** – a small C library that provides the standard
   functions (`open`, `read`, `write`, `fork`, etc.) and forwards them to the
-  above servers using the IPC helpers from `engine/lib/exo`.
+  above servers using the IPC helpers from `user/lib/exo`.
 
 Additional helpers such as a signal delivery library or a time server can be
 added to flesh out more of the specification.

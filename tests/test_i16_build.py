@@ -22,7 +22,7 @@ class I16CompilationTest(unittest.TestCase):
                 "-std=c++23",
                 "-Werror",
                 "-I",
-                str(ROOT / "engine/include"),
+                str(ROOT / "include"),
                 "-c",
                 str(src),
             ]

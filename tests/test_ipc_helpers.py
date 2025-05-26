@@ -25,7 +25,7 @@ class IpcHelpersBuildTest(unittest.TestCase):
                 compiler,
                 "-std=c++23",
                 "-I",
-                str(ROOT / "engine/include"),
+                str(ROOT / "include"),
                 "-c",
                 str(src),
             ]
