@@ -1,14 +1,30 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2155
+#
+# Pistachio environment setup script. Options:
+#   --offline    Install packages from offline_packages/ only
+#   --debug or DEBUG=1  Enable verbose command tracing
 set -euo pipefail
 export DEBIAN_FRONTEND=noninteractive
 
 # Optional offline mode installs packages from offline_packages/*.deb
 OFFLINE=0
+# Enable verbose tracing with DEBUG=1 or --debug
+DEBUG="${DEBUG:-0}"
 for arg in "$@"; do
-  if [ "$arg" = "--offline" ]; then
-    OFFLINE=1
-  fi
+  case "$arg" in
+    --offline)
+      OFFLINE=1
+      ;;
+    --debug)
+      DEBUG=1
+      ;;
+  esac
 done
+
+if [ "$DEBUG" = "1" ]; then
+  set -x
+fi
 
 # Log file for any failures during setup
 FAIL_LOG="/tmp/setup_failures.log"

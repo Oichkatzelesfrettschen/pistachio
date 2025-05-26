@@ -102,6 +102,7 @@ formatters and linters such as **black**, **ruff**, **shellcheck** and
 script runs while network access is available so required packages can
 be downloaded.  After cloning the repository you can re-install the
 You can also run the script offline by placing the required `.deb` files in `offline_packages/` and invoking `./setup.sh --offline`.
+Use `DEBUG=1` or pass the `--debug` flag to see each command executed during setup.
 hooks manually if desired::
 
     $ pre-commit install --install-hooks
