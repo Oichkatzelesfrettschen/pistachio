@@ -13,8 +13,8 @@ $ cmake --build .
 ```
 
 The default target compiles the example `string.o` object, builds the
- kernel using the Makefile under `engine/kernel` and builds the userland
- libraries from `engine/lib`.
+ kernel using the Makefile under `kernel` and builds the userland
+ libraries from `user/lib`.
 
 To build individual pieces you can specify the targets explicitly:
 
@@ -31,7 +31,7 @@ $ cmake --build . --target userlib_clean
 ```
 
 These commands simply invoke the existing Makefiles so any custom
-settings in `engine/kernel/Makeconf.local` or environment variables are still
+settings in `kernel/Makeconf.local` or environment variables are still
 honoured.
 
 ### Cross compiling
@@ -138,7 +138,7 @@ TOOLPREFIX=/usr/bin/powerpc-linux-gnu-
 Build the kernel with `make`.  To run under QEMU:
 
 ```sh
-qemu-system-ppc -M g3beige -kernel engine/kernel/powerpc-kernel
+qemu-system-ppc -M g3beige -kernel kernel/powerpc-kernel
 ```
 
 For 64‑bit targets use `qemu-system-ppc64`.
@@ -166,7 +166,7 @@ The minimal real mode port builds with GCC's m16c cross compiler.  After
 installing `m16c-elf-gcc` the kernel can be compiled with:
 
 ```bash
-$ make -C engine/kernel BUILDDIR=build-i16 TOOLPREFIX=m16c-elf- ARCH=i16 SUBARCH=x16
+$ make -C kernel BUILDDIR=build-i16 TOOLPREFIX=m16c-elf- ARCH=i16 SUBARCH=x16
 ```
 
 ### CPU tuning flags
