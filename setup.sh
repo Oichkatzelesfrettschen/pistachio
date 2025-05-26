@@ -7,6 +7,14 @@
 set -euo pipefail
 export DEBIAN_FRONTEND=noninteractive
 
+# Main log capturing all setup activity
+LOG_FILE="/tmp/setup.log"
+echo "Writing setup trace to $LOG_FILE"
+: > "$LOG_FILE"
+log(){
+  echo "$(date +'%Y-%m-%d %H:%M:%S') $*" | tee -a "$LOG_FILE"
+}
+
 # Disable potentially stale proxy settings that can break networking
 unset http_proxy https_proxy HTTP_PROXY HTTPS_PROXY ftp_proxy FTP_PROXY || true
 
@@ -33,10 +41,14 @@ fi
 FAIL_LOG="/tmp/setup_failures.log"
 echo "Recording install failures to $FAIL_LOG"
 : > "$FAIL_LOG"
+log "Setup started"
 
 # Basic network connectivity check
 if ! curl -fsSL http://archive.ubuntu.com/ >/dev/null 2>&1; then
+  log "Network connectivity to archive.ubuntu.com failed or proxy misconfigured"
   echo "Network connectivity to archive.ubuntu.com failed or proxy misconfigured" | tee -a "$FAIL_LOG"
+else
+  log "Network connectivity OK"
 fi
 
 # Ensure repository submodules are present
@@ -49,23 +61,23 @@ apt_pin_install(){
   ver=$(apt-cache show "$pkg" 2>/dev/null | awk '/^Version:/{print $2; exit}')
   set -e
   if [ -n "$ver" ]; then
-    if ! apt-get install -y "${pkg}=${ver}"; then
-      echo "APT install failed for $pkg" | tee -a "$FAIL_LOG"
-      _pip_pkg=${pkg#python3-}
-      if [[ "$pkg" == python3-* && "$_pip_pkg" != "$pkg" ]]; then
-        pip3 install ${PIP_FLAGS:-} "$_pip_pkg" || echo "pip fallback failed for $_pip_pkg" | tee -a "$FAIL_LOG"
-      fi
-      return 0
-    fi
+    apt_cmd=(apt-get install -y "${pkg}=${ver}")
   else
-    if ! apt-get install -y "$pkg"; then
-      echo "APT install failed for $pkg" | tee -a "$FAIL_LOG"
-      _pip_pkg=${pkg#python3-}
-      if [[ "$pkg" == python3-* && "$_pip_pkg" != "$pkg" ]]; then
-        pip3 install ${PIP_FLAGS:-} "$_pip_pkg" || echo "pip fallback failed for $_pip_pkg" | tee -a "$FAIL_LOG"
-      fi
+    apt_cmd=(apt-get install -y "$pkg")
+  fi
+  if ! "${apt_cmd[@]}"; then
+    log "APT install failed for $pkg"
+    echo "APT install failed for $pkg" | tee -a "$FAIL_LOG"
+    _pip_pkg=${pkg#python3-}
+    if pip3 install ${PIP_FLAGS:-} "$_pip_pkg" >/dev/null 2>&1; then
+      log "Installed $pkg via pip"
       return 0
     fi
+    if npm_global_install "$pkg" >/dev/null 2>&1; then
+      log "Installed $pkg via npm"
+      return 0
+    fi
+    log "Fallback installs failed for $pkg"
   fi
   return 0
 }
