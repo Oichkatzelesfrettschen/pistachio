@@ -31,8 +31,9 @@ jobs:
       - uses: actions/setup-python@v5
       - name: Install Python tools
         run: |
-          python3 -m pip install --user pre-commit compiledb configuredb
+          python3 -m pip install --user pre-commit shellcheck-py compiledb configuredb
           pre-commit --version
+          shellcheck --version
           compiledb --version
           configuredb --help
       - name: Run pre-commit
@@ -41,7 +42,7 @@ jobs:
     - name: Install linter runtime deps
       run: |
         sudo apt-get update -y
-        sudo apt-get install -y shellcheck clang-tidy
+        sudo apt-get install -y clang-tidy
 
     - name: Run ${{ matrix.linter.id }} & feed Reviewdog
       uses: reviewdog/reviewdog@v0.20.3

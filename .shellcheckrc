@@ -1,0 +1,3 @@
+# ShellCheck configuration for the repository
+format=gcc
+exclude=SC1091
