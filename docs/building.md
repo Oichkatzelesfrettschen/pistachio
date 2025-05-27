@@ -6,6 +6,15 @@ Makefiles for the kernel and userland libraries.  It wraps the existing
 
 ## Quick start
 
+### Unified build helper
+
+Use `scripts/unified_build.sh` to configure the build directory, compile all targets and run the tests in one step.
+
+```bash
+$ scripts/unified_build.sh
+```
+
+
 ```bash
 $ mkdir build && cd build
 $ cmake ..
