@@ -1,3 +1,7 @@
 #!/usr/bin/env bash
-# Placeholder for changed.sh
-exit 0
+# Simple helper printing files changed since a given git commit.
+
+set -euo pipefail
+
+base="${1:-HEAD^}"
+git diff --name-only "$base"
