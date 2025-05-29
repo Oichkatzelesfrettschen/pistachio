@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.20)
 if(NOT CMAKE_C_COMPILER MATCHES "clang$" AND NOT CMAKE_C_COMPILER_ID STREQUAL "Clang")
     message(FATAL_ERROR "Clang is required to build Pistachio")
 endif()
-if(NOT CMAKE_CXX_COMPILER MATCHES "clang\+\+$" AND NOT CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+if(NOT CMAKE_CXX_COMPILER MATCHES "clang[+][+]$" AND NOT CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     message(FATAL_ERROR "Clang++ is required to build Pistachio")
 endif()
 
@@ -70,5 +70,5 @@ add_executable(posix_test_file tests/posix/test_file.c)
 add_executable(posix_test_process tests/posix/test_process.c)
 add_executable(posix_dirlist user/apps/dirlist.c)
 
-add_custom_target(tests DEPENDS spinlock_fairness posix_test_file posix_test_process posix_dirlist)
+add_custom_target(tests DEPENDS spinlock_fairness posix_test_file posix_test_process posix_dirlist self_ipc typed_channel_demo memparse)
 

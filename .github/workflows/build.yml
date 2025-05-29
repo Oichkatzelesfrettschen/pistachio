@@ -39,6 +39,7 @@ jobs:
         run: pre-commit run --show-diff-on-failure --color always --all-files
       - name: Run tests
         run: |
+          pytest -q engine/include/tests
           cd build
           ctest --output-on-failure
   build-userland:
@@ -77,7 +78,7 @@ jobs:
       - name: Run tests
         run: |
           pip install pytest
-          pytest tests/test_subdomain.py tests/test_waitqueue.py
+          pytest -q engine/include/tests/test_subdomain.py engine/include/tests/test_waitqueue.py
 
   build-kernel:
     runs-on: ubuntu-latest
