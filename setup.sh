@@ -82,7 +82,7 @@ if [ "$APT_OK" -eq 1 ]; then
 #- core build tools, formatters, analysis, science libs
 for pkg in \
   build-essential gcc g++ clang lld llvm \
-  clang-format clang-tidy uncrustify astyle editorconfig pre-commit \
+  clang-format clang-tidy uncrustify astyle editorconfig pre-commit shellcheck \
   make bmake ninja-build cmake meson \
   autoconf automake libtool m4 gawk flex bison byacc \
   pkg-config file ca-certificates curl git unzip \
@@ -226,6 +226,13 @@ if ! curl -fsSL "https://raw.githubusercontent.com/protocolbuffers/protobuf/v${P
   echo "protoc install failed" | tee -a "$FAIL_LOG"
 fi
   rm -f /tmp/protoc.zip
+
+  # Ensure shellcheck is installed for linting shell scripts
+  if ! command -v shellcheck >/dev/null 2>&1; then
+    # apt installation handled earlier; fallback to pip or npm
+    pip3 install ${PIP_FLAGS:-} shellcheck \
+      || npm_global_install shellcheck
+  fi
 
   # Ensure pre-commit and its hook environments are installed while network is available
   pip3 install ${PIP_FLAGS:-} -U pre-commit || echo "pip install pre-commit failed" | tee -a "$FAIL_LOG"
