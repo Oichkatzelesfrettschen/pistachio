@@ -5,7 +5,7 @@ from pathlib import Path
 import unittest
 
 # Path to the spinlock fairness example
-SRC = Path(__file__).resolve().parent / "spinlock_fairness.c"
+SRC = Path(__file__).resolve().parent / "spinlock_fairness.cpp"
 
 
 class SpinlockFairnessBuildTest(unittest.TestCase):
@@ -15,8 +15,16 @@ class SpinlockFairnessBuildTest(unittest.TestCase):
         """Build the example and ensure it exits successfully."""
         with tempfile.TemporaryDirectory() as td:
             binary = Path(td) / "spinlock_fairness"
-            compiler = os.getenv("CC", "clang")
-            cmd = [compiler, "-std=c2x", "-pthread", str(SRC), "-o", str(binary)]
+            # Use the configured C++ compiler or fall back to clang++
+            compiler = os.getenv("CXX", "clang++")
+            cmd = [
+                compiler,
+                "-std=c++17",
+                "-pthread",
+                str(SRC),
+                "-o",
+                str(binary),
+            ]
             try:
                 subprocess.check_output(cmd, stderr=subprocess.STDOUT)
             except (subprocess.CalledProcessError, FileNotFoundError) as exc:
