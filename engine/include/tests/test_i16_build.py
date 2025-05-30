@@ -19,7 +19,7 @@ class I16CompilationTest(unittest.TestCase):
             cmd = [
                 compiler,
                 "-m16",
-                "-std=c++23",
+                "-std=c++17",
                 "-Werror",
                 "-I",
                 str(ROOT / "user/include"),

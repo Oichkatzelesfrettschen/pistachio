@@ -3,7 +3,7 @@ cc = []
 base_dir = os.getcwd()
 flags = [
     "clang++",
-    "-std=c++23",
+    "-std=c++17",
     "-Iinclude",
     "-Iutil/kickstart",
     "-Ilib/io",

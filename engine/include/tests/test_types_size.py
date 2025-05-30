@@ -22,7 +22,7 @@ class TypeSizeCompilationTest(unittest.TestCase):
             cmd = [
                 compiler,
                 flag,
-                "-std=c++23",
+                "-std=c++17",
                 "-Werror",
                 "-I",
                 str(ROOT / "user/include"),

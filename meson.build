@@ -1,5 +1,6 @@
+# Set the default language standards for C++ and C.
 project('pistachio_demos', ['cpp', 'c'],
-    default_options: ['cpp_std=c++23', 'c_std=c23'])
+    default_options: ['cpp_std=c++17', 'c_std=c17'])
 
 add_project_arguments('-Werror', language: ['c', 'cpp'])
 

@@ -1,77 +1,77 @@
 [
   {
     "directory": "/workspace/pistachio/user",
-    "command": "clang++ -std=c++23 -Iinclude -Iutil/kickstart -Ilib/io -I. -DREVISION=0 -include config.h -c util/kickstart/mbi-loader.cc",
+    "command": "clang++ -std=c++17 -Iinclude -Iutil/kickstart -Ilib/io -I. -DREVISION=0 -include config.h -c util/kickstart/mbi-loader.cc",
     "file": "/workspace/pistachio/user/util/kickstart/mbi-loader.cc"
   },
   {
     "directory": "/workspace/pistachio/user",
-    "command": "clang++ -std=c++23 -Iinclude -Iutil/kickstart -Ilib/io -I. -DREVISION=0 -include config.h -c util/kickstart/ia32.cc",
+    "command": "clang++ -std=c++17 -Iinclude -Iutil/kickstart -Ilib/io -I. -DREVISION=0 -include config.h -c util/kickstart/ia32.cc",
     "file": "/workspace/pistachio/user/util/kickstart/ia32.cc"
   },
   {
     "directory": "/workspace/pistachio/user",
-    "command": "clang++ -std=c++23 -Iinclude -Iutil/kickstart -Ilib/io -I. -DREVISION=0 -include config.h -c util/kickstart/powerpc.cc",
+    "command": "clang++ -std=c++17 -Iinclude -Iutil/kickstart -Ilib/io -I. -DREVISION=0 -include config.h -c util/kickstart/powerpc.cc",
     "file": "/workspace/pistachio/user/util/kickstart/powerpc.cc"
   },
   {
     "directory": "/workspace/pistachio/user",
-    "command": "clang++ -std=c++23 -Iinclude -Iutil/kickstart -Ilib/io -I. -DREVISION=0 -include config.h -c util/kickstart/fdt-loader.cc",
+    "command": "clang++ -std=c++17 -Iinclude -Iutil/kickstart -Ilib/io -I. -DREVISION=0 -include config.h -c util/kickstart/fdt-loader.cc",
     "file": "/workspace/pistachio/user/util/kickstart/fdt-loader.cc"
   },
   {
     "directory": "/workspace/pistachio/user",
-    "command": "clang++ -std=c++23 -Iinclude -Iutil/kickstart -Ilib/io -I. -DREVISION=0 -include config.h -c util/kickstart/fdt.cc",
+    "command": "clang++ -std=c++17 -Iinclude -Iutil/kickstart -Ilib/io -I. -DREVISION=0 -include config.h -c util/kickstart/fdt.cc",
     "file": "/workspace/pistachio/user/util/kickstart/fdt.cc"
   },
   {
     "directory": "/workspace/pistachio/user",
-    "command": "clang++ -std=c++23 -Iinclude -Iutil/kickstart -Ilib/io -I. -DREVISION=0 -include config.h -c util/kickstart/mbi-amd64.cc",
+    "command": "clang++ -std=c++17 -Iinclude -Iutil/kickstart -Ilib/io -I. -DREVISION=0 -include config.h -c util/kickstart/mbi-amd64.cc",
     "file": "/workspace/pistachio/user/util/kickstart/mbi-amd64.cc"
   },
   {
     "directory": "/workspace/pistachio/user",
-    "command": "clang++ -std=c++23 -Iinclude -Iutil/kickstart -Ilib/io -I. -DREVISION=0 -include config.h -c util/kickstart/kickstart.cc",
+    "command": "clang++ -std=c++17 -Iinclude -Iutil/kickstart -Ilib/io -I. -DREVISION=0 -include config.h -c util/kickstart/kickstart.cc",
     "file": "/workspace/pistachio/user/util/kickstart/kickstart.cc"
   },
   {
     "directory": "/workspace/pistachio/user",
-    "command": "clang++ -std=c++23 -Iinclude -Iutil/kickstart -Ilib/io -I. -DREVISION=0 -include config.h -c util/kickstart/mbi-ia32.cc",
+    "command": "clang++ -std=c++17 -Iinclude -Iutil/kickstart -Ilib/io -I. -DREVISION=0 -include config.h -c util/kickstart/mbi-ia32.cc",
     "file": "/workspace/pistachio/user/util/kickstart/mbi-ia32.cc"
   },
   {
     "directory": "/workspace/pistachio/user",
-    "command": "clang++ -std=c++23 -Iinclude -Iutil/kickstart -Ilib/io -I. -DREVISION=0 -include config.h -c util/kickstart/kipmgr.cc",
+    "command": "clang++ -std=c++17 -Iinclude -Iutil/kickstart -Ilib/io -I. -DREVISION=0 -include config.h -c util/kickstart/kipmgr.cc",
     "file": "/workspace/pistachio/user/util/kickstart/kipmgr.cc"
   },
   {
     "directory": "/workspace/pistachio/user",
-    "command": "clang++ -std=c++23 -Iinclude -Iutil/kickstart -Ilib/io -I. -DREVISION=0 -include config.h -c util/kickstart/bootinfo.cc",
+    "command": "clang++ -std=c++17 -Iinclude -Iutil/kickstart -Ilib/io -I. -DREVISION=0 -include config.h -c util/kickstart/bootinfo.cc",
     "file": "/workspace/pistachio/user/util/kickstart/bootinfo.cc"
   },
   {
     "directory": "/workspace/pistachio/user",
-    "command": "clang++ -std=c++23 -Iinclude -Iutil/kickstart -Ilib/io -I. -DREVISION=0 -include config.h -c util/kickstart/mbi.cc",
+    "command": "clang++ -std=c++17 -Iinclude -Iutil/kickstart -Ilib/io -I. -DREVISION=0 -include config.h -c util/kickstart/mbi.cc",
     "file": "/workspace/pistachio/user/util/kickstart/mbi.cc"
   },
   {
     "directory": "/workspace/pistachio/user",
-    "command": "clang++ -std=c++23 -Iinclude -Iutil/kickstart -Ilib/io -I. -DREVISION=0 -include config.h -c util/kickstart/lib.cc",
+    "command": "clang++ -std=c++17 -Iinclude -Iutil/kickstart -Ilib/io -I. -DREVISION=0 -include config.h -c util/kickstart/lib.cc",
     "file": "/workspace/pistachio/user/util/kickstart/lib.cc"
   },
   {
     "directory": "/workspace/pistachio/user",
-    "command": "clang++ -std=c++23 -Iinclude -Iutil/kickstart -Ilib/io -I. -DREVISION=0 -include config.h -c util/kickstart/fdt-powerpc.cc",
+    "command": "clang++ -std=c++17 -Iinclude -Iutil/kickstart -Ilib/io -I. -DREVISION=0 -include config.h -c util/kickstart/fdt-powerpc.cc",
     "file": "/workspace/pistachio/user/util/kickstart/fdt-powerpc.cc"
   },
   {
     "directory": "/workspace/pistachio/user",
-    "command": "clang++ -std=c++23 -Iinclude -Iutil/kickstart -Ilib/io -I. -DREVISION=0 -include config.h -c util/kickstart/elf.cc",
+    "command": "clang++ -std=c++17 -Iinclude -Iutil/kickstart -Ilib/io -I. -DREVISION=0 -include config.h -c util/kickstart/elf.cc",
     "file": "/workspace/pistachio/user/util/kickstart/elf.cc"
   },
   {
     "directory": "/workspace/pistachio/user",
-    "command": "clang++ -std=c++23 -Iinclude -Iutil/kickstart -Ilib/io -I. -DREVISION=0 -include config.h -c util/kickstart/amd64.cc",
+    "command": "clang++ -std=c++17 -Iinclude -Iutil/kickstart -Ilib/io -I. -DREVISION=0 -include config.h -c util/kickstart/amd64.cc",
     "file": "/workspace/pistachio/user/util/kickstart/amd64.cc"
   }
 ]

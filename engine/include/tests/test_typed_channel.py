@@ -20,7 +20,7 @@ class TypedChannelBuildTest(unittest.TestCase):
             compiler = os.getenv("CXX", "clang++")
             cmd = [
                 compiler,
-                "-std=c++23",
+                "-std=c++17",
                 "-I",
                 str(ROOT / "user/include"),
                 "-I",
