@@ -1,4 +1,4 @@
-# This .clang-format config is derived from LLVM style and targets C++23.
+# This .clang-format config is derived from LLVM style and targets C++17.
 BasedOnStyle: LLVM
-# Use the latest available C++ standard (treats code as C++23).
-Standard: Latest
+# Use the C++17 standard for formatting.
+Standard: c++17
