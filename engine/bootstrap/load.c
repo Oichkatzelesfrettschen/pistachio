@@ -136,6 +136,7 @@
 
 #include <file_io.h>
 #include <loader_info.h>
+#include "strfcns.h"
 
 /*
  * Loader for a.out format.
@@ -384,7 +385,6 @@ int boot_load_program(master_host_port,
 
 	char			namebuf[MAXPATHLEN+1];
 
-	extern char *	strbuild();
 
 	/*
 	 * Get the target file name
@@ -572,7 +572,6 @@ read_emulator_symbols(master_host_port, master_device_port,
 	struct file	file;
 	char		namebuf[MAXPATHLEN+1];
 	extern char *	strbuild();
-
 	/*
 	 * Build file name: "$server_dir_name/$filename"
 	 */

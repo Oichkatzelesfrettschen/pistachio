@@ -133,6 +133,7 @@
 #include <mach/mach_interface.h>
 
 #include <file_io.h>
+#include "strfcns.h"
 
 extern struct filesystem_ops ufs_ops, dosfs_ops;
 

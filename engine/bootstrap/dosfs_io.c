@@ -56,6 +56,7 @@
 #include <mach/mach_interface.h>
 
 #include <file_io.h>
+#include "strfcns.h"
 #define	DOS_MAXNAMLEN 11
 #define DOS_ROOTINO 1
 

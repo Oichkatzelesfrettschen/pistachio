@@ -76,6 +76,7 @@
 #include <mach.h>
 
 #include <file_io.h>
+#include "strfcns.h"
 
 extern void *kalloc();
 
@@ -145,7 +146,6 @@ remove_paging_file(file_name)
 /*
  * Set up default pager
  */
-extern char *strbuild();
 
 boolean_t
 default_pager_setup(master_device_port, server_dir_name)
