@@ -31,7 +31,7 @@ class CompilerAttributeTest(unittest.TestCase):
         try:
             subprocess.run([
                 compiler,
-                '-std=c++23',
+                '-std=c++17',
                 '-Werror',
                 '-Wno-attributes',
                 '-Iuser/include',

@@ -48,9 +48,9 @@ SHELL=		/bin/sh
 CC=		cc
 CXX=		$(CC) -x c++
 AS=		$(CC)
-CFLAGS=		-std=c2x
+CFLAGS=		-std=c17
 CXXFLAGS=       $(CXXSTD) -fno-exceptions
-CXXSTD=	-std=c++23
+CXXSTD=	-std=c++17
 LDFLAGS=	
 CPPFLAGS= -I$(top_srcdir)/../third_party/eigen
 LGCC=		-lgcc

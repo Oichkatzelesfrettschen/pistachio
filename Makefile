@@ -12,8 +12,8 @@ else
 endif
 
 # Default compilation flags for C and C++ files.
-CFLAGS ?= -std=c2x
-CXXFLAGS ?= -std=c++23
+CFLAGS ?= -std=c17
+CXXFLAGS ?= -std=c++17
 # Optimize for the native CPU.
 CPU_CFLAGS ?= -march=native
 

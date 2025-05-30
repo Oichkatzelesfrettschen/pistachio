@@ -18,7 +18,7 @@ class MemparseToolTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as td:
             binary = Path(td) / "memparse"
             compiler = os.getenv("CXX", "clang++")
-            cmd = [compiler, "-std=c++23", str(SOURCE), "-o", str(binary)]
+            cmd = [compiler, "-std=c++17", str(SOURCE), "-o", str(binary)]
             try:
                 subprocess.check_output(cmd, stderr=subprocess.STDOUT)
             except (subprocess.CalledProcessError, FileNotFoundError) as exc:
