@@ -39,7 +39,7 @@
 #include <platforms.h>
 
 #if defined(LUNA88K)
-#include <luna88k/board.h>
+#include <luna88k/board.hpp>
 #endif
 
 

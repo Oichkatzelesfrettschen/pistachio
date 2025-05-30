@@ -72,7 +72,7 @@
 #include <kern/task.h>			/* task_t */
 #include <kern/syscall_emulation.h>	/* eml_dispatch_t */
 #include <mach/message.h>		/* MACH_SEND_INTERRUPTED */
-#include <luna88k/db_machdep.h>		/* ENTRY_ASM */
+#include <luna88k/db_machdep.hpp>		/* ENTRY_ASM */
 
 #define pair(TOKEN, ELEMENT) \
     printf("#define " TOKEN " %u\n", (unsigned)(ELEMENT))

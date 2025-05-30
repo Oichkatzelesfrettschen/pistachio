@@ -317,7 +317,7 @@
 
 #include <assym.s>   	  		/* for PCB_KSP, etc */
 #include <motorola/m88k/trap.h>        	/* for T_ defines */
-#include <luna88k/locore.h>		/* lots of stuff */
+#include <luna88k/locore.hpp>		/* lots of stuff */
 #include <m88k/asm.h>
 #include <mach/machine/vm_param.h>	/* for KERNEL_STACK_SIZE */
 #include <kern/syscall_emulation.h>

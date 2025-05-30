@@ -84,8 +84,8 @@
  *	@(#)clock.c	7.1 (Berkeley) 6/5/86
  */
 
-#include <luna88k/machdep.h>	/* standard goodies */
-#include <luna88k/nvram.h>	/* NVRAM_ADDR, etc. */
+#include <luna88k/machdep.hpp>	/* standard goodies */
+#include <luna88k/nvram.hpp>	/* NVRAM_ADDR, etc. */
 #include <m88k/cpu_number.h>    /* master_cpu       */
 #include <m88k/pmap.h>		/* pmap_extract()   */
 #include <m88k/mach_param.h>	/* HZ (to set clock rate) */

@@ -70,10 +70,10 @@
 /*
  * luna interface to ddb debugger
  */
-#include <luna88k/machdep.h>
-#include <luna88k/rom1ep.h>		 /* CONSON, CONSOFF, RVPtr      */
-#include <luna88k/locore.h>     	 /* USERMODE                    */
-#include <luna88k/pio.h>		 /* POWERDOWN                   */
+#include <luna88k/machdep.hpp>
+#include <luna88k/rom1ep.hpp>		 /* CONSON, CONSOFF, RVPtr      */
+#include <luna88k/locore.hpp>     	 /* USERMODE                    */
+#include <luna88k/pio.hpp>		 /* POWERDOWN                   */
 #include <machine/db_machdep.h>		 /* local ddb stuff             */
 #include <machine/thread.h>		 /* current_thread()            */
 #include <ddb/db_command.h>		 /* db_error(), db_command      */

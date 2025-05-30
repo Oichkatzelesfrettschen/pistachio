@@ -31,7 +31,7 @@
  * 	[93/05/15            mrt]
  * 
  * Revision 2.4  93/01/26  18:05:15  danner
- * 	Added defines to shadow endian.c, include of luna88k/machdep.h
+ * 	Added defines to shadow endian.c, include of luna88k/machdep.hpp
  * 	[93/01/24            jfriedl]
  * 
  * Revision 2.3  93/01/14  17:39:58  danner
@@ -57,7 +57,7 @@ typedef unsigned int spl_t;
 #define ntohs(L) (L)
 
 #ifdef luna88k
-  #include <luna88k/machdep.h>
+  #include <luna88k/machdep.hpp>
 #endif
 
 #endif	_MACHINE_MACHSPL_H_

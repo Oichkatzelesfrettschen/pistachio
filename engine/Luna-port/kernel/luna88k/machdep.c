@@ -158,7 +158,7 @@
  */
 
 #define __IS_MACHDEP_C__
-#include <luna88k/machdep.h>
+#include <luna88k/machdep.hpp>
 #include <assym.s>			  /* EF_EPSR, etc. */
 
 #if MACH_KDB
@@ -171,10 +171,10 @@
 #include <vm/vm_kern.h>			  /* kernel_map       */
 #include <kern/task.h>			  /* full task defn   */
 #include <kern/thread.h>		  /* full thread defn */
-#include <luna88k/softint.h>		  /* softcall(), etc. */
-#include <luna88k/locore.h>		  /* USERMODE         */
-#include <luna88k/nvram.h>		  /* nvram stuff      */
-#include <luna88k/rom1ep.h>		  /* RVPtr            */
+#include <luna88k/softint.hpp>		  /* softcall(), etc. */
+#include <luna88k/locore.hpp>		  /* USERMODE         */
+#include <luna88k/nvram.hpp>		  /* nvram stuff      */
+#include <luna88k/rom1ep.hpp>		  /* RVPtr            */
 
 volatile int scpus = 0; /* number of slave cpus */
 

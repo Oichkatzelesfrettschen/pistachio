@@ -44,7 +44,7 @@
  * Keyboard driver
  */
 
-#include <luna88k/machdep.h>
+#include <luna88k/machdep.hpp>
 #include <device/tty.h>
 #include <luna88kdev/uart.h>
 #include <luna88kdev/kbms.h>

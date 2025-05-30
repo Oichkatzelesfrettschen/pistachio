@@ -202,8 +202,8 @@
 #endif
 
 #include <m88k/asm.h>
-#include <luna88k/locore.h>
-#include <luna88k/exvec.h>
+#include <luna88k/locore.hpp>
+#include <luna88k/exvec.hpp>
 #include <motorola/m88k/m88100/exvec.h>
 #include <motorola/m88k/trap.h>
 

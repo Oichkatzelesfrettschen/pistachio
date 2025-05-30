@@ -43,12 +43,12 @@
 /*
  * LCD driver
  */
-#include <luna88k/machdep.h>	 /* standard stuff               */
+#include <luna88k/machdep.hpp>	 /* standard stuff               */
 #include <device/device_types.h> /* for return codes             */
 #include <device/buf.h>          /* for struct uio               */
 #include <device/io_req.h>	 /* for io_req_t type            */
-#include <luna88k/pio.h>	 /* parallel-io definitions -- PIO1, etc. */
-#include <luna88k/lcd.h>	 /* LCD control codes.           */
+#include <luna88k/pio.hpp>	 /* parallel-io definitions -- PIO1, etc. */
+#include <luna88k/lcd.hpp>	 /* LCD control codes.           */
 #include <machine/mach_param.h>  /* for interrupt disable macros */
 
 /*

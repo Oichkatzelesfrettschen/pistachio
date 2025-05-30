@@ -74,8 +74,8 @@
  * 
  */
 
-#include <luna88k/machdep.h>
-#include <luna88k/exvec.h>		/* for EVN_* defines */
+#include <luna88k/machdep.hpp>
+#include <luna88k/exvec.hpp>		/* for EVN_* defines */
 #include <mach/exception.h>		/* for EXC_* defines */
 #include <kern/xpr.h>			/* XPR */
 #include <motorola/m88k/m88100/m88100.h>/* DMT_VALID, etc. */

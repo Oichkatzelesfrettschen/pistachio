@@ -35,5 +35,5 @@
  */
 
 #ifdef luna88k
-# include <luna88k/db_machdep.h>
+# include <luna88k/db_machdep.hpp>
 #endif

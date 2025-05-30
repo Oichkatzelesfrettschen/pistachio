@@ -34,7 +34,7 @@
  */
 
 #include <device/device_types.h>
-#include <luna88k/pio.h>
+#include <luna88k/pio.hpp>
 #define DIPREAD 1
     
 int dip_open(dev,flag)

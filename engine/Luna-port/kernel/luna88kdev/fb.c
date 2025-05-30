@@ -67,12 +67,12 @@
 #include "fb.h"
 #if	NFB > 0
 
-#include <luna88k/machdep.h>
-#include <luna88k/fb.h>
+#include <luna88k/machdep.hpp>
+#include <luna88k/fb.hpp>
 #include <sys/types.h>
 #include <device/device_types.h>
 #include <chips/busses.h>
-#include <luna88k/rom1ep.h> /* for CONSON and CONSOFF */
+#include <luna88k/rom1ep.hpp> /* for CONSON and CONSOFF */
 #include <kern/kern_io.h>
 
 /* physcal page number for mmap supported device */
