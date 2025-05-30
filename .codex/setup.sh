@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
+# Auto-heal: ensure strict mode and invoke repo setup
 
 # Install core build tools and helpers
 apt-get update -y

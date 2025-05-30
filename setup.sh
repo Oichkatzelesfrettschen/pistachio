@@ -246,11 +246,11 @@ fi
 
 if [ "$OFFLINE" -eq 1 ]; then
   echo "Installing packages from offline_packages directory" | tee -a "$FAIL_LOG"
-  if ls offline_packages/*.deb >/dev/null 2>&1; then
-    dpkg -i offline_packages/*.deb || echo "dpkg install issues" | tee -a "$FAIL_LOG"
-  else
-    echo "No .deb packages found in offline_packages" | tee -a "$FAIL_LOG"
-  fi
+if compgen -G "offline_packages/*.deb" >/dev/null; then
+  dpkg -i offline_packages/*.deb || echo "dpkg install issues" | tee -a "$FAIL_LOG"
+else
+  echo "No .deb packages found in offline_packages" | tee -a "$FAIL_LOG"
+fi
 fi
 
 # Ensure critical Python tooling is present even if package installs were skipped
