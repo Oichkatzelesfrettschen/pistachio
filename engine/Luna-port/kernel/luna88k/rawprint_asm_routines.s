@@ -47,7 +47,7 @@
 #define ASSEMBLER
 #endif
 
-#include <luna88k/locore.h>
+#include <luna88k/locore.hpp>
 
     text
     align 4

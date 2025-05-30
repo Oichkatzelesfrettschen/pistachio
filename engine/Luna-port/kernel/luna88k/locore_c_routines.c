@@ -84,12 +84,12 @@
  *****************************************************************RCS**/
 /* This file created by Omron Corporation, 1990. */
 
-#include <luna88k/machdep.h>
+#include <luna88k/machdep.hpp>
 #include <m88k/thread.h>		 /* current_thread()	*/
 #include <kern/thread.h>		 /* current_task()	*/
 #include <motorola/m88k/m88100/m88100.h> /* DMT_VALID		*/
 #include <assym.s>			 /* EF_NREGS, etc.	*/
-#include <luna88k/locore.h>		 /* END_OF_VECTOR_LIST, etc. */
+#include <luna88k/locore.hpp>		 /* END_OF_VECTOR_LIST, etc. */
 #include <mach_kdb.h>			 /* MACH_KDB		*/
 #ifdef MACH_KDB
   #include <ddb/db_output.h>		 /* db_printf() 	*/

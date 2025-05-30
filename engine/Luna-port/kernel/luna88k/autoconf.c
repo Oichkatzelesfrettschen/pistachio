@@ -119,15 +119,15 @@
 
 #define caddr_t vm_offset_t /* until all caddr_t's are replaced.... */
 
-#include <luna88k/machdep.h>	/* lots of stuff */
+#include <luna88k/machdep.hpp>	/* lots of stuff */
 #include <kern/machine.h>       /* CPU_SUBTYPE_LUNA88K, machine_slot[]... */
 #include <chips/busses.h>       /* struct bus_driver */
 #include <chips/lance.h>	/* se_sw */
 #include <m88k/cpu_number.h>	/* master_cpu */
 #include <vm/vm_kern.h>		/* kernel_map */
-#include <luna88k/softint.h>	/* softcall_init() */
-#include <luna88k/nvram.h>	/* NVVALSZ, etc. */
-#include <luna88k/rom1ep.h>	/* GETXARGS */
+#include <luna88k/softint.hpp>	/* softcall_init() */
+#include <luna88k/nvram.hpp>	/* NVVALSZ, etc. */
+#include <luna88k/rom1ep.hpp>	/* GETXARGS */
 #include <motorola/m88k/m88100/m882xx.h> /* cmmu_get_idr(), cmmu_cpu_number() */
 
 

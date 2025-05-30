@@ -67,8 +67,8 @@
  * Handle software interrupts through 'softcall' mechanism
  */
 
-#include <luna88k/machdep.h>
-#include <luna88k/softint.h>
+#include <luna88k/machdep.hpp>
+#include <luna88k/softint.hpp>
 
 static simple_lock_data_t softcall_lock;
 static struct softcall *softhead[MAX_CPUS];

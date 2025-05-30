@@ -109,13 +109,13 @@
 #define ASSEMBLER
 #endif
 
-#include "luna88k/locore.h"
+#include "luna88k/locore.hpp"
 #include "motorola/m88k/m88100/m88100.h"
 #include "motorola/m88k/trap.h"
 #include "m88k/asm.h"
 #include "sys/version.h"	/* for INCLUDE_VERSION define */
-#include "luna88k/board.h"	/* lots of stuff (OBIO_PIO*, SYSV_BASE, etc)*/
-#include "luna88k/pio.h"		/* lots of stuff */
+#include "luna88k/board.hpp"	/* lots of stuff (OBIO_PIO*, SYSV_BASE, etc)*/
+#include "luna88k/pio.hpp"		/* lots of stuff */
 #include "mach/machine/vm_param.h"      /* INTSTACK_SIZE */
 
 /***********************************************************************/
@@ -166,7 +166,7 @@ LABEL(start)
 	word 0
 
     _LABEL(vector_list)		  /* references memory BELOW this line */
-	#include "luna88k/exception_vectors.h"
+	#include "luna88k/exception_vectors.hpp"
 	word	END_OF_VECTOR_LIST
 
     _LABEL(_msgsw)

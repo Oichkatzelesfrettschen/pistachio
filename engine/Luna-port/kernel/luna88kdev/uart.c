@@ -95,7 +95,7 @@
 /*
  * 	cpu-board serial i/o driver
  */
-#include <luna88k/machdep.h>	/* standard_goodies */
+#include <luna88k/machdep.hpp>	/* standard_goodies */
 #include <sys/types.h>
 #include <kern/time_out.h>
 #include <device/tty.h>

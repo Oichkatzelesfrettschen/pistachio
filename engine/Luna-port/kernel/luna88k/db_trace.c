@@ -131,7 +131,7 @@ static inline unsigned br_dest(unsigned addr, union instruction inst)
 #define TRACE_DEBUG	/* undefine to disable debugging */
 
 #include <kern/thread.h>	/* thread fields		  */
-#include <luna88k/machdep.h>	/* lots of stuff                  */
+#include <luna88k/machdep.hpp>	/* lots of stuff                  */
 #include <machine/db_machdep.h> /* lots of stuff                  */
 #include <machine/setjmp.h>     /* jmp_buf_t, etc.                */
 #include <ddb/db_variables.h>	/* db_variable, DB_VAR_GET, etc.  */
@@ -1270,7 +1270,7 @@ db_printf("[r31=%x, sxip=%x]\n", frame.r[31], frame.sxip);
 /* The following has nothing to do with tracing, but will potentiall   */
 /* Benefit from some of this file's macros, so I'm shoving it here.... */
 /***********************************************************************/
-#include "luna88k/rom1ep.h"
+#include "luna88k/rom1ep.hpp"
 
 #define show(Addr, Inst, Note) {        \
     db_printf("%s0x%x: (0x%08x) ", Note, Addr, Inst);   \

@@ -44,12 +44,12 @@
 /*
  * Mouse driver
  */
-#include <luna88k/machdep.h>
+#include <luna88k/machdep.hpp>
 #include <sys/types.h>
 #include <device/io_req.h>
 #include <luna88kdev/uart.h>
 #include <luna88kdev/kbms.h>
-#include <luna88k/mouse.h>
+#include <luna88k/mouse.hpp>
 #include <kern/clock.h>
 
 /*

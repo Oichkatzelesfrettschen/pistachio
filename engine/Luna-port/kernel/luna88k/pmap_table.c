@@ -41,7 +41,7 @@
  * 
  */
 
-#include <luna88k/board.h>
+#include <luna88k/board.hpp>
 #include <mach/m88k/vm_types.h>		/* for pmap_table.h */
 #include <m88k/pmap_table.h>
 #include <mach/vm_prot.h>

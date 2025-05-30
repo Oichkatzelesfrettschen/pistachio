@@ -33,8 +33,8 @@
  */
 
 #include <kern/assert.h>
-#include <luna88k/board.h>
-#include <luna88k/pio.h>
+#include <luna88k/board.hpp>
+#include <luna88k/pio.hpp>
 #include <luna88k/asm_macro.h>	/* for interrupt disable macros */
 
 /*

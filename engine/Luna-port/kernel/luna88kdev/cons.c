@@ -92,12 +92,12 @@
  *	For output character, console driver uses ROM mayput routine.
  *	And this driver supports console switch function.
  */
-#include <luna88k/machdep.h>
+#include <luna88k/machdep.hpp>
 #include <sys/types.h>		/* minor, etc. */
-#include <luna88k/softint.h>
+#include <luna88k/softint.hpp>
 #include <luna88kdev/kbms.h>
 #include <luna88kdev/cons.h>
-#include <luna88k/rom1ep.h>	/* mayput, etc. */
+#include <luna88k/rom1ep.hpp>	/* mayput, etc. */
 #include <device/conf.h>
 #include <device/tty.h>
 #include <device/io_req.h>

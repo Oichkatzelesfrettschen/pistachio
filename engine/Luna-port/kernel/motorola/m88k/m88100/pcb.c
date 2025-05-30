@@ -90,7 +90,7 @@
 
 /* Pcb related functions */
 
-#include <luna88k/machdep.h>		/* lots of stuff */
+#include <luna88k/machdep.hpp>		/* lots of stuff */
 #include <kern/assert.h>	        /* assert */
 #include <kern/memory.h>		/* bzero */
 #include <kern/zalloc.h>	        /* zone_t */

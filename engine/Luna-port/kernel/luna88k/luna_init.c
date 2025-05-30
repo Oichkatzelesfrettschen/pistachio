@@ -111,14 +111,14 @@
 #include <kern/cpu_number.h>		/* master_cpu */
 #include <kern/kern_io.h>
 #include <kern/machine.h>
-#include <luna88k/machdep.h>
+#include <luna88k/machdep.hpp>
 #include <motorola/m88k/m88100/m882xx.h> /* CMMU stuff */
 #ifdef MACH_KDB
- #include <luna88k/db_machdep.h>
+ #include <luna88k/db_machdep.hpp>
  #include <ddb/db_output.h>	        /* db_printf */
 #endif
 #include <sys/reboot.h>			/* RB_KDB */
-#include <luna88k/pio.h> 		/* diptest */
+#include <luna88k/pio.hpp> 		/* diptest */
 #include <mach/boot_info.h>		/* boot_info */
 
 int boothowto;	/* read in kern/bootstrap */

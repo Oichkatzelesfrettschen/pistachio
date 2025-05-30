@@ -36,7 +36,7 @@
 #define	_M88K_EXEC_H_
 
 #ifdef luna88k
-#include "luna88k/exec.h"
+#include "luna88k/exec.hpp"
 #endif
 
 #endif
