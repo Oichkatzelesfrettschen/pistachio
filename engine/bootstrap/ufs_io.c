@@ -48,6 +48,7 @@
 #include <mach/mach_interface.h>
 
 #include <file_io.h>
+#include "strfcns.h"
 #include <dir.h>
 
 #define private static

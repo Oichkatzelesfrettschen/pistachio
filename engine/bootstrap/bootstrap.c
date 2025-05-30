@@ -157,6 +157,7 @@
 
 #include <file_io.h>
 
+#include "strfcns.h"
 /*
  *	Use 8 Kbyte stacks instead of the default 64K.
  *	Use 4 Kbyte waiting stacks instead of the default 8K.
