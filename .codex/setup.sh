@@ -12,7 +12,10 @@ apt-get install -y --no-install-recommends \
     python3 python3-pip python3-venv python3-dev python3-setuptools python3-wheel
 
 # Ensure essential Python tooling is present
-python3 -m pip install --upgrade pre-commit compiledb configuredb
+# Work around Debian's PEP 668 restrictions by allowing pip to alter
+# the system installation when creating the development environment.
+python3 -m pip install --upgrade --break-system-packages \
+    pre-commit compiledb configuredb
 pre-commit --version >/dev/null
 compiledb --version >/dev/null
 configuredb --help >/dev/null
