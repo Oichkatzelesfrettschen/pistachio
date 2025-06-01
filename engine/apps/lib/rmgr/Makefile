@@ -1,14 +1,15 @@
-include ../../Makeconf $(wildcard .depend)
+include../../
+    Makeconf $(wildcard.depend)
 
-LIB	= ../librmgr.a
+        LIB =../ librmgr.a
 
-SRCS	= librmgr.c
-OBJS	= $(patsubst %.S, %.o, $(patsubst %.c, %.o, $(SRCS)))
+                 SRCS = librmgr.cpp OBJS = $(patsubst %.S, %.o,
+                                             $(patsubst %.cpp, %.o, $(SRCS)))
 
-INCLUDES = ../../rmgr/include 
+                 INCLUDES =../../ rmgr /
+                               include
 
-all: $(LIB)
+                               all : $(LIB)
 
-$(LIB): $(OBJS)
-	$(AR) cvrs $@ $^
-
+                                         $(LIB)
+    : $(OBJS) $(AR) cvrs $ @$ ^
