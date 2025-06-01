@@ -1,4 +1,4 @@
-# C++17 Modernisation Plan
+#C++ 17 Modernisation Plan
 
 This document tracks the ongoing effort to convert every source and header in the repository to modern C++17.  Each refactored file must begin with the tag:
 
@@ -24,7 +24,7 @@ For each file processed:
 The following tasks process roughly 25 files each.  Continue creating additional tasks until all sources are converted.
 
 ### Task 1
-- engine/apps/lib/rmgr/librmgr.c
+- engine/apps/lib/rmgr/librmgr.cpp
 - engine/apps/lib/l4malloc/libl4malloc.c
 - engine/apps/lib/l4/libl4.c
 - engine/apps/lib/ide/libide.c
@@ -54,8 +54,8 @@ The following tasks process roughly 25 files each.  Continue creating additional
 - engine/apps/arm-booter/elf.h
 - engine/apps/arm-booter/elf.c
 - engine/apps/arm-booter/main.c
-- engine/apps/rmgr/include/l4/rmgr/rmgr.h
-- engine/apps/rmgr/include/l4/rmgr/librmgr.h
+- engine/apps/rmgr/include/l4/rmgr/rmgr.hpp
+- engine/apps/rmgr/include/l4/rmgr/librmgr.hpp
 - engine/apps/rmgr/include/l4/rmgr/server_proto.h
 - engine/apps/rmgr/include/l4/l4.h
 - engine/apps/rmgr/include/l4/x86-x0-32/kernel.h
