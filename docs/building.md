@@ -17,8 +17,9 @@ $ scripts/unified_build.sh
 
 ```bash
 $ mkdir build && cd build
-$ cmake ..
+$ cmake -G Ninja ..
 $ cmake --build .
+$ ctest --output-on-failure
 ```
 
 The default target compiles the example `string.o` object, builds the
@@ -56,7 +57,6 @@ $ cmake --build .
 
 Adjust the values for your toolchain and desired target.
 
-=======
 # Building Pistachio
 
 This guide summarises how to build the kernel and user land using the
