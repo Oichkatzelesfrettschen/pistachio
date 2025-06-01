@@ -207,7 +207,7 @@ $ make CPU_CFLAGS="-march=power9"
 
 The `contrib/include` directory also provides `svr4_machdep.hpp`, a
 header that translates the historic SVR4 machine dependencies into a
-typed C++23 interface.  A short usage sample lives in
+typed C++17 interface.  A short usage sample lives in
 `docs/svr4_machdep_cpp23.cpp`.
 
 ### Calling conventions

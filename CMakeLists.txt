@@ -12,8 +12,9 @@ project(pistachio C CXX)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+# Enforce use of the C17 and C++17 language standards
 foreach(lang C CXX)
-    set(CMAKE_${lang}_STANDARD 23)
+    set(CMAKE_${lang}_STANDARD 17)
     set(CMAKE_${lang}_STANDARD_REQUIRED ON)
 endforeach()
 

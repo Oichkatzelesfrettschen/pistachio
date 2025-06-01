@@ -37,7 +37,7 @@ def main(argv: list[str] | None = None) -> int:
 
     disallowed = [f for f in files if Path(f).suffix not in ALLOWED_EXTS]
     if disallowed:
-        print("Disallowed file types detected. Only C/C++23 and assembly sources "
+        print("Disallowed file types detected. Only C/C++17 and assembly sources "
               "are permitted:")
         for f in disallowed:
             print(f"  {f}")
