@@ -26,21 +26,21 @@ operation and super-fast IPC.
 Building with modern compilers
 ==============================
 
-The build system expects C23 and C++23 capable compilers. The
+The build system expects C17 and C++17 capable compilers. The
 LLVM toolchain with Clang 17 or newer is required. Autoconf 2.69 or
 later is needed only when regenerating the legacy `configure` script.
 Detailed instructions, including cross‑compilation tips, are available in the
 [`docs/building.md`](docs/building.md#cross-compilation) guide. Legacy design
 notes have been moved under `docs/legacy/`.
 
-Only C++23 and platform‑agnostic assembly sources are permitted in the tree.
+Only C++17 and platform‑agnostic assembly sources are permitted in the tree.
 Other languages must be transpiled or otherwise converted before inclusion.
 
 
 Requirements
 ------------
 Pistachio requires the LLVM toolchain with Clang and LLD providing
-C23 and C++23 support.  Clang 17 or newer is mandatory.
+C17 and C++17 support.  Clang 17 or newer is mandatory.
 The helper script `scripts/unified_build.sh` expects `clang` and
 `clang++` in `PATH`. When they are missing the script attempts to use
 `gcc` and `g++` instead, printing a diagnostic message.
@@ -112,7 +112,7 @@ hooks manually if desired::
 With the hooks installed, each commit will automatically format and
 lint changed files.  Run `pre-commit` manually to check all files or
 `pre-commit autoupdate` to refresh hook versions.
-An additional hook rejects any staged files that are not C++23 or
+An additional hook rejects any staged files that are not C++17 or
 assembly sources, ensuring the repository remains language limited.
 
 Running clang-tidy
