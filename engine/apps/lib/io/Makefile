@@ -14,10 +14,10 @@ include ../../Makeconf $(wildcard .depend)
 
 LIBS	= ../libio.a ../libionative.a
 
-SRCS	= $(ARCH)-$(PLATFORM)-putc.c \
-	  $(ARCH)-$(PLATFORM)-getc.c \
+SRCS	= $(ARCH)-$(PLATFORM)-putc.cpp \
+	  $(ARCH)-$(PLATFORM)-getc.cpp \
 	  get_hex.c print.c
-OBJS	= $(patsubst %.S, %.o, $(patsubst %.c, %.o, $(SRCS)))
+OBJS	= $(patsubst %.S, %.o, $(patsubst %.cpp, %.o, $(patsubst %.c, %.o, $(SRCS))))
 
 INCLUDES += ../../include
 CPPFLAGS += -DUSE_L4_TYPES 
