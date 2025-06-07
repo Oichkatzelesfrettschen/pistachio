@@ -5,76 +5,76 @@ export DEBIAN_FRONTEND=noninteractive
 # Optional offline mode installs packages from offline_packages/*.deb
 OFFLINE=0
 for arg in "$@"; do
-  if [ "$arg" = "--offline" ]; then
-    OFFLINE=1
-  fi
+	if [ "$arg" = "--offline" ]; then
+		OFFLINE=1
+	fi
 done
 
 # Log file for any failures during setup
 FAIL_LOG="/tmp/setup_failures.log"
 echo "Recording install failures to $FAIL_LOG"
-: > "$FAIL_LOG"
+: >"$FAIL_LOG"
 
 # Ensure repository submodules are present
 git submodule update --init --recursive || echo "submodule init failed" | tee -a "$FAIL_LOG"
 
 #- helper to pin to the repo's exact version if it exists
-apt_pin_install(){
-  pkg="$1"
-  set +e
-  ver=$(apt-cache show "$pkg" 2>/dev/null | awk '/^Version:/{print $2; exit}')
-  set -e
-  if [ -n "$ver" ]; then
-    if ! apt-get install -y "${pkg}=${ver}"; then
-      echo "APT install failed for $pkg" | tee -a "$FAIL_LOG"
-      _pip_pkg=${pkg#python3-}
-      if [[ "$pkg" == python3-* && "$_pip_pkg" != "$pkg" ]]; then
-        pip3 install ${PIP_FLAGS:-} "$_pip_pkg" || echo "pip fallback failed for $_pip_pkg" | tee -a "$FAIL_LOG"
-      fi
-      return 0
-    fi
-  else
-    if ! apt-get install -y "$pkg"; then
-      echo "APT install failed for $pkg" | tee -a "$FAIL_LOG"
-      _pip_pkg=${pkg#python3-}
-      if [[ "$pkg" == python3-* && "$_pip_pkg" != "$pkg" ]]; then
-        pip3 install ${PIP_FLAGS:-} "$_pip_pkg" || echo "pip fallback failed for $_pip_pkg" | tee -a "$FAIL_LOG"
-      fi
-      return 0
-    fi
-  fi
-  return 0
+apt_pin_install() {
+	pkg="$1"
+	set +e
+	ver=$(apt-cache show "$pkg" 2>/dev/null | awk '/^Version:/{print $2; exit}')
+	set -e
+	if [ -n "$ver" ]; then
+		if ! apt-get install -y "${pkg}=${ver}"; then
+			echo "APT install failed for $pkg" | tee -a "$FAIL_LOG"
+			_pip_pkg=${pkg#python3-}
+			if [[ "$pkg" == python3-* && "$_pip_pkg" != "$pkg" ]]; then
+				pip3 install ${PIP_FLAGS:-} "$_pip_pkg" || echo "pip fallback failed for $_pip_pkg" | tee -a "$FAIL_LOG"
+			fi
+			return 0
+		fi
+	else
+		if ! apt-get install -y "$pkg"; then
+			echo "APT install failed for $pkg" | tee -a "$FAIL_LOG"
+			_pip_pkg=${pkg#python3-}
+			if [[ "$pkg" == python3-* && "$_pip_pkg" != "$pkg" ]]; then
+				pip3 install ${PIP_FLAGS:-} "$_pip_pkg" || echo "pip fallback failed for $_pip_pkg" | tee -a "$FAIL_LOG"
+			fi
+			return 0
+		fi
+	fi
+	return 0
 }
 
 #- helper for global npm packages
-npm_global_install(){
-  pkg="$1"
-  if ! npm install -g "$pkg" >/dev/null 2>&1; then
-    echo "NPM install failed for $pkg" | tee -a "$FAIL_LOG"
-  fi
+npm_global_install() {
+	pkg="$1"
+	if ! npm install -g "$pkg" >/dev/null 2>&1; then
+		echo "NPM install failed for $pkg" | tee -a "$FAIL_LOG"
+	fi
 }
 
 #- enable foreign architectures for cross-compilation
 for arch in i386 armel armhf arm64 riscv64 powerpc ppc64el ia64; do
-  dpkg --add-architecture "$arch"
+	dpkg --add-architecture "$arch"
 done
 
 PIP_FLAGS="--no-cache-dir"
 
 APT_OK=1
 if [ "$OFFLINE" -eq 0 ]; then
-  if apt-get update -y && apt-get dist-upgrade -y; then
-    APT_OK=1
-  else
-    echo "apt-get update/dist-upgrade failed" | tee -a "$FAIL_LOG"
-    APT_OK=0
-    # When we cannot update packages assume offline and avoid network access in pip
-    PIP_FLAGS="--no-index"
-  fi
+	if apt-get update -y && apt-get dist-upgrade -y; then
+		APT_OK=1
+	else
+		echo "apt-get update/dist-upgrade failed" | tee -a "$FAIL_LOG"
+		APT_OK=0
+		# When we cannot update packages assume offline and avoid network access in pip
+		PIP_FLAGS="--no-index"
+	fi
 else
-  echo "Offline mode: skipping apt-get update" | tee -a "$FAIL_LOG"
-  APT_OK=0
-  PIP_FLAGS="--no-index"
+	echo "Offline mode: skipping apt-get update" | tee -a "$FAIL_LOG"
+	APT_OK=0
+	PIP_FLAGS="--no-index"
 fi
 
 if [ "$APT_OK" -eq 1 ]; then
@@ -241,33 +241,34 @@ fi
     python3 -m pre_commit install --install-hooks \
       || echo "pre-commit hook install failed" | tee -a "$FAIL_LOG"
   fi
+
 else
-  echo "Skipping APT package installation due to failed apt-get update" | tee -a "$FAIL_LOG"
+	echo "Skipping APT package installation due to failed apt-get update" | tee -a "$FAIL_LOG"
 fi
 
 if [ "$OFFLINE" -eq 1 ]; then
-  echo "Installing packages from offline_packages directory" | tee -a "$FAIL_LOG"
-if compgen -G "offline_packages/*.deb" >/dev/null; then
-  dpkg -i offline_packages/*.deb || echo "dpkg install issues" | tee -a "$FAIL_LOG"
-else
-  echo "No .deb packages found in offline_packages" | tee -a "$FAIL_LOG"
-fi
+	echo "Installing packages from offline_packages directory" | tee -a "$FAIL_LOG"
+	if compgen -G "offline_packages/*.deb" >/dev/null; then
+		dpkg -i offline_packages/*.deb || echo "dpkg install issues" | tee -a "$FAIL_LOG"
+	else
+		echo "No .deb packages found in offline_packages" | tee -a "$FAIL_LOG"
+	fi
 fi
 
 # Ensure critical Python tooling is present even if package installs were skipped
 for pip_pkg in \
-  pre-commit \
-  compiledb \
-  configuredb \
-  pytest \
-  pyyaml \
-  pylint \
-  pyfuzz; do
-  pip3 install ${PIP_FLAGS:-} -U "$pip_pkg" || echo "pip install $pip_pkg failed" | tee -a "$FAIL_LOG"
+	pre-commit \
+	compiledb \
+	configuredb \
+	pytest \
+	pyyaml \
+	pylint \
+	pyfuzz; do
+	pip3 install ${PIP_FLAGS:-} -U "$pip_pkg" || echo "pip install $pip_pkg failed" | tee -a "$FAIL_LOG"
 done
 if ! python3 -m pre_commit --version >/dev/null 2>&1; then
-  echo "pre-commit not available; attempting local install" | tee -a "$FAIL_LOG"
-  pip3 install --no-index pre-commit && python3 -m pre_commit --version >/dev/null 2>&1 && echo "pre-commit installed from local cache" >>"$FAIL_LOG"
+	echo "pre-commit not available; attempting local install" | tee -a "$FAIL_LOG"
+	pip3 install --no-index pre-commit && python3 -m pre_commit --version >/dev/null 2>&1 && echo "pre-commit installed from local cache" >>"$FAIL_LOG"
 fi
 python3 -m pre_commit --version >/dev/null 2>&1 || echo "pre-commit not available" | tee -a "$FAIL_LOG"
 compiledb --version >/dev/null 2>&1 || echo "compiledb not available" | tee -a "$FAIL_LOG"
@@ -275,7 +276,7 @@ configuredb --help >/dev/null 2>&1 || echo "configuredb not available" | tee -a 
 
 # Create a minimal pre-commit configuration if one does not already exist
 if [ ! -f .pre-commit-config.yaml ]; then
-cat > .pre-commit-config.yaml <<'EOF'
+	cat >.pre-commit-config.yaml <<'EOF'
 minimum_pre_commit_version: '3.7.0'
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -290,12 +291,12 @@ fi
 
 # Create a default pylint configuration if one does not already exist
 if [ ! -f .pylintrc ]; then
-  pylint --generate-rcfile > .pylintrc || echo "pylint config generation failed" | tee -a "$FAIL_LOG"
+	pylint --generate-rcfile >.pylintrc || echo "pylint config generation failed" | tee -a "$FAIL_LOG"
 fi
 
 # Add a minimal pytest configuration if missing
 if [ ! -f pytest.ini ]; then
-cat > pytest.ini <<'EOF'
+	cat >pytest.ini <<'EOF'
 [pytest]
 addopts = -ra
 EOF
@@ -309,10 +310,10 @@ apt-get clean
 rm -rf /var/lib/apt/lists/*
 
 if [ -s "$FAIL_LOG" ]; then
-  echo "=== Setup completed with issues ==="
-  echo "Review $FAIL_LOG for details. When offline, populate offline_packages with .deb files and rerun with --offline or install packages once network is available." >&2
+	echo "=== Setup completed with issues ==="
+	echo "Review $FAIL_LOG for details. When offline, populate offline_packages with .deb files and rerun with --offline or install packages once network is available." >&2
 else
-  echo "=== Setup completed successfully ==="
+	echo "=== Setup completed successfully ==="
 fi
 
 exit 0
