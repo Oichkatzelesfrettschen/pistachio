@@ -216,6 +216,7 @@ if ! curl -fsSL "https://github.com/tkchia/gcc-ia16/releases/download/${IA16_VER
   | tar -Jx -C /opt; then
   echo "gcc-ia16 download failed" | tee -a "$FAIL_LOG"
 fi
+# shellcheck disable=SC2016
 echo 'export PATH=/opt/ia16-elf-gcc/bin:$PATH' > /etc/profile.d/ia16.sh
 export PATH=/opt/ia16-elf-gcc/bin:$PATH
 
