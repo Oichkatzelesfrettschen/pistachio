@@ -1,10 +1,25 @@
 import subprocess
+from typing import Sequence
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def run(cmd, input=None):
+def run(cmd: Sequence[str], input: str | None = None) -> str:
+    """Return the trimmed stdout of executing *cmd*.
+
+    Parameters
+    ----------
+    cmd : Sequence[str]
+        Command and arguments to run via :func:`subprocess.run`.
+    input : str | None, optional
+        Text passed to the process on stdin.
+
+    Returns
+    -------
+    str
+        Captured standard output with trailing whitespace removed.
+    """
     res = subprocess.run(cmd, input=input, text=True, capture_output=True, check=True)
     return res.stdout.strip()
 
@@ -39,7 +54,7 @@ def test_invocation_header_gen(tmp_path):
 
 
 def test_changed_sh():
-    out = run(["bash", str(ROOT / "tools/changed.sh"), "HEAD" ])
+    out = run(["bash", str(ROOT / "tools/changed.sh"), "HEAD"])
     assert isinstance(out, str)
 
 
@@ -48,4 +63,3 @@ def test_xmllint_sh(tmp_path):
     xml.write_text("<root/>")
     out = run(["bash", str(ROOT / "tools/xmllint.sh"), str(xml)])
     assert out == ""
-

@@ -1,7 +1,7 @@
 minimum_pre_commit_version: '3.7.0'
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.6.0
+    rev: v5.0.0
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
@@ -15,7 +15,7 @@ repos:
     rev: v0.4.0
     hooks:
       - id: ruff
-  - repo: https://github.com/koalaman/shellcheck
+  - repo: https://github.com/pre-commit/mirrors-shellcheck
     rev: v0.10.0
     hooks:
       - id: shellcheck
