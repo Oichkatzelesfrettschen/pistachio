@@ -7,3 +7,7 @@ This repository uses Codex CLI to maintain the development environment. When the
 3. Execute `./setup.sh` with available network access so dependencies are fetched before the environment goes offline.
 4. When modifying any file, run `pre-commit` before committing.
 5. Tests live under `tests/`; run `pytest -q` and `ctest --output-on-failure` after changes if applicable.
+6. All modified files must be thoroughly refactored into modern idiomatic form,
+   decomposed and flattened where possible to simplify reasoning. Apply
+   mathematical rigor when refactoring and document every function using
+   Doxygen-style comments.
