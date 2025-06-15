@@ -16,6 +16,7 @@
 #include INC_ARCH(syscalls.h)
 #include INC_ARCH(memory.h)
 #include <lattice_ipc.h>
+#include <wait_graph.h>
 
 #define IS_SEND (snd_desc != (dword_t)~0)
 #define IS_RECEIVE (rcv_desc != (dword_t)~0)
@@ -640,6 +641,9 @@ void sys_ipc(const l4_threadid_t dest, const dword_t snd_desc,
         }
 
         thread_enqueue_send(to_tcb, current);
+        
+        if (!wait_graph_add_edge(current, to_tcb))
+          return_ipc(IPC_ERR_DEADLOCK);
         current->thread_state = TS_POLLING;
 
         /* Start waiting for send to complete. */
@@ -650,6 +654,7 @@ void sys_ipc(const l4_threadid_t dest, const dword_t snd_desc,
           return_ipc(IPC_ERR_SENDTIMEOUT);
 
         thread_dequeue_wakeup(current);
+        wait_graph_remove_edge(current, to_tcb);
       }
 
       //	    printf("ipc: performing transfer (%p->%p) state (%x->%x)\n",
@@ -822,7 +827,8 @@ void sys_ipc(const l4_threadid_t dest, const dword_t snd_desc,
        */
 
       thread_dequeue_send(current, from_tcb);
-      current->thread_state = TS_LOCKED_WAITING;
+
+      wait_graph_remove_edge(from_tcb, current);
 
       /*
        * Switch to our waiting partner.
@@ -900,6 +906,7 @@ int ipc_handle_kernel_id(tcb_t *current, l4_threadid_t dest) {
 #endif
       return (0);
     }
+  }
 
     /**
      * Wrapper functions enabling the legacy IPC implementation to interface
