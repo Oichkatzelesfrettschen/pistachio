@@ -686,6 +686,7 @@ void setup_idt()
     add_syscall_gate(53, int_53);
     add_syscall_gate(54, int_54);
 
+    add_syscall_gate(55, int_55);
 #ifdef CONFIG_X86_APIC
     add_int_gate(APIC_LINT0_INT_VECTOR, apic_lint0);
     add_int_gate(APIC_LINT1_INT_VECTOR, apic_lint1);

@@ -239,7 +239,33 @@ void sys_thread_switch(l4_threadid_t tid)
 
     /* do dispatch only if necessary */
     if (tcb != get_current_tcb())
-	dispatch_thread(tcb);
+        dispatch_thread(tcb);
+
+    return_thread_switch();
+}
+
+void sys_yield_to(l4_threadid_t tid)
+{
+    TRACEPOINT_1PAR(SYS_YIELD_TO, tid.raw);
+
+#if defined(CONFIG_DEBUG_TRACE_SYSCALLS)
+    printf("sys_yield_to(tid: %x)\n", tid);
+#endif
+
+    tcb_t *current = get_current_tcb();
+    thread_enqueue_ready(current);
+
+    tcb_t *target = tid_to_tcb(tid);
+    if (!l4_is_nil_id(tid) && target->myself == tid && IS_RUNNING(target)) {
+        target->current_timeslice += current->current_timeslice;
+        current->current_timeslice = 0;
+        if (target != current)
+            dispatch_thread(target);
+    } else {
+        tcb_t *next = find_next_thread();
+        if (next != current)
+            dispatch_thread(next);
+    }
 
     return_thread_switch();
 }

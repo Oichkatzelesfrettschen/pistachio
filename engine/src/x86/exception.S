@@ -24,6 +24,7 @@
 # define SYS_LTHREAD_EX_REGS	_Z19sys_lthread_ex_regsjjj13l4_threadid_t
 # define SYS_SCHEDULE		_Z12sys_schedule16schedule_param_t13l4_threadid_t
 # define SYS_THREAD_SWITCH	_Z17sys_thread_switch13l4_threadid_t
+# define SYS_YIELD_TO         _Z12sys_yield_to13l4_threadid_t
 # define SYS_TASK_NEW		_Z12sys_task_new13l4_threadid_tjS_jj
 # define SYS_FPAGE_UNMAP	_Z15sys_fpage_unmap7fpage_tj
 
@@ -52,6 +53,7 @@
 # define SYS_LTHREAD_EX_REGS	sys_lthread_ex_regs__FUiUiUiG13l4_threadid_t
 # define SYS_SCHEDULE		sys_schedule__FG16schedule_param_tG13l4_threadid_t
 # define SYS_THREAD_SWITCH	sys_thread_switch__FG13l4_threadid_t
+# define SYS_YIELD_TO         sys_yield_to__FG13l4_threadid_t
 # define SYS_TASK_NEW		sys_task_new__FG13l4_threadid_tUiT0UiUi
 # define SYS_FPAGE_UNMAP	sys_fpage_unmap__FG7fpage_tUi		
 
@@ -1051,6 +1053,13 @@ ENTRY(int_54)
 	pushl	%esi
 	set_kds(eax)
 	call	SYS_TASK_NEW
+ENTRY(int_55)
+        pushl   %esi
+        set_kds(eax)
+        call    SYS_YIELD_TO
+        ke("sys_yield_to returned")
+        # does not return
+
 
 	
 		

@@ -57,6 +57,7 @@ extern "C" void int_51();
 extern "C" void int_52();
 extern "C" void int_53();
 extern "C" void int_54();
+extern "C" void int_55();
 
 extern "C" void timer_irq();
 
