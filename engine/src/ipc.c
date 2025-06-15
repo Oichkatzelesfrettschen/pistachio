@@ -15,6 +15,7 @@
 #include <universe.h>
 #include INC_ARCH(syscalls.h)
 #include INC_ARCH(memory.h)
+#include <lattice_ipc.h>
 #include <wait_graph.h>
 
 #define IS_SEND (snd_desc != (dword_t)~0)
@@ -65,10 +66,14 @@ INLINE void ipc_switch_to_idle(tcb_t *current) {
  */
 
 tcb_t *interrupt_owner[MAX_INTERRUPTS];
+/** Global lattice channel used internally for kernel notifications. */
+static lattice_channel_t lattice_kernel_ch;
 
 void interrupts_init() {
   for (int i = 0; i < MAX_INTERRUPTS; i++)
     interrupt_owner[i] = NULL;
+  /* Initialize lattice IPC channel for kernel internal communication. */
+  lattice_connect(&lattice_kernel_ch, L4_nilthread, "kernel");
 }
 
 void handle_interrupt(dword_t number) {
@@ -104,6 +109,10 @@ void handle_interrupt(dword_t number) {
       // printf("deliver irq-ipc (%d) to %p\n", number, tcb);
     } else
       tcb->intr_pending = number + 1;
+  } else {
+    /* Notify via lattice IPC that the interrupt was dropped. */
+    uint64_t word = number;
+    lattice_send(&lattice_kernel_ch, &word, 1);
   }
 }
 
@@ -632,6 +641,7 @@ void sys_ipc(const l4_threadid_t dest, const dword_t snd_desc,
         }
 
         thread_enqueue_send(to_tcb, current);
+        
         if (!wait_graph_add_edge(current, to_tcb))
           return_ipc(IPC_ERR_DEADLOCK);
         current->thread_state = TS_POLLING;
@@ -817,8 +827,8 @@ void sys_ipc(const l4_threadid_t dest, const dword_t snd_desc,
        */
 
       thread_dequeue_send(current, from_tcb);
+
       wait_graph_remove_edge(from_tcb, current);
-      current->thread_state = TS_LOCKED_WAITING;
 
       /*
        * Switch to our waiting partner.
@@ -898,6 +908,22 @@ int ipc_handle_kernel_id(tcb_t *current, l4_threadid_t dest) {
     }
   }
 
+    /**
+     * Wrapper functions enabling the legacy IPC implementation to interface
+     * with the lattice IPC layer. These thin wrappers delegate to their C++
+     * counterparts defined in lattice_ipc.cpp.
+     */
+
+    bool lattice_connect(lattice_channel_t * ch, L4_ThreadId_t partner,
+                         const char *label);
+    exo_ipc_status lattice_send(lattice_channel_t * ch, const L4_Word_t *words,
+                                size_t count);
+    exo_ipc_status lattice_recv(lattice_channel_t * ch);
+    void lattice_close(lattice_channel_t * ch);
+    void lattice_grant(lattice_channel_t * ch,
+                       const uint64_t token[LATTICE_TOKEN_WORDS]);
+  }
+
   if (!IS_INFINITE_RECV_TIMEOUT(current->ipc_timeout)) {
     qword_t absolute_timeout = TIMEOUT(current->ipc_timeout.timeout.rcv_exp,
                                        current->ipc_timeout.timeout.rcv_man);
@@ -974,3 +1000,15 @@ int ipc_handle_kernel_id(tcb_t *current, l4_threadid_t dest) {
   current->thread_state = TS_RUNNING;
   return (0);
 }
+
+/* ---------------------------------------------------------------------- */
+/* Lattice IPC wrappers */
+
+bool lattice_connect(lattice_channel_t *ch, L4_ThreadId_t partner,
+                     const char *label);
+exo_ipc_status lattice_send(lattice_channel_t *ch, const L4_Word_t *words,
+                            size_t count);
+exo_ipc_status lattice_recv(lattice_channel_t *ch);
+void lattice_close(lattice_channel_t *ch);
+void lattice_grant(lattice_channel_t *ch,
+                   const uint64_t token[LATTICE_TOKEN_WORDS]);
