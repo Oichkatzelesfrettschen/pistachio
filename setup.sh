@@ -263,7 +263,8 @@ for pip_pkg in \
 	pytest \
 	pyyaml \
 	pylint \
-	pyfuzz; do
+        pyfuzz \
+        pqcrypto; do
 	pip3 install ${PIP_FLAGS:-} -U "$pip_pkg" || echo "pip install $pip_pkg failed" | tee -a "$FAIL_LOG"
 done
 if ! python3 -m pre_commit --version >/dev/null 2>&1; then

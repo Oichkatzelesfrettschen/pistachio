@@ -15,10 +15,12 @@ apt-get install -y --no-install-recommends \
 # Work around Debian's PEP 668 restrictions by allowing pip to alter
 # the system installation when creating the development environment.
 python3 -m pip install --upgrade --break-system-packages \
-    pre-commit compiledb 
-export PATH="$(python3 -m site --user-base)/bin:$PATH"
+    pre-commit compiledb pqcrypto
+PATH_ADDITION="$(python3 -m site --user-base)/bin"
+export PATH="$PATH_ADDITION:$PATH"
 pre-commit --version >/dev/null
 compiledb --help >/dev/null
+python3 -c "import pqcrypto" >/dev/null
 
 # Invoke repository root setup script
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

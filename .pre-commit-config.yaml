@@ -30,6 +30,7 @@ repos:
         entry: clang-format -i
         language: system
         files: \.(c|cc|cpp|cxx|h|hpp)$
+        stages: [commit]
       - id: clang-tidy
         name: clang-tidy
         entry: clang-tidy -p user
