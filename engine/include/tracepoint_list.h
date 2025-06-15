@@ -15,6 +15,7 @@
 DEFINE_TP(SYS_IPC, 		"sys_ipc(src=%x, dest=%x)")
 DEFINE_TP(SYS_SCHEDULE,		"sys_schedule")
 DEFINE_TP(SYS_THREAD_SWITCH, 	"sys_thread_switch(dest=%x)")
+DEFINE_TP(SYS_YIELD_TO,         "sys_yield_to(dest=%x)")
 DEFINE_TP(SYS_LTHREAD_EX_REGS,	"sys_lthread_ex_regs")
 DEFINE_TP(SYS_TASK_NEW,		"sys_task_new(tid=%x, pager=%x)")
 DEFINE_TP(SYS_ID_NEAREST, 	"sys_id_nearest(tid=%x, uip=%x)")

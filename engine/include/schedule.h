@@ -178,6 +178,28 @@ void dispatch_thread(tcb_t * tcb);
 
 tcb_t * parse_wakeup_queue(dword_t current_prio, qword_t current_time);
 
+/**
+ * System call to switch to a target thread immediately.
+ *
+ * @param tid  target thread identifier
+ */
+void sys_thread_switch(l4_threadid_t tid);
+
+/**
+ * System call to donate time slice to a target thread.
+ *
+ * @param tid  target thread identifier
+ */
+void sys_yield_to(l4_threadid_t tid);
+
+/**
+ * Modify scheduling parameters of a thread.
+ *
+ * @param param scheduling parameters
+ * @param tid   target thread identifier
+ */
+void sys_schedule(schedule_param_t param, l4_threadid_t tid);
+
 /*
  * time
  */
